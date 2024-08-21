@@ -50,7 +50,7 @@ namespace TheOtherRoles
                 {
                     if (meetingKiller == null)
                     {
-                        player.MurderPlayer(killer);
+                        player.MurderPlayerQuick(killer);
                     }
                     else
                     {

@@ -10,6 +10,8 @@ using static TheOtherRoles.TheOtherRolesGM;
 using static TheOtherRoles.GameHistory;
 using TheOtherRoles.Objects;
 using UnityEngine;
+using AmongUs.GameOptions;
+using Assets.CoreScripts;
 
 namespace TheOtherRoles.Patches
 {
@@ -21,7 +23,7 @@ namespace TheOtherRoles.Patches
         public static PlayerControl setTarget(bool onlyCrewmates = false, bool targetPlayersInVents = false, List<PlayerControl> untargetablePlayers = null, PlayerControl targetingPlayer = null)
         {
             PlayerControl result = null;
-            float num = GameOptionsData.KillDistances[Mathf.Clamp(PlayerControl.GameOptions.KillDistance, 0, 2)];
+            float num = GameManager.Instance.LogicOptions.GetKillDistance();
             if (!ShipStatus.Instance) return result;
             if (targetingPlayer == null) targetingPlayer = PlayerControl.LocalPlayer;
             if (targetingPlayer.isDead() || targetingPlayer.inVent) return result;
@@ -55,10 +57,10 @@ namespace TheOtherRoles.Patches
 
 
             Vector2 truePosition = targetingPlayer.GetTruePosition();
-            Il2CppSystem.Collections.Generic.List<GameData.PlayerInfo> allPlayers = GameData.Instance.AllPlayers;
+            Il2CppSystem.Collections.Generic.List<NetworkedPlayerInfo> allPlayers = GameData.Instance.AllPlayers;
             for (int i = 0; i < allPlayers.Count; i++)
             {
-                GameData.PlayerInfo playerInfo = allPlayers[i];
+                NetworkedPlayerInfo playerInfo = allPlayers[i];
                 if (!playerInfo.Disconnected && playerInfo.PlayerId != targetingPlayer.PlayerId && !playerInfo.IsDead && (!onlyCrewmates || !playerInfo.Role.IsImpostor))
                 {
                     PlayerControl @object = playerInfo.Object;
@@ -85,10 +87,10 @@ namespace TheOtherRoles.Patches
 
         public static void setPlayerOutline(PlayerControl target, Color color)
         {
-            if (target == null || target.myRend == null) return;
+            if (target == null || target.cosmetics.currentBodySprite.BodySprite == null) return;
 
-            target.myRend.material.SetFloat("_Outline", 1f);
-            target.myRend.material.SetColor("_OutlineColor", color);
+            target.cosmetics.currentBodySprite.BodySprite.material.SetFloat("_Outline", 1f);
+            target.cosmetics.currentBodySprite.BodySprite.material.SetColor("_OutlineColor", color);
         }
 
         // Update functions
@@ -97,7 +99,7 @@ namespace TheOtherRoles.Patches
         {
             foreach (PlayerControl target in PlayerControl.AllPlayerControls)
             {
-                if (target == null || target.myRend == null) continue;
+                if (target == null || target.cosmetics.currentBodySprite.BodySprite == null) continue;
 
                 bool isMorphedMorphling = target == Morphling.morphling && Morphling.morphTarget != null && Morphling.morphTimer > 0f;
                 bool hasVisibleShield = false;
@@ -110,12 +112,12 @@ namespace TheOtherRoles.Patches
 
                 if (hasVisibleShield)
                 {
-                    target.myRend.material.SetFloat("_Outline", 1f);
-                    target.myRend.material.SetColor("_OutlineColor", Medic.shieldedColor);
+                    target.cosmetics.currentBodySprite.BodySprite.material.SetFloat("_Outline", 1f);
+                    target.cosmetics.currentBodySprite.BodySprite.material.SetColor("_OutlineColor", Medic.shieldedColor);
                 }
                 else
                 {
-                    target.myRend.material.SetFloat("_Outline", 0f);
+                    target.cosmetics.currentBodySprite.BodySprite.material.SetFloat("_Outline", 0f);
                 }
             }
         }
@@ -511,17 +513,17 @@ namespace TheOtherRoles.Patches
 
                 if (canSeeInfo)
                 {
-                    Transform playerInfoTransform = p.nameText.transform.parent.FindChild("Info");
+                    Transform playerInfoTransform = p.cosmetics.nameText.transform.parent.FindChild("Info");
                     TMPro.TextMeshPro playerInfo = playerInfoTransform != null ? playerInfoTransform.GetComponent<TMPro.TextMeshPro>() : null;
                     if (playerInfo == null)
                     {
-                        playerInfo = UnityEngine.Object.Instantiate(p.nameText, p.nameText.transform.parent);
+                        playerInfo = UnityEngine.Object.Instantiate(p.cosmetics.nameText, p.cosmetics.nameText.transform.parent);
                         playerInfo.fontSize *= 0.75f;
                         playerInfo.gameObject.name = "Info";
                     }
 
                     // Set the position every time bc it sometimes ends up in the wrong place due to camoflauge
-                    playerInfo.transform.localPosition = p.nameText.transform.localPosition + Vector3.up * 0.5f;
+                    playerInfo.transform.localPosition = p.cosmetics.nameText.transform.localPosition + Vector3.up * 0.5f;
 
                     PlayerVoteArea playerVoteArea = MeetingHud.Instance?.playerStates?.FirstOrDefault(x => x.TargetPlayerId == p.PlayerId);
                     Transform meetingInfoTransform = playerVoteArea != null ? playerVoteArea.NameText.transform.parent.FindChild("Info") : null;
@@ -888,13 +890,13 @@ namespace TheOtherRoles.Patches
                 }
             }
 
-            if (TaskPanelBehaviour.InstanceExists)
+            if (DestroyableSingleton<TaskPanelBehaviour>.InstanceExists)
             {
-                TaskPanelBehaviour.Instance.enabled = false;
-                TaskPanelBehaviour.Instance.background.enabled = false;
-                TaskPanelBehaviour.Instance.tab.enabled = false;
-                TaskPanelBehaviour.Instance.TaskText.enabled = false;
-                TaskPanelBehaviour.Instance.tab.transform.FindChild("TabText_TMP").GetComponent<TMPro.TextMeshPro>().SetText("");
+                DestroyableSingleton<TaskPanelBehaviour>.Instance.enabled = false;
+                DestroyableSingleton<TaskPanelBehaviour>.Instance.background.enabled = false;
+                DestroyableSingleton<TaskPanelBehaviour>.Instance.tab.enabled = false;
+                DestroyableSingleton<TaskPanelBehaviour>.Instance.taskText.enabled = false;
+                DestroyableSingleton<TaskPanelBehaviour>.Instance.tab.transform.FindChild("TabText_TMP").GetComponent<TMPro.TextMeshPro>().SetText("");
                 //TaskPanelBehaviour.Instance.transform.localPosition = Vector3.negativeInfinityVector;
             }
 
@@ -1069,7 +1071,7 @@ namespace TheOtherRoles.Patches
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.LocalPlayer.CmdReportDeadBody))]
     class BodyReportPatch
     {
-        static void Postfix(PlayerControl __instance, [HarmonyArgument(0)] GameData.PlayerInfo target)
+        static void Postfix(PlayerControl __instance, [HarmonyArgument(0)] NetworkedPlayerInfo target)
         {
             // Medic or Detective report
             bool isMedicReport = Medic.medic != null && Medic.medic == PlayerControl.LocalPlayer && __instance.PlayerId == Medic.medic.PlayerId;
@@ -1114,7 +1116,7 @@ namespace TheOtherRoles.Patches
                         }
                         if (msg.IndexOf("who", StringComparison.OrdinalIgnoreCase) >= 0)
                         {
-                            DestroyableSingleton<Assets.CoreScripts.Telemetry>.Instance.SendWho();
+                            DestroyableSingleton<UnityTelemetry>.Instance.SendWho();
                         }
                     }
                 }
@@ -1227,7 +1229,7 @@ namespace TheOtherRoles.Patches
             if (Mini.mini != null && PlayerControl.LocalPlayer == Mini.mini && Mini.mini.Data.Role.IsImpostor && Mini.mini == __instance)
             {
                 var multiplier = Mini.isGrownUp() ? 0.66f : 2f;
-                Mini.mini.SetKillTimer(PlayerControl.GameOptions.KillCooldown * multiplier);
+                Mini.mini.SetKillTimer(GameOptionsManager.Instance.CurrentGameOptions.Cast<NormalGameOptionsV08>().KillCooldown * multiplier);
             }
 
             // Set bountyHunter cooldown
@@ -1239,7 +1241,7 @@ namespace TheOtherRoles.Patches
                     BountyHunter.bountyUpdateTimer = 0f; // Force bounty update
                 }
                 else
-                    BountyHunter.bountyHunter.SetKillTimer(PlayerControl.GameOptions.KillCooldown + BountyHunter.punishmentTime);
+                    BountyHunter.bountyHunter.SetKillTimer(GameManager.Instance.LogicOptions.GetKillCooldown() + BountyHunter.punishmentTime);
             }
 
             // Update arsonist status
@@ -1272,14 +1274,14 @@ namespace TheOtherRoles.Patches
     {
         public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] float time)
         {
-            if (PlayerControl.GameOptions.KillCooldown <= 0f) return false;
+            if (GameManager.Instance.LogicOptions.GetKillCooldown() <= 0f) return false;
             float multiplier = 1f;
             float addition = 0f;
             if (PlayerControl.LocalPlayer.isRole(RoleType.Mini) && PlayerControl.LocalPlayer.isImpostor()) multiplier = Mini.isGrownUp() ? 0.66f : 2f;
             if (PlayerControl.LocalPlayer.isRole(RoleType.BountyHunter)) addition = BountyHunter.punishmentTime;
             if (PlayerControl.LocalPlayer.isRole(RoleType.Ninja) && Ninja.isPenalized(PlayerControl.LocalPlayer)) addition = Ninja.killPenalty;
 
-            float max = Mathf.Max(PlayerControl.GameOptions.KillCooldown * multiplier + addition, __instance.killTimer);
+            float max = Mathf.Max(GameManager.Instance.LogicOptions.GetKillCooldown() * multiplier + addition, __instance.killTimer);
             __instance.SetKillTimerUnchecked(Mathf.Clamp(time, 0f, max), max);
             return false;
         }
@@ -1308,7 +1310,7 @@ namespace TheOtherRoles.Patches
     class KillAnimationSetMovementPatch {
         private static int? colorId = null;
         public static void Prefix(PlayerControl source, bool canMove) {
-            Color color = source.myRend.material.GetColor("_BodyColor");
+            Color color = source.cosmetics.currentBodySprite.BodySprite.material.GetColor("_BodyColor");
             if (color != null && Morphling.morphling != null && source.Data.PlayerId == Morphling.morphling.PlayerId) {
                 var index = Palette.PlayerColors.IndexOf(color);
                 if (index != -1) colorId = index;
@@ -1361,7 +1363,7 @@ namespace TheOtherRoles.Patches
         {
             __result = __instance.moveable &&
                 !Minigame.Instance &&
-                (!DestroyableSingleton<HudManager>.InstanceExists || (!DestroyableSingleton<HudManager>.Instance.Chat.IsOpen && !DestroyableSingleton<HudManager>.Instance.KillOverlay.IsOpen && !DestroyableSingleton<HudManager>.Instance.GameMenu.IsOpen)) &&
+                (!DestroyableSingleton<HudManager>.InstanceExists || (!DestroyableSingleton<HudManager>.Instance.Chat.IsOpenOrOpening && !DestroyableSingleton<HudManager>.Instance.KillOverlay.IsOpen && !DestroyableSingleton<HudManager>.Instance.GameMenu.IsOpen)) &&
                 (!MapBehaviour.Instance || !MapBehaviour.Instance.IsOpenStopped) &&
                 !MeetingHud.Instance &&
                 !ExileController.Instance &&
@@ -1378,7 +1380,6 @@ namespace TheOtherRoles.Patches
             if (CustomOptionHolder.uselessOptions.getBool() && CustomOptionHolder.playerNameDupes.getBool())
             {
                 __instance.RpcSetName(name);
-                GameData.Instance.UpdateName(__instance.PlayerId, name, false);
                 return false;
             }
 

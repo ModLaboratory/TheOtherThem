@@ -107,7 +107,7 @@ namespace TheOtherRoles.Patches
         [HarmonyPatch(typeof(Vent), nameof(Vent.CanUse))]
         public static class VentCanUsePatch
         {
-            public static bool Prefix(Vent __instance, ref float __result, [HarmonyArgument(0)] GameData.PlayerInfo pc, [HarmonyArgument(1)] out bool canUse, [HarmonyArgument(2)] out bool couldUse)
+            public static bool Prefix(Vent __instance, ref float __result, [HarmonyArgument(0)] NetworkedPlayerInfo pc, [HarmonyArgument(1)] out bool canUse, [HarmonyArgument(2)] out bool couldUse)
             {
                 float num = float.MaxValue;
                 PlayerControl @object = pc.Object;
@@ -267,13 +267,13 @@ namespace TheOtherRoles.Patches
                     MurderAttemptResult res = Helpers.checkMuderAttemptAndKill(PlayerControl.LocalPlayer, __instance.currentTarget, showAnimation: showAnimation);
                     // Handle blank kill
                     if (res == MurderAttemptResult.BlankKill) {
-                        PlayerControl.LocalPlayer.killTimer = PlayerControl.GameOptions.KillCooldown;
+                        PlayerControl.LocalPlayer.killTimer = GameManager.Instance.LogicOptions.GetKillCooldown();
                         if (PlayerControl.LocalPlayer == Cleaner.cleaner)
                             Cleaner.cleaner.killTimer = HudManagerStartPatch.cleanerCleanButton.Timer = HudManagerStartPatch.cleanerCleanButton.MaxTimer;
                         else if (PlayerControl.LocalPlayer == Warlock.warlock)
                             Warlock.warlock.killTimer = HudManagerStartPatch.warlockCurseButton.Timer = HudManagerStartPatch.warlockCurseButton.MaxTimer;
                         else if (PlayerControl.LocalPlayer == Mini.mini && Mini.mini.Data.Role.IsImpostor)
-                            Mini.mini.SetKillTimer(PlayerControl.GameOptions.KillCooldown * (Mini.isGrownUp() ? 0.66f : 2f));
+                            Mini.mini.SetKillTimer(GameManager.Instance.LogicOptions.GetKillCooldown() * (Mini.isGrownUp() ? 0.66f : 2f));
                         else if (PlayerControl.LocalPlayer == Witch.witch)
                             Witch.witch.killTimer = HudManagerStartPatch.witchSpellButton.Timer = HudManagerStartPatch.witchSpellButton.MaxTimer;
                     }
@@ -307,7 +307,7 @@ namespace TheOtherRoles.Patches
                 // The sabotage button behaves just fine if it's a regular impostor
                 if (PlayerControl.LocalPlayer.Data.Role.TeamType == RoleTeamTypes.Impostor) return true;
 
-                DestroyableSingleton<HudManager>.Instance.ShowMap((Il2CppSystem.Action<MapBehaviour>)((m) => { m.ShowSabotageMap(); }));
+                DestroyableSingleton<HudManager>.Instance.ToggleMapVisible(new() { Mode = global::MapOptions.Modes.Sabotage });
                 return false;
             }
         }
@@ -412,7 +412,7 @@ namespace TheOtherRoles.Patches
             public static class ConsoleCanUsePatch
             {
 
-                public static bool Prefix(ref float __result, Console __instance, [HarmonyArgument(0)] GameData.PlayerInfo pc, [HarmonyArgument(1)] out bool canUse, [HarmonyArgument(2)] out bool couldUse)
+                public static bool Prefix(ref float __result, Console __instance, [HarmonyArgument(0)] NetworkedPlayerInfo pc, [HarmonyArgument(1)] out bool canUse, [HarmonyArgument(2)] out bool couldUse)
                 {
                     canUse = couldUse = false;
                     __result = float.MaxValue;
@@ -440,7 +440,7 @@ namespace TheOtherRoles.Patches
             [HarmonyPatch(typeof(SystemConsole), nameof(SystemConsole.CanUse))]
             public static class SystemConsoleCanUsePatch
             {
-                public static bool Prefix(ref float __result, SystemConsole __instance, [HarmonyArgument(0)] GameData.PlayerInfo pc, [HarmonyArgument(1)] out bool canUse, [HarmonyArgument(2)] out bool couldUse)
+                public static bool Prefix(ref float __result, SystemConsole __instance, [HarmonyArgument(0)] NetworkedPlayerInfo pc, [HarmonyArgument(1)] out bool canUse, [HarmonyArgument(2)] out bool couldUse)
                 {
                     canUse = couldUse = false;
                     __result = float.MaxValue;

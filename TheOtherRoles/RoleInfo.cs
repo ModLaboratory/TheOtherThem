@@ -16,13 +16,13 @@ namespace TheOtherRoles
         public virtual string shortDescription { get { return ModTranslation.getString(nameKey + "ShortDesc"); } }
         public virtual string fullDescription { get { return ModTranslation.getString(nameKey + "FullDesc"); } }
         public virtual string blurb { get { return ModTranslation.getString(nameKey + "Blurb"); } }
-        public virtual string roleOptions
-        {
-            get
-            {
-                return GameOptionsDataPatch.optionsToString(baseOption, true);
-            }
-        }
+        //public virtual string roleOptions
+        //{
+        //    get
+        //    {
+        //        return GameOptionsDataPatch.optionsToString(baseOption, true);
+        //    }
+        //}
 
         public bool enabled { get { return Helpers.RolesEnabled && (baseOption == null || baseOption.enabled); } }
         public RoleType roleType;

@@ -47,7 +47,7 @@ namespace TheOtherRoles.Patches {
         [HarmonyPatch(typeof(MapConsole), nameof(MapConsole.CanUse))]
         public static class MapConsoleCanUsePatch
         {
-            public static bool Prefix(ref float __result, MapConsole __instance, [HarmonyArgument(0)] GameData.PlayerInfo pc, [HarmonyArgument(1)] out bool canUse, [HarmonyArgument(2)] out bool couldUse)
+            public static bool Prefix(ref float __result, MapConsole __instance, [HarmonyArgument(0)] NetworkedPlayerInfo pc, [HarmonyArgument(1)] out bool canUse, [HarmonyArgument(2)] out bool couldUse)
             {
                 canUse = couldUse = false;
                 return true;
@@ -112,7 +112,7 @@ namespace TheOtherRoles.Patches {
 
                     if (TimeRemaining == null)
                     {
-                        TimeRemaining = UnityEngine.Object.Instantiate(HudManager.Instance.TaskText, __instance.transform);
+                        TimeRemaining = UnityEngine.Object.Instantiate(HudManager.Instance.TaskPanel.taskText, __instance.transform);
                         TimeRemaining.alignment = TMPro.TextAlignmentOptions.BottomRight;
                         TimeRemaining.transform.position = Vector3.zero;
                         TimeRemaining.transform.localPosition = new Vector3(3.25f, 5.25f);
@@ -186,9 +186,9 @@ namespace TheOtherRoles.Patches {
                                     {
                                         num2--;
                                     }
-                                    else if (component?.myRend?.material != null)
+                                    else if (component?.cosmetics.currentBodySprite.BodySprite.material != null)
                                     {
-                                        Color color = component.myRend.material.GetColor("_BodyColor");
+                                        Color color = component.cosmetics.currentBodySprite.BodySprite.material.GetColor("_BodyColor");
                                         if (Hacker.onlyColorType)
                                         {
                                             var id = Mathf.Max(0, Palette.PlayerColors.IndexOf(color));
@@ -202,7 +202,7 @@ namespace TheOtherRoles.Patches {
                                     DeadBody component = collider2D.GetComponent<DeadBody>();
                                     if (component)
                                     {
-                                        GameData.PlayerInfo playerInfo = GameData.Instance.GetPlayerById(component.ParentId);
+                                        NetworkedPlayerInfo playerInfo = GameData.Instance.GetPlayerById(component.ParentId);
                                         if (playerInfo != null)
                                         {
                                             var color = Palette.PlayerColors[playerInfo.Object.CurrentOutfit.ColorId];

@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TheOtherRoles.Objects;
 using TheOtherRoles.Patches;
+using AmongUs.GameOptions;
 
 namespace TheOtherRoles
 {
@@ -49,11 +50,11 @@ namespace TheOtherRoles
             {
                 if (penalized)
                 {
-                    player.SetKillTimerUnchecked(PlayerControl.GameOptions.KillCooldown + killPenalty);
+                    player.SetKillTimerUnchecked(GameManager.Instance.LogicOptions.GetKillCooldown() + killPenalty);
                 }
                 else
                 {
-                    player.SetKillTimer(PlayerControl.GameOptions.KillCooldown);
+                    player.SetKillTimer(GameOptionsManager.Instance.CurrentGameOptions.Cast<NormalGameOptionsV08>().KillCooldown);
                 }
             }
         }
@@ -115,7 +116,7 @@ namespace TheOtherRoles
             penalized = stealthed;
             float penalty = penalized ? killPenalty : 0f;
             if (PlayerControl.LocalPlayer == player)
-                player.SetKillTimerUnchecked(PlayerControl.GameOptions.KillCooldown + penalty);
+                player.SetKillTimerUnchecked(GameOptionsManager.Instance.CurrentGameOptions.Cast<NormalGameOptionsV08>().KillCooldown + penalty);
         }
 
         public override void OnDeath(PlayerControl killer)
@@ -203,23 +204,10 @@ namespace TheOtherRoles
             var color = Color.Lerp(Palette.ClearWhite, Palette.White, opacity);
             try
             {
-                if (player.MyPhysics?.rend != null)
-                    player.MyPhysics.rend.color = color;
-
-                if (player.MyPhysics?.Skin?.layer != null)
-                    player.MyPhysics.Skin.layer.color = color;
-
-                if (player.HatRenderer != null)
-                    player.HatRenderer.color = color;
-
-                if (player.CurrentPet?.rend != null)
-                    player.CurrentPet.rend.color = color;
-
-                if (player.CurrentPet?.shadowRend != null)
-                    player.CurrentPet.shadowRend.color = color;
-
-                if (player.VisorSlot != null)
-                    player.VisorSlot.color = color;
+                player.cosmetics.currentBodySprite.BodySprite.color = color;
+                if (player.cosmetics.HasHat()) player.cosmetics.hat.SpriteColor = color;
+                player.GetPet()?.ForEachRenderer(true, new Action<SpriteRenderer>(r => r.color = color));
+                player.cosmetics.CurrentVisor?.SetVisorColor(color);
             }
             catch { }
         }
@@ -249,7 +237,7 @@ namespace TheOtherRoles
                     if (isStealthed(ninja))
                     {
                         opacity = Math.Max(opacity, 1.0f - stealthFade(ninja));
-                        ninja.myRend.material.SetFloat("_Outline", 0f);
+                        ninja.cosmetics.currentBodySprite.BodySprite.material.SetFloat("_Outline", 0f);
                     }
                     else
                     {

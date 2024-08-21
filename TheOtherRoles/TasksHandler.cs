@@ -4,7 +4,7 @@ using static TheOtherRoles.TheOtherRolesGM;
 using System.Collections;
 using System.Collections.Generic;
 using System;
-using UnhollowerBaseLib;
+using AmongUs.GameOptions;
 
 namespace TheOtherRoles {
     [HarmonyPatch]
@@ -30,7 +30,7 @@ namespace TheOtherRoles {
             }
         }
 
-        [HarmonyPatch(typeof(NormalPlayerTask), nameof(NormalPlayerTask.UpdateArrow))]
+        [HarmonyPatch(typeof(NormalPlayerTask), nameof(NormalPlayerTask.UpdateArrowAndLocation))]
         public static class NormalPlayerTaskUpdateArrowPatch
         {
             public static void Postfix(NormalPlayerTask __instance)
@@ -42,7 +42,7 @@ namespace TheOtherRoles {
             }
         }
 
-        [HarmonyPatch(typeof(AirshipUploadTask), nameof(AirshipUploadTask.UpdateArrow))]
+        [HarmonyPatch(typeof(AirshipUploadTask), nameof(AirshipUploadTask.UpdateArrowAndLocation))]
         public static class AirshipUploadTaskUpdateArrowPatch
         {
             public static void Postfix(AirshipUploadTask __instance)
@@ -54,12 +54,12 @@ namespace TheOtherRoles {
             }
         }
 
-        public static Tuple<int, int> taskInfo(GameData.PlayerInfo playerInfo) {
+        public static Tuple<int, int> taskInfo(NetworkedPlayerInfo playerInfo) {
             int TotalTasks = 0;
             int CompletedTasks = 0;
             if (!playerInfo.Disconnected && playerInfo.Tasks != null &&
                 playerInfo.Object &&
-                (PlayerControl.GameOptions.GhostsDoTasks || !playerInfo.IsDead) &&
+                (GameOptionsManager.Instance.CurrentGameOptions.Cast<NormalGameOptionsV08>().GhostsDoTasks || !playerInfo.IsDead) &&
                 playerInfo.Role && playerInfo.Role.TasksCountTowardProgress &&
                 !(playerInfo.Object.isGM() && !GM.hasTasks) &&
                 !(playerInfo.Object.isLovers() && !Lovers.hasTasks) &&
@@ -82,7 +82,7 @@ namespace TheOtherRoles {
                 __instance.TotalTasks = 0;
                 __instance.CompletedTasks = 0;
                 for (int i = 0; i < __instance.AllPlayers.Count; i++) {
-                    GameData.PlayerInfo playerInfo = __instance.AllPlayers[i];
+                    NetworkedPlayerInfo playerInfo = __instance.AllPlayers[i];
                     if (playerInfo.Object &&
                         ((playerInfo.Object?.isLovers() == true && !Lovers.tasksCount) ||
                          (playerInfo.PlayerId == Shifter.shifter?.PlayerId && Shifter.isNeutral) || // Neutral shifter has tasks, but they don't count

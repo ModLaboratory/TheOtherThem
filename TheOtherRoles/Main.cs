@@ -1,4 +1,5 @@
-﻿using BepInEx;
+﻿global using Object = UnityEngine.Object;
+using BepInEx;
 using BepInEx.Configuration;
 using BepInEx.IL2CPP;
 using HarmonyLib;
@@ -10,9 +11,11 @@ using System.Net;
 using System.IO;
 using System;
 using System.Reflection;
-using UnhollowerBaseLib;
 using UnityEngine;
 using TheOtherRoles.Modules;
+using BepInEx.Unity.IL2CPP;
+using AmongUs.Data.Legacy;
+using AmongUs.GameOptions;
 
 namespace TheOtherRoles
 {
@@ -114,9 +117,9 @@ namespace TheOtherRoles
     [HarmonyPatch(typeof(ChatController), nameof(ChatController.Awake))]
     public static class ChatControllerAwakePatch {
         private static void Prefix() {
-            if (!EOSManager.Instance.IsMinor()) {
-                SaveManager.chatModeType = 1;
-                SaveManager.isGuest = false;
+            if (!EOSManager.Instance.IsMinorOrWaiting()) {
+                LegacySaveManager.chatModeType = 1;
+                LegacySaveManager.isGuest = false;
             }
         }
     }
@@ -133,7 +136,7 @@ namespace TheOtherRoles
             if (!TheOtherRolesPlugin.DebugMode.Value) return;
 
             // Spawn dummys
-            if (Input.GetKeyDown(KeyCode.F)) {
+            /*if (Input.GetKeyDown(KeyCode.F)) {
                 var playerControl = UnityEngine.Object.Instantiate(AmongUsClient.Instance.PlayerPrefab);
                 var i = playerControl.PlayerId = (byte) GameData.Instance.GetAvailableId();
 
@@ -141,12 +144,12 @@ namespace TheOtherRoles
                 GameData.Instance.AddPlayer(playerControl);
                 AmongUsClient.Instance.Spawn(playerControl, -2, InnerNet.SpawnFlags.None);
 
-                int hat = random.Next(HatManager.Instance.AllHats.Count);
-                int pet = random.Next(HatManager.Instance.AllPets.Count);
-                int skin = random.Next(HatManager.Instance.AllSkins.Count);
-                int visor = random.Next(HatManager.Instance.AllVisors.Count);
+                int hat = random.Next(HatManager.Instance.allHats.Count);
+                int pet = random.Next(HatManager.Instance.allPets.Count);
+                int skin = random.Next(HatManager.Instance.allSkins.Count);
+                int visor = random.Next(HatManager.Instance.allVisors.Count);
                 int color = random.Next(Palette.PlayerColors.Length);
-                int nameplate = random.Next(HatManager.Instance.AllNamePlates.Count);
+                int nameplate = random.Next(HatManager.Instance.allNamePlates.Count);
 
                 playerControl.transform.position = PlayerControl.LocalPlayer.transform.position;
                 playerControl.GetComponent<DummyBehaviour>().enabled = true;
@@ -159,7 +162,7 @@ namespace TheOtherRoles
                 playerControl.SetSkin(HatManager.Instance.AllSkins[skin].ProductId);
                 playerControl.SetNamePlate(HatManager.Instance.AllNamePlates[nameplate].ProductId);
                 GameData.Instance.RpcSetTasks(playerControl.PlayerId, new byte[0]);
-            }
+            }*/
 
             // Terminate round
             if(Input.GetKeyDown(KeyCode.L) && AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started) {

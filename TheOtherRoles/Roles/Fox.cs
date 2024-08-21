@@ -81,7 +81,7 @@ namespace TheOtherRoles
                         }
                         else
                         {
-                            immoralist.MurderPlayer(immoralist);
+                            immoralist.MurderPlayerQuick(immoralist);
                         }
                         finalStatuses[immoralist.PlayerId] = FinalStatus.Suicide;
                     }
@@ -254,26 +254,26 @@ namespace TheOtherRoles
                         }
                         else if (task.TaskType == TaskTypes.RestoreOxy)
                         {
-                            ShipStatus.Instance.RpcRepairSystem(SystemTypes.LifeSupp, 0 | 64);
-                            ShipStatus.Instance.RpcRepairSystem(SystemTypes.LifeSupp, 1 | 64);
+                            ShipStatus.Instance.RpcUpdateSystem(SystemTypes.LifeSupp, 0 | 64);
+                            ShipStatus.Instance.RpcUpdateSystem(SystemTypes.LifeSupp, 1 | 64);
                         }
                         else if (task.TaskType == TaskTypes.ResetReactor)
                         {
-                            ShipStatus.Instance.RpcRepairSystem(SystemTypes.Reactor, 16);
+                            ShipStatus.Instance.RpcUpdateSystem(SystemTypes.Reactor, 16);
                         }
                         else if (task.TaskType == TaskTypes.ResetSeismic)
                         {
-                            ShipStatus.Instance.RpcRepairSystem(SystemTypes.Laboratory, 16);
+                            ShipStatus.Instance.RpcUpdateSystem(SystemTypes.Laboratory, 16);
                         }
                         else if (task.TaskType == TaskTypes.FixComms)
                         {
-                            ShipStatus.Instance.RpcRepairSystem(SystemTypes.Comms, 16 | 0);
-                            ShipStatus.Instance.RpcRepairSystem(SystemTypes.Comms, 16 | 1);
+                            ShipStatus.Instance.RpcUpdateSystem(SystemTypes.Comms, 16 | 0);
+                            ShipStatus.Instance.RpcUpdateSystem(SystemTypes.Comms, 16 | 1);
                         }
                         else if (task.TaskType == TaskTypes.StopCharles)
                         {
-                            ShipStatus.Instance.RpcRepairSystem(SystemTypes.Reactor, 0 | 16);
-                            ShipStatus.Instance.RpcRepairSystem(SystemTypes.Reactor, 1 | 16);
+                            ShipStatus.Instance.RpcUpdateSystem(SystemTypes.Reactor, 0 | 16);
+                            ShipStatus.Instance.RpcUpdateSystem(SystemTypes.Reactor, 1 | 16);
                         }
                     }
                     numRepair -= 1;
@@ -463,7 +463,7 @@ namespace TheOtherRoles
                     if (isStealthed(fox))
                     {
                         opacity = Math.Max(opacity, 1.0f - stealthFade(fox));
-                        fox.myRend.material.SetFloat("_Outline", 0f);
+                        fox.cosmetics.currentBodySprite.BodySprite.material.SetFloat("_Outline", 0f);
                     }
                     else
                     {

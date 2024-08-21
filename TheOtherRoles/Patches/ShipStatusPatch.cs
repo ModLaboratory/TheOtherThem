@@ -4,6 +4,7 @@ using static TheOtherRoles.TheOtherRolesGM;
 using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
+using AmongUs.GameOptions;
 
 namespace TheOtherRoles.Patches {
 
@@ -12,7 +13,7 @@ namespace TheOtherRoles.Patches {
 
         [HarmonyPostfix]
         [HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.CalculateLightRadius))]
-        public static bool Prefix(ref float __result, ShipStatus __instance, [HarmonyArgument(0)] GameData.PlayerInfo player) {
+        public static bool Prefix(ref float __result, ShipStatus __instance, [HarmonyArgument(0)] NetworkedPlayerInfo player) {
             ISystemType systemType = __instance.Systems.ContainsKey(SystemTypes.Electrical) ? __instance.Systems[SystemTypes.Electrical] : null;
             if (systemType == null) return true;
             SwitchSystem switchSystem = systemType.TryCast<SwitchSystem>();
@@ -30,25 +31,25 @@ namespace TheOtherRoles.Patches {
                 || (Jester.jester != null && Jester.jester.PlayerId == player.PlayerId && Jester.hasImpostorVision) // Jester with Impostor vision
                 || (player.Object.isRole(RoleType.Fox))
                 )
-                __result = __instance.MaxLightRadius * PlayerControl.GameOptions.ImpostorLightMod;
+                __result = __instance.MaxLightRadius * GameOptionsManager.Instance.CurrentGameOptions.Cast<NormalGameOptionsV08>().ImpostorLightMod;
             else if (PlayerControl.LocalPlayer.isRole(RoleType.Lighter) && Lighter.isLightActive(PlayerControl.LocalPlayer)) // if player is Lighter and Lighter has his ability active
                 __result = Mathf.Lerp(__instance.MaxLightRadius * Lighter.lighterModeLightsOffVision, __instance.MaxLightRadius * Lighter.lighterModeLightsOnVision, num);
             else if (Trickster.trickster != null && Trickster.lightsOutTimer > 0f) {
                 float lerpValue = 1f;
                 if (Trickster.lightsOutDuration - Trickster.lightsOutTimer < 0.5f) lerpValue = Mathf.Clamp01((Trickster.lightsOutDuration - Trickster.lightsOutTimer) * 2);
                 else if (Trickster.lightsOutTimer < 0.5) lerpValue = Mathf.Clamp01(Trickster.lightsOutTimer * 2);
-                __result = Mathf.Lerp(__instance.MinLightRadius, __instance.MaxLightRadius, 1 - lerpValue) * PlayerControl.GameOptions.CrewLightMod; // Instant lights out? Maybe add a smooth transition?
+                __result = Mathf.Lerp(__instance.MinLightRadius, __instance.MaxLightRadius, 1 - lerpValue) * GameOptionsManager.Instance.CurrentGameOptions.Cast<NormalGameOptionsV08>().CrewLightMod; // Instant lights out? Maybe add a smooth transition?
             }
             else if (Lawyer.lawyer != null && Lawyer.lawyer.PlayerId == player.PlayerId) // if player is Lighter and Lighter has his ability active
                 __result = Mathf.Lerp(__instance.MinLightRadius, __instance.MaxLightRadius * Lawyer.vision, num);
             else
-                __result = Mathf.Lerp(__instance.MinLightRadius, __instance.MaxLightRadius, num) * PlayerControl.GameOptions.CrewLightMod;
+                __result = Mathf.Lerp(__instance.MinLightRadius, __instance.MaxLightRadius, num) * GameOptionsManager.Instance.CurrentGameOptions.Cast<NormalGameOptionsV08>().CrewLightMod;
             return false;
         }
 
         [HarmonyPostfix]
-        [HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.IsGameOverDueToDeath))]
-        public static void Postfix2(ShipStatus __instance, ref bool __result)
+        [HarmonyPatch(typeof(LogicGameFlow), nameof(LogicGameFlow.IsGameOverDueToDeath))]
+        public static void Postfix2(ref bool __result)
         {
             __result = false;
         }
@@ -74,14 +75,15 @@ namespace TheOtherRoles.Patches {
             }
 
             var commonTaskCount = __instance.CommonTasks.Count;
-            var normalTaskCount = __instance.NormalTasks.Count;
+            var normalTaskCount = __instance.ShortTasks.Count;
             var longTaskCount = __instance.LongTasks.Count;
-            originalNumCommonTasksOption = PlayerControl.GameOptions.NumCommonTasks;
-            originalNumShortTasksOption = PlayerControl.GameOptions.NumShortTasks;
-            originalNumLongTasksOption = PlayerControl.GameOptions.NumLongTasks;
-            if(PlayerControl.GameOptions.NumCommonTasks > commonTaskCount) PlayerControl.GameOptions.NumCommonTasks = commonTaskCount;
-            if(PlayerControl.GameOptions.NumShortTasks > normalTaskCount) PlayerControl.GameOptions.NumShortTasks = normalTaskCount;
-            if(PlayerControl.GameOptions.NumLongTasks > longTaskCount) PlayerControl.GameOptions.NumLongTasks = longTaskCount;
+            var option = GameOptionsManager.Instance.CurrentGameOptions.Cast<NormalGameOptionsV08>();
+            originalNumCommonTasksOption = option.NumCommonTasks;
+            originalNumShortTasksOption = option.NumShortTasks;
+            originalNumLongTasksOption = option.NumLongTasks;
+            if(option.NumCommonTasks > commonTaskCount) option.NumCommonTasks = commonTaskCount;
+            if(option.NumShortTasks > normalTaskCount) option.NumShortTasks = normalTaskCount;
+            if(option.NumLongTasks > longTaskCount) option.NumLongTasks = longTaskCount;
             return true;
         }
 
@@ -90,9 +92,10 @@ namespace TheOtherRoles.Patches {
         public static void Postfix3(ShipStatus __instance)
         {
             // Restore original settings after the tasks have been selected
-            PlayerControl.GameOptions.NumCommonTasks = originalNumCommonTasksOption;
-            PlayerControl.GameOptions.NumShortTasks = originalNumShortTasksOption;
-            PlayerControl.GameOptions.NumLongTasks = originalNumLongTasksOption;
+            var option = GameOptionsManager.Instance.CurrentGameOptions.Cast<NormalGameOptionsV08>();
+            option.NumCommonTasks = originalNumCommonTasksOption;
+            option.NumShortTasks = originalNumShortTasksOption;
+            option.NumLongTasks = originalNumLongTasksOption;
         }
             
     }

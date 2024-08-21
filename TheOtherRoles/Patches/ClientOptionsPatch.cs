@@ -6,7 +6,6 @@ using TMPro;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 using static UnityEngine.UI.Button;
-using Object = UnityEngine.Object;
 
 namespace TheOtherRoles.Patches 
 {
@@ -43,13 +42,7 @@ namespace TheOtherRoles.Patches
         public static void MainMenuManager_StartPostfix(MainMenuManager __instance)
         {
             // Prefab for the title
-            var tmp = __instance.Announcement.transform.Find("Title_Text").gameObject.GetComponent<TextMeshPro>();
-            tmp.alignment = TextAlignmentOptions.Center;
-            tmp.transform.localPosition += Vector3.left * 0.2f;
-            titleText = Object.Instantiate(tmp);
-            Object.Destroy(titleText.GetComponent<TextTranslatorTMP>());
-            titleText.gameObject.SetActive(false);
-            Object.DontDestroyOnLoad(titleText);
+            
         }
 
         [HarmonyPostfix]

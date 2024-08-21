@@ -5,8 +5,9 @@ using System.Reflection;
 using UnityEngine;
 using Il2CppSystem;
 using HarmonyLib;
-using UnhollowerBaseLib;
 using Assets.CoreScripts;
+using AmongUs.Data.Legacy;
+using Il2CppInterop.Runtime.InteropTypes.Arrays;
 
 namespace TheOtherRoles.Modules {
     public class CustomColors {
@@ -241,23 +242,23 @@ namespace TheOtherRoles.Modules {
                     }
                 }
             }
-            [HarmonyPatch(typeof(SaveManager), nameof(SaveManager.LoadPlayerPrefs))]
+            [HarmonyPatch(typeof(LegacySaveManager), nameof(LegacySaveManager.LoadPlayerPrefs))]
             private static class LoadPlayerPrefsPatch { // Fix Potential issues with broken colors
                 private static bool needsPatch = false;
                 public static void Prefix([HarmonyArgument(0)] bool overrideLoad) {
-                    if (!SaveManager.loaded || overrideLoad)
+                    if (!LegacySaveManager.loaded || overrideLoad)
                         needsPatch = true;
                 }
                 public static void Postfix() {
                     if (!needsPatch) return;
-                    SaveManager.colorConfig %= CustomColors.pickableColors;
+                    LegacySaveManager.colorConfig %= CustomColors.pickableColors;
                     needsPatch = false;
                 }
             }
             [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.CheckColor))]
             private static class PlayerControlCheckColorPatch {
                 private static bool isTaken(PlayerControl player, uint color) {
-                    foreach (GameData.PlayerInfo p in GameData.Instance.AllPlayers)
+                    foreach (NetworkedPlayerInfo p in GameData.Instance.AllPlayers)
                         if (!p.Disconnected && p.PlayerId != player.PlayerId && p.DefaultOutfit.ColorId == color)
                             return true;
                     return false;

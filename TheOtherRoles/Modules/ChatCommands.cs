@@ -7,7 +7,6 @@ using BepInEx.IL2CPP;
 using HarmonyLib;
 using UnityEngine;
 using System.Linq;
-using UnhollowerBaseLib;
 using static TheOtherRoles.TheOtherRoles;
 
 namespace TheOtherRoles.Modules {
@@ -17,7 +16,7 @@ namespace TheOtherRoles.Modules {
         [HarmonyPatch(typeof(ChatController), nameof(ChatController.SendChat))]
         private static class SendChatPatch {
             static bool Prefix(ChatController __instance) {
-                string text = __instance.TextArea.text;
+                string text = __instance.freeChatField.Text;
                 bool handled = false;
                 if (AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started) {
                     if (text.ToLower().StartsWith("/kick ")) {
@@ -43,7 +42,7 @@ namespace TheOtherRoles.Modules {
                     }
                 }
                 
-                if (AmongUsClient.Instance.GameMode == GameModes.FreePlay) {
+                if (AmongUsClient.Instance.NetworkMode == NetworkModes.FreePlay) {
                     if (text.ToLower().Equals("/murder")) {
                         PlayerControl.LocalPlayer.Exiled();
                         HudManager.Instance.KillOverlay.ShowKillAnimation(PlayerControl.LocalPlayer.Data, PlayerControl.LocalPlayer.Data);
@@ -70,8 +69,7 @@ namespace TheOtherRoles.Modules {
                 }
 
                 if (handled) {
-                    __instance.TextArea.Clear();
-                    __instance.quickChatMenu.ResetGlyphs();
+                    __instance.freeChatField.Clear();
                 }
                 return !handled;
             }
@@ -80,7 +78,7 @@ namespace TheOtherRoles.Modules {
         [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
         public static class EnableChat {
             public static void Postfix(HudManager __instance) {
-                if (__instance?.Chat?.isActiveAndEnabled == false && (AmongUsClient.Instance?.GameMode == GameModes.FreePlay || (PlayerControl.LocalPlayer.isLovers() && Lovers.enableChat)))
+                if (__instance?.Chat?.isActiveAndEnabled == false && (AmongUsClient.Instance?.NetworkMode == NetworkModes.FreePlay || (PlayerControl.LocalPlayer.isLovers() && Lovers.enableChat)))
                     __instance?.Chat?.SetVisible(true);
             }
         }

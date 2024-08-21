@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using System;
+using AmongUs.GameOptions;
 
 namespace TheOtherRoles
 {
@@ -139,8 +140,8 @@ namespace TheOtherRoles
             {
                 if (!player.Data.Role.IsImpostor)
                 {
-                    player.RemoveInfected();
-                    player.MurderPlayer(player);
+                    RoleManager.Instance.SetRole(player, AmongUs.GameOptions.RoleTypes.Crewmate);
+                    player.MurderPlayerQuick(player);
                     player.Data.IsDead = true;
                 }
             }
@@ -207,7 +208,7 @@ namespace TheOtherRoles
             if (source != null && target != null)
             {
                 if (showAnimation == 0) KillAnimationCoPerformKillPatch.hideNextAnimation = true;
-                source.MurderPlayer(target);
+                source.MurderPlayerQuick(target);
             }
         }
 
@@ -242,11 +243,10 @@ namespace TheOtherRoles
                 AmongUsClient.Instance.Dispatcher.Add(new Action(() =>
                 {
                     ShipStatus.Instance.enabled = false;
-                    ShipStatus.Instance.BeginCalled = false;
                     AmongUsClient.Instance.OnGameEnd(new EndGameResult((GameOverReason)reason, false));
 
                     if (AmongUsClient.Instance.AmHost)
-                        ShipStatus.RpcEndGame((GameOverReason)reason, false);
+                        GameManager.Instance.RpcEndGame((GameOverReason)reason, false);
                 }));
             }
         }
@@ -256,11 +256,11 @@ namespace TheOtherRoles
             var player = Helpers.playerById(playerId);
             player.clearAllTasks();
 
-            GameData.Instance.SetTasks(playerId, taskTypeIds);
+            player.Data.SetTasks(taskTypeIds);
         }
 
         public static void dynamicMapOption(byte mapId) {
-            PlayerControl.GameOptions.MapId = mapId;
+            GameOptionsManager.Instance.CurrentGameOptions.Cast<NormalGameOptionsV08>().MapId = mapId;
         }
 
         // Role functionality
@@ -300,14 +300,14 @@ namespace TheOtherRoles
 
             if (misfire)
             {
-                sheriff.MurderPlayer(sheriff);
+                sheriff.MurderPlayerQuick(sheriff);
                 finalStatuses[sheriffId] = FinalStatus.Misfire;
 
                 if (!Sheriff.misfireKillsTarget) return;
                 finalStatuses[targetId] = FinalStatus.Misfire;
             }
 
-            sheriff.MurderPlayer(target);
+            sheriff.MurderPlayerQuick(target);
         }
 
         public static void timeMasterRewindTime()
@@ -524,7 +524,7 @@ namespace TheOtherRoles
                 {
                     foreach(var immoralist in Immoralist.allPlayers)
                     {
-                        immoralist.MurderPlayer(immoralist);
+                        immoralist.MurderPlayerQuick(immoralist);
                     }
                 }
             }
@@ -680,7 +680,7 @@ namespace TheOtherRoles
                 default: camera.NewName = StringNames.ExitButton; break;
             }
 
-            if (PlayerControl.GameOptions.MapId == 2 || PlayerControl.GameOptions.MapId == 4) camera.transform.localRotation = new Quaternion(0, 0, 1, 1); // Polus and Airship 
+            if (GameOptionsManager.Instance.CurrentGameOptions.Cast<NormalGameOptionsV08>().MapId == 2 || GameOptionsManager.Instance.CurrentGameOptions.Cast<NormalGameOptionsV08>().MapId == 4) camera.transform.localRotation = new Quaternion(0, 0, 1, 1); // Polus and Airship 
 
             if (PlayerControl.LocalPlayer == SecurityGuard.securityGuard)
             {
@@ -759,7 +759,7 @@ namespace TheOtherRoles
 
             if (player.PlayerId == PlayerControl.LocalPlayer.PlayerId && client != null)
             {
-                Transform playerInfoTransform = client.nameText.transform.parent.FindChild("Info");
+                Transform playerInfoTransform = client.cosmetics.nameText.transform.parent.FindChild("Info");
                 TMPro.TextMeshPro playerInfo = playerInfoTransform != null ? playerInfoTransform.GetComponent<TMPro.TextMeshPro>() : null;
                 if (playerInfo != null) playerInfo.text = "";
             }
@@ -795,7 +795,7 @@ namespace TheOtherRoles
                 if (AmongUsClient.Instance.AmClient && DestroyableSingleton<HudManager>.Instance)
                     DestroyableSingleton<HudManager>.Instance.Chat.AddChat(guesser, msg);
                 if (msg.IndexOf("who", StringComparison.OrdinalIgnoreCase) >= 0)
-                    DestroyableSingleton<Assets.CoreScripts.Telemetry>.Instance.SendWho();
+                    DestroyableSingleton<Assets.CoreScripts.UnityTelemetry>.Instance.SendWho();
             }
         }
 
@@ -965,7 +965,7 @@ namespace TheOtherRoles
         {
             PlayerControl serialKiller = Helpers.playerById(serialKillerId);
             if (serialKiller == null) return;
-            serialKiller.MurderPlayer(serialKiller);
+            serialKiller.MurderPlayerQuick(serialKiller);
         }
 		
         public static void fortuneTellerUsedDivine(byte fortuneTellerId, byte targetId) {
@@ -979,11 +979,11 @@ namespace TheOtherRoles
                 if (PlayerControl.LocalPlayer.isRole(RoleType.FortuneTeller))
                 {
                     // 狐を殺せたことを分からなくするためにキル音を鳴らさないための処置
-                    target.MurderPlayer(target);
+                    target.MurderPlayerQuick(target);
                 }
                 else
                 {
-                    fortuneTeller.MurderPlayer(target);
+                    fortuneTeller.MurderPlayerQuick(target);
                 }
                 finalStatuses[targetId] = FinalStatus.Divined;
             }

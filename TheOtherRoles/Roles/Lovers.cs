@@ -176,7 +176,7 @@ namespace TheOtherRoles
                 {
                     if (killer != null)
                     {
-                        partner.MurderPlayer(partner);
+                        partner.MurderPlayerQuick(partner);
                     }
                     else
                     {

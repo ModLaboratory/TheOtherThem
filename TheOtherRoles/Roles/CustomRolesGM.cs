@@ -109,11 +109,11 @@ namespace TheOtherRoles
                 // next, if we're currently morphed, set our skin to the target
                 if (morphTimer > 0f && morphTarget != null)
                 {
-                    morphling.morphToPlayer(morphTarget);
+                    morphling.Shapeshift(morphTarget, false);
                 }
                 else
                 {
-                    morphling.resetMorph();
+                    morphling.RejectShapeshift();
                 }
             }
 
@@ -168,7 +168,7 @@ namespace TheOtherRoles
             public static float camouflageTimer = 0f;
             public static bool randomColors = false;
 
-            public static GameData.PlayerOutfit camoData;
+            public static NetworkedPlayerInfo.PlayerOutfit camoData;
 
             private static Sprite buttonSprite;
             public static Sprite getButtonSprite()
@@ -190,7 +190,7 @@ namespace TheOtherRoles
                 foreach (PlayerControl p in PlayerControl.AllPlayerControls)
                 {
                     if (p == null) continue;
-                    p.setOutfit(camoData, visible: false);
+                    p.SetOutfit(camoData, PlayerOutfitType.Default);
                 }
             }
 
@@ -222,7 +222,7 @@ namespace TheOtherRoles
                 duration = CustomOptionHolder.camouflagerDuration.getFloat();
                 randomColors = CustomOptionHolder.camouflagerRandomColors.getBool();
 
-                camoData = new GameData.PlayerOutfit();
+                camoData = new();
                 camoData.PlayerName = "";
                 camoData.HatId = "";
                 camoData.ColorId = 6;

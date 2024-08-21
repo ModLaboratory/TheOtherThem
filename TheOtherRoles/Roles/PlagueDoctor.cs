@@ -192,15 +192,15 @@ namespace TheOtherRoles
                 if (statusText == null)
                 {
                     var position = Camera.main.ViewportToWorldPoint(new Vector3(0f, 1f, Camera.main.nearClipPlane));
-                    var obj = UnityEngine.Object.Instantiate(HudManager._instance.GameSettings);
+                    var obj = UnityEngine.Object.Instantiate(HudManager.Instance.AbilityButton.buttonLabelText);
                     statusText = obj.GetComponent<TMPro.TMP_Text>();
-                    statusText.transform.position = new Vector3(HudManager._instance.GameSettings.transform.position.x, position.y - 0.1f, -14f);
+                    statusText.transform.position = new Vector3(-0.5f, position.y - 0.1f, -14f);
                     statusText.transform.localScale = new Vector3(1f, 1f, 1f);
                     statusText.fontSize = 1.5f;
                     statusText.fontSizeMin = 1.5f;
                     statusText.fontSizeMax = 1.5f;
                     statusText.alignment = TMPro.TextAlignmentOptions.BottomLeft;
-                    statusText.transform.parent = HudManager._instance.GameSettings.transform.parent;
+                    statusText.transform.parent = HudManager.Instance.transform.parent;
                 }
 
                 statusText.gameObject.SetActive(true);

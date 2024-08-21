@@ -5,7 +5,7 @@ using System.Reflection;
 using System.Collections.Generic;
 using Hazel;
 using System;
-using UnhollowerBaseLib;
+using Il2CppInterop.Runtime.InteropTypes.Arrays;
 
 namespace TheOtherRoles.Patches {
     public class GameStartManagerPatch  {
@@ -85,11 +85,11 @@ namespace TheOtherRoles.Patches {
                         }
                     }
                     if (blockStart) {
-                        __instance.StartButton.color = __instance.startLabelText.color = Palette.DisabledClear;
+                        __instance.StartButton.SetButtonEnableState(false);
                         __instance.GameStartText.text = message;
                         __instance.GameStartText.transform.localPosition = __instance.StartButton.transform.localPosition + Vector3.up * 2;
                     } else {
-                        __instance.StartButton.color = __instance.startLabelText.color = ((__instance.LastPlayerCount >= __instance.MinPlayers) ? Palette.EnabledColor : Palette.DisabledClear);
+                        __instance.StartButton.SetButtonEnableState(true);
                         __instance.GameStartText.transform.localPosition = __instance.StartButton.transform.localPosition;
                     }
                 }
@@ -115,7 +115,7 @@ namespace TheOtherRoles.Patches {
                 }
 
                 // Lobby code replacement
-                __instance.GameRoomName.text = TheOtherRolesPlugin.StreamerMode.Value ? $"<color={TheOtherRolesPlugin.StreamerModeReplacementColor.Value}>{TheOtherRolesPlugin.StreamerModeReplacementText.Value}</color>" : lobbyCodeText;
+                __instance.GameRoomNameCode.text = TheOtherRolesPlugin.StreamerMode.Value ? $"<color={TheOtherRolesPlugin.StreamerModeReplacementColor.Value}>{TheOtherRolesPlugin.StreamerModeReplacementText.Value}</color>" : lobbyCodeText;
 
                 // Lobby timer
                 if (!AmongUsClient.Instance.AmHost || !GameData.Instance) return; // Not host or no instance

@@ -1,4 +1,5 @@
-﻿using HarmonyLib;
+﻿using AmongUs.Data.Legacy;
+using HarmonyLib;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -78,7 +79,7 @@ namespace TheOtherRoles
             }
 
             var data = stringData[keyClean];
-            int lang = (int)SaveManager.LastLanguage;
+            int lang = (int)LegacySaveManager.LastLanguage;
 
             if (data.ContainsKey(lang))
             {
