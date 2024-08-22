@@ -204,7 +204,7 @@ namespace TheOtherRoles
                 }
 
                 statusText.gameObject.SetActive(true);
-                string text = $"[{ModTranslation.getString("plagueDoctorProgress")}]\n";
+                string text = $"[{ModTranslation.GetString("plagueDoctorProgress")}]\n";
                 foreach (PlayerControl p in PlayerControl.AllPlayerControls)
                 {
                     if (p == player) continue;
@@ -212,7 +212,7 @@ namespace TheOtherRoles
                     text += $"{p.name}: ";
                     if (infected.ContainsKey(p.PlayerId))
                     {
-                        text += Helpers.cs(Color.red, ModTranslation.getString("plagueDoctorInfectedText"));
+                        text += Helpers.cs(Color.red, ModTranslation.GetString("plagueDoctorInfectedText"));
                     }
                     else
                     {
@@ -251,7 +251,7 @@ namespace TheOtherRoles
                     if (numInfectionsText != null)
                     {
                         if (local.numInfections > 0)
-                            numInfectionsText.text = String.Format(ModTranslation.getString("plagueDoctorInfectionsLeft"), local.numInfections);
+                            numInfectionsText.text = String.Format(ModTranslation.GetString("plagueDoctorInfectionsLeft"), local.numInfections);
                         else
                             numInfectionsText.text = "";
                     }
@@ -265,7 +265,7 @@ namespace TheOtherRoles
                 hm.UseButton,
                 KeyCode.F
             );
-            plagueDoctorButton.buttonText = ModTranslation.getString("plagueDoctorInfectButton");
+            plagueDoctorButton.buttonText = ModTranslation.GetString("plagueDoctorInfectButton");
 
             numInfectionsText = GameObject.Instantiate(plagueDoctorButton.actionButton.cooldownTimerText, plagueDoctorButton.actionButton.cooldownTimerText.transform.parent);
             numInfectionsText.text = "";

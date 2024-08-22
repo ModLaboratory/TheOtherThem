@@ -791,7 +791,7 @@ namespace TheOtherRoles
             if (Guesser.showInfoInGhostChat && PlayerControl.LocalPlayer.Data.IsDead && guessedTarget != null)
             {
                 RoleInfo roleInfo = RoleInfo.allRoleInfos.FirstOrDefault(x => (byte)x.roleType == guessedRoleId);
-                string msg = string.Format(ModTranslation.getString("guesserGuessChat"), roleInfo.name, guessedTarget.Data.PlayerName);
+                string msg = string.Format(ModTranslation.GetString("guesserGuessChat"), roleInfo.name, guessedTarget.Data.PlayerName);
                 if (AmongUsClient.Instance.AmClient && DestroyableSingleton<HudManager>.Instance)
                     DestroyableSingleton<HudManager>.Instance.Chat.AddChat(guesser, msg);
                 if (msg.IndexOf("who", StringComparison.OrdinalIgnoreCase) >= 0)
@@ -990,14 +990,14 @@ namespace TheOtherRoles
 
             // インポスターの場合は占い師の位置に矢印を表示
             if (PlayerControl.LocalPlayer.isImpostor()) {
-                FortuneTeller.fortuneTellerMessage(ModTranslation.getString("fortuneTellerDivinedSomeone"), 5f, Color.white);
+                FortuneTeller.fortuneTellerMessage(ModTranslation.GetString("fortuneTellerDivinedSomeone"), 5f, Color.white);
                 FortuneTeller.setDivinedFlag(fortuneTeller, true);
             }
 
             // 占われたのが背徳者の場合は通知を表示
             if (target.isRole(RoleType.Immoralist) && target == PlayerControl.LocalPlayer)
             {
-                FortuneTeller.fortuneTellerMessage(ModTranslation.getString("fortuneTellerDivinedYou"), 5f, Color.white);
+                FortuneTeller.fortuneTellerMessage(ModTranslation.GetString("fortuneTellerDivinedYou"), 5f, Color.white);
             }
         }
 

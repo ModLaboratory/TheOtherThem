@@ -187,7 +187,7 @@ namespace TheOtherRoles
                     }
                     else
                     {
-                        fortuneTellerButtons[index].buttonText = ModTranslation.getString("fortuneTellerDead");
+                        fortuneTellerButtons[index].buttonText = ModTranslation.GetString("fortuneTellerDead");
                     }
 
                     // アイコンの位置と透明度を変更
@@ -329,17 +329,17 @@ namespace TheOtherRoles
                 msgBase = "divineMessageTeam";
                 if (p.isCrew())
                 {
-                    msgInfo = ModTranslation.getString("divineCrew");
+                    msgInfo = ModTranslation.GetString("divineCrew");
                     color = Color.white;
                 }
                 else if (p.isNeutral())
                 {
-                    msgInfo = ModTranslation.getString("divineNeutral");
+                    msgInfo = ModTranslation.GetString("divineNeutral");
                     color = Color.yellow;
                 }
                 else
                 {
-                    msgInfo = ModTranslation.getString("divineImpostor");
+                    msgInfo = ModTranslation.GetString("divineImpostor");
                     color = Palette.ImpostorRed;
                 }
             }
@@ -349,7 +349,7 @@ namespace TheOtherRoles
                 msgInfo = String.Join(" ", RoleInfo.getRoleInfoForPlayer(p).Select(x => Helpers.cs(x.color, x.name)).ToArray());
             }
 
-            string msg = string.Format(ModTranslation.getString(msgBase), p.name, msgInfo);
+            string msg = string.Format(ModTranslation.GetString(msgBase), p.name, msgInfo);
             if (!string.IsNullOrWhiteSpace(msg))
             {
                 fortuneTellerMessage(msg, 5f, color);

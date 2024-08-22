@@ -175,7 +175,7 @@ namespace TheOtherRoles
                 __instance.UseButton,
                 KeyCode.F
             );
-            engineerRepairButton.buttonText = ModTranslation.getString("RepairText");
+            engineerRepairButton.buttonText = ModTranslation.GetString("RepairText");
 
             // Janitor Clean
             janitorCleanButton = new CustomButton(
@@ -215,7 +215,7 @@ namespace TheOtherRoles
                 __instance.KillButton,
                 KeyCode.F
             );
-            janitorCleanButton.buttonText = ModTranslation.getString("CleanText");
+            janitorCleanButton.buttonText = ModTranslation.GetString("CleanText");
 
 
             // Time Master Rewind Time
@@ -243,7 +243,7 @@ namespace TheOtherRoles
                 TimeMaster.shieldDuration,
                 () => { timeMasterShieldButton.Timer = timeMasterShieldButton.MaxTimer; }
             );
-            timeMasterShieldButton.buttonText = ModTranslation.getString("TimeShieldText");
+            timeMasterShieldButton.buttonText = ModTranslation.GetString("TimeShieldText");
 
             // Medic Shield
             medicShieldButton = new CustomButton(
@@ -268,7 +268,7 @@ namespace TheOtherRoles
                 __instance.UseButton,
                 KeyCode.F
             );
-            medicShieldButton.buttonText = ModTranslation.getString("ShieldText");
+            medicShieldButton.buttonText = ModTranslation.GetString("ShieldText");
 
 
             // Shifter shift
@@ -289,7 +289,7 @@ namespace TheOtherRoles
                 __instance.UseButton,
                 KeyCode.F
             );
-            shifterShiftButton.buttonText = ModTranslation.getString("ShiftText");
+            shifterShiftButton.buttonText = ModTranslation.GetString("ShiftText");
 
             // Morphling morph
             morphlingButton = new CustomButton(
@@ -308,7 +308,7 @@ namespace TheOtherRoles
                     {
                         Morphling.sampledTarget = Morphling.currentTarget;
                         morphlingButton.Sprite = Morphling.getMorphSprite();
-                        morphlingButton.buttonText = ModTranslation.getString("MorphText");
+                        morphlingButton.buttonText = ModTranslation.GetString("MorphText");
                         morphlingButton.EffectDuration = 1f;
                     }
                 },
@@ -318,7 +318,7 @@ namespace TheOtherRoles
                 {
                     morphlingButton.Timer = morphlingButton.MaxTimer;
                     morphlingButton.Sprite = Morphling.getSampleSprite();
-                    morphlingButton.buttonText = ModTranslation.getString("SampleText");
+                    morphlingButton.buttonText = ModTranslation.GetString("SampleText");
                     morphlingButton.isEffectActive = false;
                     morphlingButton.actionButton.cooldownTimerText.color = Palette.EnabledColor;
                     Morphling.sampledTarget = null;
@@ -336,11 +336,11 @@ namespace TheOtherRoles
                     {
                         morphlingButton.Timer = morphlingButton.MaxTimer;
                         morphlingButton.Sprite = Morphling.getSampleSprite();
-                        morphlingButton.buttonText = ModTranslation.getString("SampleText");
+                        morphlingButton.buttonText = ModTranslation.GetString("SampleText");
                     }
                 }
             );
-            morphlingButton.buttonText = ModTranslation.getString("SampleText");
+            morphlingButton.buttonText = ModTranslation.GetString("SampleText");
 
             // Camouflager camouflage
             camouflagerButton = new CustomButton(
@@ -367,7 +367,7 @@ namespace TheOtherRoles
                 Camouflager.duration,
                 () => { camouflagerButton.Timer = camouflagerButton.MaxTimer; }
             );
-            camouflagerButton.buttonText = ModTranslation.getString("CamoText");
+            camouflagerButton.buttonText = ModTranslation.GetString("CamoText");
 
             // Hacker button
             hackerButton = new CustomButton(
@@ -392,7 +392,7 @@ namespace TheOtherRoles
                 0f,
                 () => { hackerButton.Timer = hackerButton.MaxTimer; }
             );
-            hackerButton.buttonText = ModTranslation.getString("HackerText");
+            hackerButton.buttonText = ModTranslation.GetString("HackerText");
 
             hackerAdminTableButton = new CustomButton(
                () =>
@@ -408,7 +408,7 @@ namespace TheOtherRoles
                () =>
                {
                    if (hackerAdminTableChargesText != null)
-                       hackerAdminTableChargesText.text = hackerVitalsChargesText.text = String.Format(ModTranslation.getString("hackerChargesText"), Hacker.chargesAdminTable, Hacker.toolsNumber);
+                       hackerAdminTableChargesText.text = hackerVitalsChargesText.text = String.Format(ModTranslation.GetString("hackerChargesText"), Hacker.chargesAdminTable, Hacker.toolsNumber);
                    return Hacker.chargesAdminTable > 0 && MapOptions.canUseAdmin;; 
                },
                () =>
@@ -478,7 +478,7 @@ namespace TheOtherRoles
                () =>
                {
                    if (hackerVitalsChargesText != null)
-                       hackerVitalsChargesText.text = String.Format(ModTranslation.getString("hackerChargesText"), Hacker.chargesVitals, Hacker.toolsNumber);
+                       hackerVitalsChargesText.text = String.Format(ModTranslation.GetString("hackerChargesText"), Hacker.chargesVitals, Hacker.toolsNumber);
                    hackerVitalsButton.actionButton.graphic.sprite = GameManager.Instance.LogicOptions.MapId == 1 ? Hacker.getLogSprite() : Hacker.getVitalsSprite();
                    hackerVitalsButton.actionButton.OverrideText(GameManager.Instance.LogicOptions.MapId == 1 ?
                         TranslationController.Instance.GetString(StringNames.DoorlogLabel) :
@@ -539,7 +539,7 @@ namespace TheOtherRoles
                 __instance.UseButton,
                 KeyCode.F
             );
-            trackerTrackPlayerButton.buttonText = ModTranslation.getString("TrackerText");
+            trackerTrackPlayerButton.buttonText = ModTranslation.GetString("TrackerText");
 
             trackerTrackCorpsesButton = new CustomButton(
                 () => { Tracker.corpsesTrackingTimer = Tracker.corpsesTrackingDuration; },
@@ -563,7 +563,7 @@ namespace TheOtherRoles
                     trackerTrackCorpsesButton.Timer = trackerTrackCorpsesButton.MaxTimer;
                 }
             );
-            trackerTrackCorpsesButton.buttonText = ModTranslation.getString("PathfindText");
+            trackerTrackCorpsesButton.buttonText = ModTranslation.GetString("PathfindText");
 
             vampireKillButton = new CustomButton(
                 () =>
@@ -627,7 +627,7 @@ namespace TheOtherRoles
                     else
                     {
                         vampireKillButton.Sprite = Vampire.getButtonSprite();
-                        vampireKillButton.buttonText = ModTranslation.getString("VampireText");
+                        vampireKillButton.buttonText = ModTranslation.GetString("VampireText");
                     }
                     return Vampire.currentTarget != null && PlayerControl.LocalPlayer.CanMove && (!Vampire.targetNearGarlic || Vampire.canKillNearGarlics);
                 },
@@ -649,7 +649,7 @@ namespace TheOtherRoles
                     vampireKillButton.Timer = vampireKillButton.MaxTimer;
                 }
             );
-            vampireKillButton.buttonText = ModTranslation.getString("VampireText");
+            vampireKillButton.buttonText = ModTranslation.GetString("VampireText");
 
             garlicButton = new CustomButton(
                 () =>
@@ -675,7 +675,7 @@ namespace TheOtherRoles
                 null,
                 true
             );
-            garlicButton.buttonText = ModTranslation.getString("GarlicText");
+            garlicButton.buttonText = ModTranslation.GetString("GarlicText");
 
 
             // Jackal Sidekick Button
@@ -696,7 +696,7 @@ namespace TheOtherRoles
                 __instance.KillButton,
                 KeyCode.F
             );
-            jackalSidekickButton.buttonText = ModTranslation.getString("SidekickText");
+            jackalSidekickButton.buttonText = ModTranslation.GetString("SidekickText");
 
             // Jackal Kill
             jackalKillButton = new CustomButton(
@@ -757,7 +757,7 @@ namespace TheOtherRoles
                 __instance.KillButton,
                 KeyCode.F
             );
-            eraserButton.buttonText = ModTranslation.getString("EraserText");
+            eraserButton.buttonText = ModTranslation.GetString("EraserText");
 
             placeJackInTheBoxButton = new CustomButton(
                 () =>
@@ -783,7 +783,7 @@ namespace TheOtherRoles
                 __instance.KillButton,
                 KeyCode.F
             );
-            placeJackInTheBoxButton.buttonText = ModTranslation.getString("PlaceJackInTheBoxText");
+            placeJackInTheBoxButton.buttonText = ModTranslation.GetString("PlaceJackInTheBoxText");
 
             lightsOutButton = new CustomButton(
                 () =>
@@ -809,7 +809,7 @@ namespace TheOtherRoles
                 Trickster.lightsOutDuration,
                 () => { lightsOutButton.Timer = lightsOutButton.MaxTimer; }
             );
-            lightsOutButton.buttonText = ModTranslation.getString("LightsOutText");
+            lightsOutButton.buttonText = ModTranslation.GetString("LightsOutText");
 
             // Cleaner Clean
             cleanerCleanButton = new CustomButton(
@@ -849,7 +849,7 @@ namespace TheOtherRoles
                 __instance.KillButton,
                 KeyCode.F
             );
-            cleanerCleanButton.buttonText = ModTranslation.getString("CleanText");
+            cleanerCleanButton.buttonText = ModTranslation.GetString("CleanText");
 
             // Warlock curse
             warlockCurseButton = new CustomButton(
@@ -861,7 +861,7 @@ namespace TheOtherRoles
                         Warlock.curseVictim = Warlock.currentTarget;
                         warlockCurseButton.Sprite = Warlock.getCurseKillButtonSprite();
                         warlockCurseButton.Timer = 1f;
-                        warlockCurseButton.buttonText = ModTranslation.getString("CurseKillText");
+                        warlockCurseButton.buttonText = ModTranslation.GetString("CurseKillText");
                     }
                     else if (Warlock.curseVictim != null && Warlock.curseVictimTarget != null)
                     {
@@ -869,7 +869,7 @@ namespace TheOtherRoles
                         if (murder == MurderAttemptResult.SuppressKill) return;
 
                         // If blanked or killed
-                        warlockCurseButton.buttonText = ModTranslation.getString("CurseText");
+                        warlockCurseButton.buttonText = ModTranslation.GetString("CurseText");
                         if (Warlock.rootTime > 0)
                         {
                             PlayerControl.LocalPlayer.moveable = false;
@@ -896,7 +896,7 @@ namespace TheOtherRoles
                 {
                     warlockCurseButton.Timer = warlockCurseButton.MaxTimer;
                     warlockCurseButton.Sprite = Warlock.getCurseButtonSprite();
-                    warlockCurseButton.buttonText = ModTranslation.getString("CurseText");
+                    warlockCurseButton.buttonText = ModTranslation.GetString("CurseText");
                     Warlock.curseVictim = null;
                     Warlock.curseVictimTarget = null;
                 },
@@ -906,7 +906,7 @@ namespace TheOtherRoles
                 __instance.KillButton,
                 KeyCode.F
             );
-            warlockCurseButton.buttonText = ModTranslation.getString("CurseText");
+            warlockCurseButton.buttonText = ModTranslation.GetString("CurseText");
 
             // Security Guard button
             securityGuardButton = new CustomButton(
@@ -951,15 +951,15 @@ namespace TheOtherRoles
                 {
                     if (SecurityGuard.ventTarget == null && GameManager.Instance.LogicOptions.MapId != 1)
                     {
-                        securityGuardButton.buttonText = ModTranslation.getString("PlaceCameraText");
+                        securityGuardButton.buttonText = ModTranslation.GetString("PlaceCameraText");
                         securityGuardButton.Sprite = SecurityGuard.getPlaceCameraButtonSprite();
                     }
                     else
                     {
-                        securityGuardButton.buttonText = ModTranslation.getString("CloseVentText");
+                        securityGuardButton.buttonText = ModTranslation.GetString("CloseVentText");
                         securityGuardButton.Sprite = SecurityGuard.getCloseVentButtonSprite();
                     }
-                    if (securityGuardButtonScrewsText != null) securityGuardButtonScrewsText.text = String.Format(ModTranslation.getString("securityGuardScrews"), SecurityGuard.remainingScrews);
+                    if (securityGuardButtonScrewsText != null) securityGuardButtonScrewsText.text = String.Format(ModTranslation.GetString("securityGuardScrews"), SecurityGuard.remainingScrews);
 
                     if (SecurityGuard.ventTarget != null)
                     {
@@ -975,7 +975,7 @@ namespace TheOtherRoles
                 __instance.UseButton,
                 KeyCode.F
             );
-            securityGuardButton.buttonText = ModTranslation.getString("PlaceCameraText");
+            securityGuardButton.buttonText = ModTranslation.GetString("PlaceCameraText");
 
             // Security Guard button screws counter
             securityGuardButtonScrewsText = GameObject.Instantiate(securityGuardButton.actionButton.cooldownTimerText, securityGuardButton.actionButton.cooldownTimerText.transform.parent);
@@ -1016,7 +1016,7 @@ namespace TheOtherRoles
                 () => { return SecurityGuard.securityGuard != null && SecurityGuard.securityGuard == PlayerControl.LocalPlayer && !PlayerControl.LocalPlayer.Data.IsDead && SecurityGuard.remainingScrews < Mathf.Min(SecurityGuard.ventPrice, SecurityGuard.camPrice); },
                 () => {
                     if (securityGuardChargesText != null)
-                        securityGuardChargesText.text = securityGuardChargesText.text = String.Format(ModTranslation.getString("hackerChargesText"), SecurityGuard.charges, SecurityGuard.maxCharges);
+                        securityGuardChargesText.text = securityGuardChargesText.text = String.Format(ModTranslation.GetString("hackerChargesText"), SecurityGuard.charges, SecurityGuard.maxCharges);
                     securityGuardCamButton.actionButton.graphic.sprite = GameManager.Instance.LogicOptions.MapId == 1 ? SecurityGuard.getLogSprite() : SecurityGuard.getCamSprite();
                     securityGuardCamButton.actionButton.OverrideText(GameManager.Instance.LogicOptions.MapId == 1 ?
                         TranslationController.Instance.GetString(StringNames.SecurityLogsSystem) :
@@ -1113,7 +1113,7 @@ namespace TheOtherRoles
                     }
                 }
             );
-            arsonistButton.buttonText = ModTranslation.getString("DouseText");
+            arsonistButton.buttonText = ModTranslation.GetString("DouseText");
 
             arsonistIgniteButton = new CustomButton(
                 () =>
@@ -1134,7 +1134,7 @@ namespace TheOtherRoles
                 __instance.KillButton,
                 KeyCode.Q
             );
-            arsonistIgniteButton.buttonText = ModTranslation.getString("IgniteText");
+            arsonistIgniteButton.buttonText = ModTranslation.GetString("IgniteText");
 
             // Vulture Eat
             vultureEatButton = new CustomButton(
@@ -1176,7 +1176,7 @@ namespace TheOtherRoles
                 () =>
                 {
                     if (vultureNumCorpsesText != null)
-                        vultureNumCorpsesText.text = String.Format(ModTranslation.getString("vultureCorpses"), Vulture.vultureNumberToWin - Vulture.eatenBodies);
+                        vultureNumCorpsesText.text = String.Format(ModTranslation.GetString("vultureCorpses"), Vulture.vultureNumberToWin - Vulture.eatenBodies);
                     return __instance.ReportButton.graphic.color == Palette.EnabledColor && PlayerControl.LocalPlayer.CanMove;
                 },
                 () => { vultureEatButton.Timer = vultureEatButton.MaxTimer; },
@@ -1186,7 +1186,7 @@ namespace TheOtherRoles
                 __instance.KillButton,
                 KeyCode.F
             );
-            vultureEatButton.buttonText = ModTranslation.getString("VultureText");
+            vultureEatButton.buttonText = ModTranslation.GetString("VultureText");
 
             vultureNumCorpsesText = GameObject.Instantiate(vultureEatButton.actionButton.cooldownTimerText, vultureEatButton.actionButton.cooldownTimerText.transform.parent);
             vultureNumCorpsesText.text = "";
@@ -1236,15 +1236,15 @@ namespace TheOtherRoles
 
                     int randomNumber = Medium.target.killerIfExisting?.PlayerId == Mini.mini?.PlayerId ? TheOtherRoles.rnd.Next(3) : TheOtherRoles.rnd.Next(4);
                     string typeOfColor = Helpers.isLighterColor(Medium.target.killerIfExisting.Data.DefaultOutfit.ColorId) ?
-                        ModTranslation.getString("detectiveColorLight") :
-                        ModTranslation.getString("detectiveColorDark");
+                        ModTranslation.GetString("detectiveColorLight") :
+                        ModTranslation.GetString("detectiveColorDark");
                     float timeSinceDeath = ((float)(Medium.meetingStartTime - Medium.target.timeOfDeath).TotalMilliseconds);
                     string name = " (" + Medium.target.player.Data.PlayerName + ")";
 
-                    if (randomNumber == 0) msg = string.Format(ModTranslation.getString("mediumQuestion1"), RoleInfo.GetRolesString(Medium.target.player, false, includeHidden: true)) + name;
-                    else if (randomNumber == 1) msg = string.Format(ModTranslation.getString("mediumQuestion2"), typeOfColor) + name;
-                    else if (randomNumber == 2) msg = string.Format(ModTranslation.getString("mediumQuestion3"), Math.Round(timeSinceDeath / 1000)) + name;
-                    else msg = string.Format(ModTranslation.getString("mediumQuestion4"), RoleInfo.GetRolesString(Medium.target.killerIfExisting, false, includeHidden: true)) + name; ; // Excludes mini 
+                    if (randomNumber == 0) msg = string.Format(ModTranslation.GetString("mediumQuestion1"), RoleInfo.GetRolesString(Medium.target.player, false, includeHidden: true)) + name;
+                    else if (randomNumber == 1) msg = string.Format(ModTranslation.GetString("mediumQuestion2"), typeOfColor) + name;
+                    else if (randomNumber == 2) msg = string.Format(ModTranslation.GetString("mediumQuestion3"), Math.Round(timeSinceDeath / 1000)) + name;
+                    else msg = string.Format(ModTranslation.GetString("mediumQuestion4"), RoleInfo.GetRolesString(Medium.target.killerIfExisting, false, includeHidden: true)) + name; ; // Excludes mini 
 
                     DestroyableSingleton<HudManager>.Instance.Chat.AddChat(PlayerControl.LocalPlayer, $"{msg}");
 
@@ -1289,7 +1289,7 @@ namespace TheOtherRoles
                     }
                 }
             );
-            mediumButton.buttonText = ModTranslation.getString("MediumText");
+            mediumButton.buttonText = ModTranslation.GetString("MediumText");
 
             // Pursuer button
             pursuerButton = new CustomButton(
@@ -1313,7 +1313,7 @@ namespace TheOtherRoles
                 () => { return Pursuer.pursuer != null && Pursuer.pursuer == PlayerControl.LocalPlayer && PlayerControl.LocalPlayer.isAlive() && Pursuer.blanks < Pursuer.blanksNumber; },
                 () =>
                 {
-                    if (pursuerButtonBlanksText != null) pursuerButtonBlanksText.text = String.Format(ModTranslation.getString("pursuerBlanks"), Pursuer.blanksNumber - Pursuer.blanks);
+                    if (pursuerButtonBlanksText != null) pursuerButtonBlanksText.text = String.Format(ModTranslation.GetString("pursuerBlanks"), Pursuer.blanksNumber - Pursuer.blanks);
 
                     return Pursuer.blanksNumber > Pursuer.blanks && PlayerControl.LocalPlayer.CanMove && Pursuer.target != null;
                 },
@@ -1324,7 +1324,7 @@ namespace TheOtherRoles
                 __instance.UseButton,
                 KeyCode.F
             );
-            pursuerButton.buttonText = ModTranslation.getString("PursuerText");
+            pursuerButton.buttonText = ModTranslation.GetString("PursuerText");
 
             // Pursuer button blanks left
             pursuerButtonBlanksText = GameObject.Instantiate(pursuerButton.actionButton.cooldownTimerText, pursuerButton.actionButton.cooldownTimerText.transform.parent);
@@ -1392,7 +1392,7 @@ namespace TheOtherRoles
                     Witch.spellCastingTarget = null;
                 }
             );
-            witchSpellButton.buttonText = ModTranslation.getString("WitchText");
+            witchSpellButton.buttonText = ModTranslation.GetString("WitchText");
 
             ButtonsGM.makeButtons(__instance);
 

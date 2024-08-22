@@ -185,11 +185,11 @@ namespace TheOtherRoles
                     PlayerControl target = Helpers.playerById(index);
                     if (target.Data.IsDead)
                     {
-                        gmKillButtons[index].buttonText = ModTranslation.getString("gmRevive");
+                        gmKillButtons[index].buttonText = ModTranslation.GetString("gmRevive");
                     }
                     else
                     {
-                        gmKillButtons[index].buttonText = ModTranslation.getString("gmKill");
+                        gmKillButtons[index].buttonText = ModTranslation.GetString("gmKill");
                     }
 
                     //MapOptions.playerIcons[index].gameObject.SetActive(PlayerControl.LocalPlayer.CanMove);

@@ -86,16 +86,16 @@ namespace TheOtherRoles.Modules {
         }
 
         public static void ExecuteUpdate() {
-            string info = ModTranslation.getString("updatePleaseWait");
+            string info = ModTranslation.GetString("updatePleaseWait");
             ModUpdater.InfoPopup.Show(info); // Show originally
             if (updateTask == null) {
                 if (updateURI != null) {
                     updateTask = downloadUpdate();
                 } else {
-                    info = ModTranslation.getString("updateManually");
+                    info = ModTranslation.GetString("updateManually");
                 }
             } else {
-                info = ModTranslation.getString("updateInProgress");
+                info = ModTranslation.GetString("updateInProgress");
             }
             ModUpdater.InfoPopup.StartCoroutine(Effects.Lerp(0.01f, new System.Action<float>((p) => { ModUpdater.setPopupText(info); })));
         }
@@ -135,7 +135,7 @@ namespace TheOtherRoles.Modules {
                 int diff = TheOtherRolesPlugin.Version.CompareTo(ver);
                 if (diff < 0) { // Update required
                     hasUpdate = true;
-                    announcement = string.Format(ModTranslation.getString("announcementUpdate"), ver, announcement);
+                    announcement = string.Format(ModTranslation.GetString("announcementUpdate"), ver, announcement);
 
                     JToken assets = data["assets"];
                     if (!assets.HasValues)
@@ -152,7 +152,7 @@ namespace TheOtherRoles.Modules {
                         }
                     }
                 }  else {
-                    announcement = string.Format(ModTranslation.getString("announcementChangelog"), ver, announcement);
+                    announcement = string.Format(ModTranslation.GetString("announcementChangelog"), ver, announcement);
                 }
             } catch (System.Exception ex) {
                 TheOtherRolesPlugin.Instance.Log.LogError(ex.ToString());
@@ -183,13 +183,13 @@ namespace TheOtherRoles.Modules {
                         responseStream.CopyTo(fileStream); 
                     }
                 }
-                showPopup(ModTranslation.getString("updateRestart"));
+                showPopup(ModTranslation.GetString("updateRestart"));
                 return true;
             } catch (System.Exception ex) {
                 TheOtherRolesPlugin.Instance.Log.LogError(ex.ToString());
                 System.Console.WriteLine(ex);
             }
-            showPopup(ModTranslation.getString("updateFailed"));
+            showPopup(ModTranslation.GetString("updateFailed"));
             return false;
         }
         private static void showPopup(string message) {

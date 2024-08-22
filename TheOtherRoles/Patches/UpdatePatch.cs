@@ -225,20 +225,20 @@ namespace TheOtherRoles.Patches {
                 {
                     if (player.cosmetics.nameText.text == "") continue;
                     if (Godfather.godfather != null && Godfather.godfather == player)
-                        player.cosmetics.nameText.text = player.Data.PlayerName + $" ({ModTranslation.getString("mafiaG")})";
+                        player.cosmetics.nameText.text = player.Data.PlayerName + $" ({ModTranslation.GetString("mafiaG")})";
                     else if (Mafioso.mafioso != null && Mafioso.mafioso == player)
-                        player.cosmetics.nameText.text = player.Data.PlayerName + $" ({ModTranslation.getString("mafiaM")})";
+                        player.cosmetics.nameText.text = player.Data.PlayerName + $" ({ModTranslation.GetString("mafiaM")})";
                     else if (Janitor.janitor != null && Janitor.janitor == player)
-                        player.cosmetics.nameText.text = player.Data.PlayerName + $" ({ModTranslation.getString("mafiaJ")})";
+                        player.cosmetics.nameText.text = player.Data.PlayerName + $" ({ModTranslation.GetString("mafiaJ")})";
                 }
                 if (MeetingHud.Instance != null)
                     foreach (PlayerVoteArea player in MeetingHud.Instance.playerStates)
                         if (Godfather.godfather != null && Godfather.godfather.PlayerId == player.TargetPlayerId)
-                            player.NameText.text = Godfather.godfather.Data.PlayerName + $" ({ModTranslation.getString("mafiaG")})";
+                            player.NameText.text = Godfather.godfather.Data.PlayerName + $" ({ModTranslation.GetString("mafiaG")})";
                         else if (Mafioso.mafioso != null && Mafioso.mafioso.PlayerId == player.TargetPlayerId)
-                            player.NameText.text = Mafioso.mafioso.Data.PlayerName + $" ({ModTranslation.getString("mafiaM")})";
+                            player.NameText.text = Mafioso.mafioso.Data.PlayerName + $" ({ModTranslation.GetString("mafiaM")})";
                         else if (Janitor.janitor != null && Janitor.janitor.PlayerId == player.TargetPlayerId)
-                            player.NameText.text = Janitor.janitor.Data.PlayerName + $" ({ModTranslation.getString("mafiaJ")})";
+                            player.NameText.text = Janitor.janitor.Data.PlayerName + $" ({ModTranslation.GetString("mafiaJ")})";
             }
 
             bool meetingShow = MeetingHud.Instance != null && 
@@ -295,7 +295,7 @@ namespace TheOtherRoles.Patches {
                 if (meetingShow) {
                     foreach (PlayerVoteArea player in MeetingHud.Instance.playerStates) {
                         var target = Helpers.playerById(player.TargetPlayerId);
-                        if (target != null)  player.NameText.text += $" ({(Helpers.isLighterColor(target.Data.DefaultOutfit.ColorId) ? ModTranslation.getString("detectiveLightLabel") : ModTranslation.getString("detectiveDarkLabel"))})";
+                        if (target != null)  player.NameText.text += $" ({(Helpers.isLighterColor(target.Data.DefaultOutfit.ColorId) ? ModTranslation.GetString("detectiveLightLabel") : ModTranslation.GetString("detectiveDarkLabel"))})";
                     }
                 }
             }

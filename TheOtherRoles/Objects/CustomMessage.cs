@@ -17,7 +17,7 @@ namespace TheOtherRoles.Objects {
                 gameObject.transform.SetParent(HudManager.Instance.transform);
                 UnityEngine.Object.DestroyImmediate(gameObject.GetComponent<RoomTracker>());
                 text = gameObject.GetComponent<TMPro.TMP_Text>();
-                text.text = ModTranslation.getString(message);
+                text.text = ModTranslation.GetString(message);
 
                 // Use local position to place it in the player's view instead of the world location
                 gameObject.transform.localPosition = new Vector3(0, -1.8f, gameObject.transform.localPosition.z);

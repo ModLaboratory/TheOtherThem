@@ -613,20 +613,20 @@ namespace TheOtherRoles.Patches {
 
             if (PlayerControl.LocalPlayer.isRole(RoleType.Swapper) && Swapper.numSwaps > 0 && !Swapper.swapper.Data.IsDead)
             {
-                meetingInfoText.text = String.Format(ModTranslation.getString("swapperSwapsLeft"), Swapper.numSwaps);
+                meetingInfoText.text = String.Format(ModTranslation.GetString("swapperSwapsLeft"), Swapper.numSwaps);
                 meetingInfoText.gameObject.SetActive(true);
             }
 
             var numGuesses = Guesser.remainingShots(PlayerControl.LocalPlayer.PlayerId);
             if (Guesser.isGuesser(PlayerControl.LocalPlayer.PlayerId) && PlayerControl.LocalPlayer.isAlive() && numGuesses > 0)
             {
-                meetingInfoText.text = String.Format(ModTranslation.getString("guesserGuessesLeft"), numGuesses);
+                meetingInfoText.text = String.Format(ModTranslation.GetString("guesserGuessesLeft"), numGuesses);
                 meetingInfoText.gameObject.SetActive(true);
             }
 
             if (PlayerControl.LocalPlayer.isRole(RoleType.Shifter) && Shifter.futureShift != null)
             {
-                meetingInfoText.text = String.Format(ModTranslation.getString("shifterTargetInfo"), Shifter.futureShift.Data.PlayerName);
+                meetingInfoText.text = String.Format(ModTranslation.GetString("shifterTargetInfo"), Shifter.futureShift.Data.PlayerName);
                 meetingInfoText.gameObject.SetActive(true);
             }
         }

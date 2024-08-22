@@ -14,10 +14,10 @@ namespace TheOtherRoles
 {
     public class ModTranslation
     {
-        public static int defaultLanguage = (int)SupportedLangs.English;
-        public static Dictionary<string, Dictionary<int, string>> stringData;
+        public const int DefaultLanguage = (int)SupportedLangs.English;
+        public static Dictionary<string, Dictionary<int, string>> StringData { get; set; }
 
-        private const string blankText = "[BLANK]";
+        private const string BlankText = "[BLANK]";
 
         public ModTranslation() { 
 
@@ -31,7 +31,7 @@ namespace TheOtherRoles
             var read = stream.Read(byteArray, 0, (int)stream.Length);
             string json = System.Text.Encoding.UTF8.GetString(byteArray);
 
-            stringData = new Dictionary<string, Dictionary<int, string>>();
+            StringData = new Dictionary<string, Dictionary<int, string>>();
             JObject parsed = JObject.Parse(json);
 
             for (int i = 0; i < parsed.Count; i++)
@@ -53,49 +53,49 @@ namespace TheOtherRoles
 
                         if (text != null && text.Length > 0)
                         {
-                            if (text == blankText) strings[j] = "";
+                            if (text == BlankText) strings[j] = "";
                             else strings[j] = text;
                         }
                     }
 
-                    stringData[stringName] = strings;
+                    StringData[stringName] = strings;
                 }
             }
 
             //TheOtherRolesPlugin.Instance.Log.LogInfo($"Language: {stringData.Keys}");
         }
 
-        public static string getString(string key, string def = null)
+        public static string GetString(string key, string def = null)
         {
             // Strip out color tags.
             string keyClean = Regex.Replace(key, "<.*?>", "");
             keyClean = Regex.Replace(keyClean, "^-\\s*", "");
             keyClean = keyClean.Trim();
 
-            def = def ?? key;
-            if (!stringData.ContainsKey(keyClean))
+            def ??= key;
+            if (!StringData.ContainsKey(keyClean))
             {
                 return def;
             }
 
-            var data = stringData[keyClean];
-            int lang = (int)LegacySaveManager.LastLanguage;
+            var data = StringData[keyClean];
+            var lang = TranslationController.InstanceExists ? (int)TranslationController.Instance.currentLanguage.languageID : (int)LegacySaveManager.LastLanguage;
 
             if (data.ContainsKey(lang))
             {
                 return key.Replace(keyClean, data[lang]);
             }
-            else if (data.ContainsKey(defaultLanguage))
+            else if (data.ContainsKey(DefaultLanguage))
             {
-                return key.Replace(keyClean, data[defaultLanguage]);
+                return key.Replace(keyClean, data[DefaultLanguage]);
             }
 
             return key;
         }
 
-        public static Sprite getImage(string key, float pixelsPerUnit)
+        public static Sprite GetImage(string key, float pixelsPerUnit)
         {
-            key = getString(key);
+            key = GetString(key);
             key = key.Replace("/", ".");
             key = key.Replace("\\", ".");
             key = "TheOtherRoles.Resources." + key;
@@ -109,7 +109,7 @@ namespace TheOtherRoles
     {
         static void Postfix()
         {
-            ClientOptionsPatch.updateTranslations();
+            ClientOptionsPatch.UpdateTranslations();
         }
     }
 }

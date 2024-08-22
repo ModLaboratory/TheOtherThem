@@ -65,6 +65,12 @@ namespace TheOtherRoles.Patches
         Disconnected
     }
 
+    [HarmonyPatch(typeof(GameManager), nameof(GameManager.RpcEndGame))]
+    static class EndGamePatch
+    {
+        static bool Prefix() => !TheOtherRolesPlugin.DebugMode.Value; 
+    }
+
     static class AdditionalTempData
     {
         // Should be implemented using a proper GameOverReason in the future
@@ -102,7 +108,6 @@ namespace TheOtherRoles.Patches
     [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.OnGameEnd))]
     public class OnGameEndPatch
     {
-
         public static void Prefix(AmongUsClient __instance, [HarmonyArgument(0)] ref EndGameResult endGameResult)
         {
             Camouflager.resetCamouflage();
@@ -501,7 +506,7 @@ namespace TheOtherRoles.Patches
 
                     if (AdditionalTempData.isGM)
                     {
-                        __instance.WinText.text = ModTranslation.getString("gmGameOver");
+                        __instance.WinText.text = ModTranslation.GetString("gmGameOver");
                         __instance.WinText.color = GM.color;
                     }
 
@@ -590,13 +595,13 @@ namespace TheOtherRoles.Patches
                         switch (w)
                         {
                             case WinCondition.OpportunistWin:
-                                extraText += ModTranslation.getString("opportunistExtra");
+                                extraText += ModTranslation.GetString("opportunistExtra");
                                 break;
                             case WinCondition.LoversTeamWin:
-                                extraText += ModTranslation.getString("loversExtra");
+                                extraText += ModTranslation.GetString("loversExtra");
                                 break;
                             case WinCondition.AdditionalAlivePursuerWin:
-                                extraText += ModTranslation.getString("pursuerExtra");
+                                extraText += ModTranslation.GetString("pursuerExtra");
                                 break;
                             default:
                                 break;
@@ -605,11 +610,11 @@ namespace TheOtherRoles.Patches
 
                     if (extraText.Length > 0)
                     {
-                        textRenderer.text = string.Format(ModTranslation.getString(bonusText + "Extra"), extraText);
+                        textRenderer.text = string.Format(ModTranslation.GetString(bonusText + "Extra"), extraText);
                     }
                     else
                     {
-                        textRenderer.text = ModTranslation.getString(bonusText);
+                        textRenderer.text = ModTranslation.GetString(bonusText);
                     }
 
                     foreach (WinCondition cond in AdditionalTempData.additionalWinConditions)
@@ -617,10 +622,10 @@ namespace TheOtherRoles.Patches
                         switch (cond)
                         {
                             case WinCondition.AdditionalLawyerStolenWin:
-                                textRenderer.text += $"\n{Helpers.cs(Lawyer.color, ModTranslation.getString("lawyerExtraStolen"))}";
+                                textRenderer.text += $"\n{Helpers.cs(Lawyer.color, ModTranslation.GetString("lawyerExtraStolen"))}";
                                 break;
                             case WinCondition.AdditionalLawyerBonusWin:
-                                textRenderer.text += $"\n{Helpers.cs(Lawyer.color, ModTranslation.getString("lawyerExtraBonus"))}";
+                                textRenderer.text += $"\n{Helpers.cs(Lawyer.color, ModTranslation.GetString("lawyerExtraBonus"))}";
                                 break;
                         }
                     }
@@ -633,7 +638,7 @@ namespace TheOtherRoles.Patches
                         roleSummary.transform.localScale = new Vector3(1f, 1f, 1f);
 
                         var roleSummaryText = new StringBuilder();
-                        roleSummaryText.AppendLine(ModTranslation.getString("roleSummaryText"));
+                        roleSummaryText.AppendLine(ModTranslation.GetString("roleSummaryText"));
                         AdditionalTempData.playerRoles.Sort((x, y) =>
                         {
                             RoleInfo roleX = x.Roles.FirstOrDefault();
@@ -657,14 +662,14 @@ namespace TheOtherRoles.Patches
                         foreach (var data in AdditionalTempData.playerRoles)
                         {
                             var taskInfo = data.TasksTotal > 0 ? $"<color=#FAD934FF>{data.TasksCompleted}/{data.TasksTotal}</color>" : "";
-                            string aliveDead = ModTranslation.getString("roleSummary" + data.Status.ToString(), def: "-");
+                            string aliveDead = ModTranslation.GetString("roleSummary" + data.Status.ToString(), def: "-");
                             string result = $"{data.PlayerName + data.NameSuffix}<pos=18.5%>{taskInfo}<pos=25%>{aliveDead}<pos=34%>{data.RoleString}";
                             if (plagueExists && !data.Roles.Contains(RoleInfo.plagueDoctor))
                             {
                                 result += "<pos=52.5%>";
                                 if (AdditionalTempData.plagueDoctorInfected.ContainsKey(data.PlayerId))
                                 {
-                                    result += Helpers.cs(Color.red, ModTranslation.getString("plagueDoctorInfectedText"));
+                                    result += Helpers.cs(Color.red, ModTranslation.GetString("plagueDoctorInfectedText"));
                                 }
                                 else
                                 {
@@ -698,6 +703,7 @@ namespace TheOtherRoles.Patches
                 {
                     var ship = ShipStatus.Instance;
 
+                    if (TheOtherRolesPlugin.DebugMode.Value) return false;
                     if (!GameData.Instance) return false;
                     if (DestroyableSingleton<TutorialManager>.InstanceExists) return true; // InstanceExists | Don't check Custom Criteria when in Tutorial
                     if (HudManager.Instance.IsIntroDisplayed) return false;
@@ -916,6 +922,7 @@ namespace TheOtherRoles.Patches
 
                 private static void UncheckedEndGame(GameOverReason reason)
                 {
+                    if (TheOtherRolesPlugin.DebugMode.Value) return;
                     GameManager.Instance.RpcEndGame(reason, false);
                     /*MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.UncheckedEndGame, Hazel.SendOption.Reliable, -1);
                     writer.Write((byte)reason);

@@ -81,7 +81,7 @@ namespace TheOtherRoles
                 suicideTimer,
                 () => { local.suicide(); }
             );
-            serialKillerButton.buttonText = ModTranslation.getString("SerialKillerText");
+            serialKillerButton.buttonText = ModTranslation.GetString("SerialKillerText");
             serialKillerButton.isEffectActive = true;
         }
 

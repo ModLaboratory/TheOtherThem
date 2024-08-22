@@ -107,7 +107,7 @@ namespace TheOtherRoles.Patches {
                     if (OutOfTime == null)
                     {
                         OutOfTime = UnityEngine.Object.Instantiate(__instance.SabotageText, __instance.SabotageText.transform.parent);
-                        OutOfTime.text = ModTranslation.getString("restrictOutOfTime");
+                        OutOfTime.text = ModTranslation.GetString("restrictOutOfTime");
                     }
 
                     if (TimeRemaining == null)
@@ -136,7 +136,7 @@ namespace TheOtherRoles.Patches {
                     clearedIcons = false;
                     OutOfTime.gameObject.SetActive(false);
                     string timeString = TimeSpan.FromSeconds(MapOptions.restrictAdminTime).ToString(@"mm\:ss\.ff");
-                    TimeRemaining.text = String.Format(ModTranslation.getString("timeRemaining"), timeString);
+                    TimeRemaining.text = String.Format(ModTranslation.GetString("timeRemaining"), timeString);
                     //TimeRemaining.color = MapOptions.restrictAdminTime > 10f ? Palette.AcceptedGreen : Palette.ImpostorRed;
                     TimeRemaining.gameObject.SetActive(true);
                 }

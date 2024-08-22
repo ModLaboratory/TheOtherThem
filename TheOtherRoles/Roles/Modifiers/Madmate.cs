@@ -46,7 +46,7 @@ namespace TheOtherRoles
         {
             get
             {
-                return ModTranslation.getString("madmatePrefix");
+                return ModTranslation.GetString("madmatePrefix");
             }
         }
 
@@ -54,7 +54,7 @@ namespace TheOtherRoles
         {
             get
             {
-                return ModTranslation.getString("madmate");
+                return ModTranslation.GetString("madmate");
             }
         }
 

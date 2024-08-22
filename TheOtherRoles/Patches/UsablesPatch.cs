@@ -323,7 +323,7 @@ namespace TheOtherRoles.Patches
                 if (IsBlocked(target, pc))
                 {
                     __instance.currentTarget = null;
-                    __instance.buttonLabelText.text = ModTranslation.getString("buttonBlocked");
+                    __instance.buttonLabelText.text = ModTranslation.GetString("buttonBlocked");
                     __instance.enabled = false;
                     __instance.graphic.color = Palette.DisabledClear;
                     __instance.graphic.material.SetFloat("_Desat", 0f);
@@ -347,35 +347,35 @@ namespace TheOtherRoles.Patches
                 if (PlayerControl.LocalPlayer.isGM())
                 {
                     roleCanCallEmergency = false;
-                    statusText = ModTranslation.getString("gmMeetingButton");
+                    statusText = ModTranslation.GetString("gmMeetingButton");
                 }
 
                 // Deactivate emergency button for FortuneTeller
                 if (PlayerControl.LocalPlayer.isRole(RoleType.FortuneTeller) && FortuneTeller.isCompletedNumTasks(PlayerControl.LocalPlayer))
                 {
                     roleCanCallEmergency = false;
-                    statusText = ModTranslation.getString("fortuneTellerMeetingButton");
+                    statusText = ModTranslation.GetString("fortuneTellerMeetingButton");
                 }
 
                 // Deactivate emergency button for Swapper
                 if (Swapper.swapper != null && Swapper.swapper == PlayerControl.LocalPlayer && !Swapper.canCallEmergency)
                 {
                     roleCanCallEmergency = false;
-                    statusText = ModTranslation.getString("swapperMeetingButton");
+                    statusText = ModTranslation.GetString("swapperMeetingButton");
                 }
 
                 // Potentially deactivate emergency button for Jester
                 if (Jester.jester != null && Jester.jester == PlayerControl.LocalPlayer && !Jester.canCallEmergency)
                 {
                     roleCanCallEmergency = false;
-                    statusText = ModTranslation.getString("jesterMeetingButton");
+                    statusText = ModTranslation.GetString("jesterMeetingButton");
 	            }
 
 	            // Potentially deactivate emergency button for Lawyer
 	            if (Lawyer.lawyer != null && Lawyer.lawyer == PlayerControl.LocalPlayer && Lawyer.winsAfterMeetings)
                 {
 	                roleCanCallEmergency = false;
-                    statusText = String.Format(ModTranslation.getString("lawyerMeetingButton"), Lawyer.neededMeetings - Lawyer.meetings);
+                    statusText = String.Format(ModTranslation.GetString("lawyerMeetingButton"), Lawyer.neededMeetings - Lawyer.meetings);
                 }
 
                 if (!roleCanCallEmergency)
@@ -395,8 +395,8 @@ namespace TheOtherRoles.Patches
                     int teamRemaining = Mathf.Max(0, maxNumberOfMeetings - meetingsCount);
                     int remaining = Mathf.Min(localRemaining, (Mayor.mayor != null && Mayor.mayor == PlayerControl.LocalPlayer) ? 1 : teamRemaining);
 
-                    __instance.StatusText.text = "<size=100%>" + String.Format(ModTranslation.getString("meetingStatus"), PlayerControl.LocalPlayer.name) + "</size>";
-                    __instance.NumberText.text = String.Format(ModTranslation.getString("meetingCount"), localRemaining.ToString(), teamRemaining.ToString());
+                    __instance.StatusText.text = "<size=100%>" + String.Format(ModTranslation.GetString("meetingStatus"), PlayerControl.LocalPlayer.name) + "</size>";
+                    __instance.NumberText.text = String.Format(ModTranslation.GetString("meetingCount"), localRemaining.ToString(), teamRemaining.ToString());
                     __instance.ButtonActive = remaining > 0;
                     __instance.ClosedLid.gameObject.SetActive(!__instance.ButtonActive);
                     __instance.OpenLid.gameObject.SetActive(__instance.ButtonActive);

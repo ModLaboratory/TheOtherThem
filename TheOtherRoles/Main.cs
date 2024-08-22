@@ -135,6 +135,8 @@ namespace TheOtherRoles
         {
             if (!TheOtherRolesPlugin.DebugMode.Value) return;
 
+            if (Input.GetKeyDown(KeyCode.F12)) GameStartManager.Instance?.ReallyBegin(false);
+
             // Spawn dummys
             /*if (Input.GetKeyDown(KeyCode.F)) {
                 var playerControl = UnityEngine.Object.Instantiate(AmongUsClient.Instance.PlayerPrefab);

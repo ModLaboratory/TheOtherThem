@@ -1087,24 +1087,24 @@ namespace TheOtherRoles.Patches
 
                     if (isMedicReport)
                     {
-                        msg = String.Format(ModTranslation.getString("medicReport"), Math.Round(timeSinceDeath / 1000));
+                        msg = String.Format(ModTranslation.GetString("medicReport"), Math.Round(timeSinceDeath / 1000));
                     }
                     else if (isDetectiveReport)
                     {
                         if (timeSinceDeath < Detective.reportNameDuration * 1000)
                         {
-                            msg = String.Format(ModTranslation.getString("detectiveReportName"), deadPlayer.killerIfExisting.Data.PlayerName);
+                            msg = String.Format(ModTranslation.GetString("detectiveReportName"), deadPlayer.killerIfExisting.Data.PlayerName);
                         }
                         else if (timeSinceDeath < Detective.reportColorDuration * 1000)
                         {
                             var typeOfColor = Helpers.isLighterColor(deadPlayer.killerIfExisting.Data.DefaultOutfit.ColorId) ?
-                                ModTranslation.getString("detectiveColorLight") :
-                                ModTranslation.getString("detectiveColorDark");
-                            msg = String.Format(ModTranslation.getString("detectiveReportColor"), typeOfColor);
+                                ModTranslation.GetString("detectiveColorLight") :
+                                ModTranslation.GetString("detectiveColorDark");
+                            msg = String.Format(ModTranslation.GetString("detectiveReportColor"), typeOfColor);
                         }
                         else
                         {
-                            msg = ModTranslation.getString("detectiveReportNone");
+                            msg = ModTranslation.GetString("detectiveReportNone");
                         }
                     }
 

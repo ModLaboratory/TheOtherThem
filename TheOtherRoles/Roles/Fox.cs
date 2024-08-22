@@ -203,11 +203,11 @@ namespace TheOtherRoles
                 {
                     if (foxButton.isEffectActive)
                     {
-                        foxButton.buttonText = ModTranslation.getString("FoxUnstealthText");
+                        foxButton.buttonText = ModTranslation.GetString("FoxUnstealthText");
                     }
                     else
                     {
-                        foxButton.buttonText = ModTranslation.getString("FoxStealthText");
+                        foxButton.buttonText = ModTranslation.GetString("FoxStealthText");
                     }
                     return PlayerControl.LocalPlayer.CanMove;
                 },
@@ -232,7 +232,7 @@ namespace TheOtherRoles
                     RPCProcedure.foxStealth(PlayerControl.LocalPlayer.PlayerId, false);
                 }
             );
-            foxButton.buttonText = ModTranslation.getString("FoxStealthText");
+            foxButton.buttonText = ModTranslation.GetString("FoxStealthText");
             foxButton.effectCancellable = true;
 
             foxRepairButton = new CustomButton(
@@ -294,7 +294,7 @@ namespace TheOtherRoles
                 hm.AbilityButton,
                 KeyCode.G
             );
-            foxRepairButton.buttonText = ModTranslation.getString("FoxRepairText"); ;
+            foxRepairButton.buttonText = ModTranslation.GetString("FoxRepairText"); ;
 
             foxImmoralistButton = new CustomButton(
                 () =>
@@ -313,7 +313,7 @@ namespace TheOtherRoles
                 hm.AbilityButton,
                 KeyCode.I
             );
-            foxImmoralistButton.buttonText = ModTranslation.getString("FoxImmoralistText");
+            foxImmoralistButton.buttonText = ModTranslation.GetString("FoxImmoralistText");
         }
 
         static void arrowUpdate()

@@ -146,14 +146,14 @@ namespace TheOtherRoles
             public static Sprite getSampleSprite()
             {
                 if (sampleSprite) return sampleSprite;
-                sampleSprite = ModTranslation.getImage("SampleButton", 115f);
+                sampleSprite = ModTranslation.GetImage("SampleButton", 115f);
                 return sampleSprite;
             }
 
             public static Sprite getMorphSprite()
             {
                 if (morphSprite) return morphSprite;
-                morphSprite = ModTranslation.getImage("MorphButton", 115f);
+                morphSprite = ModTranslation.GetImage("MorphButton", 115f);
                 return morphSprite;
             }
         }
@@ -174,7 +174,7 @@ namespace TheOtherRoles
             public static Sprite getButtonSprite()
             {
                 if (buttonSprite) return buttonSprite;
-                buttonSprite = ModTranslation.getImage("CamoButton", 115f);
+                buttonSprite = ModTranslation.GetImage("CamoButton", 115f);
                 return buttonSprite;
             }
 
@@ -255,7 +255,7 @@ namespace TheOtherRoles
             public static Sprite getButtonSprite()
             {
                 if (buttonSprite) return buttonSprite;
-                buttonSprite = ModTranslation.getImage("ShiftButton", 115f);
+                buttonSprite = ModTranslation.GetImage("ShiftButton", 115f);
                 return buttonSprite;
             }
 

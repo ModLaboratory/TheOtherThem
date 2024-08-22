@@ -103,7 +103,7 @@ namespace TheOtherRoles
                     if (sheriffNumShotsText != null)
                     {
                         if (local.numShots > 0)
-                            sheriffNumShotsText.text = String.Format(ModTranslation.getString("sheriffShots"), local.numShots);
+                            sheriffNumShotsText.text = String.Format(ModTranslation.GetString("sheriffShots"), local.numShots);
                         else
                             sheriffNumShotsText.text = "";
                     }

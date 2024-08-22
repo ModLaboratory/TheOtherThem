@@ -231,11 +231,11 @@ namespace TheOtherRoles {
                 if (roleInfo.roleType == RoleType.Jackal) {
                     if (Jackal.canCreateSidekick)
                     {
-                        task.Text = cs(roleInfo.color, $"{roleInfo.name}: " + ModTranslation.getString("jackalWithSidekick"));
+                        task.Text = cs(roleInfo.color, $"{roleInfo.name}: " + ModTranslation.GetString("jackalWithSidekick"));
                     } 
                     else
                     {
-                        task.Text = cs(roleInfo.color, $"{roleInfo.name}: " + ModTranslation.getString("jackalShortDesc"));
+                        task.Text = cs(roleInfo.color, $"{roleInfo.name}: " + ModTranslation.GetString("jackalShortDesc"));
                     }
                 } else {
                     task.Text = cs(roleInfo.color, $"{roleInfo.name}: {roleInfo.shortDescription}");  
@@ -248,7 +248,7 @@ namespace TheOtherRoles {
             {
                 var task = new GameObject("RoleTask").AddComponent<ImportantTextTask>();
                 task.transform.SetParent(player.transform, false);
-                task.Text = cs(Madmate.color, $"{Madmate.fullName}: " + ModTranslation.getString("madmateShortDesc"));
+                task.Text = cs(Madmate.color, $"{Madmate.fullName}: " + ModTranslation.GetString("madmateShortDesc"));
                 player.myTasks.Insert(0, task);
             }
         }

@@ -10,12 +10,12 @@ namespace TheOtherRoles
 {
     class RoleInfo {
         public Color color;
-        public virtual string name { get { return ModTranslation.getString(nameKey); } }
+        public virtual string name { get { return ModTranslation.GetString(nameKey); } }
         public virtual string nameColored { get { return Helpers.cs(color, name); } }
-        public virtual string introDescription { get { return ModTranslation.getString(nameKey + "IntroDesc"); } }
-        public virtual string shortDescription { get { return ModTranslation.getString(nameKey + "ShortDesc"); } }
-        public virtual string fullDescription { get { return ModTranslation.getString(nameKey + "FullDesc"); } }
-        public virtual string blurb { get { return ModTranslation.getString(nameKey + "Blurb"); } }
+        public virtual string introDescription { get { return ModTranslation.GetString(nameKey + "IntroDesc"); } }
+        public virtual string shortDescription { get { return ModTranslation.GetString(nameKey + "ShortDesc"); } }
+        public virtual string fullDescription { get { return ModTranslation.GetString(nameKey + "FullDesc"); } }
+        public virtual string blurb { get { return ModTranslation.GetString(nameKey + "Blurb"); } }
         //public virtual string roleOptions
         //{
         //    get
@@ -155,7 +155,7 @@ namespace TheOtherRoles
 
         public static string tl(string key)
         {
-            return ModTranslation.getString(key);
+            return ModTranslation.GetString(key);
         }
 
         public static List<RoleInfo> getRoleInfoForPlayer(PlayerControl p, RoleType[] excludeRoles = null, bool includeHidden = false) {

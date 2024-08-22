@@ -46,7 +46,7 @@ namespace TheOtherRoles.Patches {
             private static string currentText = "";
         
             public static void Prefix(GameStartManager __instance) {
-                if (!AmongUsClient.Instance.AmHost  || !GameData.Instance ) return; // Not host or no instance
+                if (!AmongUsClient.Instance.AmHost  || !GameData.Instance || AmongUsClient.Instance.AmLocalHost) return; // Not host or no instance
                 update = GameData.Instance.PlayerCount != __instance.LastPlayerCount;
             }
 
@@ -68,28 +68,28 @@ namespace TheOtherRoles.Patches {
                             continue;
                         else if (!playerVersions.ContainsKey(client.Id))  {
                             blockStart = true;
-                            message += $"<color=#FF0000FF>{client.Character.Data.PlayerName}:  {ModTranslation.getString("errorNotInstalled")}\n</color>";
+                            message += $"<color=#FF0000FF>{client.Character.Data.PlayerName}:  {ModTranslation.GetString("errorNotInstalled")}\n</color>";
                         } else {
                             PlayerVersion PV = playerVersions[client.Id];
                             int diff = TheOtherRolesPlugin.Version.CompareTo(PV.version);
                             if (diff > 0) {
-                                message += $"<color=#FF0000FF>{client.Character.Data.PlayerName}:  {ModTranslation.getString("errorOlderVersion")} (v{playerVersions[client.Id].version.ToString()})\n</color>";
+                                message += $"<color=#FF0000FF>{client.Character.Data.PlayerName}:  {ModTranslation.GetString("errorOlderVersion")} (v{playerVersions[client.Id].version.ToString()})\n</color>";
                                 blockStart = true;
                             } else if (diff < 0) {
-                                message += $"<color=#FF0000FF>{client.Character.Data.PlayerName}:  {ModTranslation.getString("errorNewerVersion")} (v{playerVersions[client.Id].version.ToString()})\n</color>";
+                                message += $"<color=#FF0000FF>{client.Character.Data.PlayerName}:  {ModTranslation.GetString("errorNewerVersion")} (v{playerVersions[client.Id].version.ToString()})\n</color>";
                                 blockStart = true;
                             } else if (!PV.GuidMatches()) { // version presumably matches, check if Guid matches
-                                message += $"<color=#FF0000FF>{client.Character.Data.PlayerName}:  {ModTranslation.getString("errorWrongVersion")} v{playerVersions[client.Id].version.ToString()} <size=30%>({PV.guid.ToString()})</size>\n</color>";
+                                message += $"<color=#FF0000FF>{client.Character.Data.PlayerName}:  {ModTranslation.GetString("errorWrongVersion")} v{playerVersions[client.Id].version.ToString()} <size=30%>({PV.guid.ToString()})</size>\n</color>";
                                 blockStart = true;
                             }
                         }
                     }
                     if (blockStart) {
-                        __instance.StartButton.SetButtonEnableState(false);
+                        __instance.StartButton.SetButtonEnableState(true);
                         __instance.GameStartText.text = message;
                         __instance.GameStartText.transform.localPosition = __instance.StartButton.transform.localPosition + Vector3.up * 2;
                     } else {
-                        __instance.StartButton.SetButtonEnableState(true);
+                        __instance.StartButton.SetButtonEnableState(false);
                         __instance.GameStartText.transform.localPosition = __instance.StartButton.transform.localPosition;
                     }
                 }
@@ -104,7 +104,7 @@ namespace TheOtherRoles.Patches {
                             SceneChanger.ChangeScene("MainMenu");
                         }
 
-                        __instance.GameStartText.text = String.Format(ModTranslation.getString("errorHostNoVersion"), Math.Round(10 - kickingTimer));
+                        __instance.GameStartText.text = String.Format(ModTranslation.GetString("errorHostNoVersion"), Math.Round(10 - kickingTimer));
                         __instance.GameStartText.transform.localPosition = __instance.StartButton.transform.localPosition + Vector3.up * 2;
                     } else {
                         __instance.GameStartText.transform.localPosition = __instance.StartButton.transform.localPosition;
@@ -115,10 +115,10 @@ namespace TheOtherRoles.Patches {
                 }
 
                 // Lobby code replacement
-                __instance.GameRoomNameCode.text = TheOtherRolesPlugin.StreamerMode.Value ? $"<color={TheOtherRolesPlugin.StreamerModeReplacementColor.Value}>{TheOtherRolesPlugin.StreamerModeReplacementText.Value}</color>" : lobbyCodeText;
+                if (AmongUsClient.Instance.NetworkMode == NetworkModes.LocalGame) __instance.GameRoomNameCode.text = TheOtherRolesPlugin.StreamerMode.Value ? $"<color={TheOtherRolesPlugin.StreamerModeReplacementColor.Value}>{TheOtherRolesPlugin.StreamerModeReplacementText.Value}</color>" : lobbyCodeText;
 
                 // Lobby timer
-                if (!AmongUsClient.Instance.AmHost || !GameData.Instance) return; // Not host or no instance
+                if (!AmongUsClient.Instance.AmHost || !GameData.Instance || AmongUsClient.Instance.AmLocalHost) return; // Not host or no instance
 
                 if (update) currentText = __instance.PlayerCounter.text;
 

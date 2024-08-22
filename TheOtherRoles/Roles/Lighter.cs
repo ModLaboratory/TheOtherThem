@@ -76,7 +76,7 @@ namespace TheOtherRoles
                     lighterButton.Timer = lighterButton.MaxTimer;
                 }
             );
-            lighterButton.buttonText = ModTranslation.getString("LighterText");
+            lighterButton.buttonText = ModTranslation.GetString("LighterText");
         }
 
         public static void SetButtonCooldowns()
@@ -94,7 +94,7 @@ namespace TheOtherRoles
         public static Sprite getButtonSprite()
         {
             if (buttonSprite) return buttonSprite;
-            buttonSprite = ModTranslation.getImage("LighterButton", 115f);
+            buttonSprite = ModTranslation.GetImage("LighterButton", 115f);
             return buttonSprite;
         }
     }

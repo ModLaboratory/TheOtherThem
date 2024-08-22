@@ -121,7 +121,7 @@ namespace TheOtherRoles
             public static Sprite getButtonSprite()
             {
                 if (buttonSprite) return buttonSprite;
-                buttonSprite = ModTranslation.getImage("RepairButton", 115f);
+                buttonSprite = ModTranslation.GetImage("RepairButton", 115f);
                 return buttonSprite;
             }
 
@@ -175,7 +175,7 @@ namespace TheOtherRoles
             public static Sprite getButtonSprite()
             {
                 if (buttonSprite) return buttonSprite;
-                buttonSprite = ModTranslation.getImage("CleanButton", 115f);
+                buttonSprite = ModTranslation.GetImage("CleanButton", 115f);
                 return buttonSprite;
             }
 
@@ -226,7 +226,7 @@ namespace TheOtherRoles
             public static Sprite getButtonSprite()
             {
                 if (buttonSprite) return buttonSprite;
-                buttonSprite = ModTranslation.getImage("TimeShieldButton", 115f);
+                buttonSprite = ModTranslation.GetImage("TimeShieldButton", 115f);
                 return buttonSprite;
             }
 
@@ -262,7 +262,7 @@ namespace TheOtherRoles
             public static Sprite getButtonSprite()
             {
                 if (buttonSprite) return buttonSprite;
-                buttonSprite = ModTranslation.getImage("ShieldButton", 115f);
+                buttonSprite = ModTranslation.GetImage("ShieldButton", 115f);
                 return buttonSprite;
             }
 
@@ -334,7 +334,7 @@ namespace TheOtherRoles
             public static Sprite getButtonSprite()
             {
                 if (buttonSprite) return buttonSprite;
-                buttonSprite = ModTranslation.getImage("HackerButton", 115f);
+                buttonSprite = ModTranslation.GetImage("HackerButton", 115f);
                 return buttonSprite;
             }
 
@@ -444,7 +444,7 @@ namespace TheOtherRoles
             public static Sprite getButtonSprite()
             {
                 if (buttonSprite) return buttonSprite;
-                buttonSprite = ModTranslation.getImage("TrackerButton", 115f);
+                buttonSprite = ModTranslation.GetImage("TrackerButton", 115f);
                 return buttonSprite;
             }
 
@@ -496,7 +496,7 @@ namespace TheOtherRoles
             public static Sprite getButtonSprite()
             {
                 if (buttonSprite) return buttonSprite;
-                buttonSprite = ModTranslation.getImage("VampireButton", 115f);
+                buttonSprite = ModTranslation.GetImage("VampireButton", 115f);
                 return buttonSprite;
             }
 
@@ -504,7 +504,7 @@ namespace TheOtherRoles
             public static Sprite getGarlicButtonSprite()
             {
                 if (garlicButtonSprite) return garlicButtonSprite;
-                garlicButtonSprite = ModTranslation.getImage("GarlicButton", 115f);
+                garlicButtonSprite = ModTranslation.GetImage("GarlicButton", 115f);
                 return garlicButtonSprite;
             }
 
@@ -570,7 +570,7 @@ namespace TheOtherRoles
             public static Sprite getSidekickButtonSprite()
             {
                 if (buttonSprite) return buttonSprite;
-                buttonSprite = ModTranslation.getImage("SidekickButton", 115f);
+                buttonSprite = ModTranslation.GetImage("SidekickButton", 115f);
                 return buttonSprite;
             }
 
@@ -641,7 +641,7 @@ namespace TheOtherRoles
             public static Sprite getButtonSprite()
             {
                 if (buttonSprite) return buttonSprite;
-                buttonSprite = ModTranslation.getImage("EraserButton", 115f);
+                buttonSprite = ModTranslation.GetImage("EraserButton", 115f);
                 return buttonSprite;
             }
 
@@ -690,21 +690,21 @@ namespace TheOtherRoles
             public static Sprite getPlaceBoxButtonSprite()
             {
                 if (placeBoxButtonSprite) return placeBoxButtonSprite;
-                placeBoxButtonSprite = ModTranslation.getImage("PlaceJackInTheBoxButton", 115f);
+                placeBoxButtonSprite = ModTranslation.GetImage("PlaceJackInTheBoxButton", 115f);
                 return placeBoxButtonSprite;
             }
 
             public static Sprite getLightsOutButtonSprite()
             {
                 if (lightOutButtonSprite) return lightOutButtonSprite;
-                lightOutButtonSprite = ModTranslation.getImage("LightsOutButton", 115f);
+                lightOutButtonSprite = ModTranslation.GetImage("LightsOutButton", 115f);
                 return lightOutButtonSprite;
             }
 
             public static Sprite getTricksterVentButtonSprite()
             {
                 if (tricksterVentButtonSprite) return tricksterVentButtonSprite;
-                tricksterVentButtonSprite = ModTranslation.getImage("TricksterVentButton", 115f);
+                tricksterVentButtonSprite = ModTranslation.GetImage("TricksterVentButton", 115f);
                 return tricksterVentButtonSprite;
             }
 
@@ -731,7 +731,7 @@ namespace TheOtherRoles
             public static Sprite getButtonSprite()
             {
                 if (buttonSprite) return buttonSprite;
-                buttonSprite = ModTranslation.getImage("CleanButton", 115f);
+                buttonSprite = ModTranslation.GetImage("CleanButton", 115f);
                 return buttonSprite;
             }
 
@@ -761,14 +761,14 @@ namespace TheOtherRoles
             public static Sprite getCurseButtonSprite()
             {
                 if (curseButtonSprite) return curseButtonSprite;
-                curseButtonSprite = ModTranslation.getImage("CurseButton", 115f);
+                curseButtonSprite = ModTranslation.GetImage("CurseButton", 115f);
                 return curseButtonSprite;
             }
 
             public static Sprite getCurseKillButtonSprite()
             {
                 if (curseKillButtonSprite) return curseKillButtonSprite;
-                curseKillButtonSprite = ModTranslation.getImage("CurseKillButton", 115f);
+                curseKillButtonSprite = ModTranslation.GetImage("CurseKillButton", 115f);
                 return curseKillButtonSprite;
             }
 
@@ -817,7 +817,7 @@ namespace TheOtherRoles
             public static Sprite getCloseVentButtonSprite()
             {
                 if (closeVentButtonSprite) return closeVentButtonSprite;
-                closeVentButtonSprite = ModTranslation.getImage("CloseVentButton", 115f);
+                closeVentButtonSprite = ModTranslation.GetImage("CloseVentButton", 115f);
                 return closeVentButtonSprite;
             }
 
@@ -825,7 +825,7 @@ namespace TheOtherRoles
             public static Sprite getPlaceCameraButtonSprite()
             {
                 if (placeCameraButtonSprite) return placeCameraButtonSprite;
-                placeCameraButtonSprite = ModTranslation.getImage("PlaceCameraButton", 115f);
+                placeCameraButtonSprite = ModTranslation.GetImage("PlaceCameraButton", 115f);
                 return placeCameraButtonSprite;
             }
 
@@ -896,7 +896,7 @@ namespace TheOtherRoles
             public static Sprite getDouseSprite()
             {
                 if (douseSprite) return douseSprite;
-                douseSprite = ModTranslation.getImage("DouseButton", 115f);
+                douseSprite = ModTranslation.GetImage("DouseButton", 115f);
                 return douseSprite;
             }
 
@@ -904,7 +904,7 @@ namespace TheOtherRoles
             public static Sprite getIgniteSprite()
             {
                 if (igniteSprite) return igniteSprite;
-                igniteSprite = ModTranslation.getImage("IgniteButton", 115f);
+                igniteSprite = ModTranslation.GetImage("IgniteButton", 115f);
                 return igniteSprite;
             }
 

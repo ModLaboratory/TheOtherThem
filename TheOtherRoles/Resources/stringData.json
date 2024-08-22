@@ -1,8 +1,12 @@
 {
     "torSettings": {
-        "0": "The Other Roles Settings",
-        "11": "The Other Roles\u306e\u8a2d\u5b9a",
-        "13": "\u8d85\u591a\u804c\u4e1a\u6a21\u7ec4\u8bbe\u5b9a"
+      "0": "The Other Roles Settings",
+      "11": "The Other Roles\u306e\u8a2d\u5b9a",
+      "13": "\u8d85\u591a\u804c\u4e1a\u6a21\u7ec4设置"
+    },
+    "ModSettings": {
+      "0": "Mod Settings",
+      "13": "模组设置"
     },
     "preset1": {
         "0": "Preset 1",
@@ -3765,9 +3769,13 @@
         "11": "libhalt\u30b3\u30ec\u30af\u30b7\u30e7\u30f3",
         "13": "libhalt\u7cbe\u9009"
     },
-    "gmEditionGeneral": {
-        "0": "GM Edition Exclusive",
-        "11": "GM\u30a8\u30c7\u30a3\u30b7\u30e7\u30f3\u9650\u5b9a",
-        "13": "GM\u7248\u9650\u5b9a"
-    }
+  "gmEditionGeneral": {
+    "0": "GM Edition Exclusive",
+    "11": "GM\u30a8\u30c7\u30a3\u30b7\u30e7\u30f3\u9650\u5b9a",
+    "13": "GM\u7248\u9650\u5b9a"
+  },
+  "EjectionText": {
+    "0": "{0} was The {1}.",
+    "13": "{0} 是 {1}。"
+  }
 }

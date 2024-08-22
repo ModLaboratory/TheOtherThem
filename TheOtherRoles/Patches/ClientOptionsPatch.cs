@@ -42,7 +42,10 @@ namespace TheOtherRoles.Patches
         public static void MainMenuManager_StartPostfix(MainMenuManager __instance)
         {
             // Prefab for the title
-            
+            titleText = Object.Instantiate(__instance.quitButton.GetComponentInChildren<TextMeshPro>());
+            Object.DontDestroyOnLoad(titleText);
+            titleText.gameObject.SetActive(false);
+            titleText.GetComponent<TextTranslatorTMP>().Destroy();
         }
 
         [HarmonyPostfix]
@@ -92,12 +95,18 @@ namespace TheOtherRoles.Patches
             moreOptions = Object.Instantiate(buttonPrefab, __instance.CensorChatButton.transform.parent);
             var transform = __instance.CensorChatButton.transform;
             _origin ??= transform.localPosition;
+            transform.localScale = new Vector3(0.66f, 1, 1);
+            transform.localPosition = _origin.Value + Vector3.left * 0.45f;
+
+            __instance.EnableFriendInvitesButton.transform.localScale = new Vector3(0.66f, 1, 1);
+            __instance.EnableFriendInvitesButton.transform.localPosition += Vector3.right * 0.5f;
+            __instance.EnableFriendInvitesButton.Text.transform.localScale = new Vector3(1.2f, 1, 1);
             
-            transform.localPosition = _origin.Value + Vector3.left * 1.3f;
             moreOptions.transform.localPosition = _origin.Value + Vector3.right * 1.3f;
-            
+            moreOptions.transform.localScale = new Vector3(0.66f, 1, 1);
+
             moreOptions.gameObject.SetActive(true);
-            moreOptions.Text.text = ModTranslation.getString("modOptionsText");
+            moreOptions.Text.text = ModTranslation.GetString("modOptionsText");
             var moreOptionsButton = moreOptions.GetComponent<PassiveButton>();
             moreOptionsButton.OnClick = new ButtonClickedEvent();
             moreOptionsButton.OnClick.AddListener((Action) (() =>
@@ -114,7 +123,8 @@ namespace TheOtherRoles.Patches
                     popUp.transform.SetParent(null);
                     Object.DontDestroyOnLoad(popUp);
                 }
-                
+
+                __instance.Close();
                 CheckSetTitle();
                 RefreshOpen();
             }));
@@ -132,9 +142,10 @@ namespace TheOtherRoles.Patches
             if (!popUp || popUp.GetComponentInChildren<TextMeshPro>() || !titleText) return;
             
             var title = titleTextTitle = Object.Instantiate(titleText, popUp.transform);
-            title.GetComponent<RectTransform>().localPosition = Vector3.up * 2.3f;
+            title.GetComponent<AspectPosition>().Destroy();
+            title.GetComponent<RectTransform>().localPosition = new(0, 2, -2);
             title.gameObject.SetActive(true);
-            title.text = ModTranslation.getString("moreOptionsText");
+            title.text = ModTranslation.GetString("moreOptionsText");
             title.name = "TitleText";
         }
 
@@ -157,7 +168,7 @@ namespace TheOtherRoles.Patches
                 button.onState = info.DefaultValue;
                 button.Background.color = button.onState ? Color.green : Palette.ImpostorRed;
                 
-                button.Text.text = ModTranslation.getString(info.Title);
+                button.Text.text = ModTranslation.GetString(info.Title);
                 button.Text.fontSizeMin = button.Text.fontSizeMax = 2.2f;
                 button.Text.font = Object.Instantiate(titleText.font);
                 button.Text.GetComponent<RectTransform>().sizeDelta = new Vector2(2, 2);
@@ -198,18 +209,18 @@ namespace TheOtherRoles.Patches
             }
         }
 
-        public static void updateTranslations()
+        public static void UpdateTranslations()
         {
             if (titleTextTitle)
-                titleTextTitle.text = ModTranslation.getString("moreOptionsText");
+                titleTextTitle.text = ModTranslation.GetString("moreOptionsText");
 
             if (moreOptions)
-                moreOptions.Text.text = ModTranslation.getString("modOptionsText");
+                moreOptions.Text.text = ModTranslation.GetString("modOptionsText");
 
             for (int i = 0; i < AllOptions.Length; i++)
             {
                 if (i >= modButtons.Count) break;
-                modButtons[i].Text.text = ModTranslation.getString(AllOptions[i].Title);
+                modButtons[i].Text.text = ModTranslation.GetString(AllOptions[i].Title);
             }
         }
 

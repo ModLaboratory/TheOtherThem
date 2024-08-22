@@ -154,11 +154,11 @@ namespace TheOtherRoles
                 () => {
                     if (ninjaButton.isEffectActive)
                     {
-                        ninjaButton.buttonText = ModTranslation.getString("NinjaUnstealthText");
+                        ninjaButton.buttonText = ModTranslation.GetString("NinjaUnstealthText");
                     }
                     else
                     {
-                        ninjaButton.buttonText = ModTranslation.getString("NinjaText");
+                        ninjaButton.buttonText = ModTranslation.GetString("NinjaText");
                     }
                     return PlayerControl.LocalPlayer.CanMove;
                 },
@@ -184,7 +184,7 @@ namespace TheOtherRoles
                     PlayerControl.LocalPlayer.SetKillTimerUnchecked(Math.Max(PlayerControl.LocalPlayer.killTimer, Ninja.killPenalty));
                 }
             );
-            ninjaButton.buttonText = ModTranslation.getString("NinjaText");
+            ninjaButton.buttonText = ModTranslation.GetString("NinjaText");
             ninjaButton.effectCancellable = true;
         }
 

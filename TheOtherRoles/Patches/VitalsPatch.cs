@@ -92,7 +92,7 @@ namespace TheOtherRoles.Patches
                     }
 
                     string timeString = TimeSpan.FromSeconds(MapOptions.restrictVitalsTime).ToString(@"mm\:ss\.ff");
-                    TimeRemaining.text = String.Format(ModTranslation.getString("timeRemaining"), timeString);
+                    TimeRemaining.text = String.Format(ModTranslation.GetString("timeRemaining"), timeString);
                     TimeRemaining.gameObject.SetActive(true);
                 }
 

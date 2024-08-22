@@ -152,21 +152,21 @@ namespace TheOtherRoles.Patches {
                 {
                     if (roleInfo == RoleInfo.crewmate)
                     {
-                        __instance.RoleText.text = ModTranslation.getString("madmate");
+                        __instance.RoleText.text = ModTranslation.GetString("madmate");
                     }
                     else
                     {
-                        __instance.RoleText.text = ModTranslation.getString("madmatePrefix") + __instance.RoleText.text;
+                        __instance.RoleText.text = ModTranslation.GetString("madmatePrefix") + __instance.RoleText.text;
                     }
                     __instance.YouAreText.color = Madmate.color;
                     __instance.RoleText.color = Madmate.color;
-                    __instance.RoleBlurbText.text = ModTranslation.getString("madmateIntroDesc");
+                    __instance.RoleBlurbText.text = ModTranslation.GetString("madmateIntroDesc");
                     __instance.RoleBlurbText.color = Madmate.color;
                 }
 
                 if (infos.Any(info => info.roleType == RoleType.Lovers)) {
                     PlayerControl otherLover = PlayerControl.LocalPlayer.getPartner();
-                	__instance.RoleBlurbText.text += "\n" + Helpers.cs(Lovers.color, String.Format(ModTranslation.getString("loversFlavor"), otherLover?.Data?.PlayerName ?? ""));
+                	__instance.RoleBlurbText.text += "\n" + Helpers.cs(Lovers.color, String.Format(ModTranslation.GetString("loversFlavor"), otherLover?.Data?.PlayerName ?? ""));
                 } 
             }
         }

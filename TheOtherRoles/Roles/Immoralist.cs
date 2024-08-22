@@ -97,7 +97,7 @@ namespace TheOtherRoles
                 0,
                 () => { }
             );
-            immoralistButton.buttonText = ModTranslation.getString("immoralistSuicideText");
+            immoralistButton.buttonText = ModTranslation.GetString("immoralistSuicideText");
             immoralistButton.effectCancellable = true;
         }
 
