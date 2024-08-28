@@ -1,5 +1,7 @@
 # The Other Roles: GM Edition
 
+This fork is based on TORGM v3.5.4, and it supports Among Us `v2024.8.13`.
+
 This fork introduces a number of changes to [The Other Roles](https://github.com/Eisbison/TheOtherRoles).
 
 * New Roles
