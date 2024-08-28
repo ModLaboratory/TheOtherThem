@@ -1181,7 +1181,7 @@ namespace TheOtherRoles
                 },
                 () => { vultureEatButton.Timer = vultureEatButton.MaxTimer; },
                 Vulture.getButtonSprite(),
-                new Vector3(-1.8f, -0.06f, 0),
+                new Vector3(-3f, 0, 0),
                 __instance,
                 __instance.KillButton,
                 KeyCode.F

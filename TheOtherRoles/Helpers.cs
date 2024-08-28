@@ -133,6 +133,7 @@ namespace TheOtherRoles {
             } catch {
                 System.Console.WriteLine("Error loading sprite from path: " + path);
             }
+            TheOtherRolesPlugin.Logger.LogWarning("Couldn't get sprite: " + path);
             return null;
         }
 

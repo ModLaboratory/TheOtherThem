@@ -132,41 +132,43 @@ namespace TheOtherRoles.Patches {
             }
         }
 
-        [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.ShowRole))]
+        [HarmonyPatch(typeof(IntroCutscene._ShowRole_d__41), nameof(IntroCutscene._ShowRole_d__41.MoveNext))]
         class SetUpRoleTextPatch {
-            public static void Postfix(IntroCutscene __instance) {
+            public static void Postfix(IntroCutscene._ShowRole_d__41 __instance) {
                 if (!CustomOptionHolder.activateRoles.getBool()) return; // Don't override the intro of the vanilla roles
 
                 List<RoleInfo> infos = RoleInfo.getRoleInfoForPlayer(PlayerControl.LocalPlayer, new RoleType[] { RoleType.Lovers });
                 RoleInfo roleInfo = infos.FirstOrDefault();
 
+                var intro = __instance.__4__this;
+
                 if (roleInfo != null && roleInfo != RoleInfo.crewmate && roleInfo != RoleInfo.impostor && !(roleInfo == RoleInfo.fortuneTeller && FortuneTeller.numTasks > 0)) {
-                    __instance.YouAreText.color = roleInfo.color;
-                    __instance.RoleText.text = roleInfo.name;
-                    __instance.RoleText.color = roleInfo.color;
-                    __instance.RoleBlurbText.text = roleInfo.introDescription;
-                    __instance.RoleBlurbText.color = roleInfo.color;
+                    intro.YouAreText.color = roleInfo.color;
+                    intro.RoleText.text = roleInfo.name;
+                    intro.RoleText.color = roleInfo.color;
+                    intro.RoleBlurbText.text = roleInfo.introDescription;
+                    intro.RoleBlurbText.color = roleInfo.color;
                 }
 
                 if (PlayerControl.LocalPlayer.hasModifier(ModifierType.Madmate))
                 {
                     if (roleInfo == RoleInfo.crewmate)
                     {
-                        __instance.RoleText.text = ModTranslation.GetString("madmate");
+                        intro.RoleText.text = ModTranslation.GetString("madmate");
                     }
                     else
                     {
-                        __instance.RoleText.text = ModTranslation.GetString("madmatePrefix") + __instance.RoleText.text;
+                        intro.RoleText.text = ModTranslation.GetString("madmatePrefix") + intro.RoleText.text;
                     }
-                    __instance.YouAreText.color = Madmate.color;
-                    __instance.RoleText.color = Madmate.color;
-                    __instance.RoleBlurbText.text = ModTranslation.GetString("madmateIntroDesc");
-                    __instance.RoleBlurbText.color = Madmate.color;
+                    intro.YouAreText.color = Madmate.color;
+                    intro.RoleText.color = Madmate.color;
+                    intro.RoleBlurbText.text = ModTranslation.GetString("madmateIntroDesc");
+                    intro.RoleBlurbText.color = Madmate.color;
                 }
 
                 if (infos.Any(info => info.roleType == RoleType.Lovers)) {
                     PlayerControl otherLover = PlayerControl.LocalPlayer.getPartner();
-                	__instance.RoleBlurbText.text += "\n" + Helpers.cs(Lovers.color, String.Format(ModTranslation.GetString("loversFlavor"), otherLover?.Data?.PlayerName ?? ""));
+                	intro.RoleBlurbText.text += "\n" + Helpers.cs(Lovers.color, String.Format(ModTranslation.GetString("loversFlavor"), otherLover?.Data?.PlayerName ?? ""));
                 } 
             }
         }
