@@ -149,9 +149,6 @@ namespace TheOtherRoles {
             infoUnderlay.transform.localScale = new Vector3(7.5f, 5f, 1f);
             infoUnderlay.enabled = true;
 
-            TheOtherRolesPlugin.optionsPage = 0;
-            //List<string> gameOptions = o.ToString().Split("\n", StringSplitOptions.RemoveEmptyEntries).ToList().GetRange(2, 17);
-            //infoOverlayRules.text = string.Join("\n", gameOptions) + "\n\n" + GameOptionsDataPatch.buildModifierExtras(CustomOptionHolder.specialOptions);
             infoOverlayRules.enabled = true;
 
             string rolesText = "";

@@ -691,7 +691,7 @@ namespace TheOtherRoles
                 () => { return Jackal.canCreateSidekick && Jackal.currentTarget != null && PlayerControl.LocalPlayer.CanMove; },
                 () => { jackalSidekickButton.Timer = jackalSidekickButton.MaxTimer; },
                 Jackal.getSidekickButtonSprite(),
-                new Vector3(-1.8f, -0.06f, 0),
+                new Vector3(-3f, 0, 0),
                 __instance,
                 __instance.KillButton,
                 KeyCode.F
@@ -1084,7 +1084,7 @@ namespace TheOtherRoles
                     Arsonist.updateStatus();
                 },
                 Arsonist.getDouseSprite(),
-                new Vector3(-1.8f, -0.06f, 0),
+                new Vector3(-1.8f, 0f, 0),
                 __instance,
                 __instance.KillButton,
                 KeyCode.F,
@@ -1129,7 +1129,7 @@ namespace TheOtherRoles
                 () => { return PlayerControl.LocalPlayer.CanMove && Arsonist.dousedEveryone; },
                 () => { },
                 Arsonist.getIgniteSprite(),
-                new Vector3(-1.8f, -0.06f, 0),
+                new Vector3(-1.8f, 0f, 0),
                 __instance,
                 __instance.KillButton,
                 KeyCode.Q
@@ -1319,7 +1319,7 @@ namespace TheOtherRoles
                 },
                 () => { pursuerButton.Timer = pursuerButton.MaxTimer; },
                 Pursuer.getTargetSprite(),
-                new Vector3(-1.8f, -0.06f, 0),
+                new Vector3(-1.8f, 0f, 0),
                 __instance,
                 __instance.UseButton,
                 KeyCode.F
@@ -1361,7 +1361,7 @@ namespace TheOtherRoles
                     Witch.spellCastingTarget = null;
                 },
                 Witch.getButtonSprite(),
-                new Vector3(-1.8f, -0.06f, 0),
+                new Vector3(-1.8f, 0f, 0),
                 __instance,
                 __instance.KillButton,
                 KeyCode.F,

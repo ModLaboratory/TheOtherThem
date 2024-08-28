@@ -379,7 +379,7 @@ namespace TheOtherRoles.Patches {
             if (guesserUI != null || !(__instance.state == MeetingHud.VoteStates.Voted || __instance.state == MeetingHud.VoteStates.NotVoted)) return;
             __instance.playerStates.ToList().ForEach(x => x.gameObject.SetActive(false));
 
-            Transform container = UnityEngine.Object.Instantiate(__instance.transform.FindChild("PhoneUI"), __instance.transform);
+            Transform container = UnityEngine.Object.Instantiate(__instance.transform.Find("MeetingContents/PhoneUI"), __instance.transform);
             container.transform.localPosition = new Vector3(0, 0, -200f);
             guesserUI = container.gameObject;
 

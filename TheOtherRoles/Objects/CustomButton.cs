@@ -48,6 +48,7 @@ namespace TheOtherRoles.Objects {
             Timer = 16.2f;
             buttons.Add(this);
             actionButton = UnityEngine.Object.Instantiate(hudManager.KillButton, hudManager.KillButton.transform.parent);
+            actionButton.graphic.sprite = Sprite;
             PassiveButton button = actionButton.GetComponent<PassiveButton>();
             button.OnClick = new Button.ButtonClickedEvent();
             button.OnClick.AddListener((UnityEngine.Events.UnityAction)onClickEvent);
@@ -147,6 +148,7 @@ namespace TheOtherRoles.Objects {
             setActive(hudManager.UseButton.isActiveAndEnabled || hudManager.PetButton.isActiveAndEnabled);
 
             actionButton.graphic.sprite = Sprite;
+            
             if (showButtonText && buttonText != null){
                 actionButton.OverrideText(buttonText);
             }
