@@ -10,7 +10,7 @@ namespace TheOtherRoles.Patches
     public static class CredentialsPatch
     {
 
-        public const string BaseCredentials = $@"<size=130%><color=#ff351f>TheOtherRoles GM</color></size> v3.5.4";
+        public const string BaseCredentials = $@"<size=130%><color=#ff351f>TheOtherRoles GM</color></size> v{TheOtherRolesPlugin.VersionString} <size=80%>({TheOtherRolesPlugin.SupportString})</size>";
 
         public const string ContributorsCredentials = "Original TORGM (v3.5.4) GitHub Contributors: Alex2911, amsyarasyiq, gendelo3\nNew Version Among Us Support: JieGeLovesDengDuaLang";
 
