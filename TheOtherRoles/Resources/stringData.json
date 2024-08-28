@@ -3769,13 +3769,17 @@
         "11": "libhalt\u30b3\u30ec\u30af\u30b7\u30e7\u30f3",
         "13": "libhalt\u7cbe\u9009"
     },
-  "gmEditionGeneral": {
-    "0": "GM Edition Exclusive",
-    "11": "GM\u30a8\u30c7\u30a3\u30b7\u30e7\u30f3\u9650\u5b9a",
-    "13": "GM\u7248\u9650\u5b9a"
-  },
-  "EjectionText": {
-    "0": "{0} was The {1}.",
-    "13": "{0} 是 {1}。"
-  }
+    "gmEditionGeneral": {
+      "0": "GM Edition Exclusive",
+      "11": "GM\u30a8\u30c7\u30a3\u30b7\u30e7\u30f3\u9650\u5b9a",
+      "13": "GM\u7248\u9650\u5b9a"
+    },
+    "EjectionText": {
+      "0": "{0} was The {1}.",
+      "13": "{0} 是 {1}。"
+    },
+    "CreditsLabel": {
+      "0": "CREDITS",
+      "13": "开发人员"
+    }
 }
