@@ -144,7 +144,7 @@ namespace TheOtherRoles.Objects {
                 setActive(false);
                 return;
             }
-            setActive(hudManager.UseButton.isActiveAndEnabled);
+            setActive(hudManager.UseButton.isActiveAndEnabled || hudManager.PetButton.isActiveAndEnabled);
 
             actionButton.graphic.sprite = Sprite;
             if (showButtonText && buttonText != null){
@@ -153,7 +153,7 @@ namespace TheOtherRoles.Objects {
             actionButton.buttonLabelText.enabled = showButtonText; // Only show the text if it's a kill button
 
             if (hudManager.UseButton != null) {
-                Vector3 pos = hudManager.UseButton.transform.localPosition;
+                Vector3 pos = new(0, 0, 0);
                 if (mirror) pos = new Vector3(-pos.x, pos.y, pos.z);
                 actionButton.transform.localPosition = pos + PositionOffset;
                 actionButton.transform.localScale = LocalScale;
