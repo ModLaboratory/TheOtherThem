@@ -1,4 +1,4 @@
-﻿# The Other Them
+# The Other Roles: GM Edition
 
 This fork is based on TORGM v3.5.4, and it supports Among Us `v2024.8.13`.
 
