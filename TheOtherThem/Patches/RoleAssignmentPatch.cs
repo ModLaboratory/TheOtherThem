@@ -7,6 +7,7 @@ using System;
 using static TheOtherThem.TheOtherRoles;
 using static TheOtherThem.TheOtherRolesGM;
 using AmongUs.GameOptions;
+using TheOtherThem.TOTRole;
 
 namespace TheOtherThem.Patches
 {
@@ -138,47 +139,60 @@ namespace TheOtherThem.Patches
             Dictionary<byte, (int rate, int count)> neutralSettings = new Dictionary<byte, (int, int)>();
             Dictionary<byte, (int rate, int count)> crewSettings = new Dictionary<byte, (int, int)>();
 
-            impSettings.Add((byte)RoleType.Morphling, CustomOptionHolder.morphlingSpawnRate.data);
-            impSettings.Add((byte)RoleType.Camouflager, CustomOptionHolder.camouflagerSpawnRate.data);
-            impSettings.Add((byte)RoleType.Vampire, CustomOptionHolder.vampireSpawnRate.data);
-            impSettings.Add((byte)RoleType.Eraser, CustomOptionHolder.eraserSpawnRate.data);
-            impSettings.Add((byte)RoleType.Trickster, CustomOptionHolder.tricksterSpawnRate.data);
-            impSettings.Add((byte)RoleType.Cleaner, CustomOptionHolder.cleanerSpawnRate.data);
-            impSettings.Add((byte)RoleType.Warlock, CustomOptionHolder.warlockSpawnRate.data);
-            impSettings.Add((byte)RoleType.BountyHunter, CustomOptionHolder.bountyHunterSpawnRate.data);
-            impSettings.Add((byte)RoleType.Witch, CustomOptionHolder.witchSpawnRate.data);
-            impSettings.Add((byte)RoleType.Ninja, CustomOptionHolder.ninjaSpawnRate.data);
-            impSettings.Add((byte)RoleType.NekoKabocha, CustomOptionHolder.nekoKabochaSpawnRate.data);
-            impSettings.Add((byte)RoleType.SerialKiller, CustomOptionHolder.serialKillerSpawnRate.data);
+            impSettings.Add((byte)RoleType.Morphling, CustomOptionHolder.morphlingSpawnRate.Data);
+            impSettings.Add((byte)RoleType.Camouflager, CustomOptionHolder.camouflagerSpawnRate.Data);
+            impSettings.Add((byte)RoleType.Vampire, CustomOptionHolder.vampireSpawnRate.Data);
+            impSettings.Add((byte)RoleType.Eraser, CustomOptionHolder.eraserSpawnRate.Data);
+            impSettings.Add((byte)RoleType.Trickster, CustomOptionHolder.tricksterSpawnRate.Data);
+            impSettings.Add((byte)RoleType.Cleaner, CustomOptionHolder.cleanerSpawnRate.Data);
+            impSettings.Add((byte)RoleType.Warlock, CustomOptionHolder.warlockSpawnRate.Data);
+            impSettings.Add((byte)RoleType.BountyHunter, CustomOptionHolder.bountyHunterSpawnRate.Data);
+            impSettings.Add((byte)RoleType.Witch, CustomOptionHolder.witchSpawnRate.Data);
+            impSettings.Add((byte)RoleType.Ninja, CustomOptionHolder.ninjaSpawnRate.Data);
+            impSettings.Add((byte)RoleType.NekoKabocha, CustomOptionHolder.nekoKabochaSpawnRate.Data);
+            impSettings.Add((byte)RoleType.SerialKiller, CustomOptionHolder.serialKillerSpawnRate.Data);
 
-            neutralSettings.Add((byte)RoleType.Jester, CustomOptionHolder.jesterSpawnRate.data);
-            neutralSettings.Add((byte)RoleType.Arsonist, CustomOptionHolder.arsonistSpawnRate.data);
-            neutralSettings.Add((byte)RoleType.Jackal, CustomOptionHolder.jackalSpawnRate.data);
-            neutralSettings.Add((byte)RoleType.Opportunist, CustomOptionHolder.opportunistSpawnRate.data);
-            neutralSettings.Add((byte)RoleType.Vulture, CustomOptionHolder.vultureSpawnRate.data);
-            neutralSettings.Add((byte)RoleType.Lawyer, CustomOptionHolder.lawyerSpawnRate.data);
-            neutralSettings.Add((byte)RoleType.PlagueDoctor, CustomOptionHolder.plagueDoctorSpawnRate.data);
-            neutralSettings.Add((byte)RoleType.Fox, CustomOptionHolder.foxSpawnRate.data);
+            neutralSettings.Add((byte)RoleType.Jester, CustomOptionHolder.jesterSpawnRate.Data);
+            neutralSettings.Add((byte)RoleType.Arsonist, CustomOptionHolder.arsonistSpawnRate.Data);
+            neutralSettings.Add((byte)RoleType.Jackal, CustomOptionHolder.jackalSpawnRate.Data);
+            neutralSettings.Add((byte)RoleType.Opportunist, CustomOptionHolder.opportunistSpawnRate.Data);
+            neutralSettings.Add((byte)RoleType.Vulture, CustomOptionHolder.vultureSpawnRate.Data);
+            neutralSettings.Add((byte)RoleType.Lawyer, CustomOptionHolder.lawyerSpawnRate.Data);
+            neutralSettings.Add((byte)RoleType.PlagueDoctor, CustomOptionHolder.plagueDoctorSpawnRate.Data);
+            neutralSettings.Add((byte)RoleType.Fox, CustomOptionHolder.foxSpawnRate.Data);
 
-            crewSettings.Add((byte)RoleType.FortuneTeller, CustomOptionHolder.fortuneTellerSpawnRate.data);
-            crewSettings.Add((byte)RoleType.Mayor, CustomOptionHolder.mayorSpawnRate.data);
-            crewSettings.Add((byte)RoleType.Engineer, CustomOptionHolder.engineerSpawnRate.data);
-            crewSettings.Add((byte)RoleType.Sheriff, CustomOptionHolder.sheriffSpawnRate.data);
-            crewSettings.Add((byte)RoleType.Lighter, CustomOptionHolder.lighterSpawnRate.data);
-            crewSettings.Add((byte)RoleType.Detective, CustomOptionHolder.detectiveSpawnRate.data);
-            crewSettings.Add((byte)RoleType.TimeMaster, CustomOptionHolder.timeMasterSpawnRate.data);
-            crewSettings.Add((byte)RoleType.Medic, CustomOptionHolder.medicSpawnRate.data);
-            crewSettings.Add((byte)RoleType.Seer, CustomOptionHolder.seerSpawnRate.data);
-            crewSettings.Add((byte)RoleType.Hacker, CustomOptionHolder.hackerSpawnRate.data);
-            crewSettings.Add((byte)RoleType.Tracker, CustomOptionHolder.trackerSpawnRate.data);
-            crewSettings.Add((byte)RoleType.Snitch, CustomOptionHolder.snitchSpawnRate.data);
-            crewSettings.Add((byte)RoleType.Bait, CustomOptionHolder.baitSpawnRate.data);
-            crewSettings.Add((byte)RoleType.SecurityGuard, CustomOptionHolder.securityGuardSpawnRate.data);
-            crewSettings.Add((byte)RoleType.Medium, CustomOptionHolder.mediumSpawnRate.data);
+            crewSettings.Add((byte)RoleType.FortuneTeller, CustomOptionHolder.fortuneTellerSpawnRate.Data);
+            crewSettings.Add((byte)RoleType.Mayor, CustomOptionHolder.mayorSpawnRate.Data);
+            crewSettings.Add((byte)RoleType.Engineer, CustomOptionHolder.engineerSpawnRate.Data);
+            crewSettings.Add((byte)RoleType.Sheriff, CustomOptionHolder.sheriffSpawnRate.Data);
+            crewSettings.Add((byte)RoleType.Lighter, CustomOptionHolder.lighterSpawnRate.Data);
+            crewSettings.Add((byte)RoleType.Detective, CustomOptionHolder.detectiveSpawnRate.Data);
+            crewSettings.Add((byte)RoleType.TimeMaster, CustomOptionHolder.timeMasterSpawnRate.Data);
+            crewSettings.Add((byte)RoleType.Medic, CustomOptionHolder.medicSpawnRate.Data);
+            crewSettings.Add((byte)RoleType.Seer, CustomOptionHolder.seerSpawnRate.Data);
+            crewSettings.Add((byte)RoleType.Hacker, CustomOptionHolder.hackerSpawnRate.Data);
+            crewSettings.Add((byte)RoleType.Tracker, CustomOptionHolder.trackerSpawnRate.Data);
+            crewSettings.Add((byte)RoleType.Snitch, CustomOptionHolder.snitchSpawnRate.Data);
+            crewSettings.Add((byte)RoleType.Bait, CustomOptionHolder.baitSpawnRate.Data);
+            crewSettings.Add((byte)RoleType.SecurityGuard, CustomOptionHolder.securityGuardSpawnRate.Data);
+            crewSettings.Add((byte)RoleType.Medium, CustomOptionHolder.mediumSpawnRate.Data);
+
+            foreach (var role in CustomRole.AllRoles)
+            {
+                var roleList = role.MyTeamType switch
+                {
+                    TeamTypeTOT.Crewmate => crewSettings,
+                    TeamTypeTOT.Impostor => impSettings,
+                    TeamTypeTOT.Neutral or _ => neutralSettings
+                };
+
+                roleList.Add((byte)role.MyRoleType, ((CustomRoleOption)role.MyRoleInfo.BaseOption).Data);   
+            }
+
             if (impostors.Count > 1)
             {
                 // Only add Spy if more than 1 impostor as the spy role is otherwise useless
-                crewSettings.Add((byte)RoleType.Spy, CustomOptionHolder.spySpawnRate.data);
+                crewSettings.Add((byte)RoleType.Spy, CustomOptionHolder.spySpawnRate.Data);
             }
 
 
@@ -524,7 +538,7 @@ namespace TheOtherThem.Patches
             writer.Write(playerId);
             writer.Write(flag);
             AmongUsClient.Instance.FinishRpcImmediately(writer);
-            RPCProcedure.setRole(roleId, playerId, flag);
+            RPCProcedure.SetRole(roleId, playerId, flag);
             return playerId;
         }
 
@@ -601,7 +615,7 @@ namespace TheOtherThem.Patches
             writer.Write(playerId);
             writer.Write(flag);
             AmongUsClient.Instance.FinishRpcImmediately(writer);
-            RPCProcedure.setRole(roleId, playerId, flag);
+            RPCProcedure.SetRole(roleId, playerId, flag);
             return playerId;
         }
 

@@ -43,16 +43,16 @@ namespace TheOtherThem.Patches
             // Can't target stealthed ninjas if setting on
             if (!Ninja.canBeTargeted)
             {
-                foreach (Ninja n in Ninja.players)
+                foreach (Ninja n in Ninja.Players)
                 {
-                    if (n.stealthed) untargetablePlayers.Add(n.player);
+                    if (n.stealthed) untargetablePlayers.Add(n.Player);
                 }
             }
 
             // Can't target stealthed Fox
-            foreach (Fox f in Fox.players)
+            foreach (Fox f in Fox.Players)
             {
-                if (f.stealthed) untargetablePlayers.Add(f.player);
+                if (f.stealthed) untargetablePlayers.Add(f.Player);
             }
 
 

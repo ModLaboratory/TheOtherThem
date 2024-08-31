@@ -151,7 +151,7 @@ namespace TheOtherThem
             }
         }
 
-        public static void setRole(byte roleId, byte playerId, byte flag)
+        public static void SetRole(byte roleId, byte playerId, byte flag)
         {
             PlayerControl.AllPlayerControls.ToArray().DoIf(
                 x => x.PlayerId == playerId,
@@ -298,7 +298,7 @@ namespace TheOtherThem
             PlayerControl target = Helpers.playerById(targetId);
             if (sheriff == null || target == null) return;
 
-            Sheriff role = Sheriff.getRole(sheriff);
+            Sheriff role = Sheriff.GetRole(sheriff);
             if (role != null)
                 role.numShots--;
 
@@ -425,7 +425,7 @@ namespace TheOtherThem
             }
 
             // Shift role
-            player.swapRoles(oldShifter);
+            player.SwapRoles(oldShifter);
 
             if (Shifter.isNeutral)
             {
@@ -524,9 +524,9 @@ namespace TheOtherThem
                 erasePlayerRoles(player.PlayerId, true);
                 Sidekick.sidekick = player;
                 if (player.PlayerId == PlayerControl.LocalPlayer.PlayerId) PlayerControl.LocalPlayer.moveable = true; 
-                if(Fox.exists && !Fox.isFoxAlive())
+                if(Fox.Exists && !Fox.isFoxAlive())
                 {
-                    foreach(var immoralist in Immoralist.allPlayers)
+                    foreach(var immoralist in Immoralist.AllPlayers)
                     {
                         immoralist.MurderPlayerQuick(immoralist);
                     }
@@ -553,7 +553,7 @@ namespace TheOtherThem
             if (player.isNeutral())
                 player.clearAllTasks();
 
-            player.eraseAllRoles();
+            player.EraseAllRoles();
             player.eraseAllModifiers();
 
             if (!ignoreLovers && player.isLovers())
@@ -1031,7 +1031,7 @@ namespace TheOtherThem
                         byte roleId = reader.ReadByte();
                         byte playerId = reader.ReadByte();
                         byte flag = reader.ReadByte();
-                        RPCProcedure.setRole(roleId, playerId, flag);
+                        RPCProcedure.SetRole(roleId, playerId, flag);
                         break;
                     case (byte)CustomRpc.SetLovers:
                         RPCProcedure.setLovers(reader.ReadByte(), reader.ReadByte());

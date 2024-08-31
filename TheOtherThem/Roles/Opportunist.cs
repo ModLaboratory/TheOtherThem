@@ -11,12 +11,12 @@ namespace TheOtherThem
 
         public Opportunist()
         {
-            RoleType = roleId = RoleType.Opportunist;
+            RoleType = RoleId = RoleType.Opportunist;
         }
 
         public static void Clear()
         {
-            players = new List<Opportunist>();
+            Players = new List<Opportunist>();
         }
 
         public override void OnMeetingStart() { }

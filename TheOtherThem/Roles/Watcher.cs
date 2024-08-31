@@ -16,7 +16,7 @@ namespace TheOtherThem
 
         public Watcher()
         {
-            RoleType = roleId = RoleType.Watcher;
+            RoleType = RoleId = RoleType.Watcher;
         }
 
         public override void OnMeetingStart() { }
@@ -31,7 +31,7 @@ namespace TheOtherThem
 
         public static void clearAndReload()
         {
-            players = new List<Watcher>();
+            Players = new List<Watcher>();
         }
     }
 }

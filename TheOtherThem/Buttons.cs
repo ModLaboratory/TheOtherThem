@@ -8,6 +8,7 @@ using TheOtherThem.Modules;
 using TheOtherThem.Objects;
 using System.Collections.Generic;
 using System.Linq;
+using TheOtherThem.TOTRole;
 
 namespace TheOtherThem
 {
@@ -116,6 +117,9 @@ namespace TheOtherThem
 
         public static void Postfix(HudManager __instance)
         {
+            // TOT Buttons
+            CustomRole.AllRoles.ForEach(cr => cr.CreateButtons());
+
             // Engineer Repair
             engineerRepairButton = new CustomButton(
                 () =>

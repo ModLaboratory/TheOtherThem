@@ -237,7 +237,7 @@ namespace TheOtherThem
             }
         }
 
-        public (int, int) data
+        public (int, int) Data
         {
             get
             {

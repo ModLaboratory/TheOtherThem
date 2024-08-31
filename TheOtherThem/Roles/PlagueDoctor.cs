@@ -44,7 +44,7 @@ namespace TheOtherThem
 
         public PlagueDoctor()
         {
-            RoleType = roleId = RoleType.PlagueDoctor;
+            RoleType = RoleId = RoleType.PlagueDoctor;
 
             numInfections = maxInfectable;
             meetingFlag = false;
@@ -92,20 +92,20 @@ namespace TheOtherThem
 
         public override void FixedUpdate()
         {
-            if (player == PlayerControl.LocalPlayer)
+            if (Player == PlayerControl.LocalPlayer)
             {
-                if (numInfections > 0 && player.isAlive())
+                if (numInfections > 0 && Player.isAlive())
                 {
                     currentTarget = setTarget(untargetablePlayers: infected.Values.ToList());
                     setPlayerOutline(currentTarget, PlagueDoctor.color);
                 }
 
-                if (!meetingFlag && (canWinDead || player.isAlive()))
+                if (!meetingFlag && (canWinDead || Player.isAlive()))
                 {
                     List<PlayerControl> newInfected = new List<PlayerControl>();
                     foreach (PlayerControl target in PlayerControl.AllPlayerControls)
                     { // 非感染プレイヤーのループ
-                        if (target == player || target.isDead() || infected.ContainsKey(target.PlayerId) || target.inVent) continue;
+                        if (target == Player || target.isDead() || infected.ContainsKey(target.PlayerId) || target.inVent) continue;
 
                         // データが無い場合は作成する
                         if (!progress.ContainsKey(target.PlayerId))
@@ -157,7 +157,7 @@ namespace TheOtherThem
                     foreach (PlayerControl p in PlayerControl.AllPlayerControls)
                     {
                         if (p.isDead()) continue;
-                        if (p == player) continue;
+                        if (p == Player) continue;
                         if (!infected.ContainsKey(p.PlayerId))
                         {
                             winFlag = false;
@@ -187,7 +187,7 @@ namespace TheOtherThem
                 return;
             }
 
-            if ((player != null && PlayerControl.LocalPlayer == player) || PlayerControl.LocalPlayer.isDead())
+            if ((Player != null && PlayerControl.LocalPlayer == Player) || PlayerControl.LocalPlayer.isDead())
             {
                 if (statusText == null)
                 {
@@ -207,7 +207,7 @@ namespace TheOtherThem
                 string text = $"[{ModTranslation.GetString("plagueDoctorProgress")}]\n";
                 foreach (PlayerControl p in PlayerControl.AllPlayerControls)
                 {
-                    if (p == player) continue;
+                    if (p == Player) continue;
                     if (dead.ContainsKey(p.PlayerId) && dead[p.PlayerId]) continue;
                     text += $"{p.name}: ";
                     if (infected.ContainsKey(p.PlayerId))
@@ -235,28 +235,28 @@ namespace TheOtherThem
             plagueDoctorButton = new CustomButton(
                 () =>
                 {/*ボタンが押されたとき*/
-                    byte targetId = local.currentTarget.PlayerId;
+                    byte targetId = Local.currentTarget.PlayerId;
 
                     MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.PlagueDoctorSetInfected, Hazel.SendOption.Reliable, -1);
                     writer.Write(targetId);
                     AmongUsClient.Instance.FinishRpcImmediately(writer);
                     RPCProcedure.plagueDoctorInfected(targetId);
-                    local.numInfections--;
+                    Local.numInfections--;
 
                     plagueDoctorButton.Timer = plagueDoctorButton.MaxTimer;
-                    local.currentTarget = null;
+                    Local.currentTarget = null;
                 },
-                () => {/*ボタンが有効になる条件*/ return PlayerControl.LocalPlayer.IsRole(RoleType.PlagueDoctor) && local.numInfections > 0 && !PlayerControl.LocalPlayer.isDead(); },
+                () => {/*ボタンが有効になる条件*/ return PlayerControl.LocalPlayer.IsRole(RoleType.PlagueDoctor) && Local.numInfections > 0 && !PlayerControl.LocalPlayer.isDead(); },
                 () => {/*ボタンが使える条件*/
                     if (numInfectionsText != null)
                     {
-                        if (local.numInfections > 0)
-                            numInfectionsText.text = String.Format(ModTranslation.GetString("plagueDoctorInfectionsLeft"), local.numInfections);
+                        if (Local.numInfections > 0)
+                            numInfectionsText.text = String.Format(ModTranslation.GetString("plagueDoctorInfectionsLeft"), Local.numInfections);
                         else
                             numInfectionsText.text = "";
                     }
 
-                    return local.currentTarget != null && local.numInfections > 0 && PlayerControl.LocalPlayer.CanMove;
+                    return Local.currentTarget != null && Local.numInfections > 0 && PlayerControl.LocalPlayer.CanMove;
                 },
                 () => {/*ミーティング終了時*/ plagueDoctorButton.Timer = plagueDoctorButton.MaxTimer; },
                 getSyringeIcon(),
@@ -310,7 +310,7 @@ namespace TheOtherThem
 
         public static void Clear()
         {
-            players = new List<PlagueDoctor>();
+            Players = new List<PlagueDoctor>();
             triggerPlagueDoctorWin = false;
             infected = new Dictionary<int, PlayerControl>();
             progress = new Dictionary<int, float>();

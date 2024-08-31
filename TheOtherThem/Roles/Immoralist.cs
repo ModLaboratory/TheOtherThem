@@ -19,7 +19,7 @@ namespace TheOtherThem
 
         public Immoralist()
         {
-            RoleType = roleId = RoleType.Immoralist;
+            RoleType = RoleId = RoleType.Immoralist;
         }
 
         public override void OnMeetingStart() { }
@@ -37,7 +37,7 @@ namespace TheOtherThem
 
         public override void OnDeath(PlayerControl killer = null)
         {
-            player.clearAllTasks();
+            Player.clearAllTasks();
         }
 
         public override void HandleDisconnect(PlayerControl player, DisconnectReasons reason) { }
@@ -55,7 +55,7 @@ namespace TheOtherThem
                 }
             }
             arrows = new List<Arrow>();
-            players = new List<Immoralist>();
+            Players = new List<Immoralist>();
         }
 
         public static void suicide()

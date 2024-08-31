@@ -25,15 +25,15 @@ namespace TheOtherThem
 
         public Lighter()
         {
-            RoleType = roleId = RoleType.Lighter;
+            RoleType = RoleId = RoleType.Lighter;
             lightActive = false;
         }
 
         public static bool isLightActive(PlayerControl player)
         {
-            if (isRole(player) && player.isAlive())
+            if (IsRole(player) && player.isAlive())
             {
-                Lighter r = players.First(x => x.player == player);
+                Lighter r = Players.First(x => x.Player == player);
                 return r.lightActive;
             }
             return false;
@@ -52,13 +52,13 @@ namespace TheOtherThem
             lighterButton = new CustomButton(
                 () =>
                 {
-                    local.lightActive = true;
+                    Local.lightActive = true;
                 },
                 () => { return PlayerControl.LocalPlayer.IsRole(RoleType.Lighter) && !PlayerControl.LocalPlayer.Data.IsDead; },
                 () => { return PlayerControl.LocalPlayer.CanMove; },
                 () =>
                 {
-                    local.lightActive = false;
+                    Local.lightActive = false;
 
                     lighterButton.Timer = lighterButton.MaxTimer;
                     lighterButton.isEffectActive = false;
@@ -72,7 +72,7 @@ namespace TheOtherThem
                 true,
                 duration,
                 () => {
-                    local.lightActive = false;
+                    Local.lightActive = false;
                     lighterButton.Timer = lighterButton.MaxTimer;
                 }
             );
@@ -87,7 +87,7 @@ namespace TheOtherThem
 
         public static void Clear()
         {
-            players = new List<Lighter>();
+            Players = new List<Lighter>();
         }
 
         private static Sprite buttonSprite;

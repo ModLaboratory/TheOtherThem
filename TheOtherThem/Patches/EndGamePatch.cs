@@ -189,10 +189,10 @@ namespace TheOtherThem.Patches
 
             notWinners.AddRange(Jackal.formerJackals);
             notWinners.AddRange(Madmate.allPlayers);
-            notWinners.AddRange(Opportunist.allPlayers);
-            notWinners.AddRange(PlagueDoctor.allPlayers);
-            notWinners.AddRange(Fox.allPlayers);
-            notWinners.AddRange(Immoralist.allPlayers);
+            notWinners.AddRange(Opportunist.AllPlayers);
+            notWinners.AddRange(PlagueDoctor.AllPlayers);
+            notWinners.AddRange(Fox.AllPlayers);
+            notWinners.AddRange(Immoralist.AllPlayers);
 
             // Neutral shifter can't win
             if (Shifter.shifter != null && Shifter.isNeutral) notWinners.Add(Shifter.shifter);
@@ -225,8 +225,8 @@ namespace TheOtherThem.Patches
             bool teamJackalWin = gameOverReason == (GameOverReason)CustomGameOverReason.TeamJackalWin && ((Jackal.jackal != null && Jackal.jackal.isAlive()) || (Sidekick.sidekick != null && !Sidekick.sidekick.isAlive()));
             bool vultureWin = Vulture.vulture != null && gameOverReason == (GameOverReason)CustomGameOverReason.VultureWin;
             bool lawyerSoloWin = Lawyer.lawyer != null && gameOverReason == (GameOverReason)CustomGameOverReason.LawyerSoloWin;
-            bool plagueDoctorWin = PlagueDoctor.exists && gameOverReason == (GameOverReason)CustomGameOverReason.PlagueDoctorWin;
-            bool foxWin = Fox.exists && gameOverReason == (GameOverReason)CustomGameOverReason.FoxWin;
+            bool plagueDoctorWin = PlagueDoctor.Exists && gameOverReason == (GameOverReason)CustomGameOverReason.PlagueDoctorWin;
+            bool foxWin = Fox.Exists && gameOverReason == (GameOverReason)CustomGameOverReason.FoxWin;
             bool everyoneDead = AdditionalTempData.playerRoles.All(x => x.Status != FinalStatus.Alive);
 
             
@@ -260,10 +260,10 @@ namespace TheOtherThem.Patches
 
             else if (plagueDoctorWin)
             {
-                foreach (var pd in PlagueDoctor.players)
+                foreach (var pd in PlagueDoctor.Players)
                 {
                     EndGameResult.CachedWinners = new Il2CppSystem.Collections.Generic.List<CachedPlayerData>();
-                    CachedPlayerData wpd = new CachedPlayerData(pd.player.Data);
+                    CachedPlayerData wpd = new CachedPlayerData(pd.Player.Data);
                     EndGameResult.CachedWinners.Add(wpd);
                     AdditionalTempData.winCondition = WinCondition.PlagueDoctorWin;
                 }
@@ -344,14 +344,14 @@ namespace TheOtherThem.Patches
             else if (foxWin)
             {
                 EndGameResult.CachedWinners = new Il2CppSystem.Collections.Generic.List<CachedPlayerData>();
-                foreach (var fox in Fox.players)
+                foreach (var fox in Fox.Players)
                 {
-                    CachedPlayerData wpd = new CachedPlayerData(fox.player.Data);
+                    CachedPlayerData wpd = new CachedPlayerData(fox.Player.Data);
                     EndGameResult.CachedWinners.Add(wpd);
                 }
-                foreach (var immoralist in Immoralist.players)
+                foreach (var immoralist in Immoralist.Players)
                 {
-                    CachedPlayerData wpd = new CachedPlayerData(immoralist.player.Data);
+                    CachedPlayerData wpd = new CachedPlayerData(immoralist.Player.Data);
                     EndGameResult.CachedWinners.Add(wpd);
                 }
                 AdditionalTempData.winCondition = WinCondition.FoxWin;
@@ -397,7 +397,7 @@ namespace TheOtherThem.Patches
             if (!saboWin)
             {
                 bool oppWin = false;
-                foreach (var p in Opportunist.livingPlayers)
+                foreach (var p in Opportunist.LivingPlayers)
                 {
                     if (!EndGameResult.CachedWinners.ToArray().Any(x => x.PlayerName == p.Data.PlayerName))
                         EndGameResult.CachedWinners.Add(new CachedPlayerData(p.Data));
@@ -824,7 +824,7 @@ namespace TheOtherThem.Patches
                         return true;
                     }
 
-                    if (Fox.exists && !Fox.crewWinsByTasks)
+                    if (Fox.Exists && !Fox.crewWinsByTasks)
                     {
                         // 狐生存かつタスク完了時に生存中のクルーがタスクを全て終わらせたら勝ち
                         // 死んだプレイヤーが意図的にタスクを終了させないのを防止するため
@@ -1031,7 +1031,7 @@ namespace TheOtherThem.Patches
                     CouplesAlive = numCouplesAlive;
                     TeamImpostorLovers = impLovers;
                     TeamJackalLovers = jackalLovers;
-                    FoxAlive = Fox.livingPlayers.Count;
+                    FoxAlive = Fox.LivingPlayers.Count;
                 }
             }
         }

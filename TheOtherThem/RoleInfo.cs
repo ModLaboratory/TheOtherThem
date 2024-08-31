@@ -31,7 +31,7 @@ namespace TheOtherThem
 
         public string NameKey { get; private set; }
         public CustomOption BaseOption { get; private set; }
-        public object CustomRole { get; private set; }
+        public CustomRole CustomRole { get; private set; }
 
         public RoleInfo(string name, Color color, CustomOption baseOption, RoleType roleType)
         {
@@ -40,6 +40,11 @@ namespace TheOtherThem
             this.BaseOption = baseOption;
             this.MyRoleType = roleType;
             AllRoleInfos.Add(this);
+        }
+
+        public RoleInfo(string name, Color color, CustomOption baseOption, RoleType roleType, CustomRole role) : this(name, color, baseOption, roleType)
+        {
+            CustomRole = role;
         }
 
         public static List<RoleInfo> AllRoleInfos { get; } = new();

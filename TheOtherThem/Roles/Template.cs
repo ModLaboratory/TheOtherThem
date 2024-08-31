@@ -16,7 +16,7 @@ namespace TheOtherThem
 
         public Template()
         {
-            RoleType = roleId = RoleType.NoRole;
+            RoleType = RoleId = RoleType.NoRole;
         }
 
         public override void OnMeetingStart() { }
@@ -31,7 +31,7 @@ namespace TheOtherThem
 
         public static void Clear()
         {
-            players = new List<Template>();
+            Players = new List<Template>();
         }
     }
 }

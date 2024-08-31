@@ -31,7 +31,7 @@ namespace TheOtherThem
 
         public Ninja()
         {
-            RoleType = roleId = RoleType.Ninja;
+            RoleType = RoleId = RoleType.Ninja;
             penalized = false;
             stealthed = false;
             stealthedAt = DateTime.UtcNow;
@@ -46,15 +46,15 @@ namespace TheOtherThem
 
         public override void OnMeetingEnd()
         {
-            if (player == PlayerControl.LocalPlayer)
+            if (Player == PlayerControl.LocalPlayer)
             {
                 if (penalized)
                 {
-                    player.SetKillTimerUnchecked(GameManager.Instance.LogicOptions.GetKillCooldown() + killPenalty);
+                    Player.SetKillTimerUnchecked(GameManager.Instance.LogicOptions.GetKillCooldown() + killPenalty);
                 }
                 else
                 {
-                    player.SetKillTimer(GameOptionsManager.Instance.CurrentGameOptions.Cast<NormalGameOptionsV08>().KillCooldown);
+                    Player.SetKillTimer(GameOptionsManager.Instance.CurrentGameOptions.Cast<NormalGameOptionsV08>().KillCooldown);
                 }
             }
         }
@@ -63,7 +63,7 @@ namespace TheOtherThem
         {
             penalized = false;
             stealthed = false;
-            setOpacity(player, 1.0f);
+            setOpacity(Player, 1.0f);
             ninjaButton.isEffectActive = false;
             ninjaButton.Timer = ninjaButton.MaxTimer = Ninja.stealthCooldown;
         }
@@ -73,9 +73,9 @@ namespace TheOtherThem
 
         public static bool isStealthed(PlayerControl player)
         {
-            if (isRole(player) && player.isAlive())
+            if (IsRole(player) && player.isAlive())
             {
-                Ninja n = players.First(x => x.player == player);
+                Ninja n = Players.First(x => x.Player == player);
                 return n.stealthed;
             }
             return false;
@@ -83,9 +83,9 @@ namespace TheOtherThem
 
         public static float stealthFade(PlayerControl player)
         {
-            if (isRole(player) && fadeTime > 0f && player.isAlive())
+            if (IsRole(player) && fadeTime > 0f && player.isAlive())
             {
-                Ninja n = players.First(x => x.player == player);
+                Ninja n = Players.First(x => x.Player == player);
                 return Mathf.Min(1.0f, (float)(DateTime.UtcNow - n.stealthedAt).TotalSeconds / fadeTime);
             }
             return 1.0f;
@@ -93,9 +93,9 @@ namespace TheOtherThem
 
         public static bool isPenalized(PlayerControl player)
         {
-            if (isRole(player) && player.isAlive())
+            if (IsRole(player) && player.isAlive())
             {
-                Ninja n = players.First(x => x.player == player);
+                Ninja n = Players.First(x => x.Player == player);
                 return n.penalized;
             }
             return false;
@@ -103,9 +103,9 @@ namespace TheOtherThem
 
         public static void setStealthed(PlayerControl player, bool stealthed = true)
         {
-            if (isRole(player))
+            if (IsRole(player))
             {
-                Ninja n = players.First(x => x.player == player);
+                Ninja n = Players.First(x => x.Player == player);
                 n.stealthed = stealthed;
                 n.stealthedAt = DateTime.UtcNow;
             }
@@ -115,8 +115,8 @@ namespace TheOtherThem
         {
             penalized = stealthed;
             float penalty = penalized ? killPenalty : 0f;
-            if (PlayerControl.LocalPlayer == player)
-                player.SetKillTimerUnchecked(GameOptionsManager.Instance.CurrentGameOptions.Cast<NormalGameOptionsV08>().KillCooldown + penalty);
+            if (PlayerControl.LocalPlayer == Player)
+                Player.SetKillTimerUnchecked(GameOptionsManager.Instance.CurrentGameOptions.Cast<NormalGameOptionsV08>().KillCooldown + penalty);
         }
 
         public override void OnDeath(PlayerControl killer)
@@ -195,7 +195,7 @@ namespace TheOtherThem
 
         public static void Clear()
         {
-            players = new List<Ninja>();
+            Players = new List<Ninja>();
         }
 
         public static void setOpacity(PlayerControl player, float opacity)
@@ -222,7 +222,7 @@ namespace TheOtherThem
                     __instance.body.velocity *= speedBonus;
                 }
 
-                if (isRole(__instance.myPlayer))
+                if (IsRole(__instance.myPlayer))
                 {
                     var ninja = __instance.myPlayer;
                     if (ninja == null || ninja.isDead()) return;

@@ -35,7 +35,7 @@ namespace TheOtherThem
 
         public FortuneTeller()
         {
-            RoleType = roleId = RoleType.FortuneTeller;
+            RoleType = RoleId = RoleType.FortuneTeller;
         }
 
         public override void OnMeetingStart()
@@ -77,9 +77,9 @@ namespace TheOtherThem
 
         public static void setDivinedFlag(PlayerControl player, bool flag)
         {
-            if (isRole(player))
+            if (IsRole(player))
             {
-                FortuneTeller n = players.First(x => x.player == player);
+                FortuneTeller n = Players.First(x => x.Player == player);
                 n.divinedFlag = flag;
             }
         }
@@ -110,10 +110,10 @@ namespace TheOtherThem
             {
                 return () =>
                 {
-                    if (PlayerControl.LocalPlayer.CanMove && local.numUsed < 1 && local.canDivine(index))
+                    if (PlayerControl.LocalPlayer.CanMove && Local.numUsed < 1 && Local.canDivine(index))
                     {
                         PlayerControl p = Helpers.playerById(index);
-                        local.divine(p);
+                        Local.divine(p);
                     }
                 };
             };
@@ -160,7 +160,7 @@ namespace TheOtherThem
                         PlayerControl.LocalPlayer.isDead() ||
                         PlayerControl.LocalPlayer.PlayerId == index ||
                         !isCompletedNumTasks(PlayerControl.LocalPlayer) ||
-                        local.numUsed >= 1)
+                        Local.numUsed >= 1)
                     {
                         if (MapOptions.playerIcons.ContainsKey(index))
                             MapOptions.playerIcons[index].gameObject.SetActive(false);
@@ -175,14 +175,14 @@ namespace TheOtherThem
 
                     // ボタンにテキストを設定
                     bool status = true;
-                    if (local.playerStatus.ContainsKey(index))
+                    if (Local.playerStatus.ContainsKey(index))
                     {
-                        status = local.playerStatus[index];
+                        status = Local.playerStatus[index];
                     }
 
                     if (status)
                     {
-                        var progress = local.progress.ContainsKey(index) ? local.progress[index] : 0f;
+                        var progress = Local.progress.ContainsKey(index) ? Local.progress[index] : 0f;
                         fortuneTellerButtons[index].buttonText = $"{progress:0.0}/{duration:0.0}";
                     }
                     else
@@ -191,12 +191,12 @@ namespace TheOtherThem
                     }
 
                     // アイコンの位置と透明度を変更
-                    setIconPos(index, !local.canDivine(index));
+                    setIconPos(index, !Local.canDivine(index));
 
                     MapOptions.playerIcons[index].gameObject.SetActive(Helpers.ShowButtons && PlayerControl.LocalPlayer.CanMove);
                     fortuneTellerButtons[index].setActive(Helpers.ShowButtons && PlayerControl.LocalPlayer.CanMove);
 
-                    return PlayerControl.LocalPlayer.CanMove && local.numUsed < 1 && local.canDivine(index);
+                    return PlayerControl.LocalPlayer.CanMove && Local.numUsed < 1 && Local.canDivine(index);
                 };
             }
 
@@ -233,7 +233,7 @@ namespace TheOtherThem
 
         private void fortuneTellerUpdate()
         {
-            if (player == PlayerControl.LocalPlayer && !meetingFlag)
+            if (Player == PlayerControl.LocalPlayer && !meetingFlag)
             {
                 foreach (PlayerControl p in PlayerControl.AllPlayerControls)
                 {
@@ -278,14 +278,14 @@ namespace TheOtherThem
                     // Arrow一覧
                     arrows = new List<Arrow>();
 
-                    foreach (var p in players)
+                    foreach (var p in Players)
                     {
-                        if (p.player.isDead()) continue;
+                        if (p.Player.isDead()) continue;
                         if (!p.divinedFlag) continue;
 
                         Arrow arrow = new Arrow(FortuneTeller.color);
                         arrow.arrow.SetActive(true);
-                        arrow.Update(p.player.transform.position);
+                        arrow.Update(p.Player.transform.position);
                         arrows.Add(arrow);
                     }
 
@@ -301,7 +301,7 @@ namespace TheOtherThem
 
         public static void Clear()
         {
-            players = new List<FortuneTeller>();
+            Players = new List<FortuneTeller>();
             arrows = new List<Arrow>();
             meetingFlag = true;
         }

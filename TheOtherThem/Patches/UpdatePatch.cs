@@ -198,9 +198,9 @@ namespace TheOtherThem.Patches {
                 setPlayerNameColor(Spy.spy, Spy.color);
             }
 
-            if (Immoralist.exists && PlayerControl.LocalPlayer.IsRole(RoleType.Fox))
+            if (Immoralist.Exists && PlayerControl.LocalPlayer.IsRole(RoleType.Fox))
             {
-                foreach (var immoralist in Immoralist.allPlayers)
+                foreach (var immoralist in Immoralist.AllPlayers)
                 {
                     setPlayerNameColor(immoralist, Immoralist.color);
                 }
@@ -208,7 +208,7 @@ namespace TheOtherThem.Patches {
 
             if (PlayerControl.LocalPlayer.IsRole(RoleType.Immoralist))
             {
-                foreach(var fox in Fox.allPlayers)
+                foreach(var fox in Fox.AllPlayers)
                 {
                     setPlayerNameColor(fox, Fox.color);
                 }

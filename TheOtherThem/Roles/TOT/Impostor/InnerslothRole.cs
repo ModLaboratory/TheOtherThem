@@ -1,6 +1,8 @@
 using Hazel;
 using System.Collections;
 using TheOtherThem.Modules;
+using TheOtherThem.Objects;
+using TheOtherThem.Patches;
 using UnityEngine;
 
 namespace TheOtherThem.TOTRole.Impostor;
@@ -11,7 +13,7 @@ public class InnerslothRole : CustomRole
 {
     public static InnerslothRole Instance { get; private set; }
 
-    private bool CustomSabotageStarted = false;
+    private static bool CustomSabotageStarted = false;
 
     InnerslothRole() : base("Innersloth", Palette.ImpostorRed, CustomOptionHolder.InnerslothSpawnRate, RoleType.Innersloth, TeamTypeTOT.Impostor)
     {
@@ -23,10 +25,22 @@ public class InnerslothRole : CustomRole
         CustomSabotageStarted = false;
     }
 
+    public override void CreateButtons()
+    {
+        //_ = new CustomButton(() =>
+        //{
+        //    var writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.InnerslothSabotage, Hazel.SendOption.Reliable);
+        //    AmongUsClient.Instance.FinishRpcImmediately(writer);
+        //    CustomSabotageComms();
+        //},
+        //() => !CustomSabotageStarted,
+        //()=>)
+    }
+
     public override void OnRpcReceived(byte callId, MessageReader reader)
     {
         if (callId == ((byte)CustomRpc.InnerslothSabotage))
-            SabotageComms();
+            CustomSabotageComms();
     }
 
     static bool IsCommsSabotaged()
@@ -41,7 +55,7 @@ public class InnerslothRole : CustomRole
         return false;
     }
 
-    static void SabotageComms()
+    static void CustomSabotageComms()
     {
         foreach (var sys in ShipStatus.Instance.Systems)
         {
@@ -57,12 +71,13 @@ public class InnerslothRole : CustomRole
                 break;
             }
         }
+
+        CoroutineUtils.StartCoroutine(CoCustomSabotage());
     }
 
     static IEnumerator CoCustomSabotage()
     {
-        var writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.InnerslothSabotage, Hazel.SendOption.Reliable);
-        AmongUsClient.Instance.FinishRpcImmediately(writer);
+        CustomSabotageStarted = true;
 
         while (IsCommsSabotaged())
         {
@@ -74,13 +89,7 @@ public class InnerslothRole : CustomRole
             PlayerControl.LocalPlayer.moveable = true;
         }
         PlayerControl.LocalPlayer.moveable = true;
-    }
 
-    [HarmonyPatch(typeof(HudOverrideTask), nameof(HudOverrideTask.FixedUpdate))]
-    [HarmonyPatch(typeof(HqHudOverrideTask), nameof(HqHudOverrideTask.FixedUpdate))]
-    [HarmonyPostfix]
-    static void OnCommsSabotaged()
-    {
-        CoroutineUtils.StartCoroutine(CoCustomSabotage());
+        CustomSabotageStarted = false;
     }
 }

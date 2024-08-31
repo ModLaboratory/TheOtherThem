@@ -25,7 +25,7 @@ namespace TheOtherThem
 
         public SerialKiller()
         {
-            RoleType = roleId = RoleType.SerialKiller;
+            RoleType = RoleId = RoleType.SerialKiller;
             isCountDown = false;
         }
 
@@ -33,9 +33,9 @@ namespace TheOtherThem
 
         public override void OnMeetingEnd()
         {
-            if (PlayerControl.LocalPlayer == player)
+            if (PlayerControl.LocalPlayer == Player)
             {
-                player.SetKillTimerUnchecked(killCooldown);
+                Player.SetKillTimerUnchecked(killCooldown);
 
                 if (resetTimer)
                     serialKillerButton.Timer = suicideTimer;
@@ -47,8 +47,8 @@ namespace TheOtherThem
 
         public override void OnKill(PlayerControl target)
         {
-            if (PlayerControl.LocalPlayer == player)
-                player.SetKillTimerUnchecked(killCooldown);
+            if (PlayerControl.LocalPlayer == Player)
+                Player.SetKillTimerUnchecked(killCooldown);
 
             serialKillerButton.Timer = suicideTimer;
             isCountDown = true;
@@ -69,7 +69,7 @@ namespace TheOtherThem
             // SerialKiller Suicide Countdown
             serialKillerButton = new CustomButton(
                 () => { },
-                () => { return PlayerControl.LocalPlayer.IsRole(RoleType.SerialKiller) && PlayerControl.LocalPlayer.isAlive() && local.isCountDown; },
+                () => { return PlayerControl.LocalPlayer.IsRole(RoleType.SerialKiller) && PlayerControl.LocalPlayer.isAlive() && Local.isCountDown; },
                 () => { return true; },
                 () => { },
                 SerialKiller.getButtonSprite(),
@@ -79,7 +79,7 @@ namespace TheOtherThem
                 KeyCode.F,
                 true,
                 suicideTimer,
-                () => { local.suicide(); }
+                () => { Local.suicide(); }
             );
             serialKillerButton.buttonText = ModTranslation.GetString("SerialKillerText");
             serialKillerButton.isEffectActive = true;
@@ -99,7 +99,7 @@ namespace TheOtherThem
 
         public static void Clear()
         {
-            players = new List<SerialKiller>();
+            Players = new List<SerialKiller>();
         }
     }
 }

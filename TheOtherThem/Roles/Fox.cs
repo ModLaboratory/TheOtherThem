@@ -48,7 +48,7 @@ namespace TheOtherThem
         {
             stealthed = false;
             stealthedAt = DateTime.UtcNow;
-            RoleType = roleId = RoleType.Fox;
+            RoleType = RoleId = RoleType.Fox;
             numRepair = optNumRepair;
             immoralist = null;
             currentTarget = null;
@@ -67,11 +67,11 @@ namespace TheOtherThem
         public override void HandleDisconnect(PlayerControl player, DisconnectReasons reason) { }
         public override void OnDeath(PlayerControl killer = null)
         {
-            exiledFox.Add(player.PlayerId);
-            player.clearAllTasks();
+            exiledFox.Add(Player.PlayerId);
+            Player.clearAllTasks();
             if (!Fox.isFoxAlive())
             {
-                foreach (var immoralist in Immoralist.allPlayers)
+                foreach (var immoralist in Immoralist.AllPlayers)
                 {
                     if (immoralist.isAlive())
                     {
@@ -91,9 +91,9 @@ namespace TheOtherThem
 
         public override void FixedUpdate()
         {
-            if (player == PlayerControl.LocalPlayer) {
+            if (Player == PlayerControl.LocalPlayer) {
                 arrowUpdate();
-                if (player.isAlive())
+                if (Player.isAlive())
                 {
                     List<PlayerControl> untargetablePlayers = new List<PlayerControl>();
                     foreach (var p in PlayerControl.AllPlayerControls)
@@ -111,7 +111,7 @@ namespace TheOtherThem
 
         public static void Clear()
         {
-            players = new List<Fox>();
+            Players = new List<Fox>();
             foreach (Arrow arrow in arrows)
             {
                 if (arrow?.arrow != null)
@@ -151,9 +151,9 @@ namespace TheOtherThem
 
         public static float stealthFade(PlayerControl player)
         {
-            if (isRole(player) && fadeTime > 0f && player.isAlive())
+            if (IsRole(player) && fadeTime > 0f && player.isAlive())
             {
-                Fox n = players.First(x => x.player == player);
+                Fox n = Players.First(x => x.Player == player);
                 return Mathf.Min(1.0f, (float)(DateTime.UtcNow - n.stealthedAt).TotalSeconds / fadeTime);
             }
             return 1.0f;
@@ -161,9 +161,9 @@ namespace TheOtherThem
 
         public static bool isStealthed(PlayerControl player)
         {
-            if (isRole(player) && player.isAlive())
+            if (IsRole(player) && player.isAlive())
             {
-                Fox n = players.First(x => x.player == player);
+                Fox n = Players.First(x => x.Player == player);
                 return n.stealthed;
             }
             return false;
@@ -171,9 +171,9 @@ namespace TheOtherThem
 
         public static void setStealthed(PlayerControl player, bool stealthed = true)
         {
-            if (isRole(player))
+            if (IsRole(player))
             {
-                Fox n = players.First(x => x.player == player);
+                Fox n = Players.First(x => x.Player == player);
                 n.stealthed = stealthed;
                 n.stealthedAt = DateTime.UtcNow;
             }
@@ -304,7 +304,7 @@ namespace TheOtherThem
                     AmongUsClient.Instance.FinishRpcImmediately(writer);
                     RPCProcedure.foxCreatesImmoralist(currentTarget.PlayerId);
                 },
-                () => { return !Immoralist.exists && canCreateImmoralist && PlayerControl.LocalPlayer.IsRole(RoleType.Fox) && PlayerControl.LocalPlayer.isAlive(); },
+                () => { return !Immoralist.Exists && canCreateImmoralist && PlayerControl.LocalPlayer.IsRole(RoleType.Fox) && PlayerControl.LocalPlayer.isAlive(); },
                 () => { return canCreateImmoralist && Fox.currentTarget != null && PlayerControl.LocalPlayer.CanMove; },
                 () => { foxImmoralistButton.Timer = 20; },
                 getImmoralistButtonSprite(),
@@ -381,7 +381,7 @@ namespace TheOtherThem
         public static bool isFoxAlive()
         {
             bool isAlive = false;
-            foreach (var fox in Fox.allPlayers)
+            foreach (var fox in Fox.AllPlayers)
             {
                 if (fox.isAlive() && !exiledFox.Contains(fox.PlayerId))
                 {
@@ -395,7 +395,7 @@ namespace TheOtherThem
         {
             // 生存中の狐が1匹でもタスクを終了しているかを確認
             bool isCompleted = false;
-            foreach (var fox in allPlayers)
+            foreach (var fox in AllPlayers)
             {
                 if (fox.isAlive())
                 {
@@ -426,7 +426,7 @@ namespace TheOtherThem
 
         public void assignTasks()
         {
-            player.generateAndAssignTasks(numCommonTasks, numShortTasks, numLongTasks);
+            Player.generateAndAssignTasks(numCommonTasks, numShortTasks, numLongTasks);
         }
 
         [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.BeginCrewmate))]
@@ -436,7 +436,7 @@ namespace TheOtherThem
             {
                 if (PlayerControl.LocalPlayer.IsRole(RoleType.Fox))
                 {
-                    local.assignTasks();
+                    Local.assignTasks();
                 }
             }
         }
@@ -447,7 +447,7 @@ namespace TheOtherThem
         {
             public static void Postfix(PlayerPhysics __instance)
             {
-                if (isRole(__instance.myPlayer))
+                if (IsRole(__instance.myPlayer))
                 {
                     var fox = __instance.myPlayer;
                     if (fox == null || fox.isDead()) return;

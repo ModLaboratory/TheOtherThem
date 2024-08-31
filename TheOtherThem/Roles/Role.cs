@@ -1,23 +1,10 @@
-using System.Net;
-using System.Linq;
-using BepInEx;
-using BepInEx.Configuration;
-using BepInEx.IL2CPP;
-using HarmonyLib;
-using Hazel;
 using System;
 using System.Collections.Generic;
-using System.Collections;
-using System.IO;
-using UnityEngine;
-using TheOtherThem.Objects;
-using static TheOtherThem.GameHistory;
+using System.Linq;
+using System.Reflection;
+using TheOtherThem.TOTRole;
 using static TheOtherThem.TheOtherRoles;
 using static TheOtherThem.TheOtherRolesGM;
-using TheOtherThem.Patches;
-using System.Reflection;
-using TheOtherThem.TOTRole.Impostor;
-using TheOtherThem.TOTRole;
 
 namespace TheOtherThem
 {
@@ -92,7 +79,7 @@ namespace TheOtherThem
     [HarmonyPatch]
     public static class RoleData
     {
-        public static Dictionary<RoleType, Type> allRoleTypes = new Dictionary<RoleType, Type>
+        public static Dictionary<RoleType, Type> AllRoleTypes = new Dictionary<RoleType, Type>
         {
             // Crew
             { RoleType.Sheriff, typeof(RoleBase<Sheriff>) },
@@ -117,9 +104,9 @@ namespace TheOtherThem
 
     public abstract class Role
     {
-        public static List<Role> allRoles = new List<Role>();
-        public PlayerControl player;
-        public RoleType roleId;
+        public static List<Role> AllRoles = new List<Role>();
+        public PlayerControl Player;
+        public RoleType RoleId;
 
         public abstract void OnMeetingStart();
         public abstract void OnMeetingEnd();
@@ -131,93 +118,98 @@ namespace TheOtherThem
 
         public static void ClearAll()
         {
-            allRoles = new List<Role>();
+            AllRoles = new List<Role>();
         }
     }
 
     [HarmonyPatch]
     public abstract class RoleBase<T> : Role where T : RoleBase<T>, new()
     {
-        public static List<T> players = new List<T>();
+        public static List<T> Players = new List<T>();
         public static RoleType RoleType;
 
         public void Init(PlayerControl player)
         {
-            this.player = player;
-            players.Add((T)this);
-            allRoles.Add(this);
+            this.Player = player;
+            Players.Add((T)this);
+            AllRoles.Add(this);
         }
 
-        public static T local
+        public static void Remove(PlayerControl player)
+        {
+            EraseRole(player);
+        }
+
+        public static T Local
         {
             get
             {
-                return players.FirstOrDefault(x => x.player == PlayerControl.LocalPlayer);
+                return Players.FirstOrDefault(x => x.Player == PlayerControl.LocalPlayer);
             }
         }
 
-        public static List<PlayerControl> allPlayers
+        public static List<PlayerControl> AllPlayers
         {
             get
             {
-                return players.Select(x => x.player).ToList();
+                return Players.Select(x => x.Player).ToList();
             }
         }
 
-        public static List<PlayerControl> livingPlayers
+        public static List<PlayerControl> LivingPlayers
         {
             get
             {
-                return players.Select(x => x.player).Where(x => x.isAlive()).ToList();
+                return Players.Select(x => x.Player).Where(x => x.isAlive()).ToList();
             }
         }
 
-        public static List<PlayerControl> deadPlayers
+        public static List<PlayerControl> DeadPlayers
         {
             get
             {
-                return players.Select(x => x.player).Where(x => !x.isAlive()).ToList();
+                return Players.Select(x => x.Player).Where(x => !x.isAlive()).ToList();
             }
         }
 
-        public static bool exists
+        public static bool Exists
         {
-            get { return Helpers.RolesEnabled && players.Count > 0; }
+            get { return Helpers.RolesEnabled && Players.Count > 0; }
         }
 
-        public static T getRole(PlayerControl player = null)
+        public static T GetRole(PlayerControl player = null)
         {
-            player = player ?? PlayerControl.LocalPlayer;
-            return players.FirstOrDefault(x => x.player == player);
+            player ??= PlayerControl.LocalPlayer;
+            return Players.FirstOrDefault(x => x.Player == player);
         }
 
-        public static bool isRole(PlayerControl player)
+        public static bool IsRole(PlayerControl player)
         {
-            return players.Any(x => x.player == player);
+            return Players.Any(x => x.Player == player);
         }
 
-        public static void setRole(PlayerControl player)
+        public static void SetRole(PlayerControl player)
         {
-            if (!isRole(player))
+            if (!IsRole(player))
             {
                 T role = new T();
                 role.Init(player);
             }
         }
 
-        public static void eraseRole(PlayerControl player)
+        public static void EraseRole(PlayerControl player)
         {
-            players.DoIf(x => x.player == player, x => x.ResetRole());
-            players.RemoveAll(x => x.player == player && x.roleId == RoleType);
-            allRoles.RemoveAll(x => x.player == player && x.roleId == RoleType);
+            Players.DoIf(x => x.Player == player, x => x.ResetRole());
+            Players.RemoveAll(x => x.Player == player && x.RoleId == RoleType);
+            AllRoles.RemoveAll(x => x.Player == player && x.RoleId == RoleType);
         }
 
-        public static void swapRole(PlayerControl p1, PlayerControl p2)
+        public static void SwapRole(PlayerControl p1, PlayerControl p2)
         {
-            var index = players.FindIndex(x => x.player == p1);
+            var index = Players.FindIndex(x => x.Player == p1);
             if (index >= 0)
             {
-                players[index].player = p2;
+                Players[index].Player = p2;
             }
         }
     }
@@ -226,7 +218,7 @@ namespace TheOtherThem
     {
         public static bool IsRole(this PlayerControl player, RoleType role)
         {
-            foreach (var t in RoleData.allRoleTypes)
+            foreach (var t in RoleData.AllRoleTypes)
             {
                 if (role == t.Key)
                 {
@@ -320,16 +312,222 @@ namespace TheOtherThem
             return false;
         }
 
+        public static void ClearRole(this PlayerControl player)
+        {
+            // TOR Roles
+            if (Jester.jester == player)
+            {
+                Jester.jester = null;
+                return;
+            }
+            if (Mayor.mayor == player)
+            {
+                Mayor.mayor = null;
+                return;
+            }
+            if (Engineer.engineer == player)
+            {
+                Engineer.engineer = null;
+                return;
+            }
+            if (Godfather.godfather == player)
+            {
+                Godfather.godfather = null;
+                return;
+            }
+            if (Mafioso.mafioso == player)
+            {
+                Mafioso.mafioso = null;
+                return;
+            }
+            if (Janitor.janitor == player)
+            {
+                Janitor.janitor = null;
+                return;
+            }
+            if (Detective.detective == player)
+            {
+                Detective.detective = null;
+                return;
+            }
+            if (TimeMaster.timeMaster == player)
+            {
+                TimeMaster.timeMaster = null;
+                return;
+            }
+            if (Medic.medic == player)
+            {
+                Medic.medic = null;
+                return;
+            }
+            if (Shifter.shifter == player)
+            {
+                Shifter.shifter = null;
+                return;
+            }
+            if (Swapper.swapper == player)
+            {
+                Swapper.swapper = null;
+                return;
+            }
+            if (Seer.seer == player)
+            {
+                Seer.seer = null;
+                return;
+            }
+            if (Morphling.morphling == player)
+            {
+                Morphling.morphling = null;
+                return;
+            }
+            if (Camouflager.camouflager == player)
+            {
+                Camouflager.camouflager = null;
+                return;
+            }
+            if (Hacker.hacker == player)
+            {
+                Hacker.hacker = null;
+                return;
+            }
+            if (Mini.mini == player)
+            {
+                Mini.mini = null;
+                return;
+            }
+            if (Tracker.tracker == player)
+            {
+                Tracker.tracker = null;
+                return;
+            }
+            if (Vampire.vampire == player)
+            {
+                Vampire.vampire = null;
+                return;
+            }
+            if (Snitch.snitch == player)
+            {
+                Snitch.snitch = null;
+                return;
+            }
+            if (Jackal.jackal == player)
+            {
+                Jackal.jackal = null;
+                return;
+            }
+            if (Sidekick.sidekick == player)
+            {
+                Sidekick.sidekick = null;
+                return;
+            }
+            if (Eraser.eraser == player)
+            {
+                Eraser.eraser = null;
+                return;
+            }
+            if (Spy.spy == player)
+            {
+                Spy.spy = null;
+                return;
+            }
+            if (Trickster.trickster == player)
+            {
+                Trickster.trickster = null;
+                return;
+            }
+            if (Cleaner.cleaner == player)
+            {
+                Cleaner.cleaner = null;
+                return;
+            }
+            if (Warlock.warlock == player)
+            {
+                Warlock.warlock = null;
+                return;
+            }
+            if (SecurityGuard.securityGuard == player)
+            {
+                SecurityGuard.securityGuard = null;
+                return;
+            }
+            if (Arsonist.arsonist == player)
+            {
+                Arsonist.arsonist = null;
+                return;
+            }
+            if (Guesser.evilGuesser == player)
+            {
+                Guesser.evilGuesser = null;
+                return;
+            }
+            if (Guesser.niceGuesser == player)
+            {
+                Guesser.niceGuesser = null;
+                return;
+            }
+            if (BountyHunter.bountyHunter == player)
+            {
+                BountyHunter.bountyHunter = null;
+                return;
+            }
+            if (Bait.bait == player)
+            {
+                Bait.bait = null;
+                return;
+            }
+            if (GM.gm == player)
+            {
+                GM.gm = null;
+                return;
+            }
+            if (Vulture.vulture == player)
+            {
+                Vulture.vulture = null;
+                return;
+            }
+            if (Medium.medium == player)
+            {
+                Medium.medium = null;
+                return;
+            }
+            if (Witch.witch == player)
+            {
+                Witch.witch = null;
+                return;
+            }
+            if (Lawyer.lawyer == player)
+            {
+                Lawyer.lawyer = null;
+                return;
+            }
+            if (Pursuer.pursuer == player)
+            {
+                Pursuer.pursuer = null;
+                return;
+            }
+
+            // GM Edition Roles
+            foreach (var t in RoleData.AllRoleTypes.Values)
+                t.GetMethod("Remove").Invoke(null, new[] { player });
+
+            // TOT Roles
+            CustomRole.AllRoles.ForEach(cr => cr.Players.Remove(player.Data));
+        }
+
         public static void SetRole(this PlayerControl player, RoleType role)
         {
-            foreach (var t in RoleData.allRoleTypes)
+            player.ClearRole();
+
+            foreach (var t in RoleData.AllRoleTypes)
             {
                 if (role == t.Key)
                 {
-                    t.Value.GetMethod("setRole", BindingFlags.Public | BindingFlags.Static)?.Invoke(null, new object[] { player });
+                    t.Value.GetMethod("SetRole", BindingFlags.Public | BindingFlags.Static)?.Invoke(null, new object[] { player });
                     return;
                 }
             }
+
+            CustomRole.AllRoles.FirstOrDefault(r => r.MyRoleType == role)?.Players.Add(player.Data);
 
             switch (role)
             {
@@ -453,15 +651,15 @@ namespace TheOtherThem
             }
         }
 
-        public static void eraseRole(this PlayerControl player, RoleType role)
+        public static void EraseRole(this PlayerControl player, RoleType role)
         {
             if (IsRole(player, role))
             {
-                foreach (var t in RoleData.allRoleTypes)
+                foreach (var t in RoleData.AllRoleTypes)
                 {
                     if (role == t.Key)
                     {
-                        t.Value.GetMethod("eraseRole", BindingFlags.Public | BindingFlags.Static)?.Invoke(null, new object[] { player });
+                        t.Value.GetMethod("EraseRole", BindingFlags.Public | BindingFlags.Static)?.Invoke(null, new object[] { player });
                         return;
                     }
                 }
@@ -469,12 +667,14 @@ namespace TheOtherThem
             }
         }
 
-        public static void eraseAllRoles(this PlayerControl player)
+        public static void EraseAllRoles(this PlayerControl player)
         {
-            foreach (var t in RoleData.allRoleTypes)
+            foreach (var t in RoleData.AllRoleTypes)
             {
-                t.Value.GetMethod("eraseRole", BindingFlags.Public | BindingFlags.Static)?.Invoke(null, new object[] { player });
+                t.Value.GetMethod("EraseRole", BindingFlags.Public | BindingFlags.Static)?.Invoke(null, new object[] { player });
             }
+
+            CustomRole.AllRoles.ForEach(cr => cr.ClearData());
 
             // Crewmate roles
             if (player.IsRole(RoleType.Mayor)) Mayor.clearAndReload();
@@ -531,13 +731,15 @@ namespace TheOtherThem
             }
         }
 
-        public static void swapRoles(this PlayerControl player, PlayerControl target)
+
+        // TODO
+        public static void SwapRoles(this PlayerControl player, PlayerControl target)
         {
-            foreach (var t in RoleData.allRoleTypes)
+            foreach (var t in RoleData.AllRoleTypes)
             {
                 if (player.IsRole(t.Key))
                 {
-                    t.Value.GetMethod("swapRole", BindingFlags.Public | BindingFlags.Static)?.Invoke(null, new object[] { player, target });
+                    t.Value.GetMethod("SwapRole", BindingFlags.Public | BindingFlags.Static)?.Invoke(null, new object[] { player, target });
                 }
             }
 
@@ -585,13 +787,13 @@ namespace TheOtherThem
 
         public static void OnKill(this PlayerControl player, PlayerControl target)
         {
-            Role.allRoles.DoIf(x => x.player == player, x => x.OnKill(target));
+            Role.AllRoles.DoIf(x => x.Player == player, x => x.OnKill(target));
             Modifier.allModifiers.DoIf(x => x.player == player, x => x.OnKill(target));
         }
 
         public static void OnDeath(this PlayerControl player, PlayerControl killer)
         {
-            Role.allRoles.DoIf(x => x.player == player, x => x.OnDeath(killer));
+            Role.AllRoles.DoIf(x => x.Player == player, x => x.OnDeath(killer));
             Modifier.allModifiers.DoIf(x => x.player == player, x => x.OnDeath(killer));
 
             // Lover suicide trigger on exile/death

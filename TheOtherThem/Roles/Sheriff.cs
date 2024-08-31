@@ -29,7 +29,7 @@ namespace TheOtherThem
 
         public Sheriff()
         {
-            RoleType = roleId = RoleType.Sheriff;
+            RoleType = RoleId = RoleType.Sheriff;
             numShots = maxShots;
         }
 
@@ -37,7 +37,7 @@ namespace TheOtherThem
         public override void OnMeetingEnd() { }
 
         public override void FixedUpdate() {
-            if (player == PlayerControl.LocalPlayer && numShots > 0)
+            if (Player == PlayerControl.LocalPlayer && numShots > 0)
             {
                 currentTarget = setTarget();
                 setPlayerOutline(currentTarget, Sheriff.color);
@@ -54,23 +54,23 @@ namespace TheOtherThem
             sheriffKillButton = new CustomButton(
                 () =>
                 {
-                    if (local.numShots <= 0)
+                    if (Local.numShots <= 0)
                     {
                         return;
                     }
 
-                    MurderAttemptResult murderAttemptResult = Helpers.checkMuderAttempt(PlayerControl.LocalPlayer, local.currentTarget);
+                    MurderAttemptResult murderAttemptResult = Helpers.checkMuderAttempt(PlayerControl.LocalPlayer, Local.currentTarget);
                     if (murderAttemptResult == MurderAttemptResult.SuppressKill) return;
 
                     if (murderAttemptResult == MurderAttemptResult.PerformKill)
                     {
                         bool misfire = false;
-                        byte targetId = local.currentTarget.PlayerId; ;
-                        if ((local.currentTarget.Data.Role.IsImpostor && (local.currentTarget != Mini.mini || Mini.isGrownUp())) ||
-                            (Sheriff.spyCanDieToSheriff && Spy.spy == local.currentTarget) ||
-                            (Sheriff.madmateCanDieToSheriff && local.currentTarget.hasModifier(ModifierType.Madmate)) ||
-                            (Sheriff.canKillNeutrals && local.currentTarget.isNeutral()) ||
-                            (Jackal.jackal == local.currentTarget || Sidekick.sidekick == local.currentTarget))
+                        byte targetId = Local.currentTarget.PlayerId; ;
+                        if ((Local.currentTarget.Data.Role.IsImpostor && (Local.currentTarget != Mini.mini || Mini.isGrownUp())) ||
+                            (Sheriff.spyCanDieToSheriff && Spy.spy == Local.currentTarget) ||
+                            (Sheriff.madmateCanDieToSheriff && Local.currentTarget.hasModifier(ModifierType.Madmate)) ||
+                            (Sheriff.canKillNeutrals && Local.currentTarget.isNeutral()) ||
+                            (Jackal.jackal == Local.currentTarget || Sidekick.sidekick == Local.currentTarget))
                         {
                             //targetId = Sheriff.currentTarget.PlayerId;
                             misfire = false;
@@ -82,7 +82,7 @@ namespace TheOtherThem
                         }
 
                         // Mad sheriff always misfires.
-                        if (local.player.hasModifier(ModifierType.Madmate))
+                        if (Local.Player.hasModifier(ModifierType.Madmate))
                         {
                             misfire = true;
                         }
@@ -95,19 +95,19 @@ namespace TheOtherThem
                     }
 
                     sheriffKillButton.Timer = sheriffKillButton.MaxTimer;
-                    local.currentTarget = null;
+                    Local.currentTarget = null;
                 },
-                () => { return PlayerControl.LocalPlayer.IsRole(RoleType.Sheriff) && local.numShots > 0 && !PlayerControl.LocalPlayer.Data.IsDead; },
+                () => { return PlayerControl.LocalPlayer.IsRole(RoleType.Sheriff) && Local.numShots > 0 && !PlayerControl.LocalPlayer.Data.IsDead; },
                 () =>
                 {
                     if (sheriffNumShotsText != null)
                     {
-                        if (local.numShots > 0)
-                            sheriffNumShotsText.text = String.Format(ModTranslation.GetString("sheriffShots"), local.numShots);
+                        if (Local.numShots > 0)
+                            sheriffNumShotsText.text = String.Format(ModTranslation.GetString("sheriffShots"), Local.numShots);
                         else
                             sheriffNumShotsText.text = "";
                     }
-                    return local.currentTarget && PlayerControl.LocalPlayer.CanMove;
+                    return Local.currentTarget && PlayerControl.LocalPlayer.CanMove;
                 },
                 () => { sheriffKillButton.Timer = sheriffKillButton.MaxTimer; },
                 hm.KillButton.graphic.sprite,
@@ -131,7 +131,7 @@ namespace TheOtherThem
 
         public static void Clear()
         {
-            players = new List<Sheriff>();
+            Players = new List<Sheriff>();
         }
     }
 }

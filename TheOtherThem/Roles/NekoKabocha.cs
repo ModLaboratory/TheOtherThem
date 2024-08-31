@@ -24,7 +24,7 @@ namespace TheOtherThem
 
         public NekoKabocha()
         {
-            RoleType = roleId = RoleType.NekoKabocha;
+            RoleType = RoleId = RoleType.NekoKabocha;
         }
 
         public override void OnMeetingStart() {
@@ -42,7 +42,7 @@ namespace TheOtherThem
         public override void OnDeath(PlayerControl killer = null)
         {
             killer = killer ?? meetingKiller;
-            if (killer != null && killer != player && killer.isAlive() && !killer.isGM())
+            if (killer != null && killer != Player && killer.isAlive() && !killer.isGM())
             {
                 if ((revengeCrew && killer.isCrew()) ||
                     (revengeNeutral && killer.isNeutral()) ||
@@ -50,21 +50,21 @@ namespace TheOtherThem
                 {
                     if (meetingKiller == null)
                     {
-                        player.MurderPlayerQuick(killer);
+                        Player.MurderPlayerQuick(killer);
                     }
                     else
                     {
                         killer.Exiled();
                         if (PlayerControl.LocalPlayer == killer)
-                            HudManager.Instance.KillOverlay.ShowKillAnimation(player.Data, killer.Data);
+                            HudManager.Instance.KillOverlay.ShowKillAnimation(Player.Data, killer.Data);
                     }
 
                     finalStatuses[killer.PlayerId] = FinalStatus.Revenge;
                 }
             }
-            else if (killer == null && revengeExile && PlayerControl.LocalPlayer == player)
+            else if (killer == null && revengeExile && PlayerControl.LocalPlayer == Player)
             {
-                var candidates = PlayerControl.AllPlayerControls.ToArray().Where(x => x != player && x.isAlive()).ToList();
+                var candidates = PlayerControl.AllPlayerControls.ToArray().Where(x => x != Player && x.isAlive()).ToList();
                 int targetID = rnd.Next(0, candidates.Count);
                 var target = candidates[targetID];
 
@@ -78,9 +78,9 @@ namespace TheOtherThem
 
         public static void meetingKill(PlayerControl player, PlayerControl killer)
         {
-            if (isRole(player))
+            if (IsRole(player))
             {
-                NekoKabocha n = players.First(x => x.player == player);
+                NekoKabocha n = Players.First(x => x.Player == player);
                 n.meetingKiller = killer;
             }
         }
@@ -92,7 +92,7 @@ namespace TheOtherThem
 
         public static void clearAndReload()
         {
-            players = new List<NekoKabocha>();
+            Players = new List<NekoKabocha>();
         }
     }
 }
