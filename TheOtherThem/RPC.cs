@@ -725,7 +725,7 @@ namespace TheOtherThem
         public static void arsonistWin()
         {
             Arsonist.triggerArsonistWin = true;
-            var livingPlayers = PlayerControl.AllPlayerControls.ToArray().Where(p => !p.IsRole(RoleType.Arsonist) && p.isAlive());
+            var livingPlayers = PlayerControl.AllPlayerControls.ToArray().Where(p => !p.IsRole(RoleType.Arsonist) && p.IsAlive());
             foreach (PlayerControl p in livingPlayers)
             {
                 p.Exiled();
@@ -935,11 +935,11 @@ namespace TheOtherThem
         public static void plagueDoctorWin()
         {
             PlagueDoctor.triggerPlagueDoctorWin = true;
-            var livingPlayers = PlayerControl.AllPlayerControls.ToArray().Where(p => !p.IsRole(RoleType.PlagueDoctor) && p.isAlive());
+            var livingPlayers = PlayerControl.AllPlayerControls.ToArray().Where(p => !p.IsRole(RoleType.PlagueDoctor) && p.IsAlive());
             foreach (PlayerControl p in livingPlayers)
             {
                 // Check again so we don't re-kill any lovers
-                if (p.isAlive())
+                if (p.IsAlive())
                     p.Exiled();
                 finalStatuses[p.PlayerId] = FinalStatus.Diseased;
             }

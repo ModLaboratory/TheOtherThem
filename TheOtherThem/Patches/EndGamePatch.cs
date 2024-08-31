@@ -222,7 +222,7 @@ namespace TheOtherThem.Patches
             bool arsonistWin = Arsonist.arsonist != null && gameOverReason == (GameOverReason)CustomGameOverReason.ArsonistWin;
             bool miniLose = Mini.mini != null && gameOverReason == (GameOverReason)CustomGameOverReason.MiniLose;
             bool loversWin = Lovers.anyAlive() && !(Lovers.separateTeam && gameOverReason == GameOverReason.HumansByTask);
-            bool teamJackalWin = gameOverReason == (GameOverReason)CustomGameOverReason.TeamJackalWin && ((Jackal.jackal != null && Jackal.jackal.isAlive()) || (Sidekick.sidekick != null && !Sidekick.sidekick.isAlive()));
+            bool teamJackalWin = gameOverReason == (GameOverReason)CustomGameOverReason.TeamJackalWin && ((Jackal.jackal != null && Jackal.jackal.IsAlive()) || (Sidekick.sidekick != null && !Sidekick.sidekick.IsAlive()));
             bool vultureWin = Vulture.vulture != null && gameOverReason == (GameOverReason)CustomGameOverReason.VultureWin;
             bool lawyerSoloWin = Lawyer.lawyer != null && gameOverReason == (GameOverReason)CustomGameOverReason.LawyerSoloWin;
             bool plagueDoctorWin = PlagueDoctor.Exists && gameOverReason == (GameOverReason)CustomGameOverReason.PlagueDoctorWin;
@@ -368,7 +368,7 @@ namespace TheOtherThem.Patches
             }
 
             // Possible Additional winner: Lawyer
-            if (!lawyerSoloWin && Lawyer.lawyer != null && Lawyer.target != null && Lawyer.target.isAlive())
+            if (!lawyerSoloWin && Lawyer.lawyer != null && Lawyer.target != null && Lawyer.target.IsAlive())
             {
                 CachedPlayerData winningClient = null;
                 foreach (CachedPlayerData winner in EndGameResult.CachedWinners)
@@ -381,7 +381,7 @@ namespace TheOtherThem.Patches
                 { // The Lawyer wins if the client is winning (and alive, but if he wasn't the Lawyer shouldn't exist anymore)
                     if (!EndGameResult.CachedWinners.ToArray().Any(x => x.PlayerName == Lawyer.lawyer.Data.PlayerName))
                         EndGameResult.CachedWinners.Add(new CachedPlayerData(Lawyer.lawyer.Data));
-                    if (Lawyer.lawyer.isAlive())
+                    if (Lawyer.lawyer.IsAlive())
                     { // The Lawyer steals the clients win
                         EndGameResult.CachedWinners.Remove(winningClient);
                         AdditionalTempData.additionalWinConditions.Add(WinCondition.AdditionalLawyerStolenWin);
@@ -407,7 +407,7 @@ namespace TheOtherThem.Patches
                     AdditionalTempData.additionalWinConditions.Add(WinCondition.OpportunistWin);
 
                 // Possible Additional winner: Pursuer
-                if (Pursuer.pursuer != null && Pursuer.pursuer.isAlive())
+                if (Pursuer.pursuer != null && Pursuer.pursuer.IsAlive())
                 {
                     if (!EndGameResult.CachedWinners.ToArray().Any(x => x.PlayerName == Pursuer.pursuer.Data.PlayerName))
                         EndGameResult.CachedWinners.Add(new CachedPlayerData(Pursuer.pursuer.Data));

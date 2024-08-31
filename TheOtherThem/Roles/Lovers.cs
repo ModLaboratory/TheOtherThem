@@ -51,7 +51,7 @@ namespace TheOtherThem
         {
             get
             {
-                return lover1 != null && lover2 != null && lover1.isAlive() && lover2.isAlive();
+                return lover1 != null && lover2 != null && lover1.IsAlive() && lover2.IsAlive();
             }
         }
 

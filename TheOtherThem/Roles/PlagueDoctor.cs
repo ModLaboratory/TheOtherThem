@@ -94,13 +94,13 @@ namespace TheOtherThem
         {
             if (Player == PlayerControl.LocalPlayer)
             {
-                if (numInfections > 0 && Player.isAlive())
+                if (numInfections > 0 && Player.IsAlive())
                 {
                     currentTarget = setTarget(untargetablePlayers: infected.Values.ToList());
                     setPlayerOutline(currentTarget, PlagueDoctor.color);
                 }
 
-                if (!meetingFlag && (canWinDead || Player.isAlive()))
+                if (!meetingFlag && (canWinDead || Player.IsAlive()))
                 {
                     List<PlayerControl> newInfected = new List<PlayerControl>();
                     foreach (PlayerControl target in PlayerControl.AllPlayerControls)

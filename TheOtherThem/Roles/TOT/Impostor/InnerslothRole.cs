@@ -27,14 +27,21 @@ public class InnerslothRole : CustomRole
 
     public override void CreateButtons()
     {
-        //_ = new CustomButton(() =>
-        //{
-        //    var writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.InnerslothSabotage, Hazel.SendOption.Reliable);
-        //    AmongUsClient.Instance.FinishRpcImmediately(writer);
-        //    CustomSabotageComms();
-        //},
-        //() => !CustomSabotageStarted,
-        //()=>)
+        _ = new CustomButton(() =>
+        {
+            var writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.InnerslothSabotage, Hazel.SendOption.Reliable);
+            AmongUsClient.Instance.FinishRpcImmediately(writer);
+            CustomSabotageComms();
+        },
+        () => PlayerControl.LocalPlayer.IsRole(MyRoleType) && PlayerControl.LocalPlayer.IsAlive(),
+        () => !CustomSabotageStarted,
+        () => { },
+        null,
+        new(3, 0, 0),
+        HudManager.Instance,
+        HudManager.Instance.UseButton,
+        KeyCode.X,
+        buttonText: ModTranslation.GetString("InnerslothAbilityLabel"));
     }
 
     public override void OnRpcReceived(byte callId, MessageReader reader)

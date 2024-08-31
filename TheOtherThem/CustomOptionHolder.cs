@@ -344,6 +344,7 @@ namespace TheOtherThem {
 
         // TOT Roles
         public static CustomRoleOption InnerslothSpawnRate { get; set; }
+        public static CustomOption InnerslothAbilltyCooldown { get; set; }
 
 
         internal static Dictionary<byte, byte[]> blockedRolePairings = new Dictionary<byte, byte[]>();
@@ -459,7 +460,8 @@ namespace TheOtherThem {
 
             var innerslothRoleInfo = InnerslothRole.Instance.MyRoleInfo;
             InnerslothSpawnRate = new(2000, innerslothRoleInfo.NameKey, innerslothRoleInfo.RoleColor, 1);
-            
+            InnerslothAbilltyCooldown = CustomOption.Create(2001, "InnerslothAbilityCd", 20, 10, 60, 5, InnerslothSpawnRate);
+
             madmateSpawnRate = new CustomRoleOption(360, "madmate", Madmate.color);
             madmateType = CustomOption.Create(366, "madmateType", new string[] { "madmateDefault", "madmateWithRole", "madmateRandom" }, madmateSpawnRate);
             madmateFixedRole = new CustomRoleSelectionOption(369, "madmateFixedRole", Madmate.validRoles, madmateType);

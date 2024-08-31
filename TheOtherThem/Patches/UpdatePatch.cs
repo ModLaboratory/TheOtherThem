@@ -247,7 +247,7 @@ namespace TheOtherThem.Patches {
                  MeetingHud.Instance.state == MeetingHud.VoteStates.Discussion);
             
             // Lovers
-            if (PlayerControl.LocalPlayer.isLovers() && PlayerControl.LocalPlayer.isAlive()) {
+            if (PlayerControl.LocalPlayer.isLovers() && PlayerControl.LocalPlayer.IsAlive()) {
                 string suffix = Lovers.getIcon(PlayerControl.LocalPlayer);
                 var lover1 = PlayerControl.LocalPlayer;
                 var lover2 = PlayerControl.LocalPlayer.getPartner();

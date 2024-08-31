@@ -42,7 +42,7 @@ namespace TheOtherThem
         public override void OnDeath(PlayerControl killer = null)
         {
             killer = killer ?? meetingKiller;
-            if (killer != null && killer != Player && killer.isAlive() && !killer.isGM())
+            if (killer != null && killer != Player && killer.IsAlive() && !killer.isGM())
             {
                 if ((revengeCrew && killer.isCrew()) ||
                     (revengeNeutral && killer.isNeutral()) ||
@@ -64,7 +64,7 @@ namespace TheOtherThem
             }
             else if (killer == null && revengeExile && PlayerControl.LocalPlayer == Player)
             {
-                var candidates = PlayerControl.AllPlayerControls.ToArray().Where(x => x != Player && x.isAlive()).ToList();
+                var candidates = PlayerControl.AllPlayerControls.ToArray().Where(x => x != Player && x.IsAlive()).ToList();
                 int targetID = rnd.Next(0, candidates.Count);
                 var target = candidates[targetID];
 

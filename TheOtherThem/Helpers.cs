@@ -270,7 +270,7 @@ namespace TheOtherThem {
                   (finalStatuses != null && finalStatuses.ContainsKey(player.PlayerId) && finalStatuses[player.PlayerId] != FinalStatus.Alive);
         }
 
-        public static bool isAlive(this PlayerControl player)
+        public static bool IsAlive(this PlayerControl player)
         {
             return !isDead(player);
         }

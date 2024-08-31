@@ -295,7 +295,7 @@ namespace TheOtherThem.Patches
             // If LocalPlayer is Sidekick, the Jackal is disconnected and Sidekick promotion is enabled, then trigger promotion
             if (Sidekick.promotesToJackal && 
                 PlayerControl.LocalPlayer.IsRole(RoleType.Sidekick) &&
-                PlayerControl.LocalPlayer.isAlive() && 
+                PlayerControl.LocalPlayer.IsAlive() && 
                 (Jackal.jackal == null || Jackal.jackal.Data.Disconnected))
             {
                 MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.SidekickPromotes, Hazel.SendOption.Reliable, -1);
@@ -765,7 +765,7 @@ namespace TheOtherThem.Patches
                     byte reporter = deadPlayer.killerIfExisting.PlayerId;
                     if (Bait.bait.hasModifier(ModifierType.Madmate))
                     {
-                        var candidates = PlayerControl.AllPlayerControls.ToArray().Where(x => x.isAlive() && !x.isImpostor() && !x.isDummy).ToList();
+                        var candidates = PlayerControl.AllPlayerControls.ToArray().Where(x => x.IsAlive() && !x.isImpostor() && !x.isDummy).ToList();
                         int i = rnd.Next(0, candidates.Count);
                         reporter = candidates.Count > 0 ? candidates[i].PlayerId : deadPlayer.killerIfExisting.PlayerId;
                     }

@@ -69,7 +69,7 @@ namespace TheOtherThem
             // SerialKiller Suicide Countdown
             serialKillerButton = new CustomButton(
                 () => { },
-                () => { return PlayerControl.LocalPlayer.IsRole(RoleType.SerialKiller) && PlayerControl.LocalPlayer.isAlive() && Local.isCountDown; },
+                () => { return PlayerControl.LocalPlayer.IsRole(RoleType.SerialKiller) && PlayerControl.LocalPlayer.IsAlive() && Local.isCountDown; },
                 () => { return true; },
                 () => { },
                 SerialKiller.getButtonSprite(),

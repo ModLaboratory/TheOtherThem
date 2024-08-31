@@ -73,7 +73,7 @@ namespace TheOtherThem
 
         public static bool isStealthed(PlayerControl player)
         {
-            if (IsRole(player) && player.isAlive())
+            if (IsRole(player) && player.IsAlive())
             {
                 Ninja n = Players.First(x => x.Player == player);
                 return n.stealthed;
@@ -83,7 +83,7 @@ namespace TheOtherThem
 
         public static float stealthFade(PlayerControl player)
         {
-            if (IsRole(player) && fadeTime > 0f && player.isAlive())
+            if (IsRole(player) && fadeTime > 0f && player.IsAlive())
             {
                 Ninja n = Players.First(x => x.Player == player);
                 return Mathf.Min(1.0f, (float)(DateTime.UtcNow - n.stealthedAt).TotalSeconds / fadeTime);
@@ -93,7 +93,7 @@ namespace TheOtherThem
 
         public static bool isPenalized(PlayerControl player)
         {
-            if (IsRole(player) && player.isAlive())
+            if (IsRole(player) && player.IsAlive())
             {
                 Ninja n = Players.First(x => x.Player == player);
                 return n.penalized;

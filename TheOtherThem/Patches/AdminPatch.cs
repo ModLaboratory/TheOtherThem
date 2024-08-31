@@ -34,7 +34,7 @@ namespace TheOtherThem.Patches {
         static void UseAdminTime()
         {
             // Don't waste network traffic if we're out of time.
-            if (MapOptions.restrictDevices > 0 && MapOptions.restrictAdminTime > 0f && PlayerControl.LocalPlayer.isAlive())
+            if (MapOptions.restrictDevices > 0 && MapOptions.restrictAdminTime > 0f && PlayerControl.LocalPlayer.IsAlive())
             {
                 MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.UseAdminTime, Hazel.SendOption.Reliable, -1);
                 writer.Write(adminTimer);

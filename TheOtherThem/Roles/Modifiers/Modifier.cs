@@ -89,7 +89,7 @@ namespace TheOtherThem
         {
             get
             {
-                return players.Select(x => x.player).Where(x => x.isAlive()).ToList();
+                return players.Select(x => x.player).Where(x => x.IsAlive()).ToList();
             }
         }
 
@@ -97,7 +97,7 @@ namespace TheOtherThem
         {
             get
             {
-                return players.Select(x => x.player).Where(x => !x.isAlive()).ToList();
+                return players.Select(x => x.player).Where(x => !x.IsAlive()).ToList();
             }
         }
 

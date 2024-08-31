@@ -160,7 +160,7 @@ namespace TheOtherThem
         {
             get
             {
-                return Players.Select(x => x.Player).Where(x => x.isAlive()).ToList();
+                return Players.Select(x => x.Player).Where(x => x.IsAlive()).ToList();
             }
         }
 
@@ -168,7 +168,7 @@ namespace TheOtherThem
         {
             get
             {
-                return Players.Select(x => x.Player).Where(x => !x.isAlive()).ToList();
+                return Players.Select(x => x.Player).Where(x => !x.IsAlive()).ToList();
             }
         }
 
@@ -304,12 +304,9 @@ namespace TheOtherThem
                     return Lawyer.lawyer == player;
                 case RoleType.Pursuer:
                     return Pursuer.pursuer == player;
-                default:
-                    Main.Logger.LogError($"isRole: no method found for role type {role}");
-                    break;
             }
 
-            return false;
+            return CustomRole.AllRoles.FirstOrDefault(cr => cr.MyRoleType == role).Players.Contains(player.Data);
         }
 
         public static void ClearRole(this PlayerControl player)
@@ -720,7 +717,7 @@ namespace TheOtherThem
 
             if (player.IsRole(RoleType.Jackal))
             { // Promote Sidekick and hence override the the Jackal or erase Jackal
-                if (Sidekick.promotesToJackal && Sidekick.sidekick != null && Sidekick.sidekick.isAlive())
+                if (Sidekick.promotesToJackal && Sidekick.sidekick != null && Sidekick.sidekick.IsAlive())
                 {
                     RPCProcedure.sidekickPromotes();
                 }

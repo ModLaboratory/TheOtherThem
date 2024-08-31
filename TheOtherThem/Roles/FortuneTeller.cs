@@ -55,7 +55,7 @@ namespace TheOtherThem
 
             foreach (var p in PlayerControl.AllPlayerControls)
             {
-                playerStatus[p.PlayerId] = p.isAlive();
+                playerStatus[p.PlayerId] = p.IsAlive();
             }
         }
 

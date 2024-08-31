@@ -31,7 +31,7 @@ namespace TheOtherThem
 
         public static bool isLightActive(PlayerControl player)
         {
-            if (IsRole(player) && player.isAlive())
+            if (IsRole(player) && player.IsAlive())
             {
                 Lighter r = Players.First(x => x.Player == player);
                 return r.lightActive;

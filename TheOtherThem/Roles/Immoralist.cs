@@ -150,7 +150,7 @@ namespace TheOtherThem
             public static void Postfix(PlayerControl __instance, [HarmonyArgument(0)] PlayerControl target)
             {
                 PlayerControl player = PlayerControl.LocalPlayer;
-                if (player.IsRole(RoleType.Immoralist) && player.isAlive())
+                if (player.IsRole(RoleType.Immoralist) && player.IsAlive())
                 {
                     HudManager.Instance.FullScreen.enabled = true;
                     HudManager.Instance.StartCoroutine(Effects.Lerp(1f, new Action<float>((p) =>

@@ -73,7 +73,7 @@ namespace TheOtherThem
             {
                 foreach (var immoralist in Immoralist.AllPlayers)
                 {
-                    if (immoralist.isAlive())
+                    if (immoralist.IsAlive())
                     {
                         if (killer == null)
                         {
@@ -93,7 +93,7 @@ namespace TheOtherThem
         {
             if (Player == PlayerControl.LocalPlayer) {
                 arrowUpdate();
-                if (Player.isAlive())
+                if (Player.IsAlive())
                 {
                     List<PlayerControl> untargetablePlayers = new List<PlayerControl>();
                     foreach (var p in PlayerControl.AllPlayerControls)
@@ -151,7 +151,7 @@ namespace TheOtherThem
 
         public static float stealthFade(PlayerControl player)
         {
-            if (IsRole(player) && fadeTime > 0f && player.isAlive())
+            if (IsRole(player) && fadeTime > 0f && player.IsAlive())
             {
                 Fox n = Players.First(x => x.Player == player);
                 return Mathf.Min(1.0f, (float)(DateTime.UtcNow - n.stealthedAt).TotalSeconds / fadeTime);
@@ -161,7 +161,7 @@ namespace TheOtherThem
 
         public static bool isStealthed(PlayerControl player)
         {
-            if (IsRole(player) && player.isAlive())
+            if (IsRole(player) && player.IsAlive())
             {
                 Fox n = Players.First(x => x.Player == player);
                 return n.stealthed;
@@ -278,7 +278,7 @@ namespace TheOtherThem
                     }
                     numRepair -= 1;
                 },
-                () => { return PlayerControl.LocalPlayer.IsRole(RoleType.Fox) && PlayerControl.LocalPlayer.isAlive() && numRepair > 0; },
+                () => { return PlayerControl.LocalPlayer.IsRole(RoleType.Fox) && PlayerControl.LocalPlayer.IsAlive() && numRepair > 0; },
                 () =>
                 {
                     bool sabotageActive = false;
@@ -304,7 +304,7 @@ namespace TheOtherThem
                     AmongUsClient.Instance.FinishRpcImmediately(writer);
                     RPCProcedure.foxCreatesImmoralist(currentTarget.PlayerId);
                 },
-                () => { return !Immoralist.Exists && canCreateImmoralist && PlayerControl.LocalPlayer.IsRole(RoleType.Fox) && PlayerControl.LocalPlayer.isAlive(); },
+                () => { return !Immoralist.Exists && canCreateImmoralist && PlayerControl.LocalPlayer.IsRole(RoleType.Fox) && PlayerControl.LocalPlayer.IsAlive(); },
                 () => { return canCreateImmoralist && Fox.currentTarget != null && PlayerControl.LocalPlayer.CanMove; },
                 () => { foxImmoralistButton.Timer = 20; },
                 getImmoralistButtonSprite(),
@@ -383,7 +383,7 @@ namespace TheOtherThem
             bool isAlive = false;
             foreach (var fox in Fox.AllPlayers)
             {
-                if (fox.isAlive() && !exiledFox.Contains(fox.PlayerId))
+                if (fox.IsAlive() && !exiledFox.Contains(fox.PlayerId))
                 {
                     isAlive = true;
                 }
@@ -397,7 +397,7 @@ namespace TheOtherThem
             bool isCompleted = false;
             foreach (var fox in AllPlayers)
             {
-                if (fox.isAlive())
+                if (fox.IsAlive())
                 {
                     if (tasksComplete(fox))
                     {
