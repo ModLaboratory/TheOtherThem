@@ -4,6 +4,7 @@
         <Version>3.5.5</Version>
         <Description>TheOtherThem</Description>
         <Authors>Eisbison</Authors>
+		<LangVersion>latest</LangVersion>
     </PropertyGroup>
 
     <PropertyGroup>

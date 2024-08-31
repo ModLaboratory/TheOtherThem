@@ -10,10 +10,7 @@ namespace TheOtherThem.Patches
     public static class CredentialsPatch
     {
 
-        public const string BaseCredentials = $@"<size=130%><color=#ff351f>TheOtherThem</color></size> v{Main.VersionString}";
-
-        public const string ContributorsCredentials = "Original TORGM (v3.5.4) GitHub Contributors: Alex2911, amsyarasyiq, gendelo3\nNew Version Among Us Support: JieGeLovesDengDuaLang\nThe Other Them Contributors: JieGeLovesDengDuaLang";
-
+        public const string BaseCredentials = $@"<size=130%><color=#ff8c00>TheOtherThem</color></size> v{Main.VersionString}";
 
         [HarmonyPatch(typeof(PingTracker), nameof(PingTracker.Update))]
         private static class PingTrackerPatch
@@ -132,7 +129,7 @@ namespace TheOtherThem.Patches
             static bool Prefix(StatsPopup __instance)
             {
                 if (__instance.name != PopupName) return true;
-                __instance.StatsText.text = ContributorsCredentials;
+                __instance.StatsText.text = ModTranslation.GetString("CreditsToTFull");
                 __instance.transform.Find("GameStatsButton").gameObject.SetActive(false);
                 __instance.transform.Find("RoleStatsButton").gameObject.SetActive(false);
                 __instance.transform.Find("Title_TMP").GetComponent<TextTranslatorTMP>().Destroy();

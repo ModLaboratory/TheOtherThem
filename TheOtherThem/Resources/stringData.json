@@ -3805,5 +3805,9 @@
   "InnerslothAbilityLabel": {
     "0": "LAG",
     "13": "卡顿"
+  },
+  "CreditsTOTFull": {
+    "0": "Original TORGM (v3.5.4) GitHub Contributors: \n\t{0}\n\nTORGM Compatibility: JieGeLovesDengDuaLang\nThe Other Them Developers: JieGeLovesDengDuaLang",
+    "13": "TORGM v3.5.4 贡献者： \n\t{0}\n\nTORGM 新版游戏适配： JieGeLovesDengDuaLang\nThe Other Them 开发者： JieGeLovesDengDuaLang"
   }
 }
