@@ -159,26 +159,26 @@ namespace TheOtherThem.Patches {
                         }
                     }
 
-                    if (CustomOptionHolder.uselessOptions.getBool() && CustomOptionHolder.dynamicMap.getBool() && continueStart) {
+                    if (CustomOptionHolder.uselessOptions.GetBool() && CustomOptionHolder.dynamicMap.GetBool() && continueStart) {
                         // 0 = Skeld
                         // 1 = Mira HQ
                         // 2 = Polus
                         // 3 = Dleks - deactivated
                         // 4 = Airship
                         List<byte> possibleMaps = new List<byte>();
-                        if (CustomOptionHolder.dynamicMapEnableSkeld.getBool())
+                        if (CustomOptionHolder.dynamicMapEnableSkeld.GetBool())
                             possibleMaps.Add(0);
-                        if (CustomOptionHolder.dynamicMapEnableMira.getBool())
+                        if (CustomOptionHolder.dynamicMapEnableMira.GetBool())
                             possibleMaps.Add(1);
-                        if (CustomOptionHolder.dynamicMapEnablePolus.getBool())
+                        if (CustomOptionHolder.dynamicMapEnablePolus.GetBool())
                             possibleMaps.Add(2);
-                        if (CustomOptionHolder.dynamicMapEnableDleks.getBool())
+                        if (CustomOptionHolder.dynamicMapEnableDleks.GetBool())
                             possibleMaps.Add(3);
-                        if (CustomOptionHolder.dynamicMapEnableAirShip.getBool())
+                        if (CustomOptionHolder.dynamicMapEnableAirShip.GetBool())
                             possibleMaps.Add(4);
                         byte chosenMapId  = possibleMaps[TheOtherRoles.rnd.Next(possibleMaps.Count)];
 
-                        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.DynamicMapOption, Hazel.SendOption.Reliable, -1);
+                        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.DynamicMapOption, Hazel.SendOption.Reliable, -1);
                         writer.Write(chosenMapId);
                         AmongUsClient.Instance.FinishRpcImmediately(writer);
                         RPCProcedure.dynamicMapOption(chosenMapId);

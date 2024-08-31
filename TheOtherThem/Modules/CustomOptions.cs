@@ -49,7 +49,7 @@ namespace TheOtherThem
         {
             get
             {
-                return Helpers.RolesEnabled && this.getBool();
+                return Helpers.RolesEnabled && this.GetBool();
             }
         }
 
@@ -138,7 +138,7 @@ namespace TheOtherThem
         {
             if (PlayerControl.AllPlayerControls.Count <= 1 || AmongUsClient.Instance?.AmHost == false && PlayerControl.LocalPlayer == null) return;
             
-            MessageWriter messageWriter = AmongUsClient.Instance.StartRpc(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ShareOptions, Hazel.SendOption.Reliable);
+            MessageWriter messageWriter = AmongUsClient.Instance.StartRpc(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.ShareOptions, Hazel.SendOption.Reliable);
             messageWriter.WritePacked((uint)CustomOption.options.Count);
             foreach (CustomOption option in CustomOption.options)
             {
@@ -150,17 +150,17 @@ namespace TheOtherThem
 
         // Getter
 
-        public virtual int getSelection()
+        public virtual int GetSelection()
         {
             return selection;
         }
 
-        public virtual bool getBool()
+        public virtual bool GetBool()
         {
             return selection > 0;
         }
 
-        public virtual float getFloat()
+        public virtual float GetFloat()
         {
             return (float)selections[selection];
         }
@@ -231,7 +231,7 @@ namespace TheOtherThem
                     return 0;
 
                 if (countOption != null)
-                    return Mathf.RoundToInt(countOption.getFloat());
+                    return Mathf.RoundToInt(countOption.GetFloat());
 
                 return 1;
             }
@@ -246,7 +246,7 @@ namespace TheOtherThem
         }
 
         public CustomRoleOption(int id, string name, Color color, int max = 15, bool roleEnabled = true) :
-            base(id, Helpers.cs(color, name), CustomOptionHolder.rates, "", null, true, false, "")
+            base(id, Helpers.ColorString(color, name), CustomOptionHolder.rates, "", null, true, false, "")
         {
             this.roleEnabled = roleEnabled;
 
@@ -268,9 +268,9 @@ namespace TheOtherThem
         public CustomOption roleAssignEqually = null;
         public RoleType roleType;
 
-        public int impChance { get { return roleImpChance.getSelection(); } }
+        public int impChance { get { return roleImpChance.GetSelection(); } }
         
-        public bool assignEqually { get { return roleAssignEqually.getSelection() == 0; } }
+        public bool assignEqually { get { return roleAssignEqually.GetSelection() == 0; } }
 
         public CustomDualRoleOption(int id, string name, Color color, RoleType roleType, int max = 15, bool roleEnabled = true) : base(id, name, color, max, roleEnabled)
         {
@@ -289,9 +289,9 @@ namespace TheOtherThem
         public CustomOption longTasksOption = null;
         public CustomOption shortTasksOption = null;
 
-        public int commonTasks { get { return Mathf.RoundToInt(commonTasksOption.getSelection()); } }
-        public int longTasks { get { return Mathf.RoundToInt(longTasksOption.getSelection()); } }
-        public int shortTasks { get { return Mathf.RoundToInt(shortTasksOption.getSelection()); } }
+        public int commonTasks { get { return Mathf.RoundToInt(commonTasksOption.GetSelection()); } }
+        public int longTasks { get { return Mathf.RoundToInt(longTasksOption.GetSelection()); } }
+        public int shortTasks { get { return Mathf.RoundToInt(shortTasksOption.GetSelection()); } }
 
         public List<byte> generateTasks()
         {
@@ -330,7 +330,7 @@ namespace TheOtherThem
             var strings = roleTypes.Select(
                 x => 
                     x == RoleType.NoRole ? "optionOff" :
-                    RoleInfo.allRoleInfos.First(y => y.roleType == x).nameColored
+                    RoleInfo.AllRoleInfos.First(y => y.MyRoleType == x).NameColored
                 ).ToArray();
 
             Init(id, name, strings, 0, parent, false, false, "");
@@ -352,17 +352,17 @@ namespace TheOtherThem
             //options.Add(this);
         }
 
-        public override int getSelection()
+        public override int GetSelection()
         {
             return 0;
         }
 
-        public override bool getBool()
+        public override bool GetBool()
         {
             return true;
         }
 
-        public override float getFloat()
+        public override float GetFloat()
         {
             return 0f;
         }
@@ -528,7 +528,7 @@ namespace TheOtherThem
                 relevantOptions.AddRange(options.Where(x => x.type == CustomOptionType.Modifier && x.isHeader));
                 foreach (var option in options)
                 {
-                    if (option.parent != null && option.parent.getSelection() > 0)
+                    if (option.parent != null && option.parent.GetSelection() > 0)
                     {
                         if (option.id == 103) //Deputy
                             relevantOptions.Insert(relevantOptions.IndexOf(CustomOptionHolder.sheriffSpawnRate) + 1, option);
@@ -595,7 +595,7 @@ namespace TheOtherThem
                     num2 = -3f;
                 }
                 viewSettingsInfoPanel.transform.localPosition = new Vector3(num2, num, -2f);
-                int value = option.getSelection();
+                int value = option.GetSelection();
                 viewSettingsInfoPanel.SetInfo(StringNames.ImpostorsCategory, ModTranslation.GetString(option.selections[value].ToString()), 61);
                 viewSettingsInfoPanel.titleText.text = ModTranslation.GetString(option.name);
                 if ((int)optionType == 99)

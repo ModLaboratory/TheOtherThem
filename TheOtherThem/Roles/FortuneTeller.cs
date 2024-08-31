@@ -19,10 +19,10 @@ namespace TheOtherThem
         }
 
         public static Color color = new Color32(175, 198, 241, byte.MaxValue);
-        public static int numTasks { get { return (int)CustomOptionHolder.fortuneTellerNumTasks.getFloat(); } }
-        public static DivineResults divineResult { get { return (DivineResults)CustomOptionHolder.fortuneTellerResults.getSelection(); } }
-        public static float duration { get { return CustomOptionHolder.fortuneTellerDuration.getFloat(); } }
-        public static float distance { get { return CustomOptionHolder.fortuneTellerDistance.getFloat(); } }
+        public static int numTasks { get { return (int)CustomOptionHolder.fortuneTellerNumTasks.GetFloat(); } }
+        public static DivineResults divineResult { get { return (DivineResults)CustomOptionHolder.fortuneTellerResults.GetSelection(); } }
+        public static float duration { get { return CustomOptionHolder.fortuneTellerDuration.GetFloat(); } }
+        public static float distance { get { return CustomOptionHolder.fortuneTellerDistance.GetFloat(); } }
 
         public static bool endGameFlag = false;
         public static bool meetingFlag = false;
@@ -122,7 +122,7 @@ namespace TheOtherThem
             {
                 return () =>
                 {
-                    return PlayerControl.LocalPlayer.isRole(RoleType.FortuneTeller);
+                    return PlayerControl.LocalPlayer.IsRole(RoleType.FortuneTeller);
                     //var p = PlayerControl.LocalPlayer;
                     //if (!p.isRole(RoleType.FortuneTeller)) return false;
                 };
@@ -156,7 +156,7 @@ namespace TheOtherThem
                 {
                     //　占い師以外の場合、リソースがない場合はボタンを表示しない
                     if (!MapOptions.playerIcons.ContainsKey(index) ||
-                        !PlayerControl.LocalPlayer.isRole(RoleType.FortuneTeller) ||
+                        !PlayerControl.LocalPlayer.IsRole(RoleType.FortuneTeller) ||
                         PlayerControl.LocalPlayer.isDead() ||
                         PlayerControl.LocalPlayer.PlayerId == index ||
                         !isCompletedNumTasks(PlayerControl.LocalPlayer) ||
@@ -346,7 +346,7 @@ namespace TheOtherThem
 
             else if (divineResult == DivineResults.Role) { 
                 msgBase = "divineMessageRole";
-                msgInfo = String.Join(" ", RoleInfo.getRoleInfoForPlayer(p).Select(x => Helpers.cs(x.color, x.name)).ToArray());
+                msgInfo = String.Join(" ", RoleInfo.getRoleInfoForPlayer(p).Select(x => Helpers.ColorString(x.RoleColor, x.Name)).ToArray());
             }
 
             string msg = string.Format(ModTranslation.GetString(msgBase), p.name, msgInfo);
@@ -359,7 +359,7 @@ namespace TheOtherThem
             numUsed += 1;
 
             // 占いを実行したことで発火される処理を他クライアントに通知
-            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.FortuneTellerUsedDivine, Hazel.SendOption.Reliable, -1);
+            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.FortuneTellerUsedDivine, Hazel.SendOption.Reliable, -1);
             writer.Write(PlayerControl.LocalPlayer.PlayerId);
             writer.Write(p.PlayerId);
             AmongUsClient.Instance.FinishRpcImmediately(writer);

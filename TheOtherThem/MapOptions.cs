@@ -47,25 +47,25 @@ namespace TheOtherThem{
             ventsToSeal = new List<Vent>();
             playerIcons = new Dictionary<byte, PoolablePlayer>();
 
-            maxNumberOfMeetings = Mathf.RoundToInt(CustomOptionHolder.maxNumberOfMeetings.getSelection());
-            blockSkippingInEmergencyMeetings = CustomOptionHolder.blockSkippingInEmergencyMeetings.getBool();
-            noVoteIsSelfVote = CustomOptionHolder.noVoteIsSelfVote.getBool();
-            hidePlayerNames = CustomOptionHolder.hidePlayerNames.getBool();
+            maxNumberOfMeetings = Mathf.RoundToInt(CustomOptionHolder.maxNumberOfMeetings.GetSelection());
+            blockSkippingInEmergencyMeetings = CustomOptionHolder.blockSkippingInEmergencyMeetings.GetBool();
+            noVoteIsSelfVote = CustomOptionHolder.noVoteIsSelfVote.GetBool();
+            hidePlayerNames = CustomOptionHolder.hidePlayerNames.GetBool();
 
-            hideOutOfSightNametags = CustomOptionHolder.hideOutOfSightNametags.getBool();
+            hideOutOfSightNametags = CustomOptionHolder.hideOutOfSightNametags.GetBool();
 
-            hideSettings = CustomOptionHolder.hideSettings.getBool();
+            hideSettings = CustomOptionHolder.hideSettings.GetBool();
 
-            randomizeColors = CustomOptionHolder.uselessOptions.getBool() && CustomOptionHolder.playerColorRandom.getBool();
-            allowDupeNames = CustomOptionHolder.uselessOptions.getBool() && CustomOptionHolder.playerNameDupes.getBool();
+            randomizeColors = CustomOptionHolder.uselessOptions.GetBool() && CustomOptionHolder.playerColorRandom.GetBool();
+            allowDupeNames = CustomOptionHolder.uselessOptions.GetBool() && CustomOptionHolder.playerNameDupes.GetBool();
 
-            restrictDevices = CustomOptionHolder.restrictDevices.getSelection();
-            restrictAdminTime = restrictAdminTimeMax = CustomOptionHolder.restrictAdmin.getFloat();
-            restrictCamerasTime = restrictCamerasTimeMax = CustomOptionHolder.restrictCameras.getFloat();
-            restrictVitalsTime = restrictVitalsTimeMax = CustomOptionHolder.restrictVents.getFloat();
-            disableVents = CustomOptionHolder.disableVents.getBool();
+            restrictDevices = CustomOptionHolder.restrictDevices.GetSelection();
+            restrictAdminTime = restrictAdminTimeMax = CustomOptionHolder.restrictAdmin.GetFloat();
+            restrictCamerasTime = restrictCamerasTimeMax = CustomOptionHolder.restrictCameras.GetFloat();
+            restrictVitalsTime = restrictVitalsTimeMax = CustomOptionHolder.restrictVents.GetFloat();
+            disableVents = CustomOptionHolder.disableVents.GetBool();
 
-            allowParallelMedBayScans = CustomOptionHolder.allowParallelMedBayScans.getBool();
+            allowParallelMedBayScans = CustomOptionHolder.allowParallelMedBayScans.GetBool();
             ghostsSeeRoles = Main.GhostsSeeRoles.Value;
             ghostsSeeTasks = Main.GhostsSeeTasks.Value;
             ghostsSeeVotes = Main.GhostsSeeVotes.Value;

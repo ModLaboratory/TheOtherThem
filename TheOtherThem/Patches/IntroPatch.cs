@@ -121,13 +121,13 @@ namespace TheOtherThem.Patches {
 
         public static void setupIntroTeam(IntroCutscene __instance, ref  Il2CppSystem.Collections.Generic.List<PlayerControl> yourTeam) {
             List<RoleInfo> infos = RoleInfo.getRoleInfoForPlayer(PlayerControl.LocalPlayer);
-            RoleInfo roleInfo = infos.Where(info => info.roleType != RoleType.Lovers).FirstOrDefault();
+            RoleInfo roleInfo = infos.Where(info => info.MyRoleType != RoleType.Lovers).FirstOrDefault();
             if (roleInfo == null) return;
             if (PlayerControl.LocalPlayer.isNeutral() || PlayerControl.LocalPlayer.isGM())
             {
-                __instance.BackgroundBar.material.color = roleInfo.color;
-                __instance.TeamTitle.text = roleInfo.name;
-                __instance.TeamTitle.color = roleInfo.color;
+                __instance.BackgroundBar.material.color = roleInfo.RoleColor;
+                __instance.TeamTitle.text = roleInfo.Name;
+                __instance.TeamTitle.color = roleInfo.RoleColor;
                 __instance.ImpostorText.text = "";
             }
         }
@@ -135,7 +135,7 @@ namespace TheOtherThem.Patches {
         [HarmonyPatch(typeof(IntroCutscene._ShowRole_d__41), nameof(IntroCutscene._ShowRole_d__41.MoveNext))]
         class SetUpRoleTextPatch {
             public static void Postfix(IntroCutscene._ShowRole_d__41 __instance) {
-                if (!CustomOptionHolder.activateRoles.getBool()) return; // Don't override the intro of the vanilla roles
+                if (!CustomOptionHolder.activateRoles.GetBool()) return; // Don't override the intro of the vanilla roles
 
                 List<RoleInfo> infos = RoleInfo.getRoleInfoForPlayer(PlayerControl.LocalPlayer, new RoleType[] { RoleType.Lovers });
                 RoleInfo roleInfo = infos.FirstOrDefault();
@@ -143,11 +143,11 @@ namespace TheOtherThem.Patches {
                 var intro = __instance.__4__this;
 
                 if (roleInfo != null && roleInfo != RoleInfo.crewmate && roleInfo != RoleInfo.impostor && !(roleInfo == RoleInfo.fortuneTeller && FortuneTeller.numTasks > 0)) {
-                    intro.YouAreText.color = roleInfo.color;
-                    intro.RoleText.text = roleInfo.name;
-                    intro.RoleText.color = roleInfo.color;
-                    intro.RoleBlurbText.text = roleInfo.introDescription;
-                    intro.RoleBlurbText.color = roleInfo.color;
+                    intro.YouAreText.color = roleInfo.RoleColor;
+                    intro.RoleText.text = roleInfo.Name;
+                    intro.RoleText.color = roleInfo.RoleColor;
+                    intro.RoleBlurbText.text = roleInfo.IntroDescription;
+                    intro.RoleBlurbText.color = roleInfo.RoleColor;
                 }
 
                 if (PlayerControl.LocalPlayer.hasModifier(ModifierType.Madmate))
@@ -166,9 +166,9 @@ namespace TheOtherThem.Patches {
                     intro.RoleBlurbText.color = Madmate.color;
                 }
 
-                if (infos.Any(info => info.roleType == RoleType.Lovers)) {
+                if (infos.Any(info => info.MyRoleType == RoleType.Lovers)) {
                     PlayerControl otherLover = PlayerControl.LocalPlayer.getPartner();
-                	intro.RoleBlurbText.text += "\n" + Helpers.cs(Lovers.color, String.Format(ModTranslation.GetString("loversFlavor"), otherLover?.Data?.PlayerName ?? ""));
+                	intro.RoleBlurbText.text += "\n" + Helpers.ColorString(Lovers.color, String.Format(ModTranslation.GetString("loversFlavor"), otherLover?.Data?.PlayerName ?? ""));
                 } 
             }
         }

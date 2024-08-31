@@ -21,7 +21,7 @@ namespace TheOtherThem.Patches
             bool isReactor = task.TaskType == TaskTypes.StopCharles || task.TaskType == TaskTypes.ResetSeismic || task.TaskType == TaskTypes.ResetReactor;
             bool isO2 = task.TaskType == TaskTypes.RestoreOxy;
 
-            if (pc.isRole(RoleType.Swapper) && (isLights || isComms))
+            if (pc.IsRole(RoleType.Swapper) && (isLights || isComms))
             {
                 return true;
             }
@@ -36,17 +36,17 @@ namespace TheOtherThem.Patches
                 return true;
             }
 
-            if (pc.isRole(RoleType.Mafioso) && !Mafioso.canRepair && (isLights || isComms))
+            if (pc.IsRole(RoleType.Mafioso) && !Mafioso.canRepair && (isLights || isComms))
             {
                 return true;
             }
 
-            if (pc.isRole(RoleType.Janitor) && !Janitor.canRepair && (isLights || isComms))
+            if (pc.IsRole(RoleType.Janitor) && !Janitor.canRepair && (isLights || isComms))
             {
                 return true;
             }
 
-            if (pc.isRole(RoleType.Fox) && (isLights || isComms || isReactor || isO2))
+            if (pc.IsRole(RoleType.Fox) && (isLights || isComms || isReactor || isO2))
             {
                 if (isLights|| isComms)
                 {
@@ -186,7 +186,7 @@ namespace TheOtherThem.Patches
                 if (__instance.name.StartsWith("JackInTheBoxVent_"))
                 {
                     __instance.SetButtons(isEnter && canMoveInVents);
-                    MessageWriter writer = AmongUsClient.Instance.StartRpc(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.UseUncheckedVent, Hazel.SendOption.Reliable);
+                    MessageWriter writer = AmongUsClient.Instance.StartRpc(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.UseUncheckedVent, Hazel.SendOption.Reliable);
                     writer.WritePacked(__instance.Id);
                     writer.Write(PlayerControl.LocalPlayer.PlayerId);
                     writer.Write(isEnter ? byte.MaxValue : (byte)0);
@@ -258,7 +258,7 @@ namespace TheOtherThem.Patches
                 if (__instance.isActiveAndEnabled && __instance.currentTarget && !__instance.isCoolingDown && PlayerControl.LocalPlayer.isAlive() && PlayerControl.LocalPlayer.CanMove)
                 {
                     bool showAnimation = true;
-                    if (PlayerControl.LocalPlayer.isRole(RoleType.Ninja) && Ninja.isStealthed(PlayerControl.LocalPlayer))
+                    if (PlayerControl.LocalPlayer.IsRole(RoleType.Ninja) && Ninja.isStealthed(PlayerControl.LocalPlayer))
                     {
                         showAnimation = false;
                     }
@@ -290,8 +290,8 @@ namespace TheOtherThem.Patches
             static void Postfix()
             {
                 // Mafia disable sabotage button for Janitor and sometimes for Mafioso
-                bool blockSabotageJanitor = (PlayerControl.LocalPlayer.isRole(RoleType.Janitor) && !Janitor.canSabotage);
-                bool blockSabotageMafioso = (PlayerControl.LocalPlayer.isRole(RoleType.Mafioso) && !Mafioso.canSabotage);
+                bool blockSabotageJanitor = (PlayerControl.LocalPlayer.IsRole(RoleType.Janitor) && !Janitor.canSabotage);
+                bool blockSabotageMafioso = (PlayerControl.LocalPlayer.IsRole(RoleType.Mafioso) && !Mafioso.canSabotage);
                 if (blockSabotageJanitor || blockSabotageMafioso)
                 {
                     HudManager.Instance.SabotageButton.SetDisabled();
@@ -351,7 +351,7 @@ namespace TheOtherThem.Patches
                 }
 
                 // Deactivate emergency button for FortuneTeller
-                if (PlayerControl.LocalPlayer.isRole(RoleType.FortuneTeller) && FortuneTeller.isCompletedNumTasks(PlayerControl.LocalPlayer))
+                if (PlayerControl.LocalPlayer.IsRole(RoleType.FortuneTeller) && FortuneTeller.isCompletedNumTasks(PlayerControl.LocalPlayer))
                 {
                     roleCanCallEmergency = false;
                     statusText = ModTranslation.GetString("fortuneTellerMeetingButton");

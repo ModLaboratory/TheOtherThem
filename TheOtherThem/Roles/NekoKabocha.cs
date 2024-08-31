@@ -15,10 +15,10 @@ namespace TheOtherThem
     {
         public static Color color = Palette.ImpostorRed;
 
-        public static bool revengeCrew { get { return CustomOptionHolder.nekoKabochaRevengeCrew.getBool(); } }
-        public static bool revengeNeutral { get { return CustomOptionHolder.nekoKabochaRevengeNeutral.getBool(); } }
-        public static bool revengeImpostor { get { return CustomOptionHolder.nekoKabochaRevengeImpostor.getBool(); } }
-        public static bool revengeExile { get { return CustomOptionHolder.nekoKabochaRevengeExile.getBool(); } }
+        public static bool revengeCrew { get { return CustomOptionHolder.nekoKabochaRevengeCrew.GetBool(); } }
+        public static bool revengeNeutral { get { return CustomOptionHolder.nekoKabochaRevengeNeutral.GetBool(); } }
+        public static bool revengeImpostor { get { return CustomOptionHolder.nekoKabochaRevengeImpostor.GetBool(); } }
+        public static bool revengeExile { get { return CustomOptionHolder.nekoKabochaRevengeExile.GetBool(); } }
 
         public PlayerControl meetingKiller = null;
 
@@ -68,7 +68,7 @@ namespace TheOtherThem
                 int targetID = rnd.Next(0, candidates.Count);
                 var target = candidates[targetID];
 
-                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.NekoKabochaExile, Hazel.SendOption.Reliable, -1);
+                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.NekoKabochaExile, Hazel.SendOption.Reliable, -1);
                 writer.Write(target.PlayerId);
                 AmongUsClient.Instance.FinishRpcImmediately(writer);
                 RPCProcedure.nekoKabochaExile(target.PlayerId);

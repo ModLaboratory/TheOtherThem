@@ -91,14 +91,14 @@ namespace TheOtherThem
 
                     if (!target.Data.IsDead)
                     {
-                        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.GMKill, Hazel.SendOption.Reliable, -1);
+                        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.GMKill, Hazel.SendOption.Reliable, -1);
                         writer.Write(index);
                         AmongUsClient.Instance.FinishRpcImmediately(writer);
                         RPCProcedure.GMKill(index);
                     }
                     else
                     {
-                        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.GMRevive, Hazel.SendOption.Reliable, -1);
+                        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.GMRevive, Hazel.SendOption.Reliable, -1);
                         writer.Write(index);
                         AmongUsClient.Instance.FinishRpcImmediately(writer);
                         RPCProcedure.GMRevive(index);

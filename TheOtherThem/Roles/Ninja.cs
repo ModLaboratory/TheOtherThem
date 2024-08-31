@@ -17,13 +17,13 @@ namespace TheOtherThem
 
         public static Color color = Palette.ImpostorRed;
 
-        public static float stealthCooldown { get { return CustomOptionHolder.ninjaStealthCooldown.getFloat(); } }
-        public static float stealthDuration { get { return CustomOptionHolder.ninjaStealthDuration.getFloat(); } }
-        public static float killPenalty { get { return CustomOptionHolder.ninjaKillPenalty.getFloat(); } }
-        public static float speedBonus { get { return CustomOptionHolder.ninjaSpeedBonus.getFloat() / 100f; } }
-        public static float fadeTime { get { return CustomOptionHolder.ninjaFadeTime.getFloat(); } }
-        public static bool canUseVents { get { return CustomOptionHolder.ninjaCanVent.getBool(); } }
-        public static bool canBeTargeted { get { return CustomOptionHolder.ninjaCanBeTargeted.getBool(); } }
+        public static float stealthCooldown { get { return CustomOptionHolder.ninjaStealthCooldown.GetFloat(); } }
+        public static float stealthDuration { get { return CustomOptionHolder.ninjaStealthDuration.GetFloat(); } }
+        public static float killPenalty { get { return CustomOptionHolder.ninjaKillPenalty.GetFloat(); } }
+        public static float speedBonus { get { return CustomOptionHolder.ninjaSpeedBonus.GetFloat() / 100f; } }
+        public static float fadeTime { get { return CustomOptionHolder.ninjaFadeTime.GetFloat(); } }
+        public static bool canUseVents { get { return CustomOptionHolder.ninjaCanVent.GetBool(); } }
+        public static bool canBeTargeted { get { return CustomOptionHolder.ninjaCanBeTargeted.GetBool(); } }
 
         public bool penalized = false;
         public bool stealthed = false;
@@ -144,13 +144,13 @@ namespace TheOtherThem
                         return;
                     }
 
-                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.NinjaStealth, Hazel.SendOption.Reliable, -1);
+                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.NinjaStealth, Hazel.SendOption.Reliable, -1);
                     writer.Write(PlayerControl.LocalPlayer.PlayerId);
                     writer.Write(true);
                     AmongUsClient.Instance.FinishRpcImmediately(writer);
                     RPCProcedure.ninjaStealth(PlayerControl.LocalPlayer.PlayerId, true);
                 },
-                () => { return PlayerControl.LocalPlayer.isRole(RoleType.Ninja) && !PlayerControl.LocalPlayer.Data.IsDead; },
+                () => { return PlayerControl.LocalPlayer.IsRole(RoleType.Ninja) && !PlayerControl.LocalPlayer.Data.IsDead; },
                 () => {
                     if (ninjaButton.isEffectActive)
                     {
@@ -175,7 +175,7 @@ namespace TheOtherThem
                 () => {
                     ninjaButton.Timer = ninjaButton.MaxTimer = Ninja.stealthCooldown;
 
-                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.NinjaStealth, Hazel.SendOption.Reliable, -1);
+                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.NinjaStealth, Hazel.SendOption.Reliable, -1);
                     writer.Write(PlayerControl.LocalPlayer.PlayerId);
                     writer.Write(false);
                     AmongUsClient.Instance.FinishRpcImmediately(writer);
@@ -230,7 +230,7 @@ namespace TheOtherThem
                     bool canSee = 
                         PlayerControl.LocalPlayer.isImpostor() ||
                         PlayerControl.LocalPlayer.isDead() ||
-                        (Lighter.canSeeNinja && PlayerControl.LocalPlayer.isRole(RoleType.Lighter) && Lighter.isLightActive(PlayerControl.LocalPlayer));
+                        (Lighter.canSeeNinja && PlayerControl.LocalPlayer.IsRole(RoleType.Lighter) && Lighter.isLightActive(PlayerControl.LocalPlayer));
 
                     var opacity = canSee ? 0.1f : 0.0f;
 

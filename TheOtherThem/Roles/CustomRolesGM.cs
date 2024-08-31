@@ -139,8 +139,8 @@ namespace TheOtherThem
                 sampledTarget = null;
                 morphTarget = null;
                 morphTimer = 0f;
-                cooldown = CustomOptionHolder.morphlingCooldown.getFloat();
-                duration = CustomOptionHolder.morphlingDuration.getFloat();
+                cooldown = CustomOptionHolder.morphlingCooldown.GetFloat();
+                duration = CustomOptionHolder.morphlingDuration.GetFloat();
             }
 
             public static Sprite getSampleSprite()
@@ -218,9 +218,9 @@ namespace TheOtherThem
                 resetCamouflage();
                 camouflager = null;
                 camouflageTimer = 0f;
-                cooldown = CustomOptionHolder.camouflagerCooldown.getFloat();
-                duration = CustomOptionHolder.camouflagerDuration.getFloat();
-                randomColors = CustomOptionHolder.camouflagerRandomColors.getBool();
+                cooldown = CustomOptionHolder.camouflagerCooldown.GetFloat();
+                duration = CustomOptionHolder.camouflagerDuration.GetFloat();
+                randomColors = CustomOptionHolder.camouflagerRandomColors.GetBool();
 
                 camoData = new();
                 camoData.PlayerName = "";
@@ -265,8 +265,8 @@ namespace TheOtherThem
                 pastShifters = new List<int>();
                 currentTarget = null;
                 futureShift = null;
-                shiftModifiers = CustomOptionHolder.shifterShiftsModifiers.getBool();
-                shiftPastShifters = CustomOptionHolder.shifterPastShifters.getBool();
+                shiftModifiers = CustomOptionHolder.shifterShiftsModifiers.GetBool();
+                shiftPastShifters = CustomOptionHolder.shifterPastShifters.GetBool();
                 isNeutral = false;
             }
         }
@@ -295,9 +295,9 @@ namespace TheOtherThem
                 swapper = null;
                 playerId1 = Byte.MaxValue;
                 playerId2 = Byte.MaxValue;
-                canCallEmergency = CustomOptionHolder.swapperCanCallEmergency.getBool();
-                canOnlySwapOthers = CustomOptionHolder.swapperCanOnlySwapOthers.getBool();
-                numSwaps = Mathf.RoundToInt(CustomOptionHolder.swapperNumSwaps.getFloat());
+                canCallEmergency = CustomOptionHolder.swapperCanCallEmergency.GetBool();
+                canOnlySwapOthers = CustomOptionHolder.swapperCanOnlySwapOthers.GetBool();
+                numSwaps = Mathf.RoundToInt(CustomOptionHolder.swapperNumSwaps.GetFloat());
             }
         }
 
@@ -344,14 +344,14 @@ namespace TheOtherThem
             public static void clearAndReload()
             {
                 gm = null;
-                gmIsHost = CustomOptionHolder.gmIsHost.getBool();
-                diesAtStart = CustomOptionHolder.gmDiesAtStart.getBool();
+                gmIsHost = CustomOptionHolder.gmIsHost.GetBool();
+                diesAtStart = CustomOptionHolder.gmDiesAtStart.GetBool();
                 hasTasks = false;
                 canSabotage = false;
                 zoomInSprite = null;
                 zoomOutSprite = null;
-                canWarp = CustomOptionHolder.gmCanWarp.getBool();
-                canKill = CustomOptionHolder.gmCanKill.getBool();
+                canWarp = CustomOptionHolder.gmCanWarp.GetBool();
+                canKill = CustomOptionHolder.gmCanKill.GetBool();
 
                 foreach (PoolablePlayer p in MapOptions.playerIcons.Values)
                 {

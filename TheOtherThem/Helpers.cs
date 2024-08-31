@@ -47,7 +47,7 @@ namespace TheOtherThem {
         {
             get
             {
-                return CustomOptionHolder.activateRoles.getBool();
+                return CustomOptionHolder.activateRoles.GetBool();
             }
         }
 
@@ -55,7 +55,7 @@ namespace TheOtherThem {
         {
             get
             {
-                return CustomOptionHolder.refundVotesOnDeath.getBool();
+                return CustomOptionHolder.refundVotesOnDeath.GetBool();
             }
         }
 
@@ -119,7 +119,7 @@ namespace TheOtherThem {
 
             List<byte> taskTypeIds = generateTasks(numCommon, numShort, numLong);
 
-            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.UncheckedSetTasks, Hazel.SendOption.Reliable, -1);
+            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.UncheckedSetTasks, Hazel.SendOption.Reliable, -1);
             writer.Write(player.PlayerId);
             writer.WriteBytesAndSize(taskTypeIds.ToArray());
             AmongUsClient.Instance.FinishRpcImmediately(writer);
@@ -194,7 +194,7 @@ namespace TheOtherThem {
         public static void handleVampireBiteOnBodyReport() {
             // Murder the bitten player and reset bitten (regardless whether the kill was successful or not)
             Helpers.checkMuderAttemptAndKill(Vampire.vampire, Vampire.bitten, true, false);
-            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.VampireSetBitten, Hazel.SendOption.Reliable, -1);
+            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.VampireSetBitten, Hazel.SendOption.Reliable, -1);
             writer.Write(byte.MaxValue);
             writer.Write(byte.MaxValue);
             AmongUsClient.Instance.FinishRpcImmediately(writer);
@@ -210,7 +210,7 @@ namespace TheOtherThem {
             foreach (PlayerTask t in player.myTasks) {
                 var textTask = t.gameObject.GetComponent<ImportantTextTask>();
                 if (textTask != null) {
-                    var info = infos.FirstOrDefault(x => textTask.Text.StartsWith(x.name));
+                    var info = infos.FirstOrDefault(x => textTask.Text.StartsWith(x.Name));
                     if (info != null)
                         infos.Remove(info); // TextTask for this RoleInfo does not have to be added, as it already exists
                     else
@@ -229,17 +229,17 @@ namespace TheOtherThem {
                 var task = new GameObject("RoleTask").AddComponent<ImportantTextTask>();
                 task.transform.SetParent(player.transform, false);
 
-                if (roleInfo.roleType == RoleType.Jackal) {
+                if (roleInfo.MyRoleType == RoleType.Jackal) {
                     if (Jackal.canCreateSidekick)
                     {
-                        task.Text = cs(roleInfo.color, $"{roleInfo.name}: " + ModTranslation.GetString("jackalWithSidekick"));
+                        task.Text = ColorString(roleInfo.RoleColor, $"{roleInfo.Name}: " + ModTranslation.GetString("jackalWithSidekick"));
                     } 
                     else
                     {
-                        task.Text = cs(roleInfo.color, $"{roleInfo.name}: " + ModTranslation.GetString("jackalShortDesc"));
+                        task.Text = ColorString(roleInfo.RoleColor, $"{roleInfo.Name}: " + ModTranslation.GetString("jackalShortDesc"));
                     }
                 } else {
-                    task.Text = cs(roleInfo.color, $"{roleInfo.name}: {roleInfo.shortDescription}");  
+                    task.Text = ColorString(roleInfo.RoleColor, $"{roleInfo.Name}: {roleInfo.ShortDescription}");  
                 }
 
                 player.myTasks.Insert(0, task);
@@ -249,7 +249,7 @@ namespace TheOtherThem {
             {
                 var task = new GameObject("RoleTask").AddComponent<ImportantTextTask>();
                 task.transform.SetParent(player.transform, false);
-                task.Text = cs(Madmate.color, $"{Madmate.fullName}: " + ModTranslation.GetString("madmateShortDesc"));
+                task.Text = ColorString(Madmate.color, $"{Madmate.fullName}: " + ModTranslation.GetString("madmateShortDesc"));
                 player.myTasks.Insert(0, task);
             }
         }
@@ -278,19 +278,19 @@ namespace TheOtherThem {
         public static bool isNeutral(this PlayerControl player)
         {
             return (player != null &&
-                   (player.isRole(RoleType.Jackal) ||
-                    player.isRole(RoleType.Sidekick) ||
+                   (player.IsRole(RoleType.Jackal) ||
+                    player.IsRole(RoleType.Sidekick) ||
                     Jackal.formerJackals.Contains(player) ||
-                    player.isRole(RoleType.Arsonist) ||
-                    player.isRole(RoleType.Jester) ||
-                    player.isRole(RoleType.Opportunist) ||
-                    player.isRole(RoleType.PlagueDoctor) ||
-                    player.isRole(RoleType.Fox) ||
-                    player.isRole(RoleType.Immoralist) ||
-                    player.isRole(RoleType.Vulture) ||
-                    player.isRole(RoleType.Lawyer) ||
-                    player.isRole(RoleType.Pursuer) ||
-                    (player.isRole(RoleType.Shifter) && Shifter.isNeutral)));
+                    player.IsRole(RoleType.Arsonist) ||
+                    player.IsRole(RoleType.Jester) ||
+                    player.IsRole(RoleType.Opportunist) ||
+                    player.IsRole(RoleType.PlagueDoctor) ||
+                    player.IsRole(RoleType.Fox) ||
+                    player.IsRole(RoleType.Immoralist) ||
+                    player.IsRole(RoleType.Vulture) ||
+                    player.IsRole(RoleType.Lawyer) ||
+                    player.IsRole(RoleType.Pursuer) ||
+                    (player.IsRole(RoleType.Shifter) && Shifter.isNeutral)));
         }
 
         public static bool isCrew(this PlayerControl player)
@@ -311,7 +311,7 @@ namespace TheOtherThem {
 
         public static bool neutralHasTasks(this PlayerControl player)
         {
-            return player.isNeutral() && (player.isRole(RoleType.Lawyer) || player.isRole(RoleType.Pursuer) || player.isRole(RoleType.Shifter) || player.isRole(RoleType.Fox));
+            return player.isNeutral() && (player.IsRole(RoleType.Lawyer) || player.IsRole(RoleType.Pursuer) || player.IsRole(RoleType.Shifter) || player.IsRole(RoleType.Fox));
         }
 
         public static bool isGM(this PlayerControl player)
@@ -357,7 +357,7 @@ namespace TheOtherThem {
             return t.GetString(key, parts);
         }
 
-        public static string cs(Color c, string s) {
+        public static string ColorString(Color c, string s) {
             return string.Format("<color=#{0:X2}{1:X2}{2:X2}{3:X2}>{4}</color>", ToByte(c.r), ToByte(c.g), ToByte(c.b), ToByte(c.a), s);
         }
  
@@ -397,7 +397,7 @@ namespace TheOtherThem {
             if (target.isDead()) return true;
             if (Camouflager.camouflageTimer > 0f) return true; // No names are visible
             if (!source.isImpostor() && Ninja.isStealthed(target)) return true; // Hide ninja nametags from non-impostors
-            if (!source.isRole(RoleType.Fox) && !source.Data.IsDead && Fox.isStealthed(target)) return true;
+            if (!source.IsRole(RoleType.Fox) && !source.Data.IsDead && Fox.isStealthed(target)) return true;
             if (MapOptions.hideOutOfSightNametags && GameStarted && ShipStatus.Instance != null && source.transform != null && target.transform != null)
             {
                 float distMod = 1.025f;
@@ -407,9 +407,9 @@ namespace TheOtherThem {
                 if (distance > ShipStatus.Instance.CalculateLightRadius(source.Data) * distMod || anythingBetween) return true;
             }
             if (!MapOptions.hidePlayerNames) return false; // All names are visible
-            if (source.isImpostor() && (target.isImpostor() || target.isRole(RoleType.Spy))) return false; // Members of team Impostors see the names of Impostors/Spies
+            if (source.isImpostor() && (target.isImpostor() || target.IsRole(RoleType.Spy))) return false; // Members of team Impostors see the names of Impostors/Spies
             if (source.getPartner() == target) return false; // Members of team Lovers see the names of each other
-            if ((source.isRole(RoleType.Jackal) || source.isRole(RoleType.Sidekick)) && (target.isRole(RoleType.Jackal) || target.isRole(RoleType.Sidekick) || target == Jackal.fakeSidekick)) return false; // Members of team Jackal see the names of each other
+            if ((source.IsRole(RoleType.Jackal) || source.IsRole(RoleType.Sidekick)) && (target.IsRole(RoleType.Jackal) || target.IsRole(RoleType.Sidekick) || target == Jackal.fakeSidekick)) return false; // Members of team Jackal see the names of each other
             return true;
         }
 
@@ -452,25 +452,25 @@ namespace TheOtherThem {
 
         public static bool roleCanUseVents(this PlayerControl player) {
             bool roleCouldUse = false;
-            if (player.isRole(RoleType.Engineer))
+            if (player.IsRole(RoleType.Engineer))
                 roleCouldUse = true;
-            else if (Jackal.canUseVents && player.isRole(RoleType.Jackal))
+            else if (Jackal.canUseVents && player.IsRole(RoleType.Jackal))
                 roleCouldUse = true;
-            else if (Sidekick.canUseVents && player.isRole(RoleType.Sidekick))
+            else if (Sidekick.canUseVents && player.IsRole(RoleType.Sidekick))
                 roleCouldUse = true;
-            else if (Spy.canEnterVents && player.isRole(RoleType.Spy))
+            else if (Spy.canEnterVents && player.IsRole(RoleType.Spy))
                 roleCouldUse = true;
             else if (Madmate.canEnterVents && player.hasModifier(ModifierType.Madmate))
                 roleCouldUse = true;
-            else if (Vulture.canUseVents && player.isRole(RoleType.Vulture))
+            else if (Vulture.canUseVents && player.IsRole(RoleType.Vulture))
                 roleCouldUse = true;
             else if (player.Data?.Role != null && player.Data.Role.CanVent)
             {
-                if (!Janitor.canVent && player.isRole(RoleType.Janitor))
+                if (!Janitor.canVent && player.IsRole(RoleType.Janitor))
                     roleCouldUse = false;
-                else if (!Mafioso.canVent && player.isRole(RoleType.Mafioso))
+                else if (!Mafioso.canVent && player.IsRole(RoleType.Mafioso))
                     roleCouldUse = false;
-                else if (!Ninja.canUseVents && player.isRole(RoleType.Ninja))
+                else if (!Ninja.canUseVents && player.IsRole(RoleType.Ninja))
                     roleCouldUse = false;
                 else
                     roleCouldUse = true;
@@ -483,11 +483,11 @@ namespace TheOtherThem {
             bool roleCouldUse = false;
             if (Madmate.canSabotage && player.hasModifier(ModifierType.Madmate))
                 roleCouldUse = true;
-            else if (Jester.canSabotage && player.isRole(RoleType.Jester))
+            else if (Jester.canSabotage && player.IsRole(RoleType.Jester))
                 roleCouldUse = true;
-            else if (!Mafioso.canSabotage && player.isRole(RoleType.Mafioso))
+            else if (!Mafioso.canSabotage && player.IsRole(RoleType.Mafioso))
                 roleCouldUse = false;
-            else if (!Janitor.canSabotage && player.isRole(RoleType.Janitor))
+            else if (!Janitor.canSabotage && player.IsRole(RoleType.Janitor))
                 roleCouldUse = false;
             else if (player.Data?.Role != null && player.Data.Role.IsImpostor)
                 roleCouldUse = true;
@@ -503,7 +503,7 @@ namespace TheOtherThem {
 
             // Handle blank shot
             if (Pursuer.blankedList.Any(x => x.PlayerId == killer.PlayerId)) {
-                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.SetBlanked, Hazel.SendOption.Reliable, -1);
+                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.SetBlanked, Hazel.SendOption.Reliable, -1);
                 writer.Write(killer.PlayerId);
                 writer.Write((byte)0);
                 AmongUsClient.Instance.FinishRpcImmediately(writer);
@@ -514,21 +514,21 @@ namespace TheOtherThem {
 
             // Block impostor shielded kill
             if (Medic.shielded != null && Medic.shielded == target) {
-                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(killer.NetId, (byte)CustomRPC.ShieldedMurderAttempt, Hazel.SendOption.Reliable, -1);
+                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(killer.NetId, (byte)CustomRpc.ShieldedMurderAttempt, Hazel.SendOption.Reliable, -1);
                 AmongUsClient.Instance.FinishRpcImmediately(writer);
                 RPCProcedure.shieldedMurderAttempt();
                 return MurderAttemptResult.SuppressKill;
             }
 
             // Block impostor not fully grown mini kill
-            else if (Mini.mini != null && target.isRole(RoleType.Mini) && !Mini.isGrownUp()) {
+            else if (Mini.mini != null && target.IsRole(RoleType.Mini) && !Mini.isGrownUp()) {
                 return MurderAttemptResult.SuppressKill;
             }
 
             // Block Time Master with time shield kill
             else if (TimeMaster.shieldActive && TimeMaster.timeMaster != null && TimeMaster.timeMaster == target) {
                 if (!blockRewind) { // Only rewind the attempt was not called because a meeting startet 
-                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(killer.NetId, (byte)CustomRPC.TimeMasterRewindTime, Hazel.SendOption.Reliable, -1);
+                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(killer.NetId, (byte)CustomRpc.TimeMasterRewindTime, Hazel.SendOption.Reliable, -1);
                     AmongUsClient.Instance.FinishRpcImmediately(writer);
                     RPCProcedure.timeMasterRewindTime();
                 }
@@ -543,7 +543,7 @@ namespace TheOtherThem {
 
             MurderAttemptResult murder = checkMuderAttempt(killer, target, isMeetingStart);
             if (murder == MurderAttemptResult.PerformKill) {
-                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.UncheckedMurderPlayer, Hazel.SendOption.Reliable, -1);
+                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.UncheckedMurderPlayer, Hazel.SendOption.Reliable, -1);
                 writer.Write(killer.PlayerId);
                 writer.Write(target.PlayerId);
                 writer.Write(showAnimation ? Byte.MaxValue : 0);
@@ -554,7 +554,7 @@ namespace TheOtherThem {
         }
     
         public static void shareGameVersion() {
-            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.VersionHandshake, Hazel.SendOption.Reliable, -1);
+            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.VersionHandshake, Hazel.SendOption.Reliable, -1);
             writer.WritePacked(Main.Version.Major);
             writer.WritePacked(Main.Version.Minor);
             writer.WritePacked(Main.Version.Build);
@@ -569,8 +569,8 @@ namespace TheOtherThem {
             List<PlayerControl> team = new List<PlayerControl>();
             foreach(PlayerControl p in PlayerControl.AllPlayerControls) {
                 if (player.Data.Role.IsImpostor && p.Data.Role.IsImpostor && player.PlayerId != p.PlayerId && team.All(x => x.PlayerId != p.PlayerId)) team.Add(p);
-                else if (player.isRole(RoleType.Jackal) && p.isRole(RoleType.Sidekick)) team.Add(p); 
-                else if (player.isRole(RoleType.Sidekick) && p.isRole(RoleType.Jackal)) team.Add(p);
+                else if (player.IsRole(RoleType.Jackal) && p.IsRole(RoleType.Sidekick)) team.Add(p); 
+                else if (player.IsRole(RoleType.Sidekick) && p.IsRole(RoleType.Jackal)) team.Add(p);
             }
             
             return team;

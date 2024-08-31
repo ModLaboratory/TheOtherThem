@@ -17,12 +17,12 @@ namespace TheOtherThem
 
         public static Color color = new Color32(248, 205, 70, byte.MaxValue);
 
-        public static float cooldown { get { return CustomOptionHolder.sheriffCooldown.getFloat(); } }
-        public static int maxShots { get { return Mathf.RoundToInt(CustomOptionHolder.sheriffNumShots.getFloat()); } }
-        public static bool canKillNeutrals { get { return CustomOptionHolder.sheriffCanKillNeutrals.getBool(); } }
-        public static bool misfireKillsTarget { get { return CustomOptionHolder.sheriffMisfireKillsTarget.getBool(); } }
-        public static bool spyCanDieToSheriff { get { return CustomOptionHolder.spyCanDieToSheriff.getBool(); } }
-        public static bool madmateCanDieToSheriff { get { return CustomOptionHolder.madmateCanDieToSheriff.getBool(); } }
+        public static float cooldown { get { return CustomOptionHolder.sheriffCooldown.GetFloat(); } }
+        public static int maxShots { get { return Mathf.RoundToInt(CustomOptionHolder.sheriffNumShots.GetFloat()); } }
+        public static bool canKillNeutrals { get { return CustomOptionHolder.sheriffCanKillNeutrals.GetBool(); } }
+        public static bool misfireKillsTarget { get { return CustomOptionHolder.sheriffMisfireKillsTarget.GetBool(); } }
+        public static bool spyCanDieToSheriff { get { return CustomOptionHolder.spyCanDieToSheriff.GetBool(); } }
+        public static bool madmateCanDieToSheriff { get { return CustomOptionHolder.madmateCanDieToSheriff.GetBool(); } }
 
         public int numShots = 2;
         public PlayerControl currentTarget;
@@ -86,7 +86,7 @@ namespace TheOtherThem
                         {
                             misfire = true;
                         }
-                        MessageWriter killWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.SheriffKill, Hazel.SendOption.Reliable, -1);
+                        MessageWriter killWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.SheriffKill, Hazel.SendOption.Reliable, -1);
                         killWriter.Write(PlayerControl.LocalPlayer.Data.PlayerId);
                         killWriter.Write(targetId);
                         killWriter.Write(misfire);
@@ -97,7 +97,7 @@ namespace TheOtherThem
                     sheriffKillButton.Timer = sheriffKillButton.MaxTimer;
                     local.currentTarget = null;
                 },
-                () => { return PlayerControl.LocalPlayer.isRole(RoleType.Sheriff) && local.numShots > 0 && !PlayerControl.LocalPlayer.Data.IsDead; },
+                () => { return PlayerControl.LocalPlayer.IsRole(RoleType.Sheriff) && local.numShots > 0 && !PlayerControl.LocalPlayer.Data.IsDead; },
                 () =>
                 {
                     if (sheriffNumShotsText != null)

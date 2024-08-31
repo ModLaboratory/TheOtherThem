@@ -1,8 +1,8 @@
 ﻿global using Object = UnityEngine.Object;
+global using HarmonyLib;
 using BepInEx;
 using BepInEx.Configuration;
 using BepInEx.IL2CPP;
-using HarmonyLib;
 using Hazel;
 using System.Collections.Generic;
 using System.Security.Cryptography;
@@ -16,6 +16,7 @@ using TheOtherThem.Modules;
 using BepInEx.Unity.IL2CPP;
 using AmongUs.Data.Legacy;
 using AmongUs.GameOptions;
+using TheOtherThem.TOTRole;
 
 namespace TheOtherThem
 {
@@ -92,12 +93,17 @@ namespace TheOtherThem
 
             DebugMode = Config.Bind("Custom", "Enable Debug Mode", false);
             Instance = this;
+            RoleHelpers.InitTOTRoles();
             CustomOptionHolder.Load();
             CustomColors.Load();
 
             Harmony.PatchAll();
+            var instance = AddComponent<CoroutineUtils.CustomCoroutine>();
+            CoroutineUtils.Instance = instance;
 
+            Logger.LogMessage("");
             Logger.LogMessage($"======= TOT LOADED! =======");
+            Logger.LogMessage("");
         }
 
         public static Sprite GetModStamp() {
@@ -170,7 +176,7 @@ namespace TheOtherThem
 
             // Terminate round
             if(Input.GetKeyDown(KeyCode.L) && AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started) {
-                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ForceEnd, Hazel.SendOption.Reliable, -1);
+                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.ForceEnd, Hazel.SendOption.Reliable, -1);
                 AmongUsClient.Instance.FinishRpcImmediately(writer);
                 RPCProcedure.forceEnd();
             }

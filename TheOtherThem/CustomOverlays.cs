@@ -153,9 +153,9 @@ namespace TheOtherThem {
 
             string rolesText = "";
             foreach (RoleInfo r in RoleInfo.getRoleInfoForPlayer(PlayerControl.LocalPlayer))
-            {string roleDesc = r.fullDescription;
-                rolesText += $"<size=150%>{r.nameColored}</size>" +
-                    (roleDesc != "" ? $"\n{r.fullDescription}" : "") + "\n\n";
+            {string roleDesc = r.FullDescription;
+                rolesText += $"<size=150%>{r.NameColored}</size>" +
+                    (roleDesc != "" ? $"\n{r.FullDescription}" : "") + "\n\n";
             }
 
             infoOverlayRoles.text = rolesText;

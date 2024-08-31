@@ -9,6 +9,7 @@ using System.Reflection;
 using System.Text;
 using static TheOtherThem.TheOtherRoles;
 using static TheOtherThem.TheOtherRolesGM;
+using TheOtherThem.TOTRole.Impostor;
 
 namespace TheOtherThem {
 
@@ -341,9 +342,13 @@ namespace TheOtherThem {
         public static CustomOption foxStealthDuration;
         public static CustomTasksOption foxTasks;
 
+        // TOT Roles
+        public static CustomRoleOption InnerslothSpawnRate { get; set; }
+
+
         internal static Dictionary<byte, byte[]> blockedRolePairings = new Dictionary<byte, byte[]>();
 
-        public static string cs(Color c, string s) {
+        public static string ColorString(Color c, string s) {
             return string.Format("<color=#{0:X2}{1:X2}{2:X2}{3:X2}>{4}</color>", ToByte(c.r), ToByte(c.g), ToByte(c.b), ToByte(c.a), s);
         }
  
@@ -355,20 +360,20 @@ namespace TheOtherThem {
         public static void Load() {
 
             // Role Options
-            activateRoles = CustomOption.Create(7, cs(new Color(204f / 255f, 204f / 255f, 0, 1f), "blockOriginal"), true, null, true);
+            activateRoles = CustomOption.Create(7, ColorString(new Color(204f / 255f, 204f / 255f, 0, 1f), "blockOriginal"), true, null, true);
 
-            presetSelection = CustomOption.Create(0, cs(new Color(204f / 255f, 204f / 255f, 0, 1f), "presetSelection"), presets, null, true);
+            presetSelection = CustomOption.Create(0, ColorString(new Color(204f / 255f, 204f / 255f, 0, 1f), "presetSelection"), presets, null, true);
 
             // Using new id's for the options to not break compatibilty with older versions
-            crewmateRolesCountMin = CustomOption.Create(300, cs(new Color(204f / 255f, 204f / 255f, 0, 1f), "crewmateRolesCountMin"), 0f, 0f, 15f, 1f, null, true);
-            crewmateRolesCountMax = CustomOption.Create(301, cs(new Color(204f / 255f, 204f / 255f, 0, 1f), "crewmateRolesCountMax"), 0f, 0f, 15f, 1f);
-            neutralRolesCountMin = CustomOption.Create(302, cs(new Color(204f / 255f, 204f / 255f, 0, 1f), "neutralRolesCountMin"), 0f, 0f, 15f, 1f);
-            neutralRolesCountMax = CustomOption.Create(303, cs(new Color(204f / 255f, 204f / 255f, 0, 1f), "neutralRolesCountMax"), 0f, 0f, 15f, 1f);
-            impostorRolesCountMin = CustomOption.Create(304, cs(new Color(204f / 255f, 204f / 255f, 0, 1f), "impostorRolesCountMin"), 0f, 0f, 15f, 1f);
-            impostorRolesCountMax = CustomOption.Create(305, cs(new Color(204f / 255f, 204f / 255f, 0, 1f), "impostorRolesCountMax"), 0f, 0f, 15f, 1f);
+            crewmateRolesCountMin = CustomOption.Create(300, ColorString(new Color(204f / 255f, 204f / 255f, 0, 1f), "crewmateRolesCountMin"), 0f, 0f, 15f, 1f, null, true);
+            crewmateRolesCountMax = CustomOption.Create(301, ColorString(new Color(204f / 255f, 204f / 255f, 0, 1f), "crewmateRolesCountMax"), 0f, 0f, 15f, 1f);
+            neutralRolesCountMin = CustomOption.Create(302, ColorString(new Color(204f / 255f, 204f / 255f, 0, 1f), "neutralRolesCountMin"), 0f, 0f, 15f, 1f);
+            neutralRolesCountMax = CustomOption.Create(303, ColorString(new Color(204f / 255f, 204f / 255f, 0, 1f), "neutralRolesCountMax"), 0f, 0f, 15f, 1f);
+            impostorRolesCountMin = CustomOption.Create(304, ColorString(new Color(204f / 255f, 204f / 255f, 0, 1f), "impostorRolesCountMin"), 0f, 0f, 15f, 1f);
+            impostorRolesCountMax = CustomOption.Create(305, ColorString(new Color(204f / 255f, 204f / 255f, 0, 1f), "impostorRolesCountMax"), 0f, 0f, 15f, 1f);
 
 
-            gmEnabled = CustomOption.Create(400, cs(GM.color, "gm"), false, null, true);
+            gmEnabled = CustomOption.Create(400, ColorString(GM.color, "gm"), false, null, true);
             gmIsHost = CustomOption.Create(401, "gmIsHost", true, gmEnabled);
             //gmHasTasks = CustomOption.Create(402, "gmHasTasks", false, gmEnabled);
             gmCanWarp = CustomOption.Create(405, "gmCanWarp", true, gmEnabled);
@@ -452,7 +457,9 @@ namespace TheOtherThem {
             nekoKabochaRevengeImpostor = CustomOption.Create(1023, "nekoKabochaRevengeImpostor", true, nekoKabochaSpawnRate);
             nekoKabochaRevengeExile = CustomOption.Create(1024, "nekoKabochaRevengeExile", false, nekoKabochaSpawnRate);
 
-
+            var innerslothRoleInfo = InnerslothRole.Instance.MyRoleInfo;
+            InnerslothSpawnRate = new(2000, innerslothRoleInfo.NameKey, innerslothRoleInfo.RoleColor, 1);
+            
             madmateSpawnRate = new CustomRoleOption(360, "madmate", Madmate.color);
             madmateType = CustomOption.Create(366, "madmateType", new string[] { "madmateDefault", "madmateWithRole", "madmateRandom" }, madmateSpawnRate);
             madmateFixedRole = new CustomRoleSelectionOption(369, "madmateFixedRole", Madmate.validRoles, madmateType);

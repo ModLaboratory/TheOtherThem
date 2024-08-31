@@ -14,6 +14,7 @@ using TheOtherThem.Objects;
 using static TheOtherThem.GameHistory;
 using TheOtherThem.Patches;
 using AmongUs.GameOptions;
+using TheOtherThem.TOTRole;
 
 namespace TheOtherThem
 {
@@ -36,7 +37,7 @@ namespace TheOtherThem
             None = int.MaxValue,
         }
 
-        public static void clearAndReloadRoles()
+        public static void ClearAndReloadRoles()
         {
             Jester.clearAndReload();
             Mayor.clearAndReload();
@@ -73,6 +74,7 @@ namespace TheOtherThem
             Pursuer.clearAndReload();
             Witch.clearAndReload();
             TheOtherRolesGM.clearAndReloadRoles();
+            CustomRole.ReloadAll();
         }
 
         public static class Jester
@@ -89,9 +91,9 @@ namespace TheOtherThem
             {
                 jester = null;
                 triggerJesterWin = false;
-                canCallEmergency = CustomOptionHolder.jesterCanCallEmergency.getBool();
-                canSabotage = CustomOptionHolder.jesterCanSabotage.getBool();
-                hasImpostorVision = CustomOptionHolder.jesterHasImpostorVision.getBool();
+                canCallEmergency = CustomOptionHolder.jesterCanCallEmergency.GetBool();
+                canSabotage = CustomOptionHolder.jesterCanSabotage.GetBool();
+                hasImpostorVision = CustomOptionHolder.jesterHasImpostorVision.GetBool();
             }
         }
 
@@ -104,7 +106,7 @@ namespace TheOtherThem
             public static void clearAndReload()
             {
                 mayor = null;
-                numVotes = (int)CustomOptionHolder.mayorNumVotes.getFloat();
+                numVotes = (int)CustomOptionHolder.mayorNumVotes.GetFloat();
             }
         }
 
@@ -128,9 +130,9 @@ namespace TheOtherThem
             public static void clearAndReload()
             {
                 engineer = null;
-                remainingFixes = Mathf.RoundToInt(CustomOptionHolder.engineerNumberOfFixes.getFloat());
-                highlightForImpostors = CustomOptionHolder.engineerHighlightForImpostors.getBool();
-                highlightForTeamJackal = CustomOptionHolder.engineerHighlightForTeamJackal.getBool();
+                remainingFixes = Mathf.RoundToInt(CustomOptionHolder.engineerNumberOfFixes.GetFloat());
+                highlightForImpostors = CustomOptionHolder.engineerHighlightForImpostors.GetBool();
+                highlightForTeamJackal = CustomOptionHolder.engineerHighlightForTeamJackal.GetBool();
             }
         }
 
@@ -149,9 +151,9 @@ namespace TheOtherThem
         {
             public static PlayerControl mafioso;
             public static Color color = Palette.ImpostorRed;
-            public static bool canSabotage { get { return canKill || CustomOptionHolder.mafiosoCanSabotage.getBool(); } }
-            public static bool canRepair { get { return canKill || CustomOptionHolder.mafiosoCanRepair.getBool(); } }
-            public static bool canVent { get { return canKill || CustomOptionHolder.mafiosoCanVent.getBool();  } }
+            public static bool canSabotage { get { return canKill || CustomOptionHolder.mafiosoCanSabotage.GetBool(); } }
+            public static bool canRepair { get { return canKill || CustomOptionHolder.mafiosoCanRepair.GetBool(); } }
+            public static bool canVent { get { return canKill || CustomOptionHolder.mafiosoCanVent.GetBool();  } }
             public static bool canKill { get { return Godfather.godfather == null || Godfather.godfather.isDead(); } }
 
             public static void clearAndReload()
@@ -166,10 +168,10 @@ namespace TheOtherThem
             public static PlayerControl janitor;
             public static Color color = Palette.ImpostorRed;
 
-            public static float cooldown { get { return CustomOptionHolder.janitorCooldown.getFloat(); } }
-            public static bool canSabotage { get { return CustomOptionHolder.janitorCanSabotage.getBool(); } }
-            public static bool canRepair { get { return CustomOptionHolder.janitorCanRepair.getBool(); } }
-            public static bool canVent { get { return CustomOptionHolder.janitorCanVent.getBool(); } }
+            public static float cooldown { get { return CustomOptionHolder.janitorCooldown.GetFloat(); } }
+            public static bool canSabotage { get { return CustomOptionHolder.janitorCanSabotage.GetBool(); } }
+            public static bool canRepair { get { return CustomOptionHolder.janitorCanRepair.GetBool(); } }
+            public static bool canVent { get { return CustomOptionHolder.janitorCanVent.GetBool(); } }
 
             private static Sprite buttonSprite;
             public static Sprite getButtonSprite()
@@ -200,11 +202,11 @@ namespace TheOtherThem
             public static void clearAndReload()
             {
                 detective = null;
-                anonymousFootprints = CustomOptionHolder.detectiveAnonymousFootprints.getBool();
-                footprintIntervall = CustomOptionHolder.detectiveFootprintIntervall.getFloat();
-                footprintDuration = CustomOptionHolder.detectiveFootprintDuration.getFloat();
-                reportNameDuration = CustomOptionHolder.detectiveReportNameDuration.getFloat();
-                reportColorDuration = CustomOptionHolder.detectiveReportColorDuration.getFloat();
+                anonymousFootprints = CustomOptionHolder.detectiveAnonymousFootprints.GetBool();
+                footprintIntervall = CustomOptionHolder.detectiveFootprintIntervall.GetFloat();
+                footprintDuration = CustomOptionHolder.detectiveFootprintDuration.GetFloat();
+                reportNameDuration = CustomOptionHolder.detectiveReportNameDuration.GetFloat();
+                reportColorDuration = CustomOptionHolder.detectiveReportColorDuration.GetFloat();
                 timer = 6.2f;
             }
         }
@@ -235,9 +237,9 @@ namespace TheOtherThem
                 timeMaster = null;
                 isRewinding = false;
                 shieldActive = false;
-                rewindTime = CustomOptionHolder.timeMasterRewindTime.getFloat();
-                shieldDuration = CustomOptionHolder.timeMasterShieldDuration.getFloat();
-                cooldown = CustomOptionHolder.timeMasterCooldown.getFloat();
+                rewindTime = CustomOptionHolder.timeMasterRewindTime.GetFloat();
+                shieldDuration = CustomOptionHolder.timeMasterShieldDuration.GetFloat();
+                cooldown = CustomOptionHolder.timeMasterCooldown.GetFloat();
             }
         }
 
@@ -273,10 +275,10 @@ namespace TheOtherThem
                 futureShielded = null;
                 currentTarget = null;
                 usedShield = false;
-                showShielded = CustomOptionHolder.medicShowShielded.getSelection();
-                showAttemptToShielded = CustomOptionHolder.medicShowAttemptToShielded.getBool();
-                showAttemptToMedic = CustomOptionHolder.medicShowAttemptToMedic.getBool();
-                setShieldAfterMeeting = CustomOptionHolder.medicSetShieldAfterMeeting.getBool();
+                showShielded = CustomOptionHolder.medicShowShielded.GetSelection();
+                showAttemptToShielded = CustomOptionHolder.medicShowAttemptToShielded.GetBool();
+                showAttemptToMedic = CustomOptionHolder.medicShowAttemptToMedic.GetBool();
+                setShieldAfterMeeting = CustomOptionHolder.medicSetShieldAfterMeeting.GetBool();
             }
         }
 
@@ -302,9 +304,9 @@ namespace TheOtherThem
             {
                 seer = null;
                 deadBodyPositions = new List<Vector3>();
-                limitSoulDuration = CustomOptionHolder.seerLimitSoulDuration.getBool();
-                soulDuration = CustomOptionHolder.seerSoulDuration.getFloat();
-                mode = CustomOptionHolder.seerMode.getSelection();
+                limitSoulDuration = CustomOptionHolder.seerLimitSoulDuration.GetBool();
+                soulDuration = CustomOptionHolder.seerSoulDuration.GetFloat();
+                mode = CustomOptionHolder.seerMode.GetSelection();
             }
         }
 
@@ -367,15 +369,15 @@ namespace TheOtherThem
             doorLog = null;
                 hackerTimer = 0f;
                 adminSprite = null;
-                cooldown = CustomOptionHolder.hackerCooldown.getFloat();
-                duration = CustomOptionHolder.hackerHackeringDuration.getFloat();
-                onlyColorType = CustomOptionHolder.hackerOnlyColorType.getBool();
-                toolsNumber = CustomOptionHolder.hackerToolsNumber.getFloat();
-                rechargeTasksNumber = Mathf.RoundToInt(CustomOptionHolder.hackerRechargeTasksNumber.getFloat());
-                rechargedTasks = Mathf.RoundToInt(CustomOptionHolder.hackerRechargeTasksNumber.getFloat());
-                chargesVitals = Mathf.RoundToInt(CustomOptionHolder.hackerToolsNumber.getFloat()) / 2;
-                chargesAdminTable = Mathf.RoundToInt(CustomOptionHolder.hackerToolsNumber.getFloat()) / 2;
-            cantMove = CustomOptionHolder.hackerNoMove.getBool();
+                cooldown = CustomOptionHolder.hackerCooldown.GetFloat();
+                duration = CustomOptionHolder.hackerHackeringDuration.GetFloat();
+                onlyColorType = CustomOptionHolder.hackerOnlyColorType.GetBool();
+                toolsNumber = CustomOptionHolder.hackerToolsNumber.GetFloat();
+                rechargeTasksNumber = Mathf.RoundToInt(CustomOptionHolder.hackerRechargeTasksNumber.GetFloat());
+                rechargedTasks = Mathf.RoundToInt(CustomOptionHolder.hackerRechargeTasksNumber.GetFloat());
+                chargesVitals = Mathf.RoundToInt(CustomOptionHolder.hackerToolsNumber.GetFloat()) / 2;
+                chargesAdminTable = Mathf.RoundToInt(CustomOptionHolder.hackerToolsNumber.GetFloat()) / 2;
+            cantMove = CustomOptionHolder.hackerNoMove.GetBool();
             }
         }
 
@@ -394,7 +396,7 @@ namespace TheOtherThem
             {
                 mini = null;
                 triggerMiniLose = false;
-                growingUpDuration = CustomOptionHolder.miniGrowingUpDuration.getFloat();
+                growingUpDuration = CustomOptionHolder.miniGrowingUpDuration.GetFloat();
                 timeOfGrowthStart = DateTime.UtcNow;
             }
 
@@ -462,8 +464,8 @@ namespace TheOtherThem
                 tracker = null;
                 resetTracked();
                 timeUntilUpdate = 0f;
-                updateIntervall = CustomOptionHolder.trackerUpdateIntervall.getFloat();
-                resetTargetAfterMeeting = CustomOptionHolder.trackerResetTargetAfterMeeting.getBool();
+                updateIntervall = CustomOptionHolder.trackerUpdateIntervall.GetFloat();
+                resetTargetAfterMeeting = CustomOptionHolder.trackerResetTargetAfterMeeting.GetBool();
             if (localArrows != null) {
                 foreach (Arrow arrow in localArrows)
                     if (arrow?.arrow != null)
@@ -471,9 +473,9 @@ namespace TheOtherThem
             }
             deadBodyPositions = new List<Vector3>();
             corpsesTrackingTimer = 0f;
-            corpsesTrackingCooldown = CustomOptionHolder.trackerCorpsesTrackingCooldown.getFloat();
-            corpsesTrackingDuration = CustomOptionHolder.trackerCorpsesTrackingDuration.getFloat();
-            canTrackCorpses = CustomOptionHolder.trackerCanTrackCorpses.getBool();
+            corpsesTrackingCooldown = CustomOptionHolder.trackerCorpsesTrackingCooldown.GetFloat();
+            corpsesTrackingDuration = CustomOptionHolder.trackerCorpsesTrackingDuration.GetFloat();
+            canTrackCorpses = CustomOptionHolder.trackerCanTrackCorpses.GetBool();
             }
         }
 
@@ -515,10 +517,10 @@ namespace TheOtherThem
                 targetNearGarlic = false;
                 localPlacedGarlic = false;
                 currentTarget = null;
-                garlicsActive = CustomOptionHolder.vampireSpawnRate.getSelection() > 0;
-                delay = CustomOptionHolder.vampireKillDelay.getFloat();
-                cooldown = CustomOptionHolder.vampireCooldown.getFloat();
-                canKillNearGarlics = CustomOptionHolder.vampireCanKillNearGarlics.getBool();
+                garlicsActive = CustomOptionHolder.vampireSpawnRate.GetSelection() > 0;
+                delay = CustomOptionHolder.vampireKillDelay.GetFloat();
+                cooldown = CustomOptionHolder.vampireCooldown.GetFloat();
+                canKillNearGarlics = CustomOptionHolder.vampireCanKillNearGarlics.GetBool();
             }
         }
 
@@ -542,9 +544,9 @@ namespace TheOtherThem
                             UnityEngine.Object.Destroy(arrow.arrow);
                 }
                 localArrows = new List<Arrow>();
-                taskCountForReveal = Mathf.RoundToInt(CustomOptionHolder.snitchLeftTasksForReveal.getFloat());
-                includeTeamJackal = CustomOptionHolder.snitchIncludeTeamJackal.getBool();
-                teamJackalUseDifferentArrowColor = CustomOptionHolder.snitchTeamJackalUseDifferentArrowColor.getBool();
+                taskCountForReveal = Mathf.RoundToInt(CustomOptionHolder.snitchLeftTasksForReveal.GetFloat());
+                includeTeamJackal = CustomOptionHolder.snitchIncludeTeamJackal.GetBool();
+                teamJackalUseDifferentArrowColor = CustomOptionHolder.snitchTeamJackalUseDifferentArrowColor.GetBool();
                 snitch = null;
             }
         }
@@ -580,8 +582,8 @@ namespace TheOtherThem
                 jackal = null;
                 currentTarget = null;
                 fakeSidekick = null;
-                cooldown = CustomOptionHolder.jackalKillCooldown.getFloat();
-                createSidekickCooldown = CustomOptionHolder.jackalCreateSidekickCooldown.getFloat();
+                cooldown = CustomOptionHolder.jackalKillCooldown.GetFloat();
+                createSidekickCooldown = CustomOptionHolder.jackalCreateSidekickCooldown.GetFloat();
             }
 
             public static void clearAndReload()
@@ -589,14 +591,14 @@ namespace TheOtherThem
                 jackal = null;
                 currentTarget = null;
                 fakeSidekick = null;
-                cooldown = CustomOptionHolder.jackalKillCooldown.getFloat();
-                createSidekickCooldown = CustomOptionHolder.jackalCreateSidekickCooldown.getFloat();
-                canUseVents = CustomOptionHolder.jackalCanUseVents.getBool();
-                canCreateSidekick = CustomOptionHolder.jackalCanCreateSidekick.getBool();
-                jackalPromotedFromSidekickCanCreateSidekick = CustomOptionHolder.jackalPromotedFromSidekickCanCreateSidekick.getBool();
-                canCreateSidekickFromImpostor = CustomOptionHolder.jackalCanCreateSidekickFromImpostor.getBool();
+                cooldown = CustomOptionHolder.jackalKillCooldown.GetFloat();
+                createSidekickCooldown = CustomOptionHolder.jackalCreateSidekickCooldown.GetFloat();
+                canUseVents = CustomOptionHolder.jackalCanUseVents.GetBool();
+                canCreateSidekick = CustomOptionHolder.jackalCanCreateSidekick.GetBool();
+                jackalPromotedFromSidekickCanCreateSidekick = CustomOptionHolder.jackalPromotedFromSidekickCanCreateSidekick.GetBool();
+                canCreateSidekickFromImpostor = CustomOptionHolder.jackalCanCreateSidekickFromImpostor.GetBool();
                 formerJackals.Clear();
-                hasImpostorVision = CustomOptionHolder.jackalAndSidekickHaveImpostorVision.getBool();
+                hasImpostorVision = CustomOptionHolder.jackalAndSidekickHaveImpostorVision.GetBool();
             }
 
         }
@@ -618,11 +620,11 @@ namespace TheOtherThem
             {
                 sidekick = null;
                 currentTarget = null;
-                cooldown = CustomOptionHolder.jackalKillCooldown.getFloat();
-                canUseVents = CustomOptionHolder.sidekickCanUseVents.getBool();
-                canKill = CustomOptionHolder.sidekickCanKill.getBool();
-                promotesToJackal = CustomOptionHolder.sidekickPromotesToJackal.getBool();
-                hasImpostorVision = CustomOptionHolder.jackalAndSidekickHaveImpostorVision.getBool();
+                cooldown = CustomOptionHolder.jackalKillCooldown.GetFloat();
+                canUseVents = CustomOptionHolder.sidekickCanUseVents.GetBool();
+                canKill = CustomOptionHolder.sidekickCanKill.GetBool();
+                promotesToJackal = CustomOptionHolder.sidekickPromotesToJackal.GetBool();
+                hasImpostorVision = CustomOptionHolder.jackalAndSidekickHaveImpostorVision.GetBool();
             }
         }
 
@@ -650,9 +652,9 @@ namespace TheOtherThem
                 eraser = null;
                 futureErased = new List<PlayerControl>();
                 currentTarget = null;
-                cooldown = CustomOptionHolder.eraserCooldown.getFloat();
-                cooldownIncrease = CustomOptionHolder.eraserCooldownIncrease.getFloat();
-                canEraseAnyone = CustomOptionHolder.eraserCanEraseAnyone.getBool();
+                cooldown = CustomOptionHolder.eraserCooldown.GetFloat();
+                cooldownIncrease = CustomOptionHolder.eraserCooldownIncrease.GetFloat();
+                canEraseAnyone = CustomOptionHolder.eraserCanEraseAnyone.GetBool();
             }
         }
 
@@ -668,9 +670,9 @@ namespace TheOtherThem
             public static void clearAndReload()
             {
                 spy = null;
-                impostorsCanKillAnyone = CustomOptionHolder.spyImpostorsCanKillAnyone.getBool();
-                canEnterVents = CustomOptionHolder.spyCanEnterVents.getBool();
-                hasImpostorVision = CustomOptionHolder.spyHasImpostorVision.getBool();
+                impostorsCanKillAnyone = CustomOptionHolder.spyImpostorsCanKillAnyone.GetBool();
+                canEnterVents = CustomOptionHolder.spyCanEnterVents.GetBool();
+                hasImpostorVision = CustomOptionHolder.spyHasImpostorVision.GetBool();
             }
         }
 
@@ -712,9 +714,9 @@ namespace TheOtherThem
             {
                 trickster = null;
                 lightsOutTimer = 0f;
-                placeBoxCooldown = CustomOptionHolder.tricksterPlaceBoxCooldown.getFloat();
-                lightsOutCooldown = CustomOptionHolder.tricksterLightsOutCooldown.getFloat();
-                lightsOutDuration = CustomOptionHolder.tricksterLightsOutDuration.getFloat();
+                placeBoxCooldown = CustomOptionHolder.tricksterPlaceBoxCooldown.GetFloat();
+                lightsOutCooldown = CustomOptionHolder.tricksterLightsOutCooldown.GetFloat();
+                lightsOutDuration = CustomOptionHolder.tricksterLightsOutDuration.GetFloat();
                 JackInTheBox.UpdateStates(); // if the role is erased, we might have to update the state of the created objects
             }
 
@@ -738,7 +740,7 @@ namespace TheOtherThem
             public static void clearAndReload()
             {
                 cleaner = null;
-                cooldown = CustomOptionHolder.cleanerCooldown.getFloat();
+                cooldown = CustomOptionHolder.cleanerCooldown.GetFloat();
             }
         }
 
@@ -778,8 +780,8 @@ namespace TheOtherThem
                 currentTarget = null;
                 curseVictim = null;
                 curseVictimTarget = null;
-                cooldown = CustomOptionHolder.warlockCooldown.getFloat();
-                rootTime = CustomOptionHolder.warlockRootTime.getFloat();
+                cooldown = CustomOptionHolder.warlockCooldown.GetFloat();
+                rootTime = CustomOptionHolder.warlockRootTime.GetFloat();
             }
 
             public static void resetCurse()
@@ -864,17 +866,17 @@ namespace TheOtherThem
                 securityGuard = null;
                 ventTarget = null;
             minigame = null;
-            duration = CustomOptionHolder.securityGuardCamDuration.getFloat();
-            maxCharges = Mathf.RoundToInt(CustomOptionHolder.securityGuardCamMaxCharges.getFloat());
-            rechargeTasksNumber = Mathf.RoundToInt(CustomOptionHolder.securityGuardCamRechargeTasksNumber.getFloat());
-            rechargedTasks = Mathf.RoundToInt(CustomOptionHolder.securityGuardCamRechargeTasksNumber.getFloat());
-            charges = Mathf.RoundToInt(CustomOptionHolder.securityGuardCamMaxCharges.getFloat()) /2;
+            duration = CustomOptionHolder.securityGuardCamDuration.GetFloat();
+            maxCharges = Mathf.RoundToInt(CustomOptionHolder.securityGuardCamMaxCharges.GetFloat());
+            rechargeTasksNumber = Mathf.RoundToInt(CustomOptionHolder.securityGuardCamRechargeTasksNumber.GetFloat());
+            rechargedTasks = Mathf.RoundToInt(CustomOptionHolder.securityGuardCamRechargeTasksNumber.GetFloat());
+            charges = Mathf.RoundToInt(CustomOptionHolder.securityGuardCamMaxCharges.GetFloat()) /2;
                 placedCameras = 0;
-                cooldown = CustomOptionHolder.securityGuardCooldown.getFloat();
-                totalScrews = remainingScrews = Mathf.RoundToInt(CustomOptionHolder.securityGuardTotalScrews.getFloat());
-                camPrice = Mathf.RoundToInt(CustomOptionHolder.securityGuardCamPrice.getFloat());
-                ventPrice = Mathf.RoundToInt(CustomOptionHolder.securityGuardVentPrice.getFloat());
-            cantMove = CustomOptionHolder.securityGuardNoMove.getBool();
+                cooldown = CustomOptionHolder.securityGuardCooldown.GetFloat();
+                totalScrews = remainingScrews = Mathf.RoundToInt(CustomOptionHolder.securityGuardTotalScrews.GetFloat());
+                camPrice = Mathf.RoundToInt(CustomOptionHolder.securityGuardCamPrice.GetFloat());
+                ventPrice = Mathf.RoundToInt(CustomOptionHolder.securityGuardVentPrice.GetFloat());
+            cantMove = CustomOptionHolder.securityGuardNoMove.GetBool();
             }
         }
 
@@ -968,8 +970,8 @@ namespace TheOtherThem
                 {
                     if (p != null && p.gameObject != null) p.gameObject.SetActive(false);
                 }
-                cooldown = CustomOptionHolder.arsonistCooldown.getFloat();
-                duration = CustomOptionHolder.arsonistDuration.getFloat();
+                cooldown = CustomOptionHolder.arsonistCooldown.GetFloat();
+                duration = CustomOptionHolder.arsonistDuration.GetFloat();
             }
         }
 
@@ -1020,14 +1022,14 @@ namespace TheOtherThem
             {
                 niceGuesser = null;
                 evilGuesser = null;
-            guesserCantGuessSnitch = CustomOptionHolder.guesserCantGuessSnitchIfTaksDone.getBool();
-                remainingShotsEvilGuesser = Mathf.RoundToInt(CustomOptionHolder.guesserNumberOfShots.getFloat());
-                remainingShotsNiceGuesser = Mathf.RoundToInt(CustomOptionHolder.guesserNumberOfShots.getFloat());
-                onlyAvailableRoles = CustomOptionHolder.guesserOnlyAvailableRoles.getBool();
-            	hasMultipleShotsPerMeeting = CustomOptionHolder.guesserHasMultipleShotsPerMeeting.getBool();
-                showInfoInGhostChat = CustomOptionHolder.guesserShowInfoInGhostChat.getBool();
-                killsThroughShield = CustomOptionHolder.guesserKillsThroughShield.getBool();
-                evilGuesserCanGuessSpy = CustomOptionHolder.guesserEvilCanKillSpy.getBool();
+            guesserCantGuessSnitch = CustomOptionHolder.guesserCantGuessSnitchIfTaksDone.GetBool();
+                remainingShotsEvilGuesser = Mathf.RoundToInt(CustomOptionHolder.guesserNumberOfShots.GetFloat());
+                remainingShotsNiceGuesser = Mathf.RoundToInt(CustomOptionHolder.guesserNumberOfShots.GetFloat());
+                onlyAvailableRoles = CustomOptionHolder.guesserOnlyAvailableRoles.GetBool();
+            	hasMultipleShotsPerMeeting = CustomOptionHolder.guesserHasMultipleShotsPerMeeting.GetBool();
+                showInfoInGhostChat = CustomOptionHolder.guesserShowInfoInGhostChat.GetBool();
+                killsThroughShield = CustomOptionHolder.guesserKillsThroughShield.GetBool();
+                evilGuesserCanGuessSpy = CustomOptionHolder.guesserEvilCanKillSpy.GetBool();
             }
         }
 
@@ -1065,11 +1067,11 @@ namespace TheOtherThem
                 }
 
 
-                bountyDuration = CustomOptionHolder.bountyHunterBountyDuration.getFloat();
-                bountyKillCooldown = CustomOptionHolder.bountyHunterReducedCooldown.getFloat();
-                punishmentTime = CustomOptionHolder.bountyHunterPunishmentTime.getFloat();
-                showArrow = CustomOptionHolder.bountyHunterShowArrow.getBool();
-                arrowUpdateIntervall = CustomOptionHolder.bountyHunterArrowUpdateIntervall.getFloat();
+                bountyDuration = CustomOptionHolder.bountyHunterBountyDuration.GetFloat();
+                bountyKillCooldown = CustomOptionHolder.bountyHunterReducedCooldown.GetFloat();
+                punishmentTime = CustomOptionHolder.bountyHunterPunishmentTime.GetFloat();
+                showArrow = CustomOptionHolder.bountyHunterShowArrow.GetBool();
+                arrowUpdateIntervall = CustomOptionHolder.bountyHunterArrowUpdateIntervall.GetFloat();
             }
         }
 
@@ -1088,9 +1090,9 @@ namespace TheOtherThem
             {
                 bait = null;
                 reported = false;
-                highlightAllVents = CustomOptionHolder.baitHighlightAllVents.getBool();
-                reportDelay = CustomOptionHolder.baitReportDelay.getFloat();
-				showKillFlash = CustomOptionHolder.baitShowKillFlash.getBool();
+                highlightAllVents = CustomOptionHolder.baitHighlightAllVents.GetBool();
+                reportDelay = CustomOptionHolder.baitReportDelay.GetFloat();
+				showKillFlash = CustomOptionHolder.baitShowKillFlash.GetBool();
             }
         }
     }
@@ -1114,12 +1116,12 @@ namespace TheOtherThem
 
         public static void clearAndReload() {
             vulture = null;
-            vultureNumberToWin = Mathf.RoundToInt(CustomOptionHolder.vultureNumberToWin.getFloat());
+            vultureNumberToWin = Mathf.RoundToInt(CustomOptionHolder.vultureNumberToWin.GetFloat());
             eatenBodies = 0;
-            cooldown = CustomOptionHolder.vultureCooldown.getFloat();
+            cooldown = CustomOptionHolder.vultureCooldown.GetFloat();
             triggerVultureWin = false;
-            canUseVents = CustomOptionHolder.vultureCanUseVents.getBool();
-            showArrows = CustomOptionHolder.vultureShowArrows.getBool();
+            canUseVents = CustomOptionHolder.vultureCanUseVents.GetBool();
+            showArrows = CustomOptionHolder.vultureShowArrows.GetBool();
             if (localArrows != null) {
                 foreach (Arrow arrow in localArrows)
                     if (arrow?.arrow != null)
@@ -1166,9 +1168,9 @@ namespace TheOtherThem
             featureDeadBodies = new List<Tuple<DeadPlayer, Vector3>>();
             souls = new List<SpriteRenderer>();
             meetingStartTime = DateTime.UtcNow;
-            cooldown = CustomOptionHolder.mediumCooldown.getFloat();
-            duration = CustomOptionHolder.mediumDuration.getFloat();
-            oneTimeUse = CustomOptionHolder.mediumOneTimeUse.getBool();
+            cooldown = CustomOptionHolder.mediumCooldown.GetFloat();
+            duration = CustomOptionHolder.mediumDuration.GetFloat();
+            oneTimeUse = CustomOptionHolder.mediumOneTimeUse.GetBool();
         }
     }
 
@@ -1198,11 +1200,11 @@ namespace TheOtherThem
             triggerLawyerWin = false;
             meetings = 0;
 
-            targetKnows = CustomOptionHolder.lawyerTargetKnows.getBool();
-            winsAfterMeetings = CustomOptionHolder.lawyerWinsAfterMeetings.getBool();
-            neededMeetings = Mathf.RoundToInt(CustomOptionHolder.lawyerNeededMeetings.getFloat());
-            vision = CustomOptionHolder.lawyerVision.getFloat();
-            lawyerKnowsRole = CustomOptionHolder.lawyerKnowsRole.getBool();
+            targetKnows = CustomOptionHolder.lawyerTargetKnows.GetBool();
+            winsAfterMeetings = CustomOptionHolder.lawyerWinsAfterMeetings.GetBool();
+            neededMeetings = Mathf.RoundToInt(CustomOptionHolder.lawyerNeededMeetings.GetFloat());
+            vision = CustomOptionHolder.lawyerVision.GetFloat();
+            lawyerKnowsRole = CustomOptionHolder.lawyerKnowsRole.GetBool();
         }
     }
 
@@ -1231,8 +1233,8 @@ namespace TheOtherThem
             blanks = 0;
             notAckedExiled = false;
 
-            cooldown = CustomOptionHolder.pursuerCooldown.getFloat();
-            blanksNumber = Mathf.RoundToInt(CustomOptionHolder.pursuerBlanksNumber.getFloat());
+            cooldown = CustomOptionHolder.pursuerCooldown.GetFloat();
+            blanksNumber = Mathf.RoundToInt(CustomOptionHolder.pursuerBlanksNumber.GetFloat());
         }
     }
 
@@ -1270,13 +1272,13 @@ namespace TheOtherThem
             witch = null;
             futureSpelled = new List<PlayerControl>();
             currentTarget = spellCastingTarget = null;
-            cooldown = CustomOptionHolder.witchCooldown.getFloat();
-            cooldownAddition = CustomOptionHolder.witchAdditionalCooldown.getFloat();
-            currentCooldownAddition = CustomOptionHolder.witchCooldown.getFloat();
-            canSpellAnyone = CustomOptionHolder.witchCanSpellAnyone.getBool();
-            spellCastingDuration = CustomOptionHolder.witchSpellCastingDuration.getFloat();
-            triggerBothCooldowns = CustomOptionHolder.witchTriggerBothCooldowns.getBool();
-            witchVoteSavesTargets = CustomOptionHolder.witchVoteSavesTargets.getBool();
+            cooldown = CustomOptionHolder.witchCooldown.GetFloat();
+            cooldownAddition = CustomOptionHolder.witchAdditionalCooldown.GetFloat();
+            currentCooldownAddition = CustomOptionHolder.witchCooldown.GetFloat();
+            canSpellAnyone = CustomOptionHolder.witchCanSpellAnyone.GetBool();
+            spellCastingDuration = CustomOptionHolder.witchSpellCastingDuration.GetFloat();
+            triggerBothCooldowns = CustomOptionHolder.witchTriggerBothCooldowns.GetBool();
+            witchVoteSavesTargets = CustomOptionHolder.witchVoteSavesTargets.GetBool();
         }
     }
 }

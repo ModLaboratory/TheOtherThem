@@ -35,7 +35,7 @@ namespace TheOtherThem
         {
             get
             {
-                return Helpers.cs(color, " ♥");
+                return Helpers.ColorString(color, " ♥");
             }
         }
 
@@ -99,12 +99,12 @@ namespace TheOtherThem
                 new Color32(255, 0, 0, 255),   // red
             };
 
-        public static bool bothDie { get { return CustomOptionHolder.loversBothDie.getBool(); } }
+        public static bool bothDie { get { return CustomOptionHolder.loversBothDie.GetBool(); } }
 
         // Making this closer to the au.libhalt.net version of Lovers
-        public static bool separateTeam { get { return CustomOptionHolder.loversSeparateTeam.getBool(); } }
-        public static bool tasksCount { get { return CustomOptionHolder.loversTasksCount.getBool(); } }
-        public static bool enableChat { get { return CustomOptionHolder.loversEnableChat.getBool(); } }
+        public static bool separateTeam { get { return CustomOptionHolder.loversSeparateTeam.GetBool(); } }
+        public static bool tasksCount { get { return CustomOptionHolder.loversTasksCount.GetBool(); } }
+        public static bool enableChat { get { return CustomOptionHolder.loversEnableChat.GetBool(); } }
 
         public static bool hasTasks
         {

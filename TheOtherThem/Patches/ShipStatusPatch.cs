@@ -29,10 +29,10 @@ namespace TheOtherThem.Patches {
                 || (Spy.spy != null && Spy.spy.PlayerId == player.PlayerId && Spy.hasImpostorVision)
                 || (player.Object.hasModifier(ModifierType.Madmate) && Madmate.hasImpostorVision) // Impostor, Jackal/Sidekick, Spy, or Madmate with Impostor vision
                 || (Jester.jester != null && Jester.jester.PlayerId == player.PlayerId && Jester.hasImpostorVision) // Jester with Impostor vision
-                || (player.Object.isRole(RoleType.Fox))
+                || (player.Object.IsRole(RoleType.Fox))
                 )
                 __result = __instance.MaxLightRadius * GameOptionsManager.Instance.CurrentGameOptions.Cast<NormalGameOptionsV08>().ImpostorLightMod;
-            else if (PlayerControl.LocalPlayer.isRole(RoleType.Lighter) && Lighter.isLightActive(PlayerControl.LocalPlayer)) // if player is Lighter and Lighter has his ability active
+            else if (PlayerControl.LocalPlayer.IsRole(RoleType.Lighter) && Lighter.isLightActive(PlayerControl.LocalPlayer)) // if player is Lighter and Lighter has his ability active
                 __result = Mathf.Lerp(__instance.MaxLightRadius * Lighter.lighterModeLightsOffVision, __instance.MaxLightRadius * Lighter.lighterModeLightsOnVision, num);
             else if (Trickster.trickster != null && Trickster.lightsOutTimer > 0f) {
                 float lerpValue = 1f;
@@ -62,7 +62,7 @@ namespace TheOtherThem.Patches {
         [HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.Begin))]
         public static bool Prefix(ShipStatus __instance)
         {
-            if (CustomOptionHolder.uselessOptions.getBool() && CustomOptionHolder.playerColorRandom.getBool() && AmongUsClient.Instance.AmHost)
+            if (CustomOptionHolder.uselessOptions.GetBool() && CustomOptionHolder.playerColorRandom.GetBool() && AmongUsClient.Instance.AmHost)
             {
                 List<int> colors = Enumerable.Range(0, Palette.PlayerColors.Count).ToList();
                 foreach (PlayerControl p in PlayerControl.AllPlayerControls)

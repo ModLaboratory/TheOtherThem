@@ -27,13 +27,13 @@ namespace TheOtherThem
             Fanatic = 1,
         }
 
-        public static bool canEnterVents { get { return CustomOptionHolder.madmateCanEnterVents.getBool(); } }
-        public static bool hasImpostorVision { get { return CustomOptionHolder.madmateHasImpostorVision.getBool(); } }
-        public static bool canSabotage { get { return CustomOptionHolder.madmateCanSabotage.getBool(); } }
-        public static bool canFixComm { get { return CustomOptionHolder.madmateCanFixComm.getBool(); } }
+        public static bool canEnterVents { get { return CustomOptionHolder.madmateCanEnterVents.GetBool(); } }
+        public static bool hasImpostorVision { get { return CustomOptionHolder.madmateHasImpostorVision.GetBool(); } }
+        public static bool canSabotage { get { return CustomOptionHolder.madmateCanSabotage.GetBool(); } }
+        public static bool canFixComm { get { return CustomOptionHolder.madmateCanFixComm.GetBool(); } }
 
-        public static MadmateType madmateType { get { return (MadmateType)CustomOptionHolder.madmateType.getSelection(); } }
-        public static MadmateAbility madmateAbility { get { return (MadmateAbility)CustomOptionHolder.madmateAbility.getSelection(); } }
+        public static MadmateType madmateType { get { return (MadmateType)CustomOptionHolder.madmateType.GetSelection(); } }
+        public static MadmateAbility madmateAbility { get { return (MadmateAbility)CustomOptionHolder.madmateAbility.GetSelection(); } }
         public static RoleType fixedRole { get { return CustomOptionHolder.madmateFixedRole.role; } }
 
         public static int numCommonTasks { get { return CustomOptionHolder.madmateTasks.commonTasks; } }
@@ -97,9 +97,9 @@ namespace TheOtherThem
                         crewNoRole.Add(player);
                         validCrewmates.Add(player);
                     }
-                    else if (info.Any(x => validRoles.Contains(x.roleType)))
+                    else if (info.Any(x => validRoles.Contains(x.MyRoleType)))
                     {
-                        if (fixedRole == RoleType.NoRole || info.Any(x => x.roleType == fixedRole))
+                        if (fixedRole == RoleType.NoRole || info.Any(x => x.MyRoleType == fixedRole))
                             crewHasRole.Add(player);
 
                         validCrewmates.Add(player);

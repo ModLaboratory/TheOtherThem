@@ -32,7 +32,7 @@ namespace TheOtherThem.Patches
             // Don't waste network traffic if we're out of time.
             if (MapOptions.restrictDevices > 0 && MapOptions.restrictVitalsTime > 0f && PlayerControl.LocalPlayer.isAlive())
             {
-                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.UseVitalsTime, Hazel.SendOption.Reliable, -1);
+                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.UseVitalsTime, Hazel.SendOption.Reliable, -1);
                 writer.Write(vitalsTimer);
                 AmongUsClient.Instance.FinishRpcImmediately(writer);
                 RPCProcedure.useVitalsTime(vitalsTimer);

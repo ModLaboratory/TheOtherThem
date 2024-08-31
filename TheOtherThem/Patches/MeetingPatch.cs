@@ -134,7 +134,7 @@ namespace TheOtherThem.Patches {
 
                         if (AmongUsClient.Instance.AmHost)
                         {
-                            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.SwapperAnimate, Hazel.SendOption.Reliable, -1);
+                            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.SwapperAnimate, Hazel.SendOption.Reliable, -1);
                             AmongUsClient.Instance.FinishRpcImmediately(writer);
                             RPCProcedure.swapperAnimate();
                         }
@@ -188,7 +188,7 @@ namespace TheOtherThem.Patches {
         class MeetingHudBloopAVoteIconPatch {
             public static bool Prefix(MeetingHud __instance, [HarmonyArgument(0)]NetworkedPlayerInfo voterPlayer, [HarmonyArgument(1)]int index, [HarmonyArgument(2)]Transform parent) {
                 SpriteRenderer spriteRenderer = UnityEngine.Object.Instantiate<SpriteRenderer>(__instance.PlayerVotePrefab);
-                if (!GameManager.Instance.LogicOptions.GetAnonymousVotes() || (PlayerControl.LocalPlayer.Data.IsDead && MapOptions.ghostsSeeVotes) || PlayerControl.LocalPlayer.isRole(RoleType.Watcher))
+                if (!GameManager.Instance.LogicOptions.GetAnonymousVotes() || (PlayerControl.LocalPlayer.Data.IsDead && MapOptions.ghostsSeeVotes) || PlayerControl.LocalPlayer.IsRole(RoleType.Watcher))
                     PlayerMaterial.SetColors(voterPlayer.DefaultOutfit.ColorId, spriteRenderer);
                 else
                     PlayerMaterial.SetColors(Palette.DisabledGrey, spriteRenderer);
@@ -309,7 +309,7 @@ namespace TheOtherThem.Patches {
             {
                 if (target.AmDead)
                 {
-                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.GMRevive, Hazel.SendOption.Reliable, -1);
+                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.GMRevive, Hazel.SendOption.Reliable, -1);
                     writer.Write((byte)target.TargetPlayerId);
                     AmongUsClient.Instance.FinishRpcImmediately(writer);
                     RPCProcedure.GMRevive(target.TargetPlayerId);
@@ -319,7 +319,7 @@ namespace TheOtherThem.Patches {
                 }
                 else
                 {
-                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.GMKill, Hazel.SendOption.Reliable, -1);
+                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.GMKill, Hazel.SendOption.Reliable, -1);
                     writer.Write((byte)target.TargetPlayerId);
                     AmongUsClient.Instance.FinishRpcImmediately(writer);
                     RPCProcedure.GMKill(target.TargetPlayerId);
@@ -363,7 +363,7 @@ namespace TheOtherThem.Patches {
                     }
 
                     if (firstPlayer != null && secondPlayer != null) {
-                        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.SwapperSwap, Hazel.SendOption.Reliable, -1);
+                        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.SwapperSwap, Hazel.SendOption.Reliable, -1);
                         writer.Write((byte)firstPlayer.TargetPlayerId);
                         writer.Write((byte)secondPlayer.TargetPlayerId);
                         AmongUsClient.Instance.FinishRpcImmediately(writer);
@@ -405,21 +405,21 @@ namespace TheOtherThem.Patches {
             List<Transform> buttons = new List<Transform>();
             Transform selectedButton = null;
 
-            foreach (RoleInfo roleInfo in RoleInfo.allRoleInfos)
+            foreach (RoleInfo roleInfo in RoleInfo.AllRoleInfos)
             {
                 RoleType guesserRole = (Guesser.niceGuesser != null && PlayerControl.LocalPlayer.PlayerId == Guesser.niceGuesser.PlayerId) ? RoleType.NiceGuesser : RoleType.EvilGuesser;
                 if (roleInfo == null || 
-                    roleInfo.roleType == RoleType.Lovers || 
-                    roleInfo.roleType == guesserRole || 
+                    roleInfo.MyRoleType == RoleType.Lovers || 
+                    roleInfo.MyRoleType == guesserRole || 
                     roleInfo == RoleInfo.niceMini || 
-					(!Guesser.evilGuesserCanGuessSpy && guesserRole == RoleType.EvilGuesser && roleInfo.roleType == RoleType.Spy) ||
+					(!Guesser.evilGuesserCanGuessSpy && guesserRole == RoleType.EvilGuesser && roleInfo.MyRoleType == RoleType.Spy) ||
                     roleInfo == RoleInfo.gm ||
-                    (Guesser.onlyAvailableRoles && !roleInfo.enabled && !MapOptions.hideSettings))
+                    (Guesser.onlyAvailableRoles && !roleInfo.Enabled && !MapOptions.hideSettings))
                     continue; // Not guessable roles
 				if (Guesser.guesserCantGuessSnitch && Snitch.snitch != null) {
                     var (playerCompleted, playerTotal) = TasksHandler.taskInfo(Snitch.snitch.Data);
                     int numberOfLeftTasks = playerTotal - playerCompleted;
-                    if (numberOfLeftTasks <= 0 && roleInfo.roleType == RoleType.Snitch) continue;
+                    if (numberOfLeftTasks <= 0 && roleInfo.MyRoleType == RoleType.Snitch) continue;
                 }
                 Transform buttonParent = (new GameObject()).transform;
                 buttonParent.SetParent(container);
@@ -431,7 +431,7 @@ namespace TheOtherThem.Patches {
                 int row = i/5, col = i%5;
                 buttonParent.localPosition = new Vector3(-3.47f + 1.75f * col, 1.5f - 0.45f * row, -200f);
                 buttonParent.localScale = new Vector3(0.55f, 0.55f, 1f);
-                label.text = Helpers.cs(roleInfo.color, roleInfo.name);
+                label.text = Helpers.ColorString(roleInfo.RoleColor, roleInfo.Name);
                 label.alignment = TMPro.TextAlignmentOptions.Center;
                 label.transform.localPosition = new Vector3(0, 0, label.transform.localPosition.z);
                 label.transform.localScale *= 1.6f;
@@ -451,7 +451,7 @@ namespace TheOtherThem.Patches {
                             __instance.playerStates.ToList().ForEach(x => x.gameObject.SetActive(true)); 
                             UnityEngine.Object.Destroy(container.gameObject);
 
-                            MessageWriter murderAttemptWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ShieldedMurderAttempt, Hazel.SendOption.Reliable, -1);
+                            MessageWriter murderAttemptWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.ShieldedMurderAttempt, Hazel.SendOption.Reliable, -1);
                             AmongUsClient.Instance.FinishRpcImmediately(murderAttemptWriter);
                             RPCProcedure.shieldedMurderAttempt();
                             return;
@@ -475,13 +475,13 @@ namespace TheOtherThem.Patches {
                         }
 
                         // Shoot player and send chat info if activated
-                        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.GuesserShoot, Hazel.SendOption.Reliable, -1);
+                        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.GuesserShoot, Hazel.SendOption.Reliable, -1);
                         writer.Write(PlayerControl.LocalPlayer.PlayerId);
                         writer.Write(dyingTarget.PlayerId);
                         writer.Write(focusedTarget.PlayerId);
-                        writer.Write((byte)roleInfo.roleType);
+                        writer.Write((byte)roleInfo.MyRoleType);
                         AmongUsClient.Instance.FinishRpcImmediately(writer);
-                        RPCProcedure.guesserShoot(PlayerControl.LocalPlayer.PlayerId, dyingTarget.PlayerId, focusedTarget.PlayerId, (byte)roleInfo.roleType);
+                        RPCProcedure.guesserShoot(PlayerControl.LocalPlayer.PlayerId, dyingTarget.PlayerId, focusedTarget.PlayerId, (byte)roleInfo.MyRoleType);
                     }
                 }));
 
@@ -501,7 +501,7 @@ namespace TheOtherThem.Patches {
         static void populateButtonsPostfix(MeetingHud __instance) {
             nameplatesChanged = true;
 
-            if (PlayerControl.LocalPlayer.isRole(RoleType.GM) && GM.canKill)
+            if (PlayerControl.LocalPlayer.IsRole(RoleType.GM) && GM.canKill)
             {
                 renderers = new SpriteRenderer[__instance.playerStates.Length];
 
@@ -528,7 +528,7 @@ namespace TheOtherThem.Patches {
             }
 
             // Add Swapper Buttons
-            if (PlayerControl.LocalPlayer.isRole(RoleType.Swapper) && Swapper.numSwaps > 0 && !Swapper.swapper.Data.IsDead) {
+            if (PlayerControl.LocalPlayer.IsRole(RoleType.Swapper) && Swapper.numSwaps > 0 && !Swapper.swapper.Data.IsDead) {
                 selections = new bool[__instance.playerStates.Length];
                 renderers = new SpriteRenderer[__instance.playerStates.Length];
 
@@ -611,7 +611,7 @@ namespace TheOtherThem.Patches {
                 MeetingHud.Instance.state != MeetingHud.VoteStates.Discussion)
                 return;
 
-            if (PlayerControl.LocalPlayer.isRole(RoleType.Swapper) && Swapper.numSwaps > 0 && !Swapper.swapper.Data.IsDead)
+            if (PlayerControl.LocalPlayer.IsRole(RoleType.Swapper) && Swapper.numSwaps > 0 && !Swapper.swapper.Data.IsDead)
             {
                 meetingInfoText.text = String.Format(ModTranslation.GetString("swapperSwapsLeft"), Swapper.numSwaps);
                 meetingInfoText.gameObject.SetActive(true);
@@ -624,7 +624,7 @@ namespace TheOtherThem.Patches {
                 meetingInfoText.gameObject.SetActive(true);
             }
 
-            if (PlayerControl.LocalPlayer.isRole(RoleType.Shifter) && Shifter.futureShift != null)
+            if (PlayerControl.LocalPlayer.IsRole(RoleType.Shifter) && Shifter.futureShift != null)
             {
                 meetingInfoText.text = String.Format(ModTranslation.GetString("shifterTargetInfo"), Shifter.futureShift.Data.PlayerName);
                 meetingInfoText.gameObject.SetActive(true);

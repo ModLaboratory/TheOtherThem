@@ -14,12 +14,12 @@ namespace TheOtherThem
 
         public static Color color = new Color32(238, 229, 190, byte.MaxValue);
 
-        public static float lighterModeLightsOnVision { get { return CustomOptionHolder.lighterModeLightsOnVision.getFloat(); } }
-        public static float lighterModeLightsOffVision { get { return CustomOptionHolder.lighterModeLightsOffVision.getFloat(); } }
-        public static bool canSeeNinja { get { return CustomOptionHolder.lighterCanSeeNinja.getBool(); } }
+        public static float lighterModeLightsOnVision { get { return CustomOptionHolder.lighterModeLightsOnVision.GetFloat(); } }
+        public static float lighterModeLightsOffVision { get { return CustomOptionHolder.lighterModeLightsOffVision.GetFloat(); } }
+        public static bool canSeeNinja { get { return CustomOptionHolder.lighterCanSeeNinja.GetBool(); } }
 
-        public static float cooldown { get { return CustomOptionHolder.lighterCooldown.getFloat(); } }
-        public static float duration { get { return CustomOptionHolder.lighterDuration.getFloat(); } }
+        public static float cooldown { get { return CustomOptionHolder.lighterCooldown.GetFloat(); } }
+        public static float duration { get { return CustomOptionHolder.lighterDuration.GetFloat(); } }
 
         public bool lightActive = false;
 
@@ -54,7 +54,7 @@ namespace TheOtherThem
                 {
                     local.lightActive = true;
                 },
-                () => { return PlayerControl.LocalPlayer.isRole(RoleType.Lighter) && !PlayerControl.LocalPlayer.Data.IsDead; },
+                () => { return PlayerControl.LocalPlayer.IsRole(RoleType.Lighter) && !PlayerControl.LocalPlayer.Data.IsDead; },
                 () => { return PlayerControl.LocalPlayer.CanMove; },
                 () =>
                 {

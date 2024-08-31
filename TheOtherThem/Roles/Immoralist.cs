@@ -27,7 +27,7 @@ namespace TheOtherThem
 
         public override void FixedUpdate()
         {
-            if (PlayerControl.LocalPlayer.isRole(RoleType.Immoralist))
+            if (PlayerControl.LocalPlayer.IsRole(RoleType.Immoralist))
             {
                 arrowUpdate();
             }
@@ -61,7 +61,7 @@ namespace TheOtherThem
         public static void suicide()
         {
             byte targetId = PlayerControl.LocalPlayer.PlayerId;
-            MessageWriter killWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.SerialKillerSuicide, Hazel.SendOption.Reliable, -1); killWriter.Write(targetId);
+            MessageWriter killWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.SerialKillerSuicide, Hazel.SendOption.Reliable, -1); killWriter.Write(targetId);
             AmongUsClient.Instance.FinishRpcImmediately(killWriter);
             RPCProcedure.serialKillerSuicide(targetId);
         }
@@ -82,7 +82,7 @@ namespace TheOtherThem
                 {
                     suicide();
                 },
-                () => { return PlayerControl.LocalPlayer.isRole(RoleType.Immoralist) && !PlayerControl.LocalPlayer.Data.IsDead; },
+                () => { return PlayerControl.LocalPlayer.IsRole(RoleType.Immoralist) && !PlayerControl.LocalPlayer.Data.IsDead; },
                 () => { return true; },
                 () =>
                 {
@@ -127,7 +127,7 @@ namespace TheOtherThem
                 {
                     if (p.Data.IsDead) continue;
                     Arrow arrow;
-                    if (p.isRole(RoleType.Fox))
+                    if (p.IsRole(RoleType.Fox))
                     {
                         arrow = new Arrow(Fox.color);
                         arrow.arrow.SetActive(true);
@@ -150,7 +150,7 @@ namespace TheOtherThem
             public static void Postfix(PlayerControl __instance, [HarmonyArgument(0)] PlayerControl target)
             {
                 PlayerControl player = PlayerControl.LocalPlayer;
-                if (player.isRole(RoleType.Immoralist) && player.isAlive())
+                if (player.IsRole(RoleType.Immoralist) && player.isAlive())
                 {
                     HudManager.Instance.FullScreen.enabled = true;
                     HudManager.Instance.StartCoroutine(Effects.Lerp(1f, new Action<float>((p) =>

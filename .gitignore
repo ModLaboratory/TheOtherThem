@@ -1,8 +1,8 @@
 .vs
 .vscode/tasks.json
-TheOtherRoles/bin/
-TheOtherRoles/libs/
-TheOtherRoles/obj/
+TheOtherThem/bin/
+TheOtherThem/libs/
+TheOtherThem/obj/
 ~$*
 *.diff
 TODO

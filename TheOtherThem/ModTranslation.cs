@@ -28,7 +28,7 @@ namespace TheOtherThem
             Assembly assembly = Assembly.GetExecutingAssembly();
             Stream stream = assembly.GetManifestResourceStream("TheOtherThem.Resources.stringData.json");
             var byteArray = new byte[stream.Length];
-            var read = stream.Read(byteArray, 0, (int)stream.Length);
+            stream.Read(byteArray, 0, (int)stream.Length);
             string json = System.Text.Encoding.UTF8.GetString(byteArray);
 
             StringData = new Dictionary<string, Dictionary<int, string>>();

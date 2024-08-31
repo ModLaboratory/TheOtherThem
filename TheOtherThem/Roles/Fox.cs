@@ -22,11 +22,11 @@ namespace TheOtherThem
         public static List<Arrow> arrows = new List<Arrow>();
         public static float updateTimer = 0f;
 
-        public static bool canFixReactorAndO2 { get { return CustomOptionHolder.foxCanFixReactorAndO2.getBool(); } }
+        public static bool canFixReactorAndO2 { get { return CustomOptionHolder.foxCanFixReactorAndO2.GetBool(); } }
         public static float arrowUpdateInterval = 0.5f;
-        public static bool crewWinsByTasks { get { return CustomOptionHolder.foxCrewWinsByTasks.getBool(); } }
-        public static float stealthCooldown { get { return CustomOptionHolder.foxStealthCooldown.getFloat(); } }
-        public static float stealthDuration { get { return CustomOptionHolder.foxStealthDuration.getFloat(); } }
+        public static bool crewWinsByTasks { get { return CustomOptionHolder.foxCrewWinsByTasks.GetBool(); } }
+        public static float stealthCooldown { get { return CustomOptionHolder.foxStealthCooldown.GetFloat(); } }
+        public static float stealthDuration { get { return CustomOptionHolder.foxStealthDuration.GetFloat(); } }
         public static int numCommonTasks { get { return CustomOptionHolder.foxTasks.commonTasks; } }
         public static int numLongTasks { get { return CustomOptionHolder.foxTasks.longTasks; } }
         public static int numShortTasks { get { return CustomOptionHolder.foxTasks.shortTasks; } }
@@ -35,10 +35,10 @@ namespace TheOtherThem
         public DateTime stealthedAt = DateTime.UtcNow;
         public static float fadeTime = 1f;
 
-        public static int optNumRepair { get { return (int)CustomOptionHolder.foxNumRepair.getFloat(); } }
+        public static int optNumRepair { get { return (int)CustomOptionHolder.foxNumRepair.GetFloat(); } }
         public static int numRepair = 0;
 
-        public static bool canCreateImmoralist { get { return CustomOptionHolder.foxCanCreateImmoralist.getBool(); } }
+        public static bool canCreateImmoralist { get { return CustomOptionHolder.foxCanCreateImmoralist.GetBool(); } }
         public static PlayerControl currentTarget;
         public static PlayerControl immoralist;
         public static List<byte> exiledFox = new List<byte>();
@@ -98,7 +98,7 @@ namespace TheOtherThem
                     List<PlayerControl> untargetablePlayers = new List<PlayerControl>();
                     foreach (var p in PlayerControl.AllPlayerControls)
                     {
-                        if (p.isImpostor() || p.isRole(RoleType.Jackal) || p.isRole(RoleType.Sheriff))
+                        if (p.isImpostor() || p.IsRole(RoleType.Jackal) || p.IsRole(RoleType.Sheriff))
                         {
                             untargetablePlayers.Add(p);
                         }
@@ -192,13 +192,13 @@ namespace TheOtherThem
                         return;
                     }
 
-                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.FoxStealth, Hazel.SendOption.Reliable, -1);
+                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.FoxStealth, Hazel.SendOption.Reliable, -1);
                     writer.Write(PlayerControl.LocalPlayer.PlayerId);
                     writer.Write(true);
                     AmongUsClient.Instance.FinishRpcImmediately(writer);
                     RPCProcedure.foxStealth(PlayerControl.LocalPlayer.PlayerId, true);
                 },
-                () => { return PlayerControl.LocalPlayer.isRole(RoleType.Fox) && !PlayerControl.LocalPlayer.Data.IsDead; },
+                () => { return PlayerControl.LocalPlayer.IsRole(RoleType.Fox) && !PlayerControl.LocalPlayer.Data.IsDead; },
                 () =>
                 {
                     if (foxButton.isEffectActive)
@@ -225,7 +225,7 @@ namespace TheOtherThem
                 () =>
                 {
                     foxButton.Timer = foxButton.MaxTimer = Fox.stealthCooldown;
-                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.FoxStealth, Hazel.SendOption.Reliable, -1);
+                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.FoxStealth, Hazel.SendOption.Reliable, -1);
                     writer.Write(PlayerControl.LocalPlayer.PlayerId);
                     writer.Write(false);
                     AmongUsClient.Instance.FinishRpcImmediately(writer);
@@ -248,7 +248,7 @@ namespace TheOtherThem
                     {
                         if (task.TaskType == TaskTypes.FixLights)
                         {
-                            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.EngineerFixLights, Hazel.SendOption.Reliable, -1);
+                            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.EngineerFixLights, Hazel.SendOption.Reliable, -1);
                             AmongUsClient.Instance.FinishRpcImmediately(writer);
                             RPCProcedure.engineerFixLights();
                         }
@@ -278,7 +278,7 @@ namespace TheOtherThem
                     }
                     numRepair -= 1;
                 },
-                () => { return PlayerControl.LocalPlayer.isRole(RoleType.Fox) && PlayerControl.LocalPlayer.isAlive() && numRepair > 0; },
+                () => { return PlayerControl.LocalPlayer.IsRole(RoleType.Fox) && PlayerControl.LocalPlayer.isAlive() && numRepair > 0; },
                 () =>
                 {
                     bool sabotageActive = false;
@@ -299,12 +299,12 @@ namespace TheOtherThem
             foxImmoralistButton = new CustomButton(
                 () =>
                 {
-                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.FoxCreatesImmoralist, Hazel.SendOption.Reliable, -1);
+                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.FoxCreatesImmoralist, Hazel.SendOption.Reliable, -1);
                     writer.Write(currentTarget.PlayerId);
                     AmongUsClient.Instance.FinishRpcImmediately(writer);
                     RPCProcedure.foxCreatesImmoralist(currentTarget.PlayerId);
                 },
-                () => { return !Immoralist.exists && canCreateImmoralist && PlayerControl.LocalPlayer.isRole(RoleType.Fox) && PlayerControl.LocalPlayer.isAlive(); },
+                () => { return !Immoralist.exists && canCreateImmoralist && PlayerControl.LocalPlayer.IsRole(RoleType.Fox) && PlayerControl.LocalPlayer.isAlive(); },
                 () => { return canCreateImmoralist && Fox.currentTarget != null && PlayerControl.LocalPlayer.CanMove; },
                 () => { foxImmoralistButton.Timer = 20; },
                 getImmoralistButtonSprite(),
@@ -345,17 +345,17 @@ namespace TheOtherThem
                     if (p.isDead()) continue;
                     Arrow arrow;
                     // float distance = Vector2.Distance(p.transform.position, PlayerControl.LocalPlayer.transform.position);
-                    if (p.Data.Role.IsImpostor || p.isRole(RoleType.Jackal) || p.isRole(RoleType.Sheriff))
+                    if (p.Data.Role.IsImpostor || p.IsRole(RoleType.Jackal) || p.IsRole(RoleType.Sheriff))
                     {
                         if (p.Data.Role.IsImpostor)
                         {
                             arrow = new Arrow(Palette.ImpostorRed);
                         }
-                        else if (p.isRole(RoleType.Jackal))
+                        else if (p.IsRole(RoleType.Jackal))
                         {
                             arrow = new Arrow(Jackal.color);
                         }
-                        else if (p.isRole(RoleType.Sheriff))
+                        else if (p.IsRole(RoleType.Sheriff))
                         {
                             arrow = new Arrow(Palette.White);
                         }
@@ -434,7 +434,7 @@ namespace TheOtherThem
         {
             public static void Postfix(ShipStatus __instance)
             {
-                if (PlayerControl.LocalPlayer.isRole(RoleType.Fox))
+                if (PlayerControl.LocalPlayer.IsRole(RoleType.Fox))
                 {
                     local.assignTasks();
                 }
@@ -453,10 +453,10 @@ namespace TheOtherThem
                     if (fox == null || fox.isDead()) return;
 
                     bool canSee =
-                        PlayerControl.LocalPlayer.isRole(RoleType.Fox) ||
-                        PlayerControl.LocalPlayer.isRole(RoleType.Immoralist) ||
+                        PlayerControl.LocalPlayer.IsRole(RoleType.Fox) ||
+                        PlayerControl.LocalPlayer.IsRole(RoleType.Immoralist) ||
                         PlayerControl.LocalPlayer.isDead() ||
-                        (PlayerControl.LocalPlayer.isRole(RoleType.Lighter) && Lighter.isLightActive(PlayerControl.LocalPlayer));
+                        (PlayerControl.LocalPlayer.IsRole(RoleType.Lighter) && Lighter.isLightActive(PlayerControl.LocalPlayer));
 
                     var opacity = canSee ? 0.1f : 0.0f;
 

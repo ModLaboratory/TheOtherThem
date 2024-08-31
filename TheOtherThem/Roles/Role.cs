@@ -16,6 +16,8 @@ using static TheOtherThem.TheOtherRoles;
 using static TheOtherThem.TheOtherRolesGM;
 using TheOtherThem.Patches;
 using System.Reflection;
+using TheOtherThem.TOTRole.Impostor;
+using TheOtherThem.TOTRole;
 
 namespace TheOtherThem
 {
@@ -59,6 +61,7 @@ namespace TheOtherThem
         NekoKabocha,
         Madmate,
         SerialKiller,
+        Innersloth,
 
 
         Mini = 150,
@@ -221,7 +224,7 @@ namespace TheOtherThem
 
     public static class RoleHelpers
     {
-        public static bool isRole(this PlayerControl player, RoleType role)
+        public static bool IsRole(this PlayerControl player, RoleType role)
         {
             foreach (var t in RoleData.allRoleTypes)
             {
@@ -317,7 +320,7 @@ namespace TheOtherThem
             return false;
         }
 
-        public static void setRole(this PlayerControl player, RoleType role)
+        public static void SetRole(this PlayerControl player, RoleType role)
         {
             foreach (var t in RoleData.allRoleTypes)
             {
@@ -452,7 +455,7 @@ namespace TheOtherThem
 
         public static void eraseRole(this PlayerControl player, RoleType role)
         {
-            if (isRole(player, role))
+            if (IsRole(player, role))
             {
                 foreach (var t in RoleData.allRoleTypes)
                 {
@@ -474,48 +477,48 @@ namespace TheOtherThem
             }
 
             // Crewmate roles
-            if (player.isRole(RoleType.Mayor)) Mayor.clearAndReload();
-            if (player.isRole(RoleType.Engineer)) Engineer.clearAndReload();
-            if (player.isRole(RoleType.Detective)) Detective.clearAndReload();
-            if (player.isRole(RoleType.TimeMaster)) TimeMaster.clearAndReload();
-            if (player.isRole(RoleType.Medic)) Medic.clearAndReload();
-            if (player.isRole(RoleType.Shifter)) Shifter.clearAndReload();
-            if (player.isRole(RoleType.Seer)) Seer.clearAndReload();
-            if (player.isRole(RoleType.Hacker)) Hacker.clearAndReload();
-            if (player.isRole(RoleType.Mini)) Mini.clearAndReload();
-            if (player.isRole(RoleType.Tracker)) Tracker.clearAndReload();
-            if (player.isRole(RoleType.Snitch)) Snitch.clearAndReload();
-            if (player.isRole(RoleType.Swapper)) Swapper.clearAndReload();
-            if (player.isRole(RoleType.Spy)) Spy.clearAndReload();
-            if (player.isRole(RoleType.SecurityGuard)) SecurityGuard.clearAndReload();
-            if (player.isRole(RoleType.Bait)) Bait.clearAndReload();
-            if (player.isRole(RoleType.Medium)) Medium.clearAndReload();
+            if (player.IsRole(RoleType.Mayor)) Mayor.clearAndReload();
+            if (player.IsRole(RoleType.Engineer)) Engineer.clearAndReload();
+            if (player.IsRole(RoleType.Detective)) Detective.clearAndReload();
+            if (player.IsRole(RoleType.TimeMaster)) TimeMaster.clearAndReload();
+            if (player.IsRole(RoleType.Medic)) Medic.clearAndReload();
+            if (player.IsRole(RoleType.Shifter)) Shifter.clearAndReload();
+            if (player.IsRole(RoleType.Seer)) Seer.clearAndReload();
+            if (player.IsRole(RoleType.Hacker)) Hacker.clearAndReload();
+            if (player.IsRole(RoleType.Mini)) Mini.clearAndReload();
+            if (player.IsRole(RoleType.Tracker)) Tracker.clearAndReload();
+            if (player.IsRole(RoleType.Snitch)) Snitch.clearAndReload();
+            if (player.IsRole(RoleType.Swapper)) Swapper.clearAndReload();
+            if (player.IsRole(RoleType.Spy)) Spy.clearAndReload();
+            if (player.IsRole(RoleType.SecurityGuard)) SecurityGuard.clearAndReload();
+            if (player.IsRole(RoleType.Bait)) Bait.clearAndReload();
+            if (player.IsRole(RoleType.Medium)) Medium.clearAndReload();
 
             // Impostor roles
-            if (player.isRole(RoleType.Morphling)) Morphling.clearAndReload();
-            if (player.isRole(RoleType.Camouflager)) Camouflager.clearAndReload();
-            if (player.isRole(RoleType.Godfather)) Godfather.clearAndReload();
-            if (player.isRole(RoleType.Mafioso)) Mafioso.clearAndReload();
-            if (player.isRole(RoleType.Janitor)) Janitor.clearAndReload();
-            if (player.isRole(RoleType.Vampire)) Vampire.clearAndReload();
-            if (player.isRole(RoleType.Eraser)) Eraser.clearAndReload();
-            if (player.isRole(RoleType.Trickster)) Trickster.clearAndReload();
-            if (player.isRole(RoleType.Cleaner)) Cleaner.clearAndReload();
-            if (player.isRole(RoleType.Warlock)) Warlock.clearAndReload();
-            if (player.isRole(RoleType.Witch)) Witch.clearAndReload();
+            if (player.IsRole(RoleType.Morphling)) Morphling.clearAndReload();
+            if (player.IsRole(RoleType.Camouflager)) Camouflager.clearAndReload();
+            if (player.IsRole(RoleType.Godfather)) Godfather.clearAndReload();
+            if (player.IsRole(RoleType.Mafioso)) Mafioso.clearAndReload();
+            if (player.IsRole(RoleType.Janitor)) Janitor.clearAndReload();
+            if (player.IsRole(RoleType.Vampire)) Vampire.clearAndReload();
+            if (player.IsRole(RoleType.Eraser)) Eraser.clearAndReload();
+            if (player.IsRole(RoleType.Trickster)) Trickster.clearAndReload();
+            if (player.IsRole(RoleType.Cleaner)) Cleaner.clearAndReload();
+            if (player.IsRole(RoleType.Warlock)) Warlock.clearAndReload();
+            if (player.IsRole(RoleType.Witch)) Witch.clearAndReload();
 
             // Other roles
-            if (player.isRole(RoleType.Jester)) Jester.clearAndReload();
-            if (player.isRole(RoleType.Arsonist)) Arsonist.clearAndReload();
-            if (player.isRole(RoleType.Sidekick)) Sidekick.clearAndReload();
-            if (player.isRole(RoleType.BountyHunter)) BountyHunter.clearAndReload();
-            if (player.isRole(RoleType.Vulture)) Vulture.clearAndReload();
-            if (player.isRole(RoleType.Lawyer)) Lawyer.clearAndReload();
-            if (player.isRole(RoleType.Pursuer)) Pursuer.clearAndReload();
+            if (player.IsRole(RoleType.Jester)) Jester.clearAndReload();
+            if (player.IsRole(RoleType.Arsonist)) Arsonist.clearAndReload();
+            if (player.IsRole(RoleType.Sidekick)) Sidekick.clearAndReload();
+            if (player.IsRole(RoleType.BountyHunter)) BountyHunter.clearAndReload();
+            if (player.IsRole(RoleType.Vulture)) Vulture.clearAndReload();
+            if (player.IsRole(RoleType.Lawyer)) Lawyer.clearAndReload();
+            if (player.IsRole(RoleType.Pursuer)) Pursuer.clearAndReload();
             if (Guesser.isGuesser(player.PlayerId)) Guesser.clear(player.PlayerId);
 
 
-            if (player.isRole(RoleType.Jackal))
+            if (player.IsRole(RoleType.Jackal))
             { // Promote Sidekick and hence override the the Jackal or erase Jackal
                 if (Sidekick.promotesToJackal && Sidekick.sidekick != null && Sidekick.sidekick.isAlive())
                 {
@@ -532,52 +535,52 @@ namespace TheOtherThem
         {
             foreach (var t in RoleData.allRoleTypes)
             {
-                if (player.isRole(t.Key))
+                if (player.IsRole(t.Key))
                 {
                     t.Value.GetMethod("swapRole", BindingFlags.Public | BindingFlags.Static)?.Invoke(null, new object[] { player, target });
                 }
             }
 
-            if (player.isRole(RoleType.Mayor)) Mayor.mayor = target;
-            if (player.isRole(RoleType.Engineer)) Engineer.engineer = target;
-            if (player.isRole(RoleType.Detective)) Detective.detective = target;
-            if (player.isRole(RoleType.TimeMaster)) TimeMaster.timeMaster = target;
-            if (player.isRole(RoleType.Medic)) Medic.medic = target;
-            if (player.isRole(RoleType.Swapper)) Swapper.swapper = target;
-            if (player.isRole(RoleType.Seer)) Seer.seer = target;
-            if (player.isRole(RoleType.Hacker)) Hacker.hacker = target;
-            if (player.isRole(RoleType.Tracker)) Tracker.tracker = target;
-            if (player.isRole(RoleType.Snitch)) Snitch.snitch = target;
-            if (player.isRole(RoleType.Spy)) Spy.spy = target;
-            if (player.isRole(RoleType.SecurityGuard)) SecurityGuard.securityGuard = target;
-            if (player.isRole(RoleType.Bait))
+            if (player.IsRole(RoleType.Mayor)) Mayor.mayor = target;
+            if (player.IsRole(RoleType.Engineer)) Engineer.engineer = target;
+            if (player.IsRole(RoleType.Detective)) Detective.detective = target;
+            if (player.IsRole(RoleType.TimeMaster)) TimeMaster.timeMaster = target;
+            if (player.IsRole(RoleType.Medic)) Medic.medic = target;
+            if (player.IsRole(RoleType.Swapper)) Swapper.swapper = target;
+            if (player.IsRole(RoleType.Seer)) Seer.seer = target;
+            if (player.IsRole(RoleType.Hacker)) Hacker.hacker = target;
+            if (player.IsRole(RoleType.Tracker)) Tracker.tracker = target;
+            if (player.IsRole(RoleType.Snitch)) Snitch.snitch = target;
+            if (player.IsRole(RoleType.Spy)) Spy.spy = target;
+            if (player.IsRole(RoleType.SecurityGuard)) SecurityGuard.securityGuard = target;
+            if (player.IsRole(RoleType.Bait))
             {
                 Bait.bait = target;
                 if (Bait.bait.Data.IsDead) Bait.reported = true;
             }
-            if (player.isRole(RoleType.Medium)) Medium.medium = target;
-            if (player.isRole(RoleType.Godfather)) Godfather.godfather = target;
-            if (player.isRole(RoleType.Mafioso)) Mafioso.mafioso = target;
-            if (player.isRole(RoleType.Janitor)) Janitor.janitor = target;
-            if (player.isRole(RoleType.Morphling)) Morphling.morphling = target;
-            if (player.isRole(RoleType.Camouflager)) Camouflager.camouflager = target;
-            if (player.isRole(RoleType.Vampire)) Vampire.vampire = target;
-            if (player.isRole(RoleType.Eraser)) Eraser.eraser = target;
-            if (player.isRole(RoleType.Trickster)) Trickster.trickster = target;
-            if (player.isRole(RoleType.Cleaner)) Cleaner.cleaner = target;
-            if (player.isRole(RoleType.Warlock)) Warlock.warlock = target;
-            if (player.isRole(RoleType.BountyHunter)) BountyHunter.bountyHunter = target;
-            if (player.isRole(RoleType.Witch)) Witch.witch = target;
-            if (player.isRole(RoleType.Mini)) Mini.mini = target;
-            if (player.isRole(RoleType.EvilGuesser)) Guesser.evilGuesser = target;
-            if (player.isRole(RoleType.NiceGuesser)) Guesser.niceGuesser = target;
-            if (player.isRole(RoleType.Jester)) Jester.jester = target;
-            if (player.isRole(RoleType.Arsonist)) Arsonist.arsonist = target;
-            if (player.isRole(RoleType.Jackal)) Jackal.jackal = target;
-            if (player.isRole(RoleType.Sidekick)) Sidekick.sidekick = target;
-            if (player.isRole(RoleType.Vulture)) Vulture.vulture = target;
-            if (player.isRole(RoleType.Lawyer)) Lawyer.lawyer = target;
-            if (player.isRole(RoleType.Pursuer)) Pursuer.pursuer = target;
+            if (player.IsRole(RoleType.Medium)) Medium.medium = target;
+            if (player.IsRole(RoleType.Godfather)) Godfather.godfather = target;
+            if (player.IsRole(RoleType.Mafioso)) Mafioso.mafioso = target;
+            if (player.IsRole(RoleType.Janitor)) Janitor.janitor = target;
+            if (player.IsRole(RoleType.Morphling)) Morphling.morphling = target;
+            if (player.IsRole(RoleType.Camouflager)) Camouflager.camouflager = target;
+            if (player.IsRole(RoleType.Vampire)) Vampire.vampire = target;
+            if (player.IsRole(RoleType.Eraser)) Eraser.eraser = target;
+            if (player.IsRole(RoleType.Trickster)) Trickster.trickster = target;
+            if (player.IsRole(RoleType.Cleaner)) Cleaner.cleaner = target;
+            if (player.IsRole(RoleType.Warlock)) Warlock.warlock = target;
+            if (player.IsRole(RoleType.BountyHunter)) BountyHunter.bountyHunter = target;
+            if (player.IsRole(RoleType.Witch)) Witch.witch = target;
+            if (player.IsRole(RoleType.Mini)) Mini.mini = target;
+            if (player.IsRole(RoleType.EvilGuesser)) Guesser.evilGuesser = target;
+            if (player.IsRole(RoleType.NiceGuesser)) Guesser.niceGuesser = target;
+            if (player.IsRole(RoleType.Jester)) Jester.jester = target;
+            if (player.IsRole(RoleType.Arsonist)) Arsonist.arsonist = target;
+            if (player.IsRole(RoleType.Jackal)) Jackal.jackal = target;
+            if (player.IsRole(RoleType.Sidekick)) Sidekick.sidekick = target;
+            if (player.IsRole(RoleType.Vulture)) Vulture.vulture = target;
+            if (player.IsRole(RoleType.Lawyer)) Lawyer.lawyer = target;
+            if (player.IsRole(RoleType.Pursuer)) Pursuer.pursuer = target;
         }
 
         public static void OnKill(this PlayerControl player, PlayerControl target)
@@ -596,6 +599,12 @@ namespace TheOtherThem
                 Lovers.killLovers(player, killer);
 
             RPCProcedure.updateMeeting(player.PlayerId, true);
+        }
+
+        public static void InitTOTRoles()
+        {
+            var currentAssembly = Assembly.GetExecutingAssembly();
+            currentAssembly.GetTypes().Where(t => t.IsDefined(typeof(RoleAutoInitializeAttribute), true) && typeof(CustomRole).IsAssignableFrom(t)).Do(t => Activator.CreateInstance(t, true));
         }
     }
 }

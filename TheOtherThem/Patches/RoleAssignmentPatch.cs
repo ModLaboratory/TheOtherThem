@@ -17,7 +17,7 @@ namespace TheOtherThem.Patches
         {
             if (role == RoleTypes.Crewmate || role == RoleTypes.Impostor) return;
 
-            if (CustomOptionHolder.activateRoles.getBool()) __result = 0; // Deactivate Vanilla Roles if the mod roles are active
+            if (CustomOptionHolder.activateRoles.GetBool()) __result = 0; // Deactivate Vanilla Roles if the mod roles are active
         }
     }
 
@@ -31,17 +31,17 @@ namespace TheOtherThem.Patches
 
         public static void Postfix()
         {
-            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ResetVaribles, Hazel.SendOption.Reliable, -1);
+            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.ResetVaribles, Hazel.SendOption.Reliable, -1);
             AmongUsClient.Instance.FinishRpcImmediately(writer);
             RPCProcedure.resetVariables();
 
-            if (!DestroyableSingleton<TutorialManager>.InstanceExists && CustomOptionHolder.activateRoles.getBool()) // Don't assign Roles in Tutorial or if deactivated
+            if (!DestroyableSingleton<TutorialManager>.InstanceExists && CustomOptionHolder.activateRoles.GetBool()) // Don't assign Roles in Tutorial or if deactivated
                 assignRoles();
         }
 
         private static void assignRoles()
         {
-            if (CustomOptionHolder.gmEnabled.getBool() && CustomOptionHolder.gmIsHost.getBool())
+            if (CustomOptionHolder.gmEnabled.GetBool() && CustomOptionHolder.gmIsHost.GetBool())
             {
                 PlayerControl host = AmongUsClient.Instance?.GetHost().Character;
                 if (host.Data.Role.IsImpostor)
@@ -63,13 +63,13 @@ namespace TheOtherThem.Patches
                             break;
                         }
 
-                        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.OverrideNativeRole, Hazel.SendOption.Reliable, -1);
+                        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.OverrideNativeRole, Hazel.SendOption.Reliable, -1);
                         writer.Write(host.PlayerId);
                         writer.Write((byte)RoleTypes.Crewmate);
                         AmongUsClient.Instance.FinishRpcImmediately(writer);
                         RPCProcedure.overrideNativeRole(host.PlayerId, (byte)RoleTypes.Crewmate);
 
-                        writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.OverrideNativeRole, Hazel.SendOption.Reliable, -1);
+                        writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.OverrideNativeRole, Hazel.SendOption.Reliable, -1);
                         writer.Write(newImp.PlayerId);
                         writer.Write((byte)RoleTypes.Impostor);
                         AmongUsClient.Instance.FinishRpcImmediately(writer);
@@ -89,7 +89,7 @@ namespace TheOtherThem.Patches
                 blockLovers.Add((byte)RoleType.Fox);
             }
 
-            if (!CustomOptionHolder.arsonistCanBeLovers.getBool())
+            if (!CustomOptionHolder.arsonistCanBeLovers.GetBool())
             {
                 blockLovers.Add((byte)RoleType.Arsonist);
             }
@@ -111,12 +111,12 @@ namespace TheOtherThem.Patches
             List<PlayerControl> impostors = PlayerControl.AllPlayerControls.ToArray().ToList().OrderBy(x => Guid.NewGuid()).ToList();
             impostors.RemoveAll(x => !x.Data.Role.IsImpostor);
 
-            var crewmateMin = CustomOptionHolder.crewmateRolesCountMin.getSelection();
-            var crewmateMax = CustomOptionHolder.crewmateRolesCountMax.getSelection();
-            var neutralMin = CustomOptionHolder.neutralRolesCountMin.getSelection();
-            var neutralMax = CustomOptionHolder.neutralRolesCountMax.getSelection();
-            var impostorMin = CustomOptionHolder.impostorRolesCountMin.getSelection();
-            var impostorMax = CustomOptionHolder.impostorRolesCountMax.getSelection();
+            var crewmateMin = CustomOptionHolder.crewmateRolesCountMin.GetSelection();
+            var crewmateMax = CustomOptionHolder.crewmateRolesCountMax.GetSelection();
+            var neutralMin = CustomOptionHolder.neutralRolesCountMin.GetSelection();
+            var neutralMax = CustomOptionHolder.neutralRolesCountMax.GetSelection();
+            var impostorMin = CustomOptionHolder.impostorRolesCountMin.GetSelection();
+            var impostorMax = CustomOptionHolder.impostorRolesCountMax.GetSelection();
 
             // Make sure min is less or equal to max
             if (crewmateMin > crewmateMax) crewmateMin = crewmateMax;
@@ -198,11 +198,11 @@ namespace TheOtherThem.Patches
         private static void assignSpecialRoles(RoleAssignmentData data)
         {
             // Assign GM
-            if (CustomOptionHolder.gmEnabled.getBool() == true)
+            if (CustomOptionHolder.gmEnabled.GetBool() == true)
             {
                 byte gmID = 0;
 
-                if (CustomOptionHolder.gmIsHost.getBool() == true)
+                if (CustomOptionHolder.gmIsHost.GetBool() == true)
                 {
                     PlayerControl host = AmongUsClient.Instance?.GetHost().Character;
                     gmID = setRoleToHost((byte)RoleType.GM, host);
@@ -219,26 +219,26 @@ namespace TheOtherThem.Patches
 
                 PlayerControl p = PlayerControl.AllPlayerControls.ToArray().ToList().Find(x => x.PlayerId == gmID);
 
-                if (p != null && CustomOptionHolder.gmDiesAtStart.getBool())
+                if (p != null && CustomOptionHolder.gmDiesAtStart.GetBool())
                 {
                     p.Exiled();
                 }
             }
 
             // Assign Lovers
-            for (int i = 0; i < CustomOptionHolder.loversNumCouples.getFloat(); i++)
+            for (int i = 0; i < CustomOptionHolder.loversNumCouples.GetFloat(); i++)
             {
                 var singleCrew = data.crewmates.FindAll(x => !x.isLovers());
                 var singleImps = data.impostors.FindAll(x => !x.isLovers());
 
-                bool isOnlyRole = !CustomOptionHolder.loversCanHaveAnotherRole.getBool();
-                if (rnd.Next(1, 101) <= CustomOptionHolder.loversSpawnRate.getSelection() * 10)
+                bool isOnlyRole = !CustomOptionHolder.loversCanHaveAnotherRole.GetBool();
+                if (rnd.Next(1, 101) <= CustomOptionHolder.loversSpawnRate.GetSelection() * 10)
                 {
                     int lover1 = -1;
                     int lover2 = -1;
                     int lover1Index = -1;
                     int lover2Index = -1;
-                    if (singleImps.Count > 0 && singleCrew.Count > 0 && (!isOnlyRole || (data.maxCrewmateRoles > 0 && data.maxImpostorRoles > 0)) && rnd.Next(1, 101) <= CustomOptionHolder.loversImpLoverRate.getSelection() * 10)
+                    if (singleImps.Count > 0 && singleCrew.Count > 0 && (!isOnlyRole || (data.maxCrewmateRoles > 0 && data.maxImpostorRoles > 0)) && rnd.Next(1, 101) <= CustomOptionHolder.loversImpLoverRate.GetSelection() * 10)
                     {
                         lover1Index = rnd.Next(0, singleImps.Count);
                         lover1 = singleImps[lover1Index].PlayerId;
@@ -274,7 +274,7 @@ namespace TheOtherThem.Patches
 
                     if (lover1 >= 0 && lover2 >= 0)
                     {
-                        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.SetLovers, Hazel.SendOption.Reliable, -1);
+                        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.SetLovers, Hazel.SendOption.Reliable, -1);
                         writer.Write((byte)lover1);
                         writer.Write((byte)lover2);
                         AmongUsClient.Instance.FinishRpcImmediately(writer);
@@ -284,7 +284,7 @@ namespace TheOtherThem.Patches
             }
 
             // Assign Mafia
-            if (data.impostors.Count >= 3 && data.maxImpostorRoles >= 3 && (rnd.Next(1, 101) <= CustomOptionHolder.mafiaSpawnRate.getSelection() * 10))
+            if (data.impostors.Count >= 3 && data.maxImpostorRoles >= 3 && (rnd.Next(1, 101) <= CustomOptionHolder.mafiaSpawnRate.GetSelection() * 10))
             {
                 setRoleToRandomPlayer((byte)RoleType.Godfather, data.impostors);
                 setRoleToRandomPlayer((byte)RoleType.Janitor, data.impostors);
@@ -296,59 +296,59 @@ namespace TheOtherThem.Patches
         private static void selectFactionForFactionIndependentRoles(RoleAssignmentData data)
         {
             // Assign Mini (33% chance impostor / 67% chance crewmate)
-            if (data.impostors.Count > 0 && data.maxImpostorRoles > 0 && rnd.Next(1, 101) <= CustomOptionHolder.miniIsImpRate.getSelection() * 10)
+            if (data.impostors.Count > 0 && data.maxImpostorRoles > 0 && rnd.Next(1, 101) <= CustomOptionHolder.miniIsImpRate.GetSelection() * 10)
             {
-                data.impSettings.Add((byte)RoleType.Mini, (CustomOptionHolder.miniSpawnRate.getSelection(), 1));
+                data.impSettings.Add((byte)RoleType.Mini, (CustomOptionHolder.miniSpawnRate.GetSelection(), 1));
             }
             else if (data.crewmates.Count > 0 && data.maxCrewmateRoles > 0)
             {
-                data.crewSettings.Add((byte)RoleType.Mini, (CustomOptionHolder.miniSpawnRate.getSelection(), 1));
+                data.crewSettings.Add((byte)RoleType.Mini, (CustomOptionHolder.miniSpawnRate.GetSelection(), 1));
             }
 
             // Assign Guesser (chance to be impostor based on setting)
-            bool isEvilGuesser = (rnd.Next(1, 101) <= CustomOptionHolder.guesserIsImpGuesserRate.getSelection() * 10);
-            if (CustomOptionHolder.guesserSpawnBothRate.getSelection() > 0) {
-                if (rnd.Next(1, 101) <= CustomOptionHolder.guesserSpawnRate.getSelection() * 10) {
+            bool isEvilGuesser = (rnd.Next(1, 101) <= CustomOptionHolder.guesserIsImpGuesserRate.GetSelection() * 10);
+            if (CustomOptionHolder.guesserSpawnBothRate.GetSelection() > 0) {
+                if (rnd.Next(1, 101) <= CustomOptionHolder.guesserSpawnRate.GetSelection() * 10) {
                     if (isEvilGuesser) {
                         if (data.impostors.Count > 0 && data.maxImpostorRoles > 0) {
                             byte evilGuesser = setRoleToRandomPlayer((byte)RoleType.EvilGuesser, data.impostors);
                             data.impostors.ToList().RemoveAll(x => x.PlayerId == evilGuesser);
                             data.maxImpostorRoles--;
-                            data.crewSettings.Add((byte)RoleType.NiceGuesser, (CustomOptionHolder.guesserSpawnBothRate.getSelection(), 1));
+                            data.crewSettings.Add((byte)RoleType.NiceGuesser, (CustomOptionHolder.guesserSpawnBothRate.GetSelection(), 1));
                         }
                     }
                     else if (data.crewmates.Count > 0 && data.maxCrewmateRoles > 0) {                    
                         byte niceGuesser = setRoleToRandomPlayer((byte)RoleType.NiceGuesser, data.crewmates);
                         data.crewmates.ToList().RemoveAll(x => x.PlayerId == niceGuesser);
                         data.maxCrewmateRoles--;
-                        data.impSettings.Add((byte)RoleType.EvilGuesser, (CustomOptionHolder.guesserSpawnBothRate.getSelection(), 1));
+                        data.impSettings.Add((byte)RoleType.EvilGuesser, (CustomOptionHolder.guesserSpawnBothRate.GetSelection(), 1));
                     }
                 }
             } else {
-                if (isEvilGuesser) data.impSettings.Add((byte)RoleType.EvilGuesser, (CustomOptionHolder.guesserSpawnRate.getSelection(), 1)); 
-                else data.crewSettings.Add((byte)RoleType.NiceGuesser, (CustomOptionHolder.guesserSpawnRate.getSelection(), 1));
+                if (isEvilGuesser) data.impSettings.Add((byte)RoleType.EvilGuesser, (CustomOptionHolder.guesserSpawnRate.GetSelection(), 1)); 
+                else data.crewSettings.Add((byte)RoleType.NiceGuesser, (CustomOptionHolder.guesserSpawnRate.GetSelection(), 1));
             }
 
             // Assign Swapper (chance to be impostor based on setting)
-            if (data.impostors.Count > 0 && data.maxImpostorRoles > 0 && rnd.Next(1, 101) <= CustomOptionHolder.swapperIsImpRate.getSelection() * 10)
+            if (data.impostors.Count > 0 && data.maxImpostorRoles > 0 && rnd.Next(1, 101) <= CustomOptionHolder.swapperIsImpRate.GetSelection() * 10)
             {
-                data.impSettings.Add((byte)RoleType.Swapper, (CustomOptionHolder.swapperSpawnRate.getSelection(), 1));
+                data.impSettings.Add((byte)RoleType.Swapper, (CustomOptionHolder.swapperSpawnRate.GetSelection(), 1));
             }
             else if (data.crewmates.Count > 0 && data.maxCrewmateRoles > 0)
             {
-                data.crewSettings.Add((byte)RoleType.Swapper, (CustomOptionHolder.swapperSpawnRate.getSelection(), 1));
+                data.crewSettings.Add((byte)RoleType.Swapper, (CustomOptionHolder.swapperSpawnRate.GetSelection(), 1));
             }
 
             // Assign Shifter (chance to be neutral based on setting)
             bool shifterIsNeutral = false;
-            if (data.crewmates.Count > 0 && data.maxNeutralRoles > 0 && rnd.Next(1, 101) <= CustomOptionHolder.shifterIsNeutralRate.getSelection() * 10)
+            if (data.crewmates.Count > 0 && data.maxNeutralRoles > 0 && rnd.Next(1, 101) <= CustomOptionHolder.shifterIsNeutralRate.GetSelection() * 10)
             {
-                data.neutralSettings.Add((byte)RoleType.Shifter, (CustomOptionHolder.shifterSpawnRate.getSelection(), 1));
+                data.neutralSettings.Add((byte)RoleType.Shifter, (CustomOptionHolder.shifterSpawnRate.GetSelection(), 1));
                 shifterIsNeutral = true;
             }
             else if (data.crewmates.Count > 0 && data.maxCrewmateRoles > 0)
             {
-                data.crewSettings.Add((byte)RoleType.Shifter, (CustomOptionHolder.shifterSpawnRate.getSelection(), 1));
+                data.crewSettings.Add((byte)RoleType.Shifter, (CustomOptionHolder.shifterSpawnRate.GetSelection(), 1));
                 shifterIsNeutral = false;
             }
 
@@ -381,7 +381,7 @@ namespace TheOtherThem.Patches
                     data.impSettings.Add((byte)option.roleType, (option.rate, evilCount));
             }
 
-            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.SetShifterType, Hazel.SendOption.Reliable, -1);
+            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.SetShifterType, Hazel.SendOption.Reliable, -1);
             writer.Write(shifterIsNeutral);
             AmongUsClient.Instance.FinishRpcImmediately(writer);
             RPCProcedure.setShifterType(shifterIsNeutral);
@@ -519,7 +519,7 @@ namespace TheOtherThem.Patches
         {
             byte playerId = host.PlayerId;
 
-            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.SetRole, Hazel.SendOption.Reliable, -1);
+            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.SetRole, Hazel.SendOption.Reliable, -1);
             writer.Write(roleId);
             writer.Write(playerId);
             writer.Write(flag);
@@ -541,14 +541,14 @@ namespace TheOtherThem.Patches
                 }
                 if (possibleTargets.Count == 0)
                 {
-                    MessageWriter w = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.LawyerPromotesToPursuer, Hazel.SendOption.Reliable, -1);
+                    MessageWriter w = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.LawyerPromotesToPursuer, Hazel.SendOption.Reliable, -1);
                     AmongUsClient.Instance.FinishRpcImmediately(w);
                     RPCProcedure.lawyerPromotesToPursuer();
                 }
                 else
                 {
                     var target = possibleTargets[TheOtherRoles.rnd.Next(0, possibleTargets.Count)];
-                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.LawyerSetTarget, Hazel.SendOption.Reliable, -1);
+                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.LawyerSetTarget, Hazel.SendOption.Reliable, -1);
                     writer.Write(target.PlayerId);
                     AmongUsClient.Instance.FinishRpcImmediately(writer);
                     RPCProcedure.lawyerSetTarget(target.PlayerId);
@@ -587,7 +587,7 @@ namespace TheOtherThem.Patches
         {
             var index = rnd.Next(0, playerList.Count);
             byte playerId = playerList[index].PlayerId;
-            if (RoleInfo.lovers.enabled &&
+            if (RoleInfo.lovers.Enabled &&
                 Helpers.playerById(playerId)?.isLovers() == true &&
                 blockLovers.Contains(roleId))
             {
@@ -596,7 +596,7 @@ namespace TheOtherThem.Patches
 
             if (removePlayer) playerList.RemoveAt(index);
 
-            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.SetRole, Hazel.SendOption.Reliable, -1);
+            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.SetRole, Hazel.SendOption.Reliable, -1);
             writer.Write(roleId);
             writer.Write(playerId);
             writer.Write(flag);
@@ -615,7 +615,7 @@ namespace TheOtherThem.Patches
             var index = rnd.Next(0, playerList.Count);
             byte playerId = playerList[index].PlayerId;
 
-            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.AddModifier, Hazel.SendOption.Reliable, -1);
+            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.AddModifier, Hazel.SendOption.Reliable, -1);
             writer.Write(modId);
             writer.Write(playerId);
             AmongUsClient.Instance.FinishRpcImmediately(writer);

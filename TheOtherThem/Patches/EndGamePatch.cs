@@ -172,7 +172,7 @@ namespace TheOtherThem.Patches
                 });
             }
 
-            AdditionalTempData.isGM = CustomOptionHolder.gmEnabled.getBool() && PlayerControl.LocalPlayer.isGM();
+            AdditionalTempData.isGM = CustomOptionHolder.gmEnabled.GetBool() && PlayerControl.LocalPlayer.isGM();
             AdditionalTempData.plagueDoctorInfected = PlagueDoctor.infected;
             AdditionalTempData.plagueDoctorProgress = PlagueDoctor.progress;
 
@@ -622,10 +622,10 @@ namespace TheOtherThem.Patches
                         switch (cond)
                         {
                             case WinCondition.AdditionalLawyerStolenWin:
-                                textRenderer.text += $"\n{Helpers.cs(Lawyer.color, ModTranslation.GetString("lawyerExtraStolen"))}";
+                                textRenderer.text += $"\n{Helpers.ColorString(Lawyer.color, ModTranslation.GetString("lawyerExtraStolen"))}";
                                 break;
                             case WinCondition.AdditionalLawyerBonusWin:
-                                textRenderer.text += $"\n{Helpers.cs(Lawyer.color, ModTranslation.GetString("lawyerExtraBonus"))}";
+                                textRenderer.text += $"\n{Helpers.ColorString(Lawyer.color, ModTranslation.GetString("lawyerExtraBonus"))}";
                                 break;
                         }
                     }
@@ -643,8 +643,8 @@ namespace TheOtherThem.Patches
                         {
                             RoleInfo roleX = x.Roles.FirstOrDefault();
                             RoleInfo roleY = y.Roles.FirstOrDefault();
-                            RoleType idX = roleX == null ? RoleType.NoRole : roleX.roleType;
-                            RoleType idY = roleY == null ? RoleType.NoRole : roleY.roleType;
+                            RoleType idX = roleX == null ? RoleType.NoRole : roleX.MyRoleType;
+                            RoleType idY = roleY == null ? RoleType.NoRole : roleY.MyRoleType;
 
                             if (x.Status == y.Status)
                             {
@@ -669,7 +669,7 @@ namespace TheOtherThem.Patches
                                 result += "<pos=52.5%>";
                                 if (AdditionalTempData.plagueDoctorInfected.ContainsKey(data.PlayerId))
                                 {
-                                    result += Helpers.cs(Color.red, ModTranslation.GetString("plagueDoctorInfectedText"));
+                                    result += Helpers.ColorString(Color.red, ModTranslation.GetString("plagueDoctorInfectedText"));
                                 }
                                 else
                                 {
