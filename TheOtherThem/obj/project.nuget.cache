@@ -1,10 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "M7BNrX/W+qgE5GATkSnS0Ric7L7YHe2Op1jh+ZeUHoCEL/Nh1b3Kg9n2J/SZWfXrMRMTP031XY43TFCkYqOFSA==",
+  "dgSpecHash": "Pj42mmCKx3eKvT87YnzWGFUVVCYpobD3egP4yZ75MoklnBvUqMce+MFXqDUI8PvIKtkf27Xo8ywoIcaTSd9O8w==",
   "success": true,
   "projectFilePath": "G:\\Among Us Mod\\TheOtherThem\\TheOtherThem\\TheOtherThem.csproj",
   "expectedPackageFiles": [
-    "G:\\.nuget\\packages\\amongus.gamelibs.steam\\2024.8.13\\amongus.gamelibs.steam.2024.8.13.nupkg.sha512",
+    "G:\\.nuget\\packages\\amongus.gamelibs.steam\\2024.9.4\\amongus.gamelibs.steam.2024.9.4.nupkg.sha512",
     "G:\\.nuget\\packages\\asmresolver\\5.1.0\\asmresolver.5.1.0.nupkg.sha512",
     "G:\\.nuget\\packages\\asmresolver.dotnet\\5.1.0\\asmresolver.dotnet.5.1.0.nupkg.sha512",
     "G:\\.nuget\\packages\\asmresolver.pe\\5.1.0\\asmresolver.pe.5.1.0.nupkg.sha512",

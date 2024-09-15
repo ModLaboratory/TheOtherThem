@@ -8,7 +8,7 @@
     ".NETCoreApp,Version=v6.0": {
       "TheOtherThem/3.5.5": {
         "dependencies": {
-          "AmongUs.GameLibs.Steam": "2024.8.13",
+          "AmongUs.GameLibs.Steam": "2024.9.4",
           "BepInEx.IL2CPP.MSBuild": "2.0.1",
           "BepInEx.Unity.IL2CPP": "6.0.0-be.670"
         },
@@ -16,7 +16,7 @@
           "TheOtherThem.dll": {}
         }
       },
-      "AmongUs.GameLibs.Steam/2024.8.13": {},
+      "AmongUs.GameLibs.Steam/2024.9.4": {},
       "AsmResolver/5.1.0": {},
       "AsmResolver.DotNet/5.1.0": {
         "dependencies": {
@@ -616,12 +616,12 @@
       "serviceable": false,
       "sha512": ""
     },
-    "AmongUs.GameLibs.Steam/2024.8.13": {
+    "AmongUs.GameLibs.Steam/2024.9.4": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-xYZBHQJcwSF5wABtJIZlmpNwZ7jXWafe6vid6/YEWSxpk1fcYLxz42bHSTYcGjpu4wVz1p1ZG/QC4Eu0SbGhrg==",
-      "path": "amongus.gamelibs.steam/2024.8.13",
-      "hashPath": "amongus.gamelibs.steam.2024.8.13.nupkg.sha512"
+      "sha512": "sha512-5ZzigeztB4Y3xBM84Xl4bLBS/GGVe7tyZB6RxvUXHZS0xUP3RxqTGLeiB+xZSBlwD77aMrkZK0uJEh+MYvDB/A==",
+      "path": "amongus.gamelibs.steam/2024.9.4",
+      "hashPath": "amongus.gamelibs.steam.2024.9.4.nupkg.sha512"
     },
     "AsmResolver/5.1.0": {
       "type": "package",

@@ -23,5 +23,9 @@ public static class CoroutineUtils
     
     public class CustomCoroutine : MonoBehaviour
     {
+        void Start()
+        {
+            name = nameof(CustomCoroutine);
+        }
     }
 }

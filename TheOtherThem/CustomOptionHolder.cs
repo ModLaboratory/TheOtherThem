@@ -342,10 +342,7 @@ namespace TheOtherThem {
         public static CustomOption foxStealthDuration;
         public static CustomTasksOption foxTasks;
 
-        // TOT Roles
-        public static CustomRoleOption InnerslothSpawnRate { get; set; }
-        public static CustomOption InnerslothAbilltyCooldown { get; set; }
-
+        public static (int crewmate, int neutral, int impostor) OptionInsertionIndexes = new();
 
         internal static Dictionary<byte, byte[]> blockedRolePairings = new Dictionary<byte, byte[]>();
 
@@ -458,9 +455,7 @@ namespace TheOtherThem {
             nekoKabochaRevengeImpostor = CustomOption.Create(1023, "nekoKabochaRevengeImpostor", true, nekoKabochaSpawnRate);
             nekoKabochaRevengeExile = CustomOption.Create(1024, "nekoKabochaRevengeExile", false, nekoKabochaSpawnRate);
 
-            var innerslothRoleInfo = InnerslothRole.Instance.MyRoleInfo;
-            InnerslothSpawnRate = new(2000, innerslothRoleInfo.NameKey, innerslothRoleInfo.RoleColor, 1);
-            InnerslothAbilltyCooldown = CustomOption.Create(2001, "InnerslothAbilityCd", 20, 10, 60, 5, InnerslothSpawnRate);
+            OptionInsertionIndexes.impostor = CustomOption.options.Count;
 
             madmateSpawnRate = new CustomRoleOption(360, "madmate", Madmate.color);
             madmateType = CustomOption.Create(366, "madmateType", new string[] { "madmateDefault", "madmateWithRole", "madmateRandom" }, madmateSpawnRate);

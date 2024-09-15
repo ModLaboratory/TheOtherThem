@@ -218,11 +218,13 @@ namespace TheOtherThem
     {
         public static bool IsRole(this PlayerControl player, RoleType role)
         {
+            //Main.Logger.LogInfo($"{nameof(IsRole)}: {role}");
+
             foreach (var t in RoleData.AllRoleTypes)
             {
                 if (role == t.Key)
                 {
-                    return (bool)t.Value.GetMethod("isRole", BindingFlags.Public | BindingFlags.Static)?.Invoke(null, new object[] { player });
+                    return (bool)t.Value.GetMethod("IsRole", BindingFlags.Public | BindingFlags.Static)?.Invoke(null, new object[] { player });
                 }
             }
 
@@ -306,7 +308,14 @@ namespace TheOtherThem
                     return Pursuer.pursuer == player;
             }
 
-            return CustomRole.AllRoles.FirstOrDefault(cr => cr.MyRoleType == role).Players.Contains(player.Data);
+            try
+            {
+                return CustomRole.AllRoles.FirstOrDefault(cr => cr.MyRoleType == role).Players.Contains(player.Data);
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         public static void ClearRole(this PlayerControl player)
@@ -515,6 +524,8 @@ namespace TheOtherThem
         {
             player.ClearRole();
 
+            //Main.Logger.LogInfo($"{nameof(SetRole)}: {role}");
+
             foreach (var t in RoleData.AllRoleTypes)
             {
                 if (role == t.Key)
@@ -523,8 +534,6 @@ namespace TheOtherThem
                     return;
                 }
             }
-
-            CustomRole.AllRoles.FirstOrDefault(r => r.MyRoleType == role)?.Players.Add(player.Data);
 
             switch (role)
             {
@@ -642,10 +651,9 @@ namespace TheOtherThem
                 case RoleType.Pursuer:
                     Pursuer.pursuer = player;
                     break;
-                default:
-                    Main.Logger.LogError($"setRole: no method found for role type {role}");
-                    return;
             }
+
+            CustomRole.AllRoles.FirstOrDefault(r => r.MyRoleType == role)?.Players.Add(player.Data);
         }
 
         public static void EraseRole(this PlayerControl player, RoleType role)

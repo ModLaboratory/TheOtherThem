@@ -93,8 +93,8 @@ namespace TheOtherThem
 
             DebugMode = Config.Bind("Custom", "Enable Debug Mode", false);
             Instance = this;
-            RoleHelpers.InitTOTRoles();
             CustomOptionHolder.Load();
+            RoleHelpers.InitTOTRoles();
             CustomColors.Load();
 
             Harmony.PatchAll();

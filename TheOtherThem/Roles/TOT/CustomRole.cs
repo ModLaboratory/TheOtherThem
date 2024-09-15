@@ -12,12 +12,14 @@ public abstract class CustomRole
     public RoleInfo MyRoleInfo { get; }
     public RoleType MyRoleType { get; }
     public TeamTypeTOT MyTeamType { get; }
-    public CustomRole(string translationName, Color roleColor, CustomOption baseOption, RoleType roleType, TeamTypeTOT teamType)
+    public CustomRole(string translationName, Color roleColor, Func<string, Color, CustomRoleOption> onGetBaseOption, RoleType roleType, TeamTypeTOT teamType)
     {
-        MyRoleInfo = new(translationName, roleColor, baseOption, roleType);
+        MyRoleInfo = new(translationName, roleColor, onGetBaseOption(translationName, roleColor), roleType);
         MyRoleType = roleType;
         MyTeamType = teamType;
         AllRoles.Add(this);
+
+        Main.Logger.LogInfo($"{translationName} registered");
     }
 
     public virtual void CreateButtons() { }

@@ -1,5 +1,6 @@
 using Hazel;
 using System.Collections;
+using System.Linq;
 using TheOtherThem.Modules;
 using TheOtherThem.Objects;
 using TheOtherThem.Patches;
@@ -14,10 +15,15 @@ public class InnerslothRole : CustomRole
     public static InnerslothRole Instance { get; private set; }
 
     private static bool CustomSabotageStarted = false;
+    public static CustomRoleOption InnerslothSpawnRate { get; set; }
+    public static CustomOption InnerslothAbilltyCooldown { get; set; }
 
-    InnerslothRole() : base("Innersloth", Palette.ImpostorRed, CustomOptionHolder.InnerslothSpawnRate, RoleType.Innersloth, TeamTypeTOT.Impostor)
+    InnerslothRole() : base("Innersloth", Palette.ImpostorRed, 
+        (nameKey, roleColor) => InnerslothSpawnRate = new(2000, nameKey, roleColor, ref CustomOptionHolder.OptionInsertionIndexes.impostor, 1), RoleType.Innersloth, TeamTypeTOT.Impostor)
     {
         Instance = this;
+
+        InnerslothAbilltyCooldown = CustomOption.Create(2001, "InnerslothAbilityCd", 20, 10, 60, 5, ref CustomOptionHolder.OptionInsertionIndexes.impostor, InnerslothSpawnRate);
     }
 
     public override void ClearData()
@@ -33,7 +39,7 @@ public class InnerslothRole : CustomRole
             AmongUsClient.Instance.FinishRpcImmediately(writer);
             CustomSabotageComms();
         },
-        () => PlayerControl.LocalPlayer.IsRole(MyRoleType) && PlayerControl.LocalPlayer.IsAlive(),
+        () => /*PlayerControl.LocalPlayer.IsRole(MyRoleType) && */PlayerControl.LocalPlayer.IsAlive(),
         () => !CustomSabotageStarted,
         () => { },
         null,
@@ -52,32 +58,18 @@ public class InnerslothRole : CustomRole
 
     static bool IsCommsSabotaged()
     {
-        foreach (var task in PlayerControl.LocalPlayer.myTasks)
-        {
-            if (task.GetComponent<HudOverrideTask>())
-                return !task.GetComponent<HudOverrideTask>().IsComplete;
-            if (task.GetComponent<HqHudOverrideTask>())
-                return !task.GetComponent<HqHudOverrideTask>().IsComplete;
-        }
-        return false;
+        return PlayerControl.LocalPlayer.myTasks.ToArray().Any(t => t.TaskType == TaskTypes.FixComms);
     }
 
-    static void CustomSabotageComms()
+    public static void CustomSabotageComms()
     {
-        foreach (var sys in ShipStatus.Instance.Systems)
-        {
-            if (sys.TryCast<HqHudSystemType>() != null)
-            {
-                sys.TryCast<HqHudSystemType>().CompletedConsoles.Clear();
-                break;
-            }
-
-            if (sys.TryCast<HudOverrideSystemType>() != null)
-            {
-                sys.TryCast<HudOverrideSystemType>().IsActive = true;
-                break;
-            }
-        }
+        var sys = ShipStatus.Instance.Systems[SystemTypes.Comms];
+        var mapId = TutorialManager.InstanceExists ? AmongUsClient.Instance.TutorialMapId : GameOptionsManager.Instance.currentGameOptions.MapId;
+        
+        if ((MapNames)mapId == MapNames.Mira)
+            sys.Cast<HqHudSystemType>().CompletedConsoles.Clear();
+        else
+            sys.Cast<HudOverrideSystemType>().IsActive = true;
 
         CoroutineUtils.StartCoroutine(CoCustomSabotage());
     }
@@ -88,10 +80,11 @@ public class InnerslothRole : CustomRole
 
         while (IsCommsSabotaged())
         {
-            yield return new WaitForSeconds(Random.Range(0.1f, 0.5f));
+            yield return new WaitForSeconds(Random.Range(1f, 5f));
             if (!IsCommsSabotaged()) break;
             PlayerControl.LocalPlayer.moveable = false;
-            yield return new WaitForSeconds(Random.Range(1f, 3f));
+            PlayerControl.LocalPlayer.NetTransform.Halt();
+            yield return new WaitForSeconds(Random.Range(0.1f, 0.5f));
             if (!IsCommsSabotaged()) break;
             PlayerControl.LocalPlayer.moveable = true;
         }

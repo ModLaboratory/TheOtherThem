@@ -64,6 +64,11 @@ namespace TheOtherThem
             Init(id, name, selections, defaultValue, parent, isHeader, isHidden, format);
         }
 
+        public CustomOption(int id, string name, System.Object[] selections, System.Object defaultValue, CustomOption parent, bool isHeader, bool isHidden, string format, ref int index)
+        {
+            Init(id, name, selections, defaultValue, parent, isHeader, isHidden, format, ref index);
+        }
+
         public void Init(int id, string name, System.Object[] selections, System.Object defaultValue, CustomOption parent, bool isHeader, bool isHidden, string format)
         {
             this.id = id;
@@ -97,6 +102,40 @@ namespace TheOtherThem
             options.Add(this);
         }
 
+        public void Init(int id, string name, System.Object[] selections, System.Object defaultValue, CustomOption parent, bool isHeader, bool isHidden, string format, ref int insertion)
+        {
+            this.id = id;
+            this.name = name;
+            this.format = format;
+            this.selections = selections;
+            int index = Array.IndexOf(selections, defaultValue);
+            this.defaultSelection = index >= 0 ? index : 0;
+            this.parent = parent;
+            this.isHeader = isHeader;
+            this.isHidden = isHidden;
+            type = CustomOptionType.General;
+
+            this.children = new List<CustomOption>();
+            if (parent != null)
+            {
+                parent.children.Add(this);
+            }
+
+            selection = 0;
+            if (id > 0)
+            {
+                entry = Main.Instance.Config.Bind($"Preset{preset}", id.ToString(), defaultSelection);
+                selection = Mathf.Clamp(entry.Value, 0, selections.Length - 1);
+
+                if (options.Any(x => x.id == id))
+                {
+                    Main.Instance.Log.LogWarning($"CustomOption id {id} is used in multiple places.");
+                }
+            }
+
+            options.Insert(insertion++, this);
+        }
+
         public static CustomOption Create(int id, string name, string[] selections, CustomOption parent = null, bool isHeader = false, bool isHidden = false, string format = "")
         {
             return new CustomOption(id, name, selections, "", parent, isHeader, isHidden, format);
@@ -108,6 +147,14 @@ namespace TheOtherThem
             for (float s = min; s <= max; s += step)
                 selections.Add(s);
             return new CustomOption(id, name, selections.Cast<object>().ToArray(), defaultValue, parent, isHeader, isHidden, format);
+        }
+
+        public static CustomOption Create(int id, string name, float defaultValue, float min, float max, float step, ref int index, CustomOption parent = null, bool isHeader = false, bool isHidden = false, string format = "")
+        {
+            List<float> selections = new List<float>();
+            for (float s = min; s <= max; s += step)
+                selections.Add(s);
+            return new CustomOption(id, name, selections.Cast<object>().ToArray(), defaultValue, parent, isHeader, isHidden, format, ref index);
         }
 
         public static CustomOption Create(int id, string name, bool defaultValue, CustomOption parent = null, bool isHeader = false, bool isHidden = false, string format = "")
@@ -258,6 +305,21 @@ namespace TheOtherThem
 
             if (max > 1)
                 countOption = Create(id + 10000, "roleNumAssigned", 1f, 1f, 15f, 1f, this, false, isHidden, "unitPlayers");
+        }
+
+        public CustomRoleOption(int id, string name, Color color, ref int insertion, int max = 15, bool roleEnabled = true) :
+            base(id, Helpers.ColorString(color, name), CustomOptionHolder.rates, "", null, true, false, "", ref insertion)
+        {
+            this.roleEnabled = roleEnabled;
+
+            if (max <= 0 || !roleEnabled)
+            {
+                isHidden = true;
+                this.roleEnabled = false;
+            }
+
+            if (max > 1)
+                countOption = Create(id + 10000, "roleNumAssigned", 1f, 1f, 15f, 1f, ref insertion, this, false, isHidden, "unitPlayers");
         }
     }
 

@@ -47,7 +47,8 @@ namespace TheOtherThem.Objects {
             this.buttonText = buttonText;
             Timer = 16.2f;
             buttons.Add(this);
-            actionButton = UnityEngine.Object.Instantiate(hudManager.KillButton, hudManager.KillButton.transform.parent);
+            actionButton = Object.Instantiate(hudManager.KillButton, hudManager.KillButton.transform.parent);
+            actionButton.name = buttonText ?? "ModButton";
             actionButton.graphic.sprite = Sprite;
             PassiveButton button = actionButton.GetComponent<PassiveButton>();
             button.OnClick = new Button.ButtonClickedEvent();

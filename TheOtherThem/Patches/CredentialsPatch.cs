@@ -44,10 +44,10 @@ namespace TheOtherThem.Patches
                 Buttons.Clear();
                 DestroyableSingleton<ModManager>.Instance.ShowModStamp();
 
-                var torLogo = new GameObject("bannerLogo_TOR");
-                torLogo.transform.SetParent(GameObject.Find("RightPanel").transform, false);
-                torLogo.transform.localPosition = new Vector3(-0.4f, 1f, 5f);
-                var renderer = torLogo.AddComponent<SpriteRenderer>();
+                var totLogo = new GameObject("ModBanner");
+                totLogo.transform.SetParent(GameObject.Find("RightPanel").transform, false);
+                totLogo.transform.localPosition = new Vector3(-0.4f, 1f, 5f);
+                var renderer = totLogo.AddComponent<SpriteRenderer>();
                 renderer.sprite = Helpers.loadSpriteFromResources("TheOtherThem.Resources.Banner.png", 300f);
 
                 var creditsPopup = Object.Instantiate(popupPrefab, popupPrefab.transform.parent);
