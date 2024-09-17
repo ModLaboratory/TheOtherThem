@@ -310,7 +310,7 @@ namespace TheOtherThem
 
             try
             {
-                return CustomRole.AllRoles.FirstOrDefault(cr => cr.MyRoleType == role).Players.Contains(player.Data);
+                return CustomRole.AllRoles.FirstOrDefault(cr => cr.MyRoleType == role).Players.Any(p => p.PlayerId == player.PlayerId);
             }
             catch
             {
@@ -523,8 +523,7 @@ namespace TheOtherThem
         public static void SetRole(this PlayerControl player, RoleType role)
         {
             player.ClearRole();
-
-            //Main.Logger.LogInfo($"{nameof(SetRole)}: {role}");
+            System.Console.WriteLine($"Player {player.PlayerId}: {role}");
 
             foreach (var t in RoleData.AllRoleTypes)
             {

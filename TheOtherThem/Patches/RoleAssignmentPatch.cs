@@ -201,7 +201,6 @@ namespace TheOtherThem.Patches
                 crewSettings.Add((byte)RoleType.Spy, CustomOptionHolder.spySpawnRate.Data);
             }
 
-
             return new RoleAssignmentData
             {
                 crewmates = crewmates,
@@ -431,7 +430,6 @@ namespace TheOtherThem.Patches
                     (data.maxNeutralRoles > 0 && ensuredNeutralRoles.Count > 0)
                 )))
             {
-
                 Dictionary<TeamType, List<byte>> rolesToAssign = new Dictionary<TeamType, List<byte>>();
                 if (data.crewmates.Count > 0 && data.maxCrewmateRoles > 0 && ensuredCrewmateRoles.Count > 0) rolesToAssign.Add(TeamType.Crewmate, ensuredCrewmateRoles);
                 if (data.crewmates.Count > 0 && data.maxNeutralRoles > 0 && ensuredNeutralRoles.Count > 0) rolesToAssign.Add(TeamType.Neutral, ensuredNeutralRoles);
@@ -612,6 +610,8 @@ namespace TheOtherThem.Patches
 
         private static byte setRoleToRandomPlayer(byte roleId, List<PlayerControl> playerList, byte flag = 0, bool removePlayer = true)
         {
+            System.Console.WriteLine("set role to random player " + (RoleType)roleId);
+
             var index = rnd.Next(0, playerList.Count);
             byte playerId = playerList[index].PlayerId;
             if (RoleInfo.lovers.Enabled &&

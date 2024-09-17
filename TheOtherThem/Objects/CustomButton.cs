@@ -82,6 +82,8 @@ namespace TheOtherThem.Objects {
             }
         }
 
+        public void ResetTimer() => Timer = MaxTimer;
+
         public static void HudUpdate()
         {
             buttons.RemoveAll(item => item.actionButton == null);

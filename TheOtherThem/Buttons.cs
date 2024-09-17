@@ -9,6 +9,7 @@ using TheOtherThem.Objects;
 using System.Collections.Generic;
 using System.Linq;
 using TheOtherThem.TOTRole;
+using Iced.Intel;
 
 namespace TheOtherThem
 {
@@ -106,6 +107,11 @@ namespace TheOtherThem
             arsonistIgniteButton.Timer = 0f;
 
             ButtonsGM.setCustomButtonCooldowns();
+            ToTButtons.ForEach(tuple =>
+            {
+                if (tuple.Item1 == null) return;
+                tuple.Item1.MaxTimer = tuple.Item2;
+            });
         }
 
         public static void resetTimeMasterButton()
@@ -115,12 +121,14 @@ namespace TheOtherThem
             timeMasterShieldButton.actionButton.cooldownTimerText.color = Palette.EnabledColor;
         }
 
+        public static List<(CustomButton, float)> ToTButtons { get; private set; } = new();
+
         public static void Postfix(HudManager __instance)
         {
             // TOT Buttons
-            CustomRole.AllRoles.ForEach(cr => cr.CreateButtons());
+            ToTButtons = new(CustomRole.AllRoles.Select(cr => cr.CreateButtons()).SelectMany(c => c));
 
-            // TODO: SUPPORT THEr MUSHROOM MIX UP SABOTAGE
+            // TODO: SUPPORT THE MUSHROOM MIX UP SABOTAGE
             // Engineer Repair
             engineerRepairButton = new CustomButton(
                 () =>

@@ -1,6 +1,7 @@
 using Hazel;
 using System;
 using System.Collections.Generic;
+using TheOtherThem.Objects;
 using TheOtherThem.TOTRole.Impostor;
 using UnityEngine;
 
@@ -22,7 +23,7 @@ public abstract class CustomRole
         Main.Logger.LogInfo($"{translationName} registered");
     }
 
-    public virtual void CreateButtons() { }
+    public virtual (CustomButton, float)[] CreateButtons() => new[] { ((CustomButton)null, float.PositiveInfinity) };
     public virtual void OnRpcReceived(byte callId, MessageReader reader) { }
 
     public abstract void ClearData();

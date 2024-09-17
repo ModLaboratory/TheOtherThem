@@ -165,10 +165,6 @@ namespace TheOtherThem
         //        fortuneTeller
         //    };
 
-        public static string tl(string key)
-        {
-            return ModTranslation.GetString(key);
-        }
 
         public static List<RoleInfo> getRoleInfoForPlayer(PlayerControl p, RoleType[] excludeRoles = null, bool includeHidden = false) {
             List<RoleInfo> infos = new List<RoleInfo>();
@@ -240,6 +236,8 @@ namespace TheOtherThem
                 }
             }
 
+            foreach (var role in CustomRole.AllRoles.Where(r => p.IsRole(r.MyRoleType)))
+                infos.Add(role.MyRoleInfo);
 
             // Default roles
             if (infos.Count == 0 && p.Data.Role.IsImpostor) infos.Add(impostor); // Just Impostor
