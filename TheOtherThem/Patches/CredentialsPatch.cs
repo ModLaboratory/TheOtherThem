@@ -129,7 +129,7 @@ namespace TheOtherThem.Patches
             static bool Prefix(StatsPopup __instance)
             {
                 if (__instance.name != PopupName) return true;
-                __instance.StatsText.text = string.Format(ModTranslation.GetString("CreditsToTFull"), ModTranslation.GetString("creditsFull"));
+                __instance.StatsText.text = string.Format(ModTranslation.GetString("CreditsToTFull"), ModTranslation.GetString("creditsMain"));
                 __instance.transform.Find("GameStatsButton").gameObject.SetActive(false);
                 __instance.transform.Find("RoleStatsButton").gameObject.SetActive(false);
                 __instance.transform.Find("Title_TMP").GetComponent<TextTranslatorTMP>().Destroy();
