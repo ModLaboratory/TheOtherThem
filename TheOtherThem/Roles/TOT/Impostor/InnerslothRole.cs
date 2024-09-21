@@ -17,7 +17,7 @@ public class InnerslothRole : CustomRole
     private static bool CustomSabotageStarted = false;
     public static CustomRoleOption InnerslothSpawnRate { get; set; }
     public static CustomOption InnerslothAbilltyCooldown { get; set; }
-    public static CustomButton AbilityButton { get; set; }
+    public static CustomButton LagButton { get; set; }
 
     InnerslothRole() : base("Innersloth", Palette.ImpostorRed, 
         (nameKey, roleColor) => InnerslothSpawnRate = new(2000, nameKey, roleColor, ref CustomOptionHolder.OptionInsertionIndexes.impostor, 1), RoleType.Innersloth, TeamTypeTOT.Impostor)
@@ -34,16 +34,16 @@ public class InnerslothRole : CustomRole
 
     public override (CustomButton, float)[] CreateButtons()
     {
-        AbilityButton = new CustomButton(() =>
+        LagButton = new CustomButton(() =>
         {
             var writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.InnerslothSabotage, Hazel.SendOption.Reliable);
             AmongUsClient.Instance.FinishRpcImmediately(writer);
             CustomSabotageComms();
         },
-        () => PlayerControl.LocalPlayer.IsRole(MyRoleType) && PlayerControl.LocalPlayer.IsAlive(),
+        () => /*PlayerControl.LocalPlayer.IsRole(MyRoleType) &&*/ PlayerControl.LocalPlayer.IsAlive(),
         () => !CustomSabotageStarted,
         () => {  },
-        null,
+        ModTranslation.GetImage("LagButton", 230),
         new(-3, 0, 0),
         HudManager.Instance,
         HudManager.Instance.UseButton,
@@ -51,7 +51,7 @@ public class InnerslothRole : CustomRole
         buttonText: ModTranslation.GetString("InnerslothAbilityLabel"));
         return new[]
         {
-            (AbilityButton, InnerslothAbilltyCooldown.GetFloat())
+            (LagButton, InnerslothAbilltyCooldown.GetFloat())
         };
     }
 
@@ -96,7 +96,7 @@ public class InnerslothRole : CustomRole
         }
 
         PlayerControl.LocalPlayer.moveable = true;
-        AbilityButton.ResetTimer();
+        LagButton.ResetTimer();
         CustomSabotageStarted = false;
     }
 }
