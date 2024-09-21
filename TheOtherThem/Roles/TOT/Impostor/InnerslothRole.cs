@@ -40,11 +40,11 @@ public class InnerslothRole : CustomRole
             AmongUsClient.Instance.FinishRpcImmediately(writer);
             CustomSabotageComms();
         },
-        () => /*PlayerControl.LocalPlayer.IsRole(MyRoleType) &&*/ PlayerControl.LocalPlayer.IsAlive(),
+        () => PlayerControl.LocalPlayer.IsRole(MyRoleType) && PlayerControl.LocalPlayer.IsAlive(),
         () => !CustomSabotageStarted,
         () => {  },
         ModTranslation.GetImage("LagButton", 1000),
-        new(-3, 0, 0),
+        new(-2, 1, 0),
         HudManager.Instance,
         HudManager.Instance.UseButton,
         KeyCode.X,
@@ -86,7 +86,7 @@ public class InnerslothRole : CustomRole
 
         while (IsCommsSabotaged())
         {
-            yield return new WaitForSeconds(Random.Range(1f, 5f));
+            yield return new WaitForSeconds(Random.Range(1f, 3f));
             if (!IsCommsSabotaged()) break;
             PlayerControl.LocalPlayer.moveable = false;
             PlayerControl.LocalPlayer.NetTransform.Halt();
