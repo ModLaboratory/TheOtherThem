@@ -242,6 +242,7 @@ namespace TheOtherThem {
                     task.Text = ColorString(roleInfo.RoleColor, $"{roleInfo.Name}: {roleInfo.ShortDescription}");  
                 }
 
+                task.Text += "\n";
                 player.myTasks.Insert(0, task);
             }
 
