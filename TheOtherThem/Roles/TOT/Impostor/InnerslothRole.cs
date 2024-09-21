@@ -43,7 +43,7 @@ public class InnerslothRole : CustomRole
         () => /*PlayerControl.LocalPlayer.IsRole(MyRoleType) &&*/ PlayerControl.LocalPlayer.IsAlive(),
         () => !CustomSabotageStarted,
         () => {  },
-        ModTranslation.GetImage("LagButton", 230),
+        ModTranslation.GetImage("LagButton", 1000),
         new(-3, 0, 0),
         HudManager.Instance,
         HudManager.Instance.UseButton,
