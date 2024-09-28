@@ -1,10 +1,14 @@
 using Hazel;
+using Il2CppObject = Il2CppSystem.Object;
+using Random = UnityEngine.Random;
+using System;
 using System.Collections;
 using System.Linq;
 using TheOtherThem.Modules;
 using TheOtherThem.Objects;
 using TheOtherThem.Patches;
 using UnityEngine;
+using Il2CppInterop.Runtime.InteropTypes.Arrays;
 
 namespace TheOtherThem.TOTRole.Impostor;
 
@@ -98,5 +102,14 @@ public class InnerslothRole : CustomRole
         PlayerControl.LocalPlayer.moveable = true;
         LagButton.ResetTimer();
         CustomSabotageStarted = false;
+    }
+
+    [HarmonyPatch(typeof(TranslationController), nameof(TranslationController.GetString), new Type[] { typeof(TaskTypes) })]
+    [HarmonyPrefix]
+    static bool OverrideTaskPanelInfoPatch(TaskTypes task, ref string __result)
+    {
+        if (task != TaskTypes.FixComms) return true;
+        __result = ModTranslation.GetString("InnerslothFixCommsTaskInfoOverride");
+        return false;
     }
 }
