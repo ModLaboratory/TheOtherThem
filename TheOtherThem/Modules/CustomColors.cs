@@ -206,16 +206,14 @@ namespace TheOtherThem.Modules {
                 typeof(StringNames),
                 typeof(Il2CppReferenceArray<Il2CppSystem.Object>)
             })]
+            [HarmonyPriority(Priority.First)]
             private class ColorStringPatch {
-                public static bool Prefix(ref string __result, [HarmonyArgument(0)] StringNames name) {
+                public static void Postfix(ref string __result, [HarmonyArgument(0)] StringNames name) {
                     if ((int)name >= 50000) {
-                        string text = CustomColors.ColorStrings[(int)name];
-                        if (text != null) {
+                        string text = ColorStrings[(int)name];
+                        if (text != null) 
                             __result = ModTranslation.GetString(text) + " (MOD)";
-                            return false;
-                        }
                     }
-                    return true;
                 }
             }
             [HarmonyPatch(typeof(PlayerTab), nameof(PlayerTab.OnEnable))]
