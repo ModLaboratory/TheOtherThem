@@ -3,7 +3,7 @@ using Hazel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using TheOtherThem.TOTRole;
+using TheOtherThem.ToTRole;
 using UnityEngine;
 using static TheOtherThem.TheOtherRoles;
 

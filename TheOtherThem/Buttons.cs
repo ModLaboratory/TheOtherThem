@@ -8,7 +8,7 @@ using TheOtherThem.Modules;
 using TheOtherThem.Objects;
 using System.Collections.Generic;
 using System.Linq;
-using TheOtherThem.TOTRole;
+using TheOtherThem.ToTRole;
 using Iced.Intel;
 
 namespace TheOtherThem

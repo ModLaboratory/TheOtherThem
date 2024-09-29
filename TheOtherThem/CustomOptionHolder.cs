@@ -9,7 +9,7 @@ using System.Reflection;
 using System.Text;
 using static TheOtherThem.TheOtherRoles;
 using static TheOtherThem.TheOtherRolesGM;
-using TheOtherThem.TOTRole.Impostor;
+using TheOtherThem.ToTRole.Impostor;
 
 namespace TheOtherThem {
 

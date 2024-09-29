@@ -10,7 +10,7 @@ using TheOtherThem.Patches;
 using UnityEngine;
 using Il2CppInterop.Runtime.InteropTypes.Arrays;
 
-namespace TheOtherThem.TOTRole.Impostor;
+namespace TheOtherThem.ToTRole.Impostor;
 
 [RoleAutoInitialize]
 [HarmonyPatch]

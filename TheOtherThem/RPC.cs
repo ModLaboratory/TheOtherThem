@@ -12,7 +12,7 @@ using System.Linq;
 using UnityEngine;
 using System;
 using AmongUs.GameOptions;
-using TheOtherThem.TOTRole;
+using TheOtherThem.ToTRole;
 
 namespace TheOtherThem
 {

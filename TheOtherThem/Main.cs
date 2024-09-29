@@ -16,7 +16,7 @@ using TheOtherThem.Modules;
 using BepInEx.Unity.IL2CPP;
 using AmongUs.Data.Legacy;
 using AmongUs.GameOptions;
-using TheOtherThem.TOTRole;
+using TheOtherThem.ToTRole;
 
 namespace TheOtherThem
 {

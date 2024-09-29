@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using static TheOtherThem.TheOtherRoles;
 using static TheOtherThem.TheOtherRolesGM;
 using UnityEngine;
-using TheOtherThem.TOTRole;
+using TheOtherThem.ToTRole;
 
 namespace TheOtherThem
 {

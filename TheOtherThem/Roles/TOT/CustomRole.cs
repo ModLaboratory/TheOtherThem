@@ -2,10 +2,10 @@ using Hazel;
 using System;
 using System.Collections.Generic;
 using TheOtherThem.Objects;
-using TheOtherThem.TOTRole.Impostor;
+using TheOtherThem.ToTRole.Impostor;
 using UnityEngine;
 
-namespace TheOtherThem.TOTRole;
+namespace TheOtherThem.ToTRole;
 public abstract class CustomRole
 {
     public string Name => MyRoleInfo.Name;

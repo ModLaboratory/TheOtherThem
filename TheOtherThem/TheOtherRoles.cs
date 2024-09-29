@@ -14,7 +14,7 @@ using TheOtherThem.Objects;
 using static TheOtherThem.GameHistory;
 using TheOtherThem.Patches;
 using AmongUs.GameOptions;
-using TheOtherThem.TOTRole;
+using TheOtherThem.ToTRole;
 
 namespace TheOtherThem
 {
