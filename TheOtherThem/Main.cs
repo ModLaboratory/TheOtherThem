@@ -1,22 +1,16 @@
-﻿global using Object = UnityEngine.Object;
-global using HarmonyLib;
-using BepInEx;
-using BepInEx.Configuration;
-using BepInEx.IL2CPP;
-using Hazel;
-using System.Collections.Generic;
-using System.Security.Cryptography;
-using System.Linq;
-using System.Net;
-using System.IO;
-using System;
-using System.Reflection;
-using UnityEngine;
-using TheOtherThem.Modules;
-using BepInEx.Unity.IL2CPP;
+﻿global using HarmonyLib;
+global using Object = UnityEngine.Object;
 using AmongUs.Data.Legacy;
 using AmongUs.GameOptions;
-using TheOtherThem.ToTRole;
+using BepInEx;
+using BepInEx.Configuration;
+using BepInEx.Unity.IL2CPP;
+using Hazel;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using TheOtherThem.Modules;
+using UnityEngine;
 
 namespace TheOtherThem
 {
@@ -26,19 +20,18 @@ namespace TheOtherThem
     {
         public const string Id = "com.modlaboratory.theotherthem";
         public const string VersionString = "3.5.5";
-        public static System.Version Version = System.Version.Parse(VersionString);
-        internal static BepInEx.Logging.ManualLogSource Logger;
+        public const string SupportedGameVersion = "2024.11.26";
+        public static Version Version => Version.Parse(VersionString);
+        internal static BepInEx.Logging.ManualLogSource Logger { get; private set; }
 
         public Harmony Harmony { get; } = new Harmony(Id);
-        public static Main Instance;
-
-        public static int optionsPage = 0;
+        public static Main Instance { get; private set; }
 
         public static ConfigEntry<bool> DebugMode { get; private set; }
         public static ConfigEntry<bool> StreamerMode { get; set; }
         public static ConfigEntry<bool> GhostsSeeTasks { get; set; }
         public static ConfigEntry<bool> GhostsSeeRoles { get; set; }
-        public static ConfigEntry<bool> GhostsSeeVotes{ get; set; }
+        public static ConfigEntry<bool> GhostsSeeVotes { get; set; }
         public static ConfigEntry<bool> ShowRoleSummary { get; set; }
         public static ConfigEntry<bool> HideNameplates { get; set; }
         public static ConfigEntry<bool> ShowLighterDarker { get; set; }
@@ -53,7 +46,8 @@ namespace TheOtherThem
         public static Sprite ModStamp;
 
         public static IRegionInfo[] defaultRegions;
-        public static void UpdateRegions() {
+        public static void UpdateRegions()
+        {
             ServerManager serverManager = DestroyableSingleton<ServerManager>.Instance;
             IRegionInfo[] regions = defaultRegions;
 
@@ -104,9 +98,17 @@ namespace TheOtherThem
             Logger.LogMessage("");
             Logger.LogMessage($"======= TOT LOADED! =======");
             Logger.LogMessage("");
+
+            string currentGameVersion = Application.version;
+            Logger.LogInfo($"{nameof(VersionString)} = {VersionString}");
+            Logger.LogInfo($"{nameof(Application)}.{nameof(Application.version)} = {currentGameVersion}");
+
+            if (Application.version != SupportedGameVersion)
+                Logger.LogWarning($"Unsupported game version {currentGameVersion} detected ({SupportedGameVersion})");
         }
 
-        public static Sprite GetModStamp() {
+        public static Sprite GetModStamp()
+        {
             if (ModStamp) return ModStamp;
             return ModStamp = Helpers.loadSpriteFromResources("TheOtherThem.Resources.ModStamp.png", 150f);
         }
@@ -123,15 +125,18 @@ namespace TheOtherThem
     }
 
     [HarmonyPatch(typeof(ChatController), nameof(ChatController.Awake))]
-    public static class ChatControllerAwakePatch {
-        private static void Prefix() {
-            if (!EOSManager.Instance.IsMinorOrWaiting()) {
+    public static class ChatControllerAwakePatch
+    {
+        private static void Prefix()
+        {
+            if (!EOSManager.Instance.IsMinorOrWaiting())
+            {
                 LegacySaveManager.chatModeType = 1;
                 LegacySaveManager.isGuest = false;
             }
         }
     }
-    
+
     // Debugging tools
     [HarmonyPatch(typeof(KeyboardJoystick), nameof(KeyboardJoystick.Update))]
     public static class DebugManager
@@ -175,7 +180,8 @@ namespace TheOtherThem
             }*/
 
             // Terminate round
-            if(Input.GetKeyDown(KeyCode.L) && AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started) {
+            if (Input.GetKeyDown(KeyCode.L) && AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started)
+            {
                 MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.ForceEnd, Hazel.SendOption.Reliable, -1);
                 AmongUsClient.Instance.FinishRpcImmediately(writer);
                 RPCProcedure.forceEnd();
