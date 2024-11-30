@@ -115,7 +115,7 @@ namespace TheOtherThem.Patches {
                 }
 
                 // Lobby code replacement
-                if (AmongUsClient.Instance.NetworkMode == NetworkModes.LocalGame) __instance.GameRoomNameCode.text = Main.StreamerMode.Value ? $"<color={Main.StreamerModeReplacementColor.Value}>{Main.StreamerModeReplacementText.Value}</color>" : lobbyCodeText;
+                //if (AmongUsClient.Instance.NetworkMode == NetworkModes.LocalGame) __instance.GameRoomNameCode.text = Main.StreamerMode.Value ? $"<color={Main.StreamerModeReplacementColor.Value}>{Main.StreamerModeReplacementText.Value}</color>" : lobbyCodeText;
 
                 // Lobby timer
                 if (!AmongUsClient.Instance.AmHost || !GameData.Instance || AmongUsClient.Instance.AmLocalHost) return; // Not host or no instance

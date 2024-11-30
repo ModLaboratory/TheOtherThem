@@ -13,7 +13,7 @@ namespace TheOtherThem.Patches
     public static class ClientOptionsPatch
     {
         private static SelectionBehaviour[] AllOptions = {
-            new SelectionBehaviour("streamerModeButton", () => Main.StreamerMode.Value = !Main.StreamerMode.Value, Main.StreamerMode.Value),
+            //new SelectionBehaviour("streamerModeButton", () => Main.StreamerMode.Value = !Main.StreamerMode.Value, Main.StreamerMode.Value),
             new SelectionBehaviour("ghostsSeeTasksButton", () => MapOptions.ghostsSeeTasks = Main.GhostsSeeTasks.Value = !Main.GhostsSeeTasks.Value, Main.GhostsSeeTasks.Value),
             new SelectionBehaviour("ghostsSeeVotesButton", () => MapOptions.ghostsSeeVotes = Main.GhostsSeeVotes.Value = !Main.GhostsSeeVotes.Value, Main.GhostsSeeVotes.Value),
             new SelectionBehaviour("ghostsSeeRolesButton", () => MapOptions.ghostsSeeRoles = Main.GhostsSeeRoles.Value = !Main.GhostsSeeRoles.Value, Main.GhostsSeeRoles.Value),
@@ -244,7 +244,7 @@ namespace TheOtherThem.Patches
 	{
 		private static void Postfix(TextBoxTMP __instance)
 		{
-			bool flag = Main.StreamerMode.Value && (__instance.name == "GameIdText" || __instance.name == "IpTextBox" || __instance.name == "PortTextBox");
+			bool flag = /*Main.StreamerMode.Value &&*/ (__instance.name == "GameIdText" || __instance.name == "IpTextBox" || __instance.name == "PortTextBox");
 			if (flag) __instance.outputText.text = new string('*', __instance.text.Length);
 		}
 	}
