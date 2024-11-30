@@ -300,14 +300,9 @@ namespace TheOtherThem.Patches {
             }
 
 
-            [HarmonyPatch]
+            [HarmonyPatch(typeof(Minigame), nameof(Minigame.Begin))]
             class SecurityLogGameClosePatch
             {
-                private static IEnumerable<MethodBase> TargetMethods()
-                {
-                    return typeof(Minigame).GetMethods().Where(x => x.Name == "Close");
-                }
-
                 static void Prefix(Minigame __instance)
                 {
                     if (__instance is SecurityLogGame)
