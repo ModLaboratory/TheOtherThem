@@ -26,7 +26,7 @@ namespace TheOtherThem.ToTRole.Impostor
         {
             Instance = this;
 
-            InnerslothAbilltyCooldown = CustomOption.Create(2001, "InnerslothAbilityCd", 20, 10, 60, 5, ref CustomOptionHolder.OptionInsertionIndexes.Impostor, InnerslothSpawnRate);
+            InnerslothAbilltyCooldown = CustomOption.CreateInsertable(2001, "InnerslothAbilityCd", 20, 10, 60, 5, ref CustomOptionHolder.OptionInsertionIndexes.Impostor, InnerslothSpawnRate);
         }
 
         public override void ClearData()

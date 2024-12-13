@@ -18,7 +18,7 @@ namespace TheOtherThem.ToTRole.Impostor
         {
             Instance = this;
 
-            WinningKilledCount = CustomOption.Create(2101, "IdealistWinningKilledCount", 3, 3, 1, 5, ref CustomOptionHolder.OptionInsertionIndexes.Neutral, IdealistSpawnRate);
+            WinningKilledCount = CustomOption.CreateInsertable(2101, "IdealistWinningKilledCount", 3, 3, 1, 5, ref CustomOptionHolder.OptionInsertionIndexes.Neutral, IdealistSpawnRate);
         }
 
         public override void ClearData()
