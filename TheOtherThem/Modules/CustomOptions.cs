@@ -169,7 +169,7 @@ namespace TheOtherThem
                 if (option.OptionBehaviour != null && option.OptionBehaviour is StringOption stringOption)
                 {
                     stringOption.oldValue = stringOption.Value = option.Selection;
-                    stringOption.ValueText.text = option.getString();
+                    stringOption.ValueText.text = option.GetString();
                 }
             }
         }
@@ -205,7 +205,7 @@ namespace TheOtherThem
             return (float)Selections[Selection];
         }
 
-        public virtual string getString()
+        public virtual string GetString()
         {
             string sel = Selections[Selection].ToString();
             if (Format != "")
@@ -215,7 +215,7 @@ namespace TheOtherThem
             return ModTranslation.GetString(sel);
         }
 
-        public virtual string getName()
+        public virtual string GetName()
         {
             return ModTranslation.GetString(Name);
         }
@@ -228,7 +228,7 @@ namespace TheOtherThem
             if (OptionBehaviour != null && OptionBehaviour is StringOption stringOption)
             {
                 stringOption.oldValue = stringOption.Value = Selection;
-                stringOption.ValueText.text = getString();
+                stringOption.ValueText.text = GetString();
 
                 if (AmongUsClient.Instance?.AmHost == true && PlayerControl.LocalPlayer)
                 {
@@ -422,7 +422,7 @@ namespace TheOtherThem
             return 0f;
         }
 
-        public override string getString()
+        public override string GetString()
         {
             return "";
         }
