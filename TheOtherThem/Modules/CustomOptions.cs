@@ -183,7 +183,7 @@ namespace TheOtherThem
             foreach (CustomOption option in Options)
             {
                 messageWriter.WritePacked((uint)option.Id);
-                messageWriter.WritePacked(Convert.ToUInt32(option.Selection));
+                messageWriter.WritePacked((uint)Convert.ToUInt32(option.Selection));
             }
             messageWriter.EndMessage();
         }
@@ -392,7 +392,7 @@ namespace TheOtherThem
         }
     }
 
-    [Obsolete]
+    [Obsolete("The new version of the game option doesn't need this anymore.")]
     public class CustomOptionBlank : CustomOption
     {
         public CustomOptionBlank(CustomOption parent)

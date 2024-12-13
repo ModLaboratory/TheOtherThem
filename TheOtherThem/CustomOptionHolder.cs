@@ -378,7 +378,7 @@ namespace TheOtherThem {
             gmCanKill = CustomOption.Create(406, "gmCanKill", false, gmEnabled);
             gmDiesAtStart = CustomOption.Create(404, "gmDiesAtStart", true, gmEnabled);
 
-
+            #region IMPOSTOR
             mafiaSpawnRate = new CustomRoleOption(10, "mafia", Janitor.color, 1);
             mafiosoCanSabotage = CustomOption.Create(12, "mafiosoCanSabotage", false, mafiaSpawnRate);
             mafiosoCanRepair = CustomOption.Create(13, "mafiosoCanRepair", false, mafiaSpawnRate);
@@ -454,9 +454,10 @@ namespace TheOtherThem {
             nekoKabochaRevengeNeutral = CustomOption.Create(1022, "nekoKabochaRevengeNeutral", true, nekoKabochaSpawnRate);
             nekoKabochaRevengeImpostor = CustomOption.Create(1023, "nekoKabochaRevengeImpostor", true, nekoKabochaSpawnRate);
             nekoKabochaRevengeExile = CustomOption.Create(1024, "nekoKabochaRevengeExile", false, nekoKabochaSpawnRate);
+            #endregion
+            OptionInsertionIndexes.Impostor = CustomOption.Options.Count;
 
-            OptionInsertionIndexes.impostor = CustomOption.Options.Count;
-
+            #region NEUTRAL
             madmateSpawnRate = new CustomRoleOption(360, "madmate", Madmate.color);
             madmateType = CustomOption.Create(366, "madmateType", new string[] { "madmateDefault", "madmateWithRole", "madmateRandom" }, madmateSpawnRate);
             madmateFixedRole = new CustomRoleSelectionOption(369, "madmateFixedRole", Madmate.validRoles, madmateType);
@@ -572,8 +573,10 @@ namespace TheOtherThem {
             fortuneTellerResults = CustomOption.Create(942, "fortuneTellerResults ", new string[] { "fortuneTellerResultCrew", "fortuneTellerResultTeam", "fortuneTellerResultRole" }, fortuneTellerSpawnRate);
             fortuneTellerDuration = CustomOption.Create(943, "fortuneTellerDuration ", 20f, 1f, 50f, 0.5f, fortuneTellerSpawnRate, format: "unitSeconds");
             fortuneTellerDistance = CustomOption.Create(944, "fortuneTellerDistance ", 2.5f, 1f, 10f, 0.5f, fortuneTellerSpawnRate, format: "unitMeters");
+            #endregion
+            OptionInsertionIndexes.Neutral = CustomOption.Options.Count;
 
-
+            #region CREWMATE
             mayorSpawnRate = new CustomRoleOption(80, "mayor", Mayor.color, 1);
             mayorNumVotes = CustomOption.Create(81, "mayorNumVotes", 2f, 2f, 10f, 1f, mayorSpawnRate, format: "unitVotes");
 
@@ -663,6 +666,8 @@ namespace TheOtherThem {
             mediumCooldown = CustomOption.Create(371, "mediumCooldown", 30f, 5f, 120f, 5f, mediumSpawnRate, format: "unitSeconds");
             mediumDuration = CustomOption.Create(372, "mediumDuration", 3f, 0f, 15f, 1f, mediumSpawnRate, format: "unitSeconds");
             mediumOneTimeUse = CustomOption.Create(373, "mediumOneTimeUse", false, mediumSpawnRate);
+            #endregion
+            OptionInsertionIndexes.Crewmate = CustomOption.Options.Count;
 
             // Other options
             specialOptions = new CustomOptionBlank(null);
