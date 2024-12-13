@@ -8,14 +8,16 @@ using UnityEngine;
 namespace TheOtherThem.ToTRole;
 public abstract class CustomRole
 {
+    public delegate CustomRoleOption BaseRoleOptionGetter(string name, Color color);
+
     public string Name => MyRoleInfo.Name;
     public List<NetworkedPlayerInfo> Players { get; } = new();
     public RoleInfo MyRoleInfo { get; }
     public RoleType MyRoleType { get; }
     public TeamTypeTOT MyTeamType { get; }
-    public CustomRole(string translationName, Color roleColor, Func<string, Color, CustomRoleOption> onGetBaseOption, RoleType roleType, TeamTypeTOT teamType)
+    public CustomRole(string translationName, Color roleColor, BaseRoleOptionGetter baseOptionGetter, RoleType roleType, TeamTypeTOT teamType)
     {
-        MyRoleInfo = new(translationName, roleColor, onGetBaseOption(translationName, roleColor), roleType);
+        MyRoleInfo = new(translationName, roleColor, baseOptionGetter(translationName, roleColor), roleType);
         MyRoleType = roleType;
         MyTeamType = teamType;
         AllRoles.Add(this);

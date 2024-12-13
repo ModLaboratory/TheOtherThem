@@ -67,13 +67,14 @@ namespace TheOtherThem
         Watcher,
         Fox,
         Immoralist,
+        Idealist,
 
 
         GM = 200,
 
 
         // don't put anything below this
-        NoRole = int.MaxValue
+        NoRole = int.MaxValue,
     }
 
     [HarmonyPatch]

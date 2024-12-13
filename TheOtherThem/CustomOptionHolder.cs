@@ -342,7 +342,7 @@ namespace TheOtherThem {
         public static CustomOption foxStealthDuration;
         public static CustomTasksOption foxTasks;
 
-        public static (int crewmate, int neutral, int impostor) OptionInsertionIndexes = new();
+        public static (int Crewmate, int Neutral, int Impostor) OptionInsertionIndexes = new();
 
         internal static Dictionary<byte, byte[]> blockedRolePairings = new Dictionary<byte, byte[]>();
 

@@ -109,8 +109,8 @@ namespace TheOtherThem
             ButtonsGM.setCustomButtonCooldowns();
             ToTButtons.ForEach(tuple =>
             {
-                if (tuple.Item1 == null) return;
-                tuple.Item1.MaxTimer = tuple.Item2;
+                if (tuple.button == null) return;
+                tuple.button.MaxTimer = tuple.cooldown;
             });
         }
 
@@ -121,7 +121,7 @@ namespace TheOtherThem
             timeMasterShieldButton.actionButton.cooldownTimerText.color = Palette.EnabledColor;
         }
 
-        public static List<(CustomButton, float)> ToTButtons { get; private set; } = new();
+        public static List<(CustomButton button, float cooldown)> ToTButtons { get; private set; } = new();
 
         public static void Postfix(HudManager __instance)
         {
