@@ -183,7 +183,7 @@ namespace TheOtherThem
             foreach (CustomOption option in Options)
             {
                 messageWriter.WritePacked((uint)option.Id);
-                messageWriter.WritePacked((uint)Convert.ToUInt32(option.Selection));
+                messageWriter.WritePacked(Convert.ToUInt32(option.Selection));
             }
             messageWriter.EndMessage();
         }
@@ -448,8 +448,12 @@ namespace TheOtherThem
             {
                 pbutton.SelectButton(false);
             }
+
+            /* BUG HERE */
+
             if (tabNum > 2)
             {
+                System.Console.WriteLine(tabNum);
                 tabNum -= 3;
                 GameOptionsMenuStartPatch.currentTabs[tabNum].SetActive(true);
                 GameOptionsMenuStartPatch.currentButtons[tabNum].SelectButton(true);
