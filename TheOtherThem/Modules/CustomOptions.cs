@@ -27,29 +27,29 @@ namespace TheOtherThem
     }
     public class CustomOption
     {
-        public static List<CustomOption> options = new List<CustomOption>();
-        public static int preset = 0;
+        public static List<CustomOption> Options { get; } = new List<CustomOption>();
+        public static int Preset { get; set; } = 0;
 
-        public int id;
-        public string name;
-        public string format;
-        public System.Object[] selections;
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string Format { get; set; }
+        public object[] Selections { get; set; }
 
-        public int defaultSelection;
-        public ConfigEntry<int> entry;
-        public int selection;
-        public OptionBehaviour optionBehaviour;
-        public CustomOption parent;
-        public List<CustomOption> children;
-        public bool isHeader;
-        public bool isHidden;
-        public CustomOptionType type;
+        public int DefaultSelection { get; set; }
+        public ConfigEntry<int> Entry { get; set; }
+        public int Selection { get; set; }
+        public OptionBehaviour OptionBehaviour { get; set; }
+        public CustomOption Parent { get; set; }
+        public List<CustomOption> Children { get; set; }
+        public bool IsHeader { get; set; }
+        public bool IsHidden { get; set; }
+        public CustomOptionType Type { get; set; }
 
-        public virtual bool enabled
+        public virtual bool Enabled
         {
             get
             {
-                return Helpers.RolesEnabled && this.GetBool();
+                return Helpers.RolesEnabled && GetBool();
             }
         }
 
@@ -59,62 +59,59 @@ namespace TheOtherThem
 
         }
 
-        public CustomOption(int id, string name, System.Object[] selections, System.Object defaultValue, CustomOption parent, bool isHeader, bool isHidden, string format)
+        public CustomOption(int id, string name, object[] selections, object defaultValue, CustomOption parent, bool isHeader, bool isHidden, string format)
         {
             Init(id, name, selections, defaultValue, parent, isHeader, isHidden, format);
         }
 
-        public void Init(int id, string name, System.Object[] selections, System.Object defaultValue, CustomOption parent, bool isHeader, bool isHidden, string format)
+        public void Init(int id, string name, object[] selections, object defaultValue, CustomOption parent, bool isHeader, bool isHidden, string format)
         {
             InitWithoutRegistration(id, name, selections, defaultValue, parent, isHeader, isHidden, format);
 
-            options.Add(this);
+            Options.Add(this);
         }
 
         // =========== INSERTABLE INITIALIZERS =========== \\
 
-        public CustomOption(int id, string name, System.Object[] selections, System.Object defaultValue, CustomOption parent, bool isHeader, bool isHidden, string format, ref int index)
+        public CustomOption(int id, string name, object[] selections, object defaultValue, CustomOption parent, bool isHeader, bool isHidden, string format, ref int index)
         {
             Init(id, name, selections, defaultValue, parent, isHeader, isHidden, format, ref index);
         }
 
-        private void InitWithoutRegistration(int id, string name, System.Object[] selections, System.Object defaultValue, CustomOption parent, bool isHeader, bool isHidden, string format)
+        private void InitWithoutRegistration(int id, string name, object[] selections, object defaultValue, CustomOption parent, bool isHeader, bool isHidden, string format)
         {
-            this.id = id;
-            this.name = name;
-            this.format = format;
-            this.selections = selections;
+            this.Id = id;
+            this.Name = name;
+            this.Format = format;
+            this.Selections = selections;
             int index = Array.IndexOf(selections, defaultValue);
-            this.defaultSelection = index >= 0 ? index : 0;
-            this.parent = parent;
-            this.isHeader = isHeader;
-            this.isHidden = isHidden;
-            type = CustomOptionType.General;
+            DefaultSelection = index >= 0 ? index : 0;
+            this.Parent = parent;
+            this.IsHeader = isHeader;
+            this.IsHidden = isHidden;
+            Type = CustomOptionType.General;
 
-            this.children = new List<CustomOption>();
-            if (parent != null)
-            {
-                parent.children.Add(this);
-            }
+            Children = new List<CustomOption>();
+            parent?.Children.Add(this);
 
-            selection = 0;
+            Selection = 0;
             if (id > 0)
             {
-                entry = Main.Instance.Config.Bind($"Preset{preset}", id.ToString(), defaultSelection);
-                selection = Mathf.Clamp(entry.Value, 0, selections.Length - 1);
+                Entry = Main.Instance.Config.Bind($"Preset{Preset}", id.ToString(), DefaultSelection);
+                Selection = Mathf.Clamp(Entry.Value, 0, selections.Length - 1);
 
-                if (options.Any(x => x.id == id))
+                if (Options.Any(x => x.Id == id))
                 {
                     Main.Instance.Log.LogWarning($"CustomOption id {id} is used in multiple places.");
                 }
             }
         }
 
-        public void Init(int id, string name, System.Object[] selections, System.Object defaultValue, CustomOption parent, bool isHeader, bool isHidden, string format, ref int insertion)
+        public void Init(int id, string name, object[] selections, object defaultValue, CustomOption parent, bool isHeader, bool isHidden, string format, ref int insertion)
         {
             InitWithoutRegistration(id, name, selections, defaultValue, parent, isHeader, isHidden, format);
 
-            options.Insert(insertion++, this);
+            Options.Insert(insertion++, this);
         }
 
         private static List<float> Range(float min, float max, float step)
@@ -160,18 +157,18 @@ namespace TheOtherThem
 
         // Static behaviour
 
-        public static void switchPreset(int newPreset)
+        public static void SwitchPreset(int newPreset)
         {
-            CustomOption.preset = newPreset;
-            foreach (CustomOption option in CustomOption.options)
+            Preset = newPreset;
+            foreach (CustomOption option in Options)
             {
-                if (option.id <= 0) continue;
+                if (option.Id <= 0) continue;
 
-                option.entry = Main.Instance.Config.Bind($"Preset{preset}", option.id.ToString(), option.defaultSelection);
-                option.selection = Mathf.Clamp(option.entry.Value, 0, option.selections.Length - 1);
-                if (option.optionBehaviour != null && option.optionBehaviour is StringOption stringOption)
+                option.Entry = Main.Instance.Config.Bind($"Preset{Preset}", option.Id.ToString(), option.DefaultSelection);
+                option.Selection = Mathf.Clamp(option.Entry.Value, 0, option.Selections.Length - 1);
+                if (option.OptionBehaviour != null && option.OptionBehaviour is StringOption stringOption)
                 {
-                    stringOption.oldValue = stringOption.Value = option.selection;
+                    stringOption.oldValue = stringOption.Value = option.Selection;
                     stringOption.ValueText.text = option.getString();
                 }
             }
@@ -182,11 +179,11 @@ namespace TheOtherThem
             if (PlayerControl.AllPlayerControls.Count <= 1 || AmongUsClient.Instance?.AmHost == false && PlayerControl.LocalPlayer == null) return;
             
             MessageWriter messageWriter = AmongUsClient.Instance.StartRpc(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.ShareOptions, Hazel.SendOption.Reliable);
-            messageWriter.WritePacked((uint)CustomOption.options.Count);
-            foreach (CustomOption option in CustomOption.options)
+            messageWriter.WritePacked((uint)Options.Count);
+            foreach (CustomOption option in Options)
             {
-                messageWriter.WritePacked((uint)option.id);
-                messageWriter.WritePacked((uint)Convert.ToUInt32(option.selection));
+                messageWriter.WritePacked((uint)option.Id);
+                messageWriter.WritePacked(Convert.ToUInt32(option.Selection));
             }
             messageWriter.EndMessage();
         }
@@ -195,48 +192,48 @@ namespace TheOtherThem
 
         public virtual int GetSelection()
         {
-            return selection;
+            return Selection;
         }
 
         public virtual bool GetBool()
         {
-            return selection > 0;
+            return Selection > 0;
         }
 
         public virtual float GetFloat()
         {
-            return (float)selections[selection];
+            return (float)Selections[Selection];
         }
 
         public virtual string getString()
         {
-            string sel = selections[selection].ToString();
-            if (format != "")
+            string sel = Selections[Selection].ToString();
+            if (Format != "")
             {
-                return string.Format(ModTranslation.GetString(format), sel);
+                return string.Format(ModTranslation.GetString(Format), sel);
             }
             return ModTranslation.GetString(sel);
         }
 
         public virtual string getName()
         {
-            return ModTranslation.GetString(name);
+            return ModTranslation.GetString(Name);
         }
 
         // Option changes
 
-        public virtual void updateSelection(int newSelection)
+        public virtual void UpdateSelection(int newSelection)
         {
-            selection = Mathf.Clamp((newSelection + selections.Length) % selections.Length, 0, selections.Length - 1);
-            if (optionBehaviour != null && optionBehaviour is StringOption stringOption)
+            Selection = Mathf.Clamp((newSelection + Selections.Length) % Selections.Length, 0, Selections.Length - 1);
+            if (OptionBehaviour != null && OptionBehaviour is StringOption stringOption)
             {
-                stringOption.oldValue = stringOption.Value = selection;
+                stringOption.oldValue = stringOption.Value = Selection;
                 stringOption.ValueText.text = getString();
 
                 if (AmongUsClient.Instance?.AmHost == true && PlayerControl.LocalPlayer)
                 {
-                    if (id == 0) switchPreset(selection); // Switch presets
-                    else if (entry != null) entry.Value = selection; // Save selection to config
+                    if (Id == 0) SwitchPreset(Selection); // Switch presets
+                    else if (Entry != null) Entry.Value = Selection; // Save selection to config
 
                     ShareOptionSelections();// Share all selections
                 }
@@ -250,11 +247,11 @@ namespace TheOtherThem
         public CustomOption countOption = null;
         public bool roleEnabled = true;
 
-        public override bool enabled
+        public override bool Enabled
         {
             get
             {
-                return Helpers.RolesEnabled && roleEnabled && selection > 0;
+                return Helpers.RolesEnabled && roleEnabled && Selection > 0;
             }
         }
 
@@ -262,7 +259,7 @@ namespace TheOtherThem
         {
             get
             {
-                return enabled ? selection : 0;
+                return Enabled ? Selection : 0;
             }
         }
 
@@ -270,7 +267,7 @@ namespace TheOtherThem
         {
             get
             {
-                if (!enabled)
+                if (!Enabled)
                     return 0;
 
                 if (countOption != null)
@@ -295,12 +292,12 @@ namespace TheOtherThem
 
             if (max <= 0 || !roleEnabled)
             {
-                isHidden = true;
+                IsHidden = true;
                 this.roleEnabled = false;
             }
 
             if (max > 1)
-                countOption = Create(id + 10000, "roleNumAssigned", 1f, 1f, 15f, 1f, this, false, isHidden, "unitPlayers");
+                countOption = Create(id + 10000, "roleNumAssigned", 1f, 1f, 15f, 1f, this, false, IsHidden, "unitPlayers");
         }
 
         public CustomRoleOption(int id, string name, Color color, ref int insertion, int max = 15, bool roleEnabled = true) :
@@ -310,12 +307,12 @@ namespace TheOtherThem
 
             if (max <= 0 || !roleEnabled)
             {
-                isHidden = true;
+                IsHidden = true;
                 this.roleEnabled = false;
             }
 
             if (max > 1)
-                countOption = CreateInsertable(id + 10000, "roleNumAssigned", 1f, 1f, 15f, 1f, ref insertion, this, false, isHidden, "unitPlayers");
+                countOption = CreateInsertable(id + 10000, "roleNumAssigned", 1f, 1f, 15f, 1f, ref insertion, this, false, IsHidden, "unitPlayers");
         }
     }
 
@@ -332,11 +329,11 @@ namespace TheOtherThem
 
         public CustomDualRoleOption(int id, string name, Color color, RoleType roleType, int max = 15, bool roleEnabled = true) : base(id, name, color, max, roleEnabled)
         {
-            roleAssignEqually = new CustomOption(id + 10011, "roleAssignEqually", new string[] { "optionOn", "optionOff" }, "optionOff", this, false, isHidden, "");
-            roleImpChance = Create(id + 10010, "roleImpChance", CustomOptionHolder.rates, roleAssignEqually, false, isHidden);
+            roleAssignEqually = new CustomOption(id + 10011, "roleAssignEqually", new string[] { "optionOn", "optionOff" }, "optionOff", this, false, IsHidden, "");
+            roleImpChance = Create(id + 10010, "roleImpChance", CustomOptionHolder.rates, roleAssignEqually, false, IsHidden);
 
             this.roleType = roleType;
-            type = CustomOptionType.General;
+            Type = CustomOptionType.General;
             dualRoles.Add(this);
         }
     }
@@ -358,7 +355,7 @@ namespace TheOtherThem
 
         public CustomTasksOption(int id, int commonDef, int longDef, int shortDef, CustomOption parent = null)
         {
-            type = CustomOptionType.General;
+            Type = CustomOptionType.General;
             commonTasksOption = Create(id + 20000, "numCommonTasks", commonDef, 0f, 4f, 1f, parent);
             longTasksOption = Create(id + 20001, "numLongTasks", longDef, 0f, 15f, 1f, parent);
             shortTasksOption = Create(id + 20002, "numShortTasks", shortDef, 0f, 23f, 1f, parent);
@@ -373,7 +370,7 @@ namespace TheOtherThem
         {
             get
             {
-                return roleTypes[selection];
+                return roleTypes[Selection];
             }
         }
 
@@ -400,13 +397,13 @@ namespace TheOtherThem
     {
         public CustomOptionBlank(CustomOption parent)
         {
-            this.parent = parent;
-            this.id = -1;
-            this.name = "";
-            this.isHeader = false;
-            this.isHidden = true;
-            this.children = new List<CustomOption>();
-            this.selections = new string[] { "" };
+            this.Parent = parent;
+            this.Id = -1;
+            this.Name = "";
+            this.IsHeader = false;
+            this.IsHidden = true;
+            this.Children = new List<CustomOption>();
+            this.Selections = new string[] { "" };
             //options.Add(this);
         }
 
@@ -430,7 +427,7 @@ namespace TheOtherThem
             return "";
         }
 
-        public override void updateSelection(int newSelection)
+        public override void UpdateSelection(int newSelection)
         {
             return;
         }
@@ -574,25 +571,25 @@ namespace TheOtherThem
 
         public static void drawTab(LobbyViewSettingsPane __instance, CustomOptionType optionType)
         {
-            var relevantOptions = options.Where(x => x.type == optionType && optionType == CustomOptionType.General).ToList();
+            var relevantOptions = Options.Where(x => x.Type == optionType && optionType == CustomOptionType.General).ToList();
 
             if ((int)optionType == 99)
             {
                 // Create 4 Groups with Role settings only
                 relevantOptions.Clear();
-                relevantOptions.AddRange(options.Where(x => x.type == CustomOptionType.Impostor && x.isHeader));
-                relevantOptions.AddRange(options.Where(x => x.type == CustomOptionType.Neutral && x.isHeader));
-                relevantOptions.AddRange(options.Where(x => x.type == CustomOptionType.Crewmate && x.isHeader));
-                relevantOptions.AddRange(options.Where(x => x.type == CustomOptionType.Modifier && x.isHeader));
-                foreach (var option in options)
+                relevantOptions.AddRange(Options.Where(x => x.Type == CustomOptionType.Impostor && x.IsHeader));
+                relevantOptions.AddRange(Options.Where(x => x.Type == CustomOptionType.Neutral && x.IsHeader));
+                relevantOptions.AddRange(Options.Where(x => x.Type == CustomOptionType.Crewmate && x.IsHeader));
+                relevantOptions.AddRange(Options.Where(x => x.Type == CustomOptionType.Modifier && x.IsHeader));
+                foreach (var option in Options)
                 {
-                    if (option.parent != null && option.parent.GetSelection() > 0)
+                    if (option.Parent != null && option.Parent.GetSelection() > 0)
                     {
-                        if (option.id == 103) //Deputy
+                        if (option.Id == 103) //Deputy
                             relevantOptions.Insert(relevantOptions.IndexOf(CustomOptionHolder.sheriffSpawnRate) + 1, option);
-                        else if (option.id == 224) //Sidekick
+                        else if (option.Id == 224) //Sidekick
                             relevantOptions.Insert(relevantOptions.IndexOf(CustomOptionHolder.jackalSpawnRate) + 1, option);
-                        else if (option.id == 358) //Prosecutor
+                        else if (option.Id == 358) //Prosecutor
                             relevantOptions.Insert(relevantOptions.IndexOf(CustomOptionHolder.lawyerSpawnRate) + 1, option);
                     }
                 }
@@ -613,15 +610,15 @@ namespace TheOtherThem
 
             foreach (var option in relevantOptions)
             {
-                if (option.isHeader && (int)optionType != 99 || (int)optionType == 99 && curType != option.type)
+                if (option.IsHeader && (int)optionType != 99 || (int)optionType == 99 && curType != option.Type)
                 {
-                    curType = option.type;
+                    curType = option.Type;
                     if (i != 0) num -= 0.59f;
                     if (i % 2 != 0) singles++;
                     headers++; // for header
                     CategoryHeaderMasked categoryHeaderMasked = UnityEngine.Object.Instantiate<CategoryHeaderMasked>(__instance.categoryHeaderOrigin);
                     categoryHeaderMasked.SetHeader(StringNames.ImpostorsCategory, 61);
-                    categoryHeaderMasked.Title.text = ModTranslation.GetString(option.name);
+                    categoryHeaderMasked.Title.text = ModTranslation.GetString(option.Name);
                     if ((int)optionType == 99)
                         categoryHeaderMasked.Title.text = new Dictionary<CustomOptionType, string>() { { CustomOptionType.Impostor, "Impostor Roles" }, { CustomOptionType.Neutral, "Neutral Roles" },
                             { CustomOptionType.Crewmate, "Crewmate Roles" }, { CustomOptionType.Modifier, "Modifiers" } }[curType];
@@ -654,8 +651,8 @@ namespace TheOtherThem
                 }
                 viewSettingsInfoPanel.transform.localPosition = new Vector3(num2, num, -2f);
                 int value = option.GetSelection();
-                viewSettingsInfoPanel.SetInfo(StringNames.ImpostorsCategory, ModTranslation.GetString(option.selections[value].ToString()), 61);
-                viewSettingsInfoPanel.titleText.text = ModTranslation.GetString(option.name);
+                viewSettingsInfoPanel.SetInfo(StringNames.ImpostorsCategory, ModTranslation.GetString(option.Selections[value].ToString()), 61);
+                viewSettingsInfoPanel.titleText.text = ModTranslation.GetString(option.Name);
                 if ((int)optionType == 99)
                 {
                     viewSettingsInfoPanel.titleText.outlineColor = Color.white;
@@ -726,11 +723,11 @@ namespace TheOtherThem
             float num = 1.5f;
             foreach (CustomOption option in options)
             {
-                if (option.isHeader)
+                if (option.IsHeader)
                 {
                     CategoryHeaderMasked categoryHeaderMasked = UnityEngine.Object.Instantiate<CategoryHeaderMasked>(menu.categoryHeaderOrigin, Vector3.zero, Quaternion.identity, menu.settingsContainer);
                     categoryHeaderMasked.SetHeader(StringNames.ImpostorsCategory, 20);
-                    categoryHeaderMasked.Title.text = ModTranslation.GetString(option.name);
+                    categoryHeaderMasked.Title.text = ModTranslation.GetString(option.Name);
                     categoryHeaderMasked.Title.outlineColor = Color.white;
                     categoryHeaderMasked.Title.outlineWidth = 0.2f;
                     categoryHeaderMasked.transform.localScale = Vector3.one * 0.63f;
@@ -755,8 +752,8 @@ namespace TheOtherThem
 
                 var stringOption = optionBehaviour as StringOption;
                 stringOption.OnValueChanged = new Action<OptionBehaviour>((o) => { });
-                stringOption.TitleText.text = option.name;
-                if (option.isHeader && (option.type == CustomOptionType.Neutral || option.type == CustomOptionType.Crewmate || option.type == CustomOptionType.Impostor || option.type == CustomOptionType.Modifier))
+                stringOption.TitleText.text = option.Name;
+                if (option.IsHeader && (option.Type == CustomOptionType.Neutral || option.Type == CustomOptionType.Crewmate || option.Type == CustomOptionType.Impostor || option.Type == CustomOptionType.Modifier))
                 {
                     stringOption.TitleText.text = "Spawn Chance";
                 }
@@ -764,9 +761,9 @@ namespace TheOtherThem
                     stringOption.TitleText.fontSize = 2.2f;
                 if (stringOption.TitleText.text.Length > 40)
                     stringOption.TitleText.fontSize = 2f;
-                stringOption.Value = stringOption.oldValue = option.selection;
-                stringOption.ValueText.text = option.selections[option.selection].ToString();
-                option.optionBehaviour = stringOption;
+                stringOption.Value = stringOption.oldValue = option.Selection;
+                stringOption.ValueText.text = option.Selections[option.Selection].ToString();
+                option.OptionBehaviour = stringOption;
 
                 menu.Children.Add(optionBehaviour);
                 num -= 0.45f;
@@ -836,7 +833,7 @@ namespace TheOtherThem
             }
             torSettingsGOM.scrollBar.transform.FindChild("SliderInner").DestroyChildren();
             torSettingsGOM.Children.Clear();
-            var relevantOptions = options.Where(x => x.type == optionType).ToList();
+            var relevantOptions = Options.Where(x => x.Type == optionType).ToList();
             createSettings(torSettingsGOM, relevantOptions);
 
             currentTabs.Add(torSettingsTab);
@@ -862,12 +859,12 @@ namespace TheOtherThem
     {
         public static bool Prefix(StringOption __instance)
         {
-            CustomOption option = CustomOption.options.FirstOrDefault(option => option.optionBehaviour == __instance);
+            CustomOption option = CustomOption.Options.FirstOrDefault(option => option.OptionBehaviour == __instance);
             if (option == null) return true;
 
             __instance.OnValueChanged = new Action<OptionBehaviour>(_ => { });
-            __instance.TitleText.text = ModTranslation.GetString(option.name);
-            __instance.ValueText.text = ModTranslation.GetString(option.selections[option.selection].ToString());
+            __instance.TitleText.text = ModTranslation.GetString(option.Name);
+            __instance.ValueText.text = ModTranslation.GetString(option.Selections[option.Selection].ToString());
             return false;
         }
     }
@@ -877,9 +874,9 @@ namespace TheOtherThem
     {
         public static bool Prefix(StringOption __instance)
         {
-            CustomOption option = CustomOption.options.FirstOrDefault(option => option.optionBehaviour == __instance);
+            CustomOption option = CustomOption.Options.FirstOrDefault(option => option.OptionBehaviour == __instance);
             if (option == null) return true;
-            option.updateSelection(option.selection + 1);
+            option.UpdateSelection(option.Selection + 1);
             return false;
         }
     }
@@ -889,9 +886,9 @@ namespace TheOtherThem
     {
         public static bool Prefix(StringOption __instance)
         {
-            CustomOption option = CustomOption.options.FirstOrDefault(option => option.optionBehaviour == __instance);
+            CustomOption option = CustomOption.Options.FirstOrDefault(option => option.OptionBehaviour == __instance);
             if (option == null) return true;
-            option.updateSelection(option.selection - 1);
+            option.UpdateSelection(option.Selection - 1);
             return false;
         }
     }
@@ -902,9 +899,9 @@ namespace TheOtherThem
         public static void Postfix(StringOption __instance)
         {
             if (!IL2CPPChainloader.Instance.Plugins.TryGetValue("com.DigiWorm.LevelImposter", out PluginInfo _)) return;
-            CustomOption option = CustomOption.options.FirstOrDefault(option => option.optionBehaviour == __instance);
+            CustomOption option = CustomOption.Options.FirstOrDefault(option => option.OptionBehaviour == __instance);
             if (option == null) return;
-            __instance.Value = __instance.oldValue = option.selection;
+            __instance.Value = __instance.oldValue = option.Selection;
         }
     }
 

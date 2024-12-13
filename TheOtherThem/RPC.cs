@@ -128,8 +128,8 @@ namespace TheOtherThem
                 {
                     uint optionId = reader.ReadPackedUInt32();
                     uint selection = reader.ReadPackedUInt32();
-                    CustomOption option = CustomOption.options.FirstOrDefault(option => option.id == (int)optionId);
-                    option.updateSelection((int)selection);
+                    CustomOption option = CustomOption.Options.FirstOrDefault(option => option.Id == (int)optionId);
+                    option.UpdateSelection((int)selection);
                 }
             }
             catch (Exception e)

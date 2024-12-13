@@ -26,7 +26,7 @@ namespace TheOtherThem
         //    }
         //}
 
-        public bool Enabled { get { return Helpers.RolesEnabled && (BaseOption == null || BaseOption.enabled); } }
+        public bool Enabled { get { return Helpers.RolesEnabled && (BaseOption == null || BaseOption.Enabled); } }
         public RoleType MyRoleType;
 
         public string NameKey { get; private set; }
