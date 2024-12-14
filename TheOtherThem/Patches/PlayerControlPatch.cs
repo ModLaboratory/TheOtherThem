@@ -1356,21 +1356,21 @@ namespace TheOtherThem.Patches
         }
     }
 
-    [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.CanMove), MethodType.Getter)]
-    class PlayerControlCanMovePatch
-    {
-        public static bool Prefix(PlayerControl __instance, ref bool __result)
-        {
-            __result = __instance.moveable &&
-                !Minigame.Instance &&
-                (!DestroyableSingleton<HudManager>.InstanceExists || (!DestroyableSingleton<HudManager>.Instance.Chat.IsOpenOrOpening && !DestroyableSingleton<HudManager>.Instance.KillOverlay.IsOpen && !DestroyableSingleton<HudManager>.Instance.GameMenu.IsOpen)) &&
-                (!MapBehaviour.Instance || !MapBehaviour.Instance.IsOpenStopped) &&
-                !MeetingHud.Instance &&
-                !ExileController.Instance &&
-                !IntroCutscene.Instance;
-            return false;
-        }
-    }
+    //[HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.CanMove), MethodType.Getter)]
+    //class PlayerControlCanMovePatch
+    //{
+    //    public static bool Prefix(PlayerControl __instance, ref bool __result)
+    //    {
+    //        __result = __instance.moveable &&
+    //            !Minigame.Instance &&
+    //            (!DestroyableSingleton<HudManager>.InstanceExists || (!DestroyableSingleton<HudManager>.Instance.Chat.IsOpenOrOpening && !DestroyableSingleton<HudManager>.Instance.KillOverlay.IsOpen && !DestroyableSingleton<HudManager>.Instance.GameMenu.IsOpen)) &&
+    //            (!MapBehaviour.Instance || !MapBehaviour.Instance.IsOpenStopped) &&
+    //            !MeetingHud.Instance &&
+    //            !ExileController.Instance &&
+    //            !IntroCutscene.Instance;
+    //        return false;
+    //    }
+    //}
 
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.CheckName))]
     class PlayerControlCheckNamePatch

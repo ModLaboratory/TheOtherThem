@@ -1,6 +1,7 @@
-using Il2CppSystem.Collections.Generic;
+using System.Collections.Generic;
 using System;
 using UnityEngine;
+using System.Linq;
 
 // Code base from MalumMenu
 namespace TheOtherThem.Objects
@@ -19,12 +20,13 @@ namespace TheOtherThem.Objects
             Callback = callback;
             var menu = Object.Instantiate(MenuPrefab);
 
+            menu.name = "ModPlayerPickMenu";
             menu.transform.SetParent(Camera.main.transform, false);
             menu.transform.localPosition = new Vector3(0f, 0f, -50f);
             menu.Begin(null);
         }
 
-        public static void OpenPlayerPickMenu(Action<NetworkedPlayerInfo> callback) => OpenPlayerPickMenu(GameData.Instance.AllPlayers, callback);
+        public static void OpenPlayerPickMenu(Action<NetworkedPlayerInfo> callback) => OpenPlayerPickMenu(GameData.Instance.AllPlayers.ToArray().ToList(), callback);
     }
 
     [HarmonyPatch(typeof(ShapeshifterMinigame))]
@@ -38,7 +40,7 @@ namespace TheOtherThem.Objects
             if (PlayerPickMenu.IsActive)
             { // Player Pick Menu logic
 
-                PlayerControl.LocalPlayer.moveable = false;
+                //PlayerControl.LocalPlayer.moveable = false;
 
                 // Custom player list set by OpenPlayerPickMenu
                 List<NetworkedPlayerInfo> list = PlayerPickMenu.customPlayerList;
@@ -68,7 +70,8 @@ namespace TheOtherThem.Objects
                     elements.Add(panel.Button);
                 }
 
-                ControllerManager.Instance.OpenOverlayMenu(__instance.name, __instance.BackButton, __instance.DefaultButtonSelected, elements, false);
+                ControllerManager.Instance.OpenOverlayMenu(__instance.name, __instance.BackButton, __instance.DefaultButtonSelected, elements.ToIl2CppList(), false);
+                System.Console.WriteLine(ControllerManager.Instance.CurrentUiState.MenuName);
                 PlayerPickMenu.IsActive = false;
 
                 return false; // Skip original method when active
@@ -77,12 +80,12 @@ namespace TheOtherThem.Objects
             return true; // Open normal shapeshifter menu if not active
         }
 
-        [HarmonyPatch(nameof(Minigame.Close))]
-        [HarmonyPostfix]
-        public static void MenuClosePatch(Minigame __instance)
-        {
-            if (__instance.GetComponent<ShapeshifterMinigame>())
-                PlayerControl.LocalPlayer.moveable = true;
-        }
+        //[HarmonyPatch(nameof(Minigame.Close))]
+        //[HarmonyPostfix]
+        //public static void MenuClosePatch(Minigame __instance)
+        //{
+        //    if (__instance.GetComponent<ShapeshifterMinigame>())
+        //        PlayerControl.LocalPlayer.moveable = true;
+        //}
     }
 }

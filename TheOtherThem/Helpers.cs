@@ -608,5 +608,12 @@ namespace TheOtherThem {
         }
 
         public static void Destroy(this Object obj) => Object.Destroy(obj);
+
+        public static Il2CppSystem.Collections.Generic.List<T> ToIl2CppList<T>(this List<T> origin)
+        {
+            Il2CppSystem.Collections.Generic.List<T> collection = new();
+            foreach (var item in origin) collection.Add(item);
+            return collection;
+        }
     }
 }

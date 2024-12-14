@@ -1,4 +1,7 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using TheOtherThem.Objects;
 using UnityEngine;
 
 namespace TheOtherThem.ToTRole.Impostor
@@ -24,6 +27,14 @@ namespace TheOtherThem.ToTRole.Impostor
         public override void ClearData()
         {
             TotalKilled = 0;
+        }
+
+        [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
+        [HarmonyPostfix]
+        public static void UpdatePatch()
+        {
+            if (Input.GetKeyDown(KeyCode.F4))
+                PlayerPickMenu.OpenPlayerPickMenu(GameData.Instance.AllPlayers.ToArray().ToList(), (p) => { System.Console.WriteLine(p.PlayerName); });
         }
     }
 }
