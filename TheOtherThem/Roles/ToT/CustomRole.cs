@@ -25,6 +25,8 @@ public abstract class CustomRole
         Main.Logger.LogInfo($"{translationName} registered");
     }
 
+    public bool CanLocalPlayerUse() => PlayerControl.LocalPlayer.IsRole(MyRoleType) && PlayerControl.LocalPlayer.IsAlive();
+
     public virtual (CustomButton, float)[] CreateButtons() => new[] { ((CustomButton)null, float.PositiveInfinity) };
     public virtual void OnRpcReceived(byte callId, MessageReader reader) { }
 

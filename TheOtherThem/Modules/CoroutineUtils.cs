@@ -25,6 +25,8 @@ public static class CoroutineUtils
     {
         void Start()
         {
+            Instance = this;
+
             name = nameof(CustomCoroutine);
             Main.Logger.LogInfo(nameof(CustomCoroutine) + " initialized");
         }

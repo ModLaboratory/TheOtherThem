@@ -757,7 +757,7 @@ namespace TheOtherThem.Patches
             if (Bait.bait.Data.IsDead && !Bait.reported)
             {
                 Bait.reportDelay -= Time.fixedDeltaTime;
-                DeadPlayer deadPlayer = deadPlayers?.Where(x => x.player?.PlayerId == Bait.bait.PlayerId)?.FirstOrDefault();
+                DeadPlayer deadPlayer = DeadPlayers?.Where(x => x.player?.PlayerId == Bait.bait.PlayerId)?.FirstOrDefault();
                 if (deadPlayer.killerIfExisting != null && Bait.reportDelay <= 0f)
                 {
                     Helpers.handleVampireBiteOnBodyReport(); // Manually call Vampire handling, since the CmdReportDeadBody Prefix won't be called
@@ -1078,7 +1078,7 @@ namespace TheOtherThem.Patches
             bool isDetectiveReport = Detective.detective != null && Detective.detective == PlayerControl.LocalPlayer && __instance.PlayerId == Detective.detective.PlayerId;
             if (isMedicReport || isDetectiveReport)
             {
-                DeadPlayer deadPlayer = deadPlayers?.Where(x => x.player?.PlayerId == target?.PlayerId)?.FirstOrDefault();
+                DeadPlayer deadPlayer = DeadPlayers?.Where(x => x.player?.PlayerId == target?.PlayerId)?.FirstOrDefault();
 
                 if (deadPlayer != null && deadPlayer.killerIfExisting != null)
                 {
@@ -1150,7 +1150,7 @@ namespace TheOtherThem.Patches
         {
             // Collect dead player info
             DeadPlayer deadPlayer = new DeadPlayer(target, DateTime.UtcNow, DeathReason.Kill, __instance);
-            GameHistory.deadPlayers.Add(deadPlayer);
+            GameHistory.DeadPlayers.Add(deadPlayer);
 
             // Reset killer to crewmate if resetToCrewmate
             if (resetToCrewmate) __instance.Data.Role.TeamType = RoleTeamTypes.Crewmate;
@@ -1330,7 +1330,7 @@ namespace TheOtherThem.Patches
         {
             // Collect dead player info
             DeadPlayer deadPlayer = new DeadPlayer(__instance, DateTime.UtcNow, DeathReason.Exile, null);
-            GameHistory.deadPlayers.Add(deadPlayer);
+            GameHistory.DeadPlayers.Add(deadPlayer);
 
             // Remove fake tasks when player dies
             if (__instance.hasFakeTasks())

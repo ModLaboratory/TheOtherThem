@@ -92,8 +92,8 @@ namespace TheOtherThem
             CustomColors.Load();
 
             Harmony.PatchAll();
-            var instance = AddComponent<CoroutineUtils.CustomCoroutine>();
-            CoroutineUtils.Instance = instance;
+            AddComponent<CoroutineUtils.CustomCoroutine>();
+            AddComponent<Timer.TimerManager>();
 
             Logger.LogMessage("");
             Logger.LogMessage($"======= TOT LOADED! =======");

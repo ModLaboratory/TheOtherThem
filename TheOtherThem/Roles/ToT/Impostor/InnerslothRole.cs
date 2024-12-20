@@ -42,7 +42,7 @@ namespace TheOtherThem.ToTRole.Impostor
                 AmongUsClient.Instance.FinishRpcImmediately(writer);
                 CustomSabotageComms();
             },
-            () => PlayerControl.LocalPlayer.IsRole(MyRoleType) && PlayerControl.LocalPlayer.IsAlive(),
+            CanLocalPlayerUse,
             () => !CustomSabotageStarted,
             () => { },
             ModTranslation.GetImage("LagButton", 1000),

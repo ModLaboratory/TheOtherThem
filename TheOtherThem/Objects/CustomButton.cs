@@ -10,7 +10,7 @@ namespace TheOtherThem.Objects {
     {
         public static List<CustomButton> buttons = new List<CustomButton>();
         public ActionButton actionButton;
-        public Vector3 PositionOffset;
+        public Vector3? PositionOffset;
         public Vector3 LocalScale = Vector3.one;
         public float MaxTimer = float.MaxValue;
         public float Timer = 0f;
@@ -30,7 +30,7 @@ namespace TheOtherThem.Objects {
         private bool mirror;
         private KeyCode? hotkey;
 
-        public CustomButton(Action OnClick, Func<bool> HasButton, Func<bool> CouldUse, Action OnMeetingEnds, Sprite Sprite, Vector3 PositionOffset, HudManager hudManager, ActionButton textTemplate, KeyCode? hotkey, bool HasEffect, float EffectDuration, Action OnEffectEnds, bool mirror = false, string buttonText = null)
+        public CustomButton(Action OnClick, Func<bool> HasButton, Func<bool> CouldUse, Action OnMeetingEnds, Sprite Sprite, Vector3? PositionOffset, HudManager hudManager, ActionButton textTemplate, KeyCode? hotkey, bool HasEffect, float EffectDuration, Action OnEffectEnds, bool mirror = false, string buttonText = null)
         {
             this.hudManager = hudManager;
             this.OnClick = OnClick;
@@ -64,7 +64,7 @@ namespace TheOtherThem.Objects {
             setActive(false);
         }
 
-        public CustomButton(Action OnClick, Func<bool> HasButton, Func<bool> CouldUse, Action OnMeetingEnds, Sprite Sprite, Vector3 PositionOffset, HudManager hudManager, ActionButton? textTemplate, KeyCode? hotkey, bool mirror = false, string buttonText = null)
+        public CustomButton(Action OnClick, Func<bool> HasButton, Func<bool> CouldUse, Action OnMeetingEnds, Sprite Sprite, Vector3? PositionOffset, HudManager hudManager, ActionButton? textTemplate, KeyCode? hotkey, bool mirror = false, string buttonText = null)
         : this(OnClick, HasButton, CouldUse, OnMeetingEnds, Sprite, PositionOffset, hudManager, textTemplate, hotkey, false, 0f, () => {}, mirror, buttonText) { }
 
         void onClickEvent()
@@ -160,7 +160,8 @@ namespace TheOtherThem.Objects {
             if (hudManager.UseButton != null) {
                 Vector3 pos = new(0, 0, 0);
                 if (mirror) pos = new Vector3(-pos.x, pos.y, pos.z);
-                actionButton.transform.localPosition = pos + PositionOffset;
+                if (PositionOffset.HasValue)
+                    actionButton.transform.localPosition = pos + PositionOffset.Value;
                 actionButton.transform.localScale = LocalScale;
             }
             if (CouldUse()) {
