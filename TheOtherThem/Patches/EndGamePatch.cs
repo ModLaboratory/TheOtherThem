@@ -699,6 +699,26 @@ namespace TheOtherThem.Patches
             [HarmonyPatch(typeof(LogicGameFlow), nameof(LogicGameFlow.CheckEndCriteria))]
             class CheckEndCriteriaPatch
             {
+                public static List<Func<ShipStatus, bool>> GeneralEndCheckingHandler { get; } = new()
+                {
+                    CheckAndEndGameForMiniLose,
+                    CheckAndEndGameForJesterWin,
+                    CheckAndEndGameForLawyerMeetingWin,
+                    CheckAndEndGameForArsonistWin,
+                    CheckAndEndGameForVultureWin,
+                    CheckAndEndGameForPlagueDoctorWin,
+                    CheckAndEndGameForSabotageWin,
+                    CheckAndEndGameForTaskWin,
+                };
+
+                public static List<Func<ShipStatus, PlayerStatistics, bool>> StatisticalEndCheckingHandler { get; } = new()
+                {
+                    CheckAndEndGameForLoverWin,
+                    CheckAndEndGameForJackalWin,
+                    CheckAndEndGameForImpostorWin,
+                    CheckAndEndGameForCrewmateWin
+                };
+
                 public static bool Prefix()
                 {
                     var ship = ShipStatus.Instance;
@@ -709,18 +729,15 @@ namespace TheOtherThem.Patches
                     if (HudManager.Instance.IsIntroDisplayed) return false;
 
                     var statistics = new PlayerStatistics(ship);
-                    if (CheckAndEndGameForMiniLose(ship)) return false;
-                    if (CheckAndEndGameForJesterWin(ship)) return false;
-                    if (CheckAndEndGameForLawyerMeetingWin(ship)) return false;
-                    if (CheckAndEndGameForArsonistWin(ship)) return false;
-                    if (CheckAndEndGameForVultureWin(ship)) return false;
-                    if (CheckAndEndGameForPlagueDoctorWin(ship)) return false;
-                    if (CheckAndEndGameForSabotageWin(ship)) return false;
-                    if (CheckAndEndGameForTaskWin(ship)) return false;
-                    if (CheckAndEndGameForLoverWin(ship, statistics)) return false;
-                    if (CheckAndEndGameForJackalWin(ship, statistics)) return false;
-                    if (CheckAndEndGameForImpostorWin(ship, statistics)) return false;
-                    if (CheckAndEndGameForCrewmateWin(ship, statistics)) return false;
+
+                    foreach (var func in GeneralEndCheckingHandler)
+                        if (func(ship)) 
+                            return false;
+
+                    foreach (var func in StatisticalEndCheckingHandler)
+                        if (func(ship, statistics))
+                            return false;
+
                     return false;
                 }
 

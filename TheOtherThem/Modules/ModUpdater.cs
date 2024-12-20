@@ -80,8 +80,8 @@ namespace TheOtherThem.Modules {
             running = true;
             checkForUpdate().GetAwaiter().GetResult();
             clearOldVersions();
-            if (hasUpdate || Main.ShowPopUpVersion.Value != Main.VersionString) {
-                Main.ShowPopUpVersion.Value = Main.VersionString;
+            if (hasUpdate || Main.ShowPopUpVersion.Value != ModBaseInfo.VersionString) {
+                Main.ShowPopUpVersion.Value = ModBaseInfo.VersionString;
             }
         }
 

@@ -8,23 +8,24 @@ using BepInEx.Unity.IL2CPP;
 using Hazel;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Text;
 using TheOtherThem.Modules;
 using UnityEngine;
 
+#pragma warning disable CA1041
+
 namespace TheOtherThem
 {
-    [BepInPlugin(Id, "TheOtherThem", VersionString)]
+    [BepInPlugin(ModBaseInfo.Id, "TheOtherThem", ModBaseInfo.VersionString)]
     [BepInProcess("Among Us.exe")]
     public class Main : BasePlugin
     {
-        public const string Id = "com.modlaboratory.theotherthem";
-        public const string VersionString = "3.5.5";
-        public const string SupportedGameVersion = "2024.11.26";
-        public static Version Version => Version.Parse(VersionString);
+        public static Version Version => Version.Parse(ModBaseInfo.VersionString);
         internal static BepInEx.Logging.ManualLogSource Logger { get; private set; }
 
-        public Harmony Harmony { get; } = new Harmony(Id);
+        public Harmony Harmony { get; } = new Harmony(ModBaseInfo.Id);
         public static Main Instance { get; private set; }
 
         public static ConfigEntry<bool> DebugMode { get; private set; }
@@ -95,16 +96,18 @@ namespace TheOtherThem
             AddComponent<CoroutineUtils.CustomCoroutine>();
             AddComponent<Timer.TimerManager>();
 
+            System.Console.OutputEncoding = Encoding.UTF8;
+
             Logger.LogMessage("");
             Logger.LogMessage($"======= TOT LOADED! =======");
             Logger.LogMessage("");
 
             string currentGameVersion = Application.version;
-            Logger.LogInfo($"{nameof(VersionString)} = {VersionString}");
+            Logger.LogInfo($"{nameof(ModBaseInfo)}.{nameof(ModBaseInfo.VersionString)} = {ModBaseInfo.VersionString}");
             Logger.LogInfo($"{nameof(Application)}.{nameof(Application.version)} = {currentGameVersion}");
 
-            if (Application.version != SupportedGameVersion)
-                Logger.LogWarning($"Unsupported game version {currentGameVersion} detected ({SupportedGameVersion})");
+            if (Application.version != ModBaseInfo.SupportedGameVersion)
+                Logger.LogWarning($"Unsupported game version {currentGameVersion} detected ({ModBaseInfo.SupportedGameVersion})");
         }
 
         public static Sprite GetModStamp()
