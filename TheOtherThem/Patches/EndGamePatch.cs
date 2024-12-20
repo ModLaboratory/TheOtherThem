@@ -14,7 +14,7 @@ using TMPro;
 
 namespace TheOtherThem.Patches
 {
-    enum CustomGameOverReason
+    public enum CustomGameOverReason
     {
         LoversWin = 10,
         TeamJackalWin = 11,
@@ -25,6 +25,7 @@ namespace TheOtherThem.Patches
         LawyerSoloWin = 16,
         PlagueDoctorWin = 17,
         FoxWin = 18,
+        IdealistWin = 19,
     }
 
     enum WinCondition
@@ -424,7 +425,7 @@ namespace TheOtherThem.Patches
             RPCProcedure.resetVariables();
         }
 
-        public class EndGameNavigationPatch
+        public static class EndGameNavigationPatch
         {
             public static TMPro.TMP_Text textRenderer;
 
@@ -697,7 +698,7 @@ namespace TheOtherThem.Patches
             }
 
             [HarmonyPatch(typeof(LogicGameFlow), nameof(LogicGameFlow.CheckEndCriteria))]
-            class CheckEndCriteriaPatch
+            public static class CheckEndCriteriaPatch
             {
                 public static List<Func<ShipStatus, bool>> GeneralEndCheckingHandler { get; } = new()
                 {
@@ -953,7 +954,7 @@ namespace TheOtherThem.Patches
                 }
             }
 
-            internal class PlayerStatistics
+            public class PlayerStatistics
             {
                 public int TeamImpostorsAlive { get; set; }
                 public int TeamJackalAlive { get; set; }

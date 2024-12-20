@@ -1,6 +1,7 @@
 using System.Linq;
 using TheOtherThem.Modules;
 using TheOtherThem.Objects;
+using TheOtherThem.Patches;
 using UnityEngine;
 
 namespace TheOtherThem.ToTRole.Impostor
@@ -20,7 +21,7 @@ namespace TheOtherThem.ToTRole.Impostor
 
         IdealistRole() : base("Idealist", Palette.Orange, 
            (nameKey, roleColor) => IdealistSpawnRate = new(2100, nameKey, roleColor, ref CustomOptionHolder.OptionInsertionIndexes.Neutral, 1), 
-           RoleType.Idealist, TeamTypeTOT.Neutral)
+           RoleType.Idealist, TeamTypeTOT.Neutral, true)
         {
             Instance = this;
 
@@ -52,6 +53,8 @@ namespace TheOtherThem.ToTRole.Impostor
                                 PlayerControl.LocalPlayer.CmdCheckMurder(PlayerControl.LocalPlayer);
                             else
                             {
+                                if (!Target.Disconnected)
+                                    TotalKilled++;
                                 Target = null;
                                 timer.SetUnused();
                             }
@@ -62,7 +65,7 @@ namespace TheOtherThem.ToTRole.Impostor
                     timer.Start();
                 });
             },
-            () => CanLocalPlayerUse(),
+            CanLocalPlayerUse,
             () => Target == null,
             () => Target = null,
             null,
@@ -75,6 +78,16 @@ namespace TheOtherThem.ToTRole.Impostor
             {
                 (SelectTargetButton, IdealistAbilityCooldown.GetFloat())
             };
+        }
+
+        public override bool CanWin(ShipStatus ship)
+        {
+            if (TotalKilled >= WinningKilledCount.GetFloat())
+            {
+                RpcCustomEndGame(CustomGameOverReason.IdealistWin);
+                return true;
+            }
+            return false;
         }
     }
 }
