@@ -1023,7 +1023,7 @@ namespace TheOtherThem.Patches
                                     if (lover) jackalLovers++;
                                 }
 
-                                if (playerInfo.Object.isNeutral()) numNeutralAlive++;
+                                if (playerInfo.Object.IsNeutral()) numNeutralAlive++;
                             }
                         }
                     }

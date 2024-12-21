@@ -51,6 +51,7 @@ namespace TheOtherThem.ToTRole.Impostor
             HudManager.Instance.UseButton,
             KeyCode.X,
             buttonText: ModTranslation.GetString("InnerslothAbilityLabel"));
+
             return new[]
             {
                 (LagButton, InnerslothAbilltyCooldown.GetFloat())

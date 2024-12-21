@@ -69,7 +69,7 @@ namespace TheOtherThem
                         if ((Local.currentTarget.Data.Role.IsImpostor && (Local.currentTarget != Mini.mini || Mini.isGrownUp())) ||
                             (Sheriff.spyCanDieToSheriff && Spy.spy == Local.currentTarget) ||
                             (Sheriff.madmateCanDieToSheriff && Local.currentTarget.hasModifier(ModifierType.Madmate)) ||
-                            (Sheriff.canKillNeutrals && Local.currentTarget.isNeutral()) ||
+                            (Sheriff.canKillNeutrals && Local.currentTarget.IsNeutral()) ||
                             (Jackal.jackal == Local.currentTarget || Sidekick.sidekick == Local.currentTarget))
                         {
                             //targetId = Sheriff.currentTarget.PlayerId;

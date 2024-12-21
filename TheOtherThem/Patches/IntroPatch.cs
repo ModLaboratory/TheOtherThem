@@ -88,7 +88,7 @@ namespace TheOtherThem.Patches {
     class IntroPatch {
         public static void setupIntroTeamIcons(IntroCutscene __instance, ref  Il2CppSystem.Collections.Generic.List<PlayerControl> yourTeam) {
             // Intro solo teams
-            if (PlayerControl.LocalPlayer.isNeutral() || PlayerControl.LocalPlayer == GM.gm) {
+            if (PlayerControl.LocalPlayer.IsNeutral() || PlayerControl.LocalPlayer == GM.gm) {
                 var soloTeam = new Il2CppSystem.Collections.Generic.List<PlayerControl>();
                 soloTeam.Add(PlayerControl.LocalPlayer);
                 yourTeam = soloTeam;
@@ -123,7 +123,7 @@ namespace TheOtherThem.Patches {
             List<RoleInfo> infos = RoleInfo.getRoleInfoForPlayer(PlayerControl.LocalPlayer);
             RoleInfo roleInfo = infos.Where(info => info.MyRoleType != RoleType.Lovers).FirstOrDefault();
             if (roleInfo == null) return;
-            if (PlayerControl.LocalPlayer.isNeutral() || PlayerControl.LocalPlayer.isGM())
+            if (PlayerControl.LocalPlayer.IsNeutral() || PlayerControl.LocalPlayer.isGM())
             {
                 __instance.BackgroundBar.material.color = roleInfo.RoleColor;
                 __instance.TeamTitle.text = roleInfo.Name;

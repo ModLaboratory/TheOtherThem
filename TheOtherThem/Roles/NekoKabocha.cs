@@ -45,7 +45,7 @@ namespace TheOtherThem
             if (killer != null && killer != Player && killer.IsAlive() && !killer.isGM())
             {
                 if ((revengeCrew && killer.isCrew()) ||
-                    (revengeNeutral && killer.isNeutral()) ||
+                    (revengeNeutral && killer.IsNeutral()) ||
                     (revengeImpostor && killer.isImpostor()))
                 {
                     if (meetingKiller == null)

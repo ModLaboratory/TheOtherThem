@@ -8,7 +8,7 @@ namespace TheOtherThem.Objects
 {
     public static class PlayerPickMenu
     {
-        public static bool IsActive;
+        public static bool IsActive { get; set; }
         public static Action<NetworkedPlayerInfo> Callback;
         public static List<NetworkedPlayerInfo> customPlayerList;
         public static ShapeshifterMinigame MenuPrefab => RoleManager.Instance.GetRole(AmongUs.GameOptions.RoleTypes.Shapeshifter).Cast<ShapeshifterRole>().ShapeshifterMenu;
@@ -23,6 +23,7 @@ namespace TheOtherThem.Objects
             menu.name = "ModPlayerPickMenu";
             menu.transform.SetParent(Camera.main.transform, false);
             menu.transform.localPosition = new Vector3(0f, 0f, -50f);
+            menu.TransType = TransitionType.SlideBottom;
             menu.Begin(null);
         }
 
@@ -39,8 +40,6 @@ namespace TheOtherThem.Objects
         {
             if (PlayerPickMenu.IsActive)
             { // Player Pick Menu logic
-
-                //PlayerControl.LocalPlayer.moveable = false;
 
                 // Custom player list set by OpenPlayerPickMenu
                 List<NetworkedPlayerInfo> list = PlayerPickMenu.customPlayerList;

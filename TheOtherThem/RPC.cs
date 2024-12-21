@@ -401,7 +401,7 @@ namespace TheOtherThem
             }
 
             // Suicide (exile) when impostor or impostor variants
-            if (!Shifter.isNeutral && (player.Data.Role.IsImpostor || player.isNeutral() || player.hasModifier(ModifierType.Madmate)))
+            if (!Shifter.isNeutral && (player.Data.Role.IsImpostor || player.IsNeutral() || player.hasModifier(ModifierType.Madmate)))
             {
                 oldShifter.Exiled();
                 finalStatuses[oldShifter.PlayerId] = FinalStatus.Suicide;
@@ -550,7 +550,7 @@ namespace TheOtherThem
             if (player == null) return;
 
             // Don't give a former neutral role tasks because that destroys the balance.
-            if (player.isNeutral())
+            if (player.IsNeutral())
                 player.clearAllTasks();
 
             player.EraseAllRoles();

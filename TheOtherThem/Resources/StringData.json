@@ -3812,6 +3812,41 @@
   "LagButton": {
     "0": "LagButton.png"
   },
+  "Idealist": {
+    "0": "Idealist",
+    "13": "理想主义者"
+  },
+  "IdealistIntroDesc": {
+    "0": "I'm absolutely right!",
+    "13": "我绝对是对的！"
+  },
+  "IdealistShortDesc": {
+    "0": "Guess who will be dead next",
+    "13": "猜猜接下来谁会被杀"
+  },
+  "IdealistFullDesc": {
+    "0": "The Idealist can select a target to guess it will be killed in certain time, or the Idealist will suicide. When the number of guessed and killed players equals to the number that was set by the host, the Idealist wins.",
+    "13": "理想主义者可以选择一个目标以击杀，但是目标必须在指定时间内被击杀，否则理想主义者会自杀。当理想主义者击杀总人数与房间设置相等时，理想主义者胜利。"
+  },
+  "IdealistAbilityCooldown": {
+    "0": "Ability Cooldown",
+    "13": "技能冷却"
+  },
+  "IdealistWinningGuessedCount": {
+    "0": "Winning Guessed & Dead Target Count",
+    "13": "胜利所需猜测正确数量"
+  },
+  "IdealistSuicideCountdown": {
+    "0": "Suicide Countdown",
+    "13": "自杀倒计时"
+  },
+  "IdealistAbilityLabel": {
+    "0": "Guess",
+    "13": "猜测"
+  },
+  "SelectTargetButton": {
+    "0": "SelectTargetButton.png"
+  },
   "CreditsToTFull": {
     "0": "<size=120%>Original TORGM (v3.5.4) GitHub Contributors: \n\t{0}\n\nTORGM (v3.5.4) Compatibility: JieGeLovesDengDuaLang\nThe Other Them Developers: JieGeLovesDengDuaLang</size>",
     "13": "<size=120%>TORGM v3.5.4 贡献者： \n\t{0}\n\nTORGM (v3.5.4) 新版游戏适配： JieGeLovesDengDuaLang\nThe Other Them 开发者： JieGeLovesDengDuaLang</size>"

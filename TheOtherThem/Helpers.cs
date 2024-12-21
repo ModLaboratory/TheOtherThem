@@ -14,6 +14,7 @@ using Hazel;
 using TheOtherThem.Patches;
 using Il2CppInterop.Runtime.InteropTypes.Arrays;
 using Il2CppInterop.Runtime;
+using TheOtherThem.ToTRole;
 
 namespace TheOtherThem {
 
@@ -276,7 +277,7 @@ namespace TheOtherThem {
             return !isDead(player);
         }
 
-        public static bool isNeutral(this PlayerControl player)
+        public static bool IsNeutral(this PlayerControl player)
         {
             return (player != null &&
                    (player.IsRole(RoleType.Jackal) ||
@@ -291,12 +292,13 @@ namespace TheOtherThem {
                     player.IsRole(RoleType.Vulture) ||
                     player.IsRole(RoleType.Lawyer) ||
                     player.IsRole(RoleType.Pursuer) ||
-                    (player.IsRole(RoleType.Shifter) && Shifter.isNeutral)));
+                    (player.IsRole(RoleType.Shifter) && Shifter.isNeutral) ||
+                    CustomRole.AllRoles.Any(r => r.MyTeamType == TeamTypeTOT.Neutral && r.Players.Contains(PlayerControl.LocalPlayer.Data))));
         }
 
         public static bool isCrew(this PlayerControl player)
         {
-            return player != null && !player.isImpostor() && !player.isNeutral() && !player.isGM();
+            return player != null && !player.isImpostor() && !player.IsNeutral() && !player.isGM();
         }
 
         public static bool isImpostor(this PlayerControl player)
@@ -305,14 +307,14 @@ namespace TheOtherThem {
         }
 
         public static bool hasFakeTasks(this PlayerControl player) {
-            return (player.isNeutral() && !player.neutralHasTasks()) || 
+            return (player.IsNeutral() && !player.neutralHasTasks()) || 
                    (player.hasModifier(ModifierType.Madmate) && !Madmate.hasTasks) || 
                    (player.isLovers() && Lovers.separateTeam && !Lovers.tasksCount);
         }
 
         public static bool neutralHasTasks(this PlayerControl player)
         {
-            return player.isNeutral() && (player.IsRole(RoleType.Lawyer) || player.IsRole(RoleType.Pursuer) || player.IsRole(RoleType.Shifter) || player.IsRole(RoleType.Fox));
+            return player.IsNeutral() && (player.IsRole(RoleType.Lawyer) || player.IsRole(RoleType.Pursuer) || player.IsRole(RoleType.Shifter) || player.IsRole(RoleType.Fox));
         }
 
         public static bool isGM(this PlayerControl player)

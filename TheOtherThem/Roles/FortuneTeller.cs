@@ -332,7 +332,7 @@ namespace TheOtherThem
                     msgInfo = ModTranslation.GetString("divineCrew");
                     color = Color.white;
                 }
-                else if (p.isNeutral())
+                else if (p.IsNeutral())
                 {
                     msgInfo = ModTranslation.GetString("divineNeutral");
                     color = Color.yellow;

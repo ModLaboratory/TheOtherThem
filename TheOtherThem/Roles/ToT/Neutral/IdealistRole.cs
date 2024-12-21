@@ -6,17 +6,17 @@ using UnityEngine;
 
 namespace TheOtherThem.ToTRole.Impostor
 {
-    [RoleAutoInitialize]
+    //[RoleAutoInitialize]
     [HarmonyPatch]
     public class IdealistRole : CustomRole
     {
         public static IdealistRole Instance { get; private set; }
         public static CustomRoleOption IdealistSpawnRate { get; set; }
         public static CustomOption IdealistAbilityCooldown { get; set; }
-        public static CustomOption WinningKilledCount { get; set; }
+        public static CustomOption WinningGuessedCount { get; set; }
         public static CustomOption SuicideCountdown { get; set; }
         public static CustomButton SelectTargetButton { get; set; }
-        private static int TotalKilled { get; set; } = 0;
+        private static int TotalGuessed { get; set; } = 0;
         private static NetworkedPlayerInfo Target { get; set; }
 
         IdealistRole() : base("Idealist", Palette.Orange, 
@@ -26,13 +26,13 @@ namespace TheOtherThem.ToTRole.Impostor
             Instance = this;
 
             IdealistAbilityCooldown = CustomOption.CreateInsertable(2101, "IdealistAbilityCooldown", 30, 10, 60, 5, ref CustomOptionHolder.OptionInsertionIndexes.Neutral, IdealistSpawnRate);
-            WinningKilledCount = CustomOption.CreateInsertable(2102, "IdealistWinningKilledCount", 3, 3, 5, 1, ref CustomOptionHolder.OptionInsertionIndexes.Neutral, IdealistSpawnRate);
+            WinningGuessedCount = CustomOption.CreateInsertable(2102, "IdealistWinningGuessedCount", 3, 3, 5, 1, ref CustomOptionHolder.OptionInsertionIndexes.Neutral, IdealistSpawnRate);
             SuicideCountdown = CustomOption.CreateInsertable(2103, "IdealistSuicideCountdown", 30, 10, 60, 5, ref CustomOptionHolder.OptionInsertionIndexes.Neutral, IdealistSpawnRate);
         }
 
         public override void ClearData()
         {
-            TotalKilled = 0;
+            TotalGuessed = 0;
         }
 
         public override (CustomButton, float)[] CreateButtons()
@@ -54,12 +54,12 @@ namespace TheOtherThem.ToTRole.Impostor
                             else
                             {
                                 if (!Target.Disconnected)
-                                    TotalKilled++;
+                                    TotalGuessed++;
                                 Target = null;
                                 timer.SetUnused();
                             }
                         },
-                        () => Target.IsDead && GameHistory.DeadPlayers.Any(dp => dp.DeadInfo == Target && dp.KillerInfo != PlayerControl.LocalPlayer.Data)
+                        () => Target.IsDead
                     );
 
                     timer.Start();
@@ -68,11 +68,12 @@ namespace TheOtherThem.ToTRole.Impostor
             CanLocalPlayerUse,
             () => Target == null,
             () => Target = null,
-            null,
+            ModTranslation.GetImage("SelectTargetButton", 200),
             null,
             HudManager.Instance,
             HudManager.Instance.KillButton,
-            KeyCode.Z);
+            KeyCode.Z,
+            buttonText: ModTranslation.GetString("IdealistAbilityLabel"));
 
             return new[]
             {
@@ -82,7 +83,7 @@ namespace TheOtherThem.ToTRole.Impostor
 
         public override bool CanWin(ShipStatus ship)
         {
-            if (TotalKilled >= WinningKilledCount.GetFloat())
+            if (TotalGuessed >= WinningGuessedCount.GetFloat())
             {
                 RpcCustomEndGame(CustomGameOverReason.IdealistWin);
                 return true;
