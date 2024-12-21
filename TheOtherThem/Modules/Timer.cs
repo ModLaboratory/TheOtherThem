@@ -55,6 +55,9 @@ namespace TheOtherThem.Modules
             if (!AllTimers.Contains(this))
                 AllTimers.Add(this);
             Started = true;
+
+            Main.Logger.LogInfo($"Timer {Name} started");
+
             return this;
         }
 
@@ -78,7 +81,11 @@ namespace TheOtherThem.Modules
             return this;
         }
 
-        public void SetUnused() => AllTimers.Remove(this);
+        public void SetUnused() 
+        { 
+            AllTimers.Remove(this);
+            Main.Logger.LogInfo($"Timer {Name} marked as unused");
+        }
 
         public class TimerManager : MonoBehaviour
         {
@@ -106,6 +113,7 @@ namespace TheOtherThem.Modules
                     if (timer.Time <= 0)
                     {
                         timer.Pause();
+                        Main.Logger.LogInfo($"Timer {timer.Name} gone off");
                         timer.Callback(true);
                     }
                 }

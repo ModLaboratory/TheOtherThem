@@ -12,6 +12,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using TheOtherThem.Modules;
+using TheOtherThem.Objects;
 using UnityEngine;
 
 #pragma warning disable CA1041
@@ -95,6 +96,7 @@ namespace TheOtherThem
             Harmony.PatchAll();
             AddComponent<CoroutineUtils.CustomCoroutine>();
             AddComponent<Timer.TimerManager>();
+            AddComponent<ErrorNotification.ErrorNotificationManager>();
 
             System.Console.OutputEncoding = Encoding.UTF8;
 
