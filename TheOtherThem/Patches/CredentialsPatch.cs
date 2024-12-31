@@ -53,7 +53,7 @@ namespace TheOtherThem.Patches
 
                 var creditsPopup = Object.Instantiate(popupPrefab, popupPrefab.transform.parent);
                 creditsPopup.name = PopupName;
-
+                
                 CreateButton(__instance, __instance.quitButton, GameObject.Find("RightPanel").transform, new(-1, -1, 0), "BILIBILI",
                     () =>
                     {

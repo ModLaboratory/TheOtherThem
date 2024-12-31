@@ -1,6 +1,8 @@
+using System;
 using TheOtherThem.Modules;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace TheOtherThem.Objects
 {
@@ -15,6 +17,9 @@ namespace TheOtherThem.Objects
 
         public class ErrorNotificationManager : MonoBehaviour
         {
+            private float _timer = float.MinValue;
+            private float _countdown = 10f;
+
             public void Start()
             {
                 ManagerInstance = this;
@@ -22,47 +27,48 @@ namespace TheOtherThem.Objects
                 name = nameof(ErrorNotificationManager);
                 DontDestroyOnLoad(this);
 
+                SceneManager.sceneLoaded += new Action<Scene, LoadSceneMode>((scene, _) =>
+                {
+                    if (LastOne != "")
+                        CreateOrOverride(LastOne);
+                });
+
                 Main.Logger.LogInfo(nameof(ErrorNotificationManager) + " initialized");
             }
             
-            public void LateUpdate()
+            public void Update()
             {
-                if (!ErrorTextMesh)
-                {
-                    if (LastOne == "")
-                    {
-                        return;
-                    }
-                    else
-                    {
-                        CreateOrOverride(LastOne);
-                    }
-                }
+                if (!ErrorTextMesh) return;
+                if (_timer <= 0) ClearErrorString();
 
                 var cam = HudManager.InstanceExists ? HudManager.Instance.PlayerCam.GetComponent<Camera>() : Camera.main;
 
-                var pos = cam.transform.position;
-                ErrorTextMesh.transform.position = AspectPosition.ComputeWorldPosition(cam, AspectPosition.EdgeAlignments.Top, new(0,0.3f,-1000));
-                ErrorTextMesh.transform.SetWorldZ(-100);
+                if (!ErrorTextMesh.transform.parent)
+                    ErrorTextMesh.transform.SetParent(cam.transform);
+
+                ErrorTextMesh.transform.SetWorldZ(-1000);
                 ErrorTextMesh.color = Palette.ImpostorRed;
                 ErrorTextMesh.alignment = TextAlignmentOptions.Top;
-                ErrorTextMesh.fontSizeMax = 3;
-                ErrorTextMesh.fontSizeMin = 3;
-                ErrorTextMesh.fontSize = 3;
+                ErrorTextMesh.fontSizeMax = 3f;
+                ErrorTextMesh.fontSizeMin = 1.5f;
+                ErrorTextMesh.fontSize = 2f;
+
+                if (_timer > 0) _timer -= Time.deltaTime;
             }
 
             public void CreateOrOverride(string text)
             {
-                if (!ErrorTextMesh)
+                if (text != "")
                 {
-                    ErrorTextMesh = new GameObject(text).AddComponent<TextMeshPro>();
-                    ErrorTextMesh.text = text;
-                    DontDestroyOnLoad(ErrorTextMesh);
+                    Main.Logger.LogMessage($"{text} attempted to be displayed...");
+                    _timer = _countdown;
+                    
+                    if (!ErrorTextMesh)
+                        ErrorTextMesh = new GameObject("ErrorNotification").AddComponent<TextMeshPro>();
                 }
-                else
-                {
+
+                if (ErrorTextMesh)
                     ErrorTextMesh.text = text;
-                }
                 LastOne = text;
             }
         }
