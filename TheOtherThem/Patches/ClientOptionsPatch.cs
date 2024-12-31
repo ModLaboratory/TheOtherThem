@@ -104,9 +104,10 @@ namespace TheOtherThem.Patches
             
             moreOptions.transform.localPosition = _origin.Value + Vector3.right * 1.3f;
             moreOptions.transform.localScale = new Vector3(0.66f, 1, 1);
-
+            moreOptions.UpdateText(false);
             moreOptions.gameObject.SetActive(true);
             moreOptions.Text.text = ModTranslation.GetString("modOptionsText");
+            
             var moreOptionsButton = moreOptions.GetComponent<PassiveButton>();
             moreOptionsButton.OnClick = new ButtonClickedEvent();
             moreOptionsButton.OnClick.AddListener((Action) (() =>
@@ -201,11 +202,11 @@ namespace TheOtherThem.Patches
             }
         }
         
-        private static IEnumerable<GameObject> GetAllChilds(this GameObject Go)
+        private static IEnumerable<GameObject> GetAllChilds(this GameObject gObj)
         {
-            for (var i = 0; i< Go.transform.childCount; i++)
+            for (var i = 0; i< gObj.transform.childCount; i++)
             {
-                yield return Go.transform.GetChild(i).gameObject;
+                yield return gObj.transform.GetChild(i).gameObject;
             }
         }
 
@@ -219,6 +220,7 @@ namespace TheOtherThem.Patches
 
             for (int i = 0; i < AllOptions.Length; i++)
             {
+                if (modButtons == null) break;
                 if (i >= modButtons.Count) break;
                 modButtons[i].Text.text = ModTranslation.GetString(AllOptions[i].Title);
             }
