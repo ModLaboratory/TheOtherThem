@@ -119,8 +119,9 @@ namespace TheOtherThem.Patches
         {
             static void Postfix()
             {
-                GameObject.Find("ModBanner")?.SetActive(false);
+                Main.Logger.LogInfo("Hide modded main menu components");
                 MainMenuStartPatch.Buttons.DoIf(b => b, b => b.gameObject.SetActive(false));
+                GameObject.Find("ModBanner").SetActive(false);
             }
         }
 

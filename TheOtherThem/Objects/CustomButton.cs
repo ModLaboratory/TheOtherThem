@@ -96,7 +96,7 @@ namespace TheOtherThem.Objects {
                 }
                 catch (NullReferenceException)
                 {
-                    System.Console.WriteLine("[WARNING] NullReferenceException from HudUpdate().HasButton(), if theres only one warning its fine");
+                    Main.Logger.LogWarning("[WARNING] NullReferenceException from HudUpdate().HasButton(), if theres only one warning its fine");
                 }
             }
         }
@@ -112,7 +112,7 @@ namespace TheOtherThem.Objects {
                 }
                 catch (NullReferenceException)
                 {
-                    System.Console.WriteLine("[WARNING] NullReferenceException from MeetingEndedUpdate().HasButton(), if theres only one warning its fine");
+                    Main.Logger.LogWarning("[WARNING] NullReferenceException from MeetingEndedUpdate().HasButton(), if theres only one warning its fine");
                 }
             }
         }
@@ -127,7 +127,7 @@ namespace TheOtherThem.Objects {
                 }
                 catch (NullReferenceException)
                 {
-                    System.Console.WriteLine("[WARNING] NullReferenceException from MeetingEndedUpdate().HasButton(), if theres only one warning its fine");
+                    Main.Logger.LogWarning("[WARNING] NullReferenceException from MeetingEndedUpdate().HasButton(), if theres only one warning its fine");
                 }
             }
         }

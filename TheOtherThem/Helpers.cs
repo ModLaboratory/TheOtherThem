@@ -132,7 +132,7 @@ namespace TheOtherThem {
                 Texture2D texture = loadTextureFromResources(path);
                 return Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f), pixelsPerUnit);
             } catch {
-                System.Console.WriteLine("Error loading sprite from path: " + path);
+                Main.Logger.LogError("Error loading sprite from path: " + path);
             }
             Main.Logger.LogWarning("Couldn't get sprite: " + path);
             return null;
@@ -148,7 +148,7 @@ namespace TheOtherThem {
                 LoadImage(texture, byteTexture, false);
                 return texture;
             } catch {
-                System.Console.WriteLine("Error loading texture from resources: " + path);
+                Main.Logger.LogError("Error loading texture from resources: " + path);
             }
             return null;
         }
@@ -162,7 +162,7 @@ namespace TheOtherThem {
                     return texture;
                 }
             } catch {
-                System.Console.WriteLine("Error loading texture from disk: " + path);
+                Main.Logger.LogError("Error loading texture from disk: " + path);
             }
             return null;
         }

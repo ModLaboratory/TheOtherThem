@@ -233,7 +233,7 @@ namespace TheOtherThem.Patches
                 }
                 else
                 {
-                    gmID = setRoleToRandomPlayer((byte)RoleType.GM, data.crewmates);
+                    gmID = SetRoleToRandomPlayer((byte)RoleType.GM, data.crewmates);
                 }
 
                 PlayerControl p = PlayerControl.AllPlayerControls.ToArray().ToList().Find(x => x.PlayerId == gmID);
@@ -305,9 +305,9 @@ namespace TheOtherThem.Patches
             // Assign Mafia
             if (data.impostors.Count >= 3 && data.maxImpostorRoles >= 3 && (rnd.Next(1, 101) <= CustomOptionHolder.mafiaSpawnRate.GetSelection() * 10))
             {
-                setRoleToRandomPlayer((byte)RoleType.Godfather, data.impostors);
-                setRoleToRandomPlayer((byte)RoleType.Janitor, data.impostors);
-                setRoleToRandomPlayer((byte)RoleType.Mafioso, data.impostors);
+                SetRoleToRandomPlayer((byte)RoleType.Godfather, data.impostors);
+                SetRoleToRandomPlayer((byte)RoleType.Janitor, data.impostors);
+                SetRoleToRandomPlayer((byte)RoleType.Mafioso, data.impostors);
                 data.maxImpostorRoles -= 3;
             }
         }
@@ -334,7 +334,7 @@ namespace TheOtherThem.Patches
                     {
                         if (data.impostors.Count > 0 && data.maxImpostorRoles > 0)
                         {
-                            byte evilGuesser = setRoleToRandomPlayer((byte)RoleType.EvilGuesser, data.impostors);
+                            byte evilGuesser = SetRoleToRandomPlayer((byte)RoleType.EvilGuesser, data.impostors);
                             data.impostors.ToList().RemoveAll(x => x.PlayerId == evilGuesser);
                             data.maxImpostorRoles--;
                             data.crewSettings.Add((byte)RoleType.NiceGuesser, (CustomOptionHolder.guesserSpawnBothRate.GetSelection(), 1));
@@ -342,7 +342,7 @@ namespace TheOtherThem.Patches
                     }
                     else if (data.crewmates.Count > 0 && data.maxCrewmateRoles > 0)
                     {
-                        byte niceGuesser = setRoleToRandomPlayer((byte)RoleType.NiceGuesser, data.crewmates);
+                        byte niceGuesser = SetRoleToRandomPlayer((byte)RoleType.NiceGuesser, data.crewmates);
                         data.crewmates.ToList().RemoveAll(x => x.PlayerId == niceGuesser);
                         data.maxCrewmateRoles--;
                         data.impSettings.Add((byte)RoleType.EvilGuesser, (CustomOptionHolder.guesserSpawnBothRate.GetSelection(), 1));
@@ -442,7 +442,7 @@ namespace TheOtherThem.Patches
                 var players = roleType == TeamType.Crewmate || roleType == TeamType.Neutral ? data.crewmates : data.impostors;
                 var index = rnd.Next(0, rolesToAssign[roleType].Count);
                 var roleId = rolesToAssign[roleType][index];
-                var player = setRoleToRandomPlayer(rolesToAssign[roleType][index], players);
+                var player = SetRoleToRandomPlayer(rolesToAssign[roleType][index], players);
                 if (player == byte.MaxValue && blockedAssignments < maxBlocks)
                 {
                     blockedAssignments++;
@@ -509,7 +509,7 @@ namespace TheOtherThem.Patches
                 var players = roleType == TeamType.Crewmate || roleType == TeamType.Neutral ? data.crewmates : data.impostors;
                 var index = rnd.Next(0, rolesToAssign[roleType].Count);
                 var roleId = rolesToAssign[roleType][index];
-                var player = setRoleToRandomPlayer(rolesToAssign[roleType][index], players);
+                var player = SetRoleToRandomPlayer(rolesToAssign[roleType][index], players);
                 if (player == byte.MaxValue && blockedAssignments < maxBlocks)
                 {
                     blockedAssignments++;
@@ -608,9 +608,9 @@ namespace TheOtherThem.Patches
             }
         }
 
-        private static byte setRoleToRandomPlayer(byte roleId, List<PlayerControl> playerList, byte flag = 0, bool removePlayer = true)
+        private static byte SetRoleToRandomPlayer(byte roleId, List<PlayerControl> playerList, byte flag = 0, bool removePlayer = true)
         {
-            System.Console.WriteLine("set role to random player " + (RoleType)roleId);
+            Main.Logger.LogInfo("set role to random player " + (RoleType)roleId);
 
             var index = rnd.Next(0, playerList.Count);
             byte playerId = playerList[index].PlayerId;

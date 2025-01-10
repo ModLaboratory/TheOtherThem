@@ -70,7 +70,6 @@ namespace TheOtherThem.Objects
                 }
 
                 ControllerManager.Instance.OpenOverlayMenu(__instance.name, __instance.BackButton, __instance.DefaultButtonSelected, elements.ToIl2CppList(), false);
-                System.Console.WriteLine(ControllerManager.Instance.CurrentUiState.MenuName);
                 PlayerPickMenu.IsActive = false;
 
                 return false; // Skip original method when active

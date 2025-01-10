@@ -449,11 +449,8 @@ namespace TheOtherThem
                 pbutton.SelectButton(false);
             }
 
-            /* BUG HERE */
-
             if (tabNum > 2)
             {
-                System.Console.WriteLine(tabNum);
                 tabNum -= 3;
                 GameOptionsMenuStartPatch.currentTabs[tabNum].SetActive(true);
                 GameOptionsMenuStartPatch.currentButtons[tabNum].SelectButton(true);

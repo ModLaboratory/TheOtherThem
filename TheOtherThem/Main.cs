@@ -15,8 +15,6 @@ using TheOtherThem.Modules;
 using TheOtherThem.Objects;
 using UnityEngine;
 
-#pragma warning disable CA1041
-
 namespace TheOtherThem
 {
     [BepInPlugin(ModBaseInfo.Id, "TheOtherThem", ModBaseInfo.VersionString)]

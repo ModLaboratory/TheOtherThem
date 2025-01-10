@@ -1,0 +1,4 @@
+﻿[*.cs]
+
+# CA1041: 提供 ObsoleteAttribute 消息
+dotnet_diagnostic.CA1041.severity = none

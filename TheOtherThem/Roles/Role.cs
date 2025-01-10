@@ -524,7 +524,7 @@ namespace TheOtherThem
         public static void SetRole(this PlayerControl player, RoleType role)
         {
             player.ClearRole();
-            System.Console.WriteLine($"Player {player.PlayerId}: {role}");
+            Main.Logger.LogInfo($"Player {player.PlayerId}: {role}");
 
             foreach (var t in RoleData.AllRoleTypes)
             {
