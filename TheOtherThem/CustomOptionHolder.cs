@@ -630,7 +630,7 @@ namespace TheOtherThem {
             hackerNoMove = CustomOption.Create(176, "hackerNoMove", true, hackerSpawnRate);
 
             trackerSpawnRate = new CustomRoleOption(200, "tracker", Tracker.color, 1);
-            trackerUpdateIntervall = CustomOption.Create(201, "Tracker Update Intervall", 5f, 1f, 30f, 1f, trackerSpawnRate);
+            trackerUpdateIntervall = CustomOption.Create(201, "trackerUpdateIntervall", 5f, 1f, 30f, 1f, trackerSpawnRate);
             trackerResetTargetAfterMeeting = CustomOption.Create(202, "trackerResetTargetAfterMeeting", false, trackerSpawnRate);
             trackerCanTrackCorpses = CustomOption.Create(203, "trackerTrackCorpses", true, trackerSpawnRate);
             trackerCorpsesTrackingCooldown = CustomOption.Create(204, "trackerCorpseCooldown", 30f, 0f, 120f, 5f, trackerCanTrackCorpses, format: "unitSeconds");
