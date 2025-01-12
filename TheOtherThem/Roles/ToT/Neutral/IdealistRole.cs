@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace TheOtherThem.ToTRole.Impostor
 {
-    //[RoleAutoInitialize]
+    [RoleAutoInitialize]
     [HarmonyPatch]
     public class IdealistRole : CustomRole
     {
@@ -21,10 +21,10 @@ namespace TheOtherThem.ToTRole.Impostor
 
         IdealistRole() : base("Idealist", Palette.Orange, 
            (nameKey, roleColor) => IdealistSpawnRate = new(2100, nameKey, roleColor, ref CustomOptionHolder.OptionInsertionIndexes.Neutral, 1), 
-           RoleType.Idealist, TeamTypeTOT.Neutral, true)
+           RoleType.Idealist, TeamTypeToT.Neutral, true)
         {
             Instance = this;
-
+            // FIX: SOME FORTUNE TELLER'S OPTIONS ARE UNDER IDEALIST'S
             IdealistAbilityCooldown = CustomOption.CreateInsertable(2101, "IdealistAbilityCooldown", 30, 10, 60, 5, ref CustomOptionHolder.OptionInsertionIndexes.Neutral, IdealistSpawnRate);
             WinningGuessedCount = CustomOption.CreateInsertable(2102, "IdealistWinningGuessedCount", 3, 3, 5, 1, ref CustomOptionHolder.OptionInsertionIndexes.Neutral, IdealistSpawnRate);
             SuicideCountdown = CustomOption.CreateInsertable(2103, "IdealistSuicideCountdown", 30, 10, 60, 5, ref CustomOptionHolder.OptionInsertionIndexes.Neutral, IdealistSpawnRate);
@@ -44,7 +44,7 @@ namespace TheOtherThem.ToTRole.Impostor
                     Target = t;
 
                     var timer = new Timer();
-
+                    
                     timer = new("IdealistTargetCountdown",
                         SuicideCountdown.GetFloat(),
                         stoppedNormally =>
@@ -68,7 +68,7 @@ namespace TheOtherThem.ToTRole.Impostor
             CanLocalPlayerUse,
             () => Target == null,
             () => Target = null,
-            ModTranslation.GetImage("SelectTargetButton", 200),
+            ModTranslation.GetImage("SelectTargetButton", 230),
             null,
             HudManager.Instance,
             HudManager.Instance.KillButton,

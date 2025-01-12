@@ -179,9 +179,9 @@ namespace TheOtherThem.Patches
             {
                 var roleList = role.MyTeamType switch
                 {
-                    TeamTypeTOT.Crewmate => crewSettings,
-                    TeamTypeTOT.Impostor => impSettings,
-                    TeamTypeTOT.Neutral or _ => neutralSettings
+                    TeamTypeToT.Crewmate => crewSettings,
+                    TeamTypeToT.Impostor => impSettings,
+                    TeamTypeToT.Neutral or _ => neutralSettings
                 };
 
                 try
@@ -189,9 +189,9 @@ namespace TheOtherThem.Patches
 
                     roleList.Add((byte)role.MyRoleType, ((CustomRoleOption)role.MyRoleInfo.BaseOption).Data);
                 }
-                catch
+                catch (Exception e)
                 {
-                    Main.Logger.LogInfo(role.MyRoleInfo.BaseOption == null);
+                    Main.Logger.LogError((role.MyRoleInfo.BaseOption == null) + "\r\n" + e.ToString());
                 }
             }
 

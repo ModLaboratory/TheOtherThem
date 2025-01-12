@@ -22,7 +22,7 @@ namespace TheOtherThem.ToTRole.Impostor
 
         InnerslothRole() : base("Innersloth", Palette.ImpostorRed,
             (nameKey, roleColor) => InnerslothSpawnRate = new(2000, nameKey, roleColor, ref CustomOptionHolder.OptionInsertionIndexes.Impostor, 1), 
-            RoleType.Innersloth, TeamTypeTOT.Impostor)
+            RoleType.Innersloth, TeamTypeToT.Impostor)
         {
             Instance = this;
 

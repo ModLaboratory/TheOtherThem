@@ -279,7 +279,7 @@ namespace TheOtherThem {
 
         public static bool IsNeutral(this PlayerControl player)
         {
-            return (player != null &&
+            return player != null &&
                    (player.IsRole(RoleType.Jackal) ||
                     player.IsRole(RoleType.Sidekick) ||
                     Jackal.formerJackals.Contains(player) ||
@@ -293,7 +293,8 @@ namespace TheOtherThem {
                     player.IsRole(RoleType.Lawyer) ||
                     player.IsRole(RoleType.Pursuer) ||
                     (player.IsRole(RoleType.Shifter) && Shifter.isNeutral) ||
-                    CustomRole.AllRoles.Any(r => r.MyTeamType == TeamTypeTOT.Neutral && r.Players.Contains(PlayerControl.LocalPlayer.Data))));
+                    CustomRole.AllRoles.Any(r => r.MyTeamType == TeamTypeToT.Neutral && r.Players.Any(p => p.PlayerId == player.Data.PlayerId))
+                    );
         }
 
         public static bool isCrew(this PlayerControl player)

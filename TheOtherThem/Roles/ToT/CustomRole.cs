@@ -15,10 +15,10 @@ public abstract class CustomRole
     public List<NetworkedPlayerInfo> Players { get; } = new();
     public RoleInfo MyRoleInfo { get; }
     public RoleType MyRoleType { get; }
-    public TeamTypeTOT MyTeamType { get; }
+    public TeamTypeToT MyTeamType { get; }
 
     /// <summary>
-    /// Construct a role.
+    /// Constructs a role.
     /// </summary>
     /// <param name="translationName"></param>
     /// <param name="roleColor"></param>
@@ -28,7 +28,7 @@ public abstract class CustomRole
     /// <param name="winnable">Whether this role is winnable.</param>
     /// <param name="generalOrStatisticalWinnable"><see cref="true"/> for adding the <see cref="CanWin(ShipStatus)"/> to general handler list; Otherwise, add <see cref="CanWin(ShipStatus, PlayerStatistics)"/> statistical list.</param>
     /// <param name="winnableInsertionIndex">The index of the order checking end. <seealso cref="-1"/> for adding directly.</param>
-    public CustomRole(string translationName, Color roleColor, BaseRoleOptionGetter baseOptionGetter, RoleType roleType, TeamTypeTOT teamType, bool winnable = false, bool generalOrStatisticalWinnable = true, int winnableInsertionIndex = -1)
+    public CustomRole(string translationName, Color roleColor, BaseRoleOptionGetter baseOptionGetter, RoleType roleType, TeamTypeToT teamType, bool winnable = false, bool generalOrStatisticalWinnable = true, int winnableInsertionIndex = -1)
     {
         MyRoleInfo = new(translationName, roleColor, baseOptionGetter(translationName, roleColor), roleType);
         MyRoleType = roleType;
@@ -74,7 +74,7 @@ public abstract class CustomRole
     }
 }
 
-public enum TeamTypeTOT
+public enum TeamTypeToT
 {
     Crewmate,
     Neutral,

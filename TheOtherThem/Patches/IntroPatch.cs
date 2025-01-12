@@ -123,6 +123,7 @@ namespace TheOtherThem.Patches {
             List<RoleInfo> infos = RoleInfo.getRoleInfoForPlayer(PlayerControl.LocalPlayer);
             RoleInfo roleInfo = infos.Where(info => info.MyRoleType != RoleType.Lovers).FirstOrDefault();
             if (roleInfo == null) return;
+            Main.Logger.LogInfo($"{PlayerControl.LocalPlayer.IsNeutral()} | {roleInfo.MyRoleType}");
             if (PlayerControl.LocalPlayer.IsNeutral() || PlayerControl.LocalPlayer.isGM())
             {
                 __instance.BackgroundBar.material.color = roleInfo.RoleColor;
