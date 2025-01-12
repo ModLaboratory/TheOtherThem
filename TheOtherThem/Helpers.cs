@@ -60,30 +60,25 @@ namespace TheOtherThem {
             }
         }
 
-        public static void destroyList<T>(Il2CppSystem.Collections.Generic.List<T> items) where T : UnityEngine.Object
+        public static void DestroyObjectsInList<T>(Il2CppSystem.Collections.Generic.List<T> items) where T : UnityEngine.Object
         {
             if (items == null) return;
             foreach (T item in items)
             {
-                UnityEngine.Object.Destroy(item);
+                Object.Destroy(item);
             }
         }
 
-        public static void destroyList<T>(List<T> items) where T : UnityEngine.Object
+        public static void DestroyObjectsInList<T>(List<T> items) where T : Object
         {
             if (items == null) return;
             foreach (T item in items)
             {
-                UnityEngine.Object.Destroy(item);
+                Object.Destroy(item);
             }
         }
 
-        public static void log(string msg)
-        {
-            Main.Instance.Log.LogInfo(msg);
-        }
-
-        public static List<byte> generateTasks(int numCommon, int numShort, int numLong)
+        public static List<byte> GenerateTasks(int numCommon, int numShort, int numLong)
         {
             if (numCommon + numShort + numLong <= 0)
             {
@@ -114,11 +109,11 @@ namespace TheOtherThem {
             return tasks.ToArray().ToList();
         }
 
-        public static void generateAndAssignTasks(this PlayerControl player, int numCommon, int numShort, int numLong)
+        public static void GenerateAndAssignTasks(this PlayerControl player, int numCommon, int numShort, int numLong)
         {
             if (player == null) return;
 
-            List<byte> taskTypeIds = generateTasks(numCommon, numShort, numLong);
+            List<byte> taskTypeIds = GenerateTasks(numCommon, numShort, numLong);
 
             MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.UncheckedSetTasks, Hazel.SendOption.Reliable, -1);
             writer.Write(player.PlayerId);
@@ -127,9 +122,9 @@ namespace TheOtherThem {
             RPCProcedure.uncheckedSetTasks(player.PlayerId, taskTypeIds.ToArray());
         }
 
-        public static Sprite loadSpriteFromResources(string path, float pixelsPerUnit) {
+        public static Sprite LoadSpriteFromResources(string path, float pixelsPerUnit) {
             try {
-                Texture2D texture = loadTextureFromResources(path);
+                Texture2D texture = LoadTextureFromResources(path);
                 return Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f), pixelsPerUnit);
             } catch {
                 Main.Logger.LogError("Error loading sprite from path: " + path);
@@ -138,7 +133,7 @@ namespace TheOtherThem {
             return null;
         }
 
-        public static Texture2D loadTextureFromResources(string path) {
+        public static Texture2D LoadTextureFromResources(string path) {
             try {
                 Texture2D texture = new Texture2D(2, 2, TextureFormat.ARGB32, true);
                 Assembly assembly = Assembly.GetExecutingAssembly();
@@ -153,7 +148,7 @@ namespace TheOtherThem {
             return null;
         }
 
-        public static Texture2D loadTextureFromDisk(string path) {
+        public static Texture2D LoadTextureFromDisk(string path) {
             try {          
                 if (File.Exists(path))     {
                     Texture2D texture = new Texture2D(2, 2, TextureFormat.ARGB32, true);
@@ -176,7 +171,7 @@ namespace TheOtherThem {
             return iCall_LoadImage.Invoke(tex.Pointer, il2cppArray.Pointer, markNonReadable);
         }
 
-        public static PlayerControl playerById(byte id)
+        public static PlayerControl PlayerById(byte id)
         {
             foreach (PlayerControl player in PlayerControl.AllPlayerControls)
                 if (player.PlayerId == id)
@@ -184,7 +179,7 @@ namespace TheOtherThem {
             return null;
         }
         
-        public static Dictionary<byte, PlayerControl> allPlayersById()
+        public static Dictionary<byte, PlayerControl> AllPlayersById()
         {
             Dictionary<byte, PlayerControl> res = new Dictionary<byte, PlayerControl>();
             foreach (PlayerControl player in PlayerControl.AllPlayerControls)
@@ -192,9 +187,9 @@ namespace TheOtherThem {
             return res;
         }
 
-        public static void handleVampireBiteOnBodyReport() {
+        public static void HandleVampireBiteOnBodyReport() {
             // Murder the bitten player and reset bitten (regardless whether the kill was successful or not)
-            Helpers.checkMuderAttemptAndKill(Vampire.vampire, Vampire.bitten, true, false);
+            checkMuderAttemptAndKill(Vampire.vampire, Vampire.bitten, true, false);
             MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.VampireSetBitten, Hazel.SendOption.Reliable, -1);
             writer.Write(byte.MaxValue);
             writer.Write(byte.MaxValue);
@@ -202,7 +197,7 @@ namespace TheOtherThem {
             RPCProcedure.vampireSetBitten(byte.MaxValue, byte.MaxValue);
         }
 
-        public static void refreshRoleDescription(PlayerControl player) {
+        public static void RefreshRoleDescription(PlayerControl player) {
             if (player == null) return;
 
             List<RoleInfo> infos = RoleInfo.getRoleInfoForPlayer(player); 
@@ -256,17 +251,17 @@ namespace TheOtherThem {
             }
         }
 
-        public static bool isLighterColor(int colorId) {
+        public static bool IsLighterColor(int colorId) {
             return CustomColors.lighterColors.Contains(colorId);
         }
 
-        public static bool isCustomServer() {
+        public static bool IsCustomServer() {
             if (DestroyableSingleton<ServerManager>.Instance == null) return false;
             StringNames n = DestroyableSingleton<ServerManager>.Instance.CurrentRegion.TranslateName;
             return n != StringNames.ServerNA && n != StringNames.ServerEU && n != StringNames.ServerAS;
         }
 
-        public static bool isDead(this PlayerControl player)
+        public static bool IsDead(this PlayerControl player)
         {
             return player == null || player?.Data?.IsDead == true || player?.Data?.Disconnected == true ||
                   (finalStatuses != null && finalStatuses.ContainsKey(player.PlayerId) && finalStatuses[player.PlayerId] != FinalStatus.Alive);
@@ -274,7 +269,7 @@ namespace TheOtherThem {
 
         public static bool IsAlive(this PlayerControl player)
         {
-            return !isDead(player);
+            return !IsDead(player);
         }
 
         public static bool IsNeutral(this PlayerControl player)
@@ -297,52 +292,52 @@ namespace TheOtherThem {
                     );
         }
 
-        public static bool isCrew(this PlayerControl player)
+        public static bool IsCrewmate(this PlayerControl player)
         {
-            return player != null && !player.isImpostor() && !player.IsNeutral() && !player.isGM();
+            return player != null && !player.IsImpostor() && !player.IsNeutral() && !player.IsGM();
         }
 
-        public static bool isImpostor(this PlayerControl player)
+        public static bool IsImpostor(this PlayerControl player)
         {
             return player != null && player.Data.Role.IsImpostor;
         }
 
-        public static bool hasFakeTasks(this PlayerControl player) {
-            return (player.IsNeutral() && !player.neutralHasTasks()) || 
+        public static bool HasFakeTasks(this PlayerControl player) {
+            return (player.IsNeutral() && !player.NeutralHasTasks()) || 
                    (player.hasModifier(ModifierType.Madmate) && !Madmate.hasTasks) || 
-                   (player.isLovers() && Lovers.separateTeam && !Lovers.tasksCount);
+                   (player.IsInLove() && Lovers.separateTeam && !Lovers.tasksCount);
         }
 
-        public static bool neutralHasTasks(this PlayerControl player)
+        public static bool NeutralHasTasks(this PlayerControl player)
         {
             return player.IsNeutral() && (player.IsRole(RoleType.Lawyer) || player.IsRole(RoleType.Pursuer) || player.IsRole(RoleType.Shifter) || player.IsRole(RoleType.Fox));
         }
 
-        public static bool isGM(this PlayerControl player)
+        public static bool IsGM(this PlayerControl player)
         {
             return GM.gm != null && player == GM.gm;
         }
 
-        public static bool isLovers(this PlayerControl player)
+        public static bool IsInLove(this PlayerControl player)
         {
-            return player != null && Lovers.isLovers(player);
+            return player != null && Lovers.IsInLove(player);
         }
 
-        public static PlayerControl getPartner(this PlayerControl player)
+        public static PlayerControl GetPartner(this PlayerControl player)
         {
             return Lovers.getPartner(player);
         }
 
-        public static bool canBeErased(this PlayerControl player) {
+        public static bool CanBeErased(this PlayerControl player) {
             return (player != Jackal.jackal && player != Sidekick.sidekick && !Jackal.formerJackals.Contains(player));
         }
 
-        public static void clearAllTasks(this PlayerControl player) {
+        public static void ClearAllTasks(this PlayerControl player) {
             if (player == null) return;
             for (int i = 0; i < player.myTasks.Count; i++) {
                 PlayerTask playerTask = player.myTasks[i];
                 playerTask.OnRemove();
-                UnityEngine.Object.Destroy(playerTask.gameObject);
+                Object.Destroy(playerTask.gameObject);
             }
             player.myTasks.Clear();
             
@@ -350,7 +345,7 @@ namespace TheOtherThem {
                 player.Data.Tasks.Clear();
         }
 
-        public static void setSemiTransparent(this PoolablePlayer player, bool value) {
+        public static void SetSemiTransparent(this PoolablePlayer player, bool value) {
             float alpha = value ? 0.25f : 1f;
             foreach (SpriteRenderer r in player.gameObject.GetComponentsInChildren<SpriteRenderer>())
                 r.color = new Color(r.color.r, r.color.g, r.color.b, alpha);
@@ -388,19 +383,19 @@ namespace TheOtherThem {
             return result;
         }
 
-        public static bool hidePlayerName(PlayerControl target)
+        public static bool ShouldHidePlayerName(PlayerControl target)
         {
-            return hidePlayerName(PlayerControl.LocalPlayer, target);
+            return ShouldHidePlayerName(PlayerControl.LocalPlayer, target);
         }
 
-        public static bool hidePlayerName(PlayerControl source, PlayerControl target)
+        public static bool ShouldHidePlayerName(PlayerControl source, PlayerControl target)
         {
             if (source == target) return false;
             if (source == null || target == null) return true;
-            if (source.isDead()) return false;
-            if (target.isDead()) return true;
+            if (source.IsDead()) return false;
+            if (target.IsDead()) return true;
             if (Camouflager.camouflageTimer > 0f) return true; // No names are visible
-            if (!source.isImpostor() && Ninja.isStealthed(target)) return true; // Hide ninja nametags from non-impostors
+            if (!source.IsImpostor() && Ninja.isStealthed(target)) return true; // Hide ninja nametags from non-impostors
             if (!source.IsRole(RoleType.Fox) && !source.Data.IsDead && Fox.isStealthed(target)) return true;
             if (MapOptions.hideOutOfSightNametags && GameStarted && ShipStatus.Instance != null && source.transform != null && target.transform != null)
             {
@@ -411,21 +406,21 @@ namespace TheOtherThem {
                 if (distance > ShipStatus.Instance.CalculateLightRadius(source.Data) * distMod || anythingBetween) return true;
             }
             if (!MapOptions.hidePlayerNames) return false; // All names are visible
-            if (source.isImpostor() && (target.isImpostor() || target.IsRole(RoleType.Spy))) return false; // Members of team Impostors see the names of Impostors/Spies
-            if (source.getPartner() == target) return false; // Members of team Lovers see the names of each other
+            if (source.IsImpostor() && (target.IsImpostor() || target.IsRole(RoleType.Spy))) return false; // Members of team Impostors see the names of Impostors/Spies
+            if (source.GetPartner() == target) return false; // Members of team Lovers see the names of each other
             if ((source.IsRole(RoleType.Jackal) || source.IsRole(RoleType.Sidekick)) && (target.IsRole(RoleType.Jackal) || target.IsRole(RoleType.Sidekick) || target == Jackal.fakeSidekick)) return false; // Members of team Jackal see the names of each other
             return true;
         }
 
-        public static void setDefaultLook(this PlayerControl target) {
-            target.setLook(target.Data.PlayerName, target.Data.DefaultOutfit.ColorId, target.Data.DefaultOutfit.HatId, target.Data.DefaultOutfit.VisorId, target.Data.DefaultOutfit.SkinId, target.Data.DefaultOutfit.PetId);
+        public static void SetDefaultLook(this PlayerControl target) {
+            target.SetLook(target.Data.PlayerName, target.Data.DefaultOutfit.ColorId, target.Data.DefaultOutfit.HatId, target.Data.DefaultOutfit.VisorId, target.Data.DefaultOutfit.SkinId, target.Data.DefaultOutfit.PetId);
         }
 
-        public static void setLook(this PlayerControl target, String playerName, int colorId, string hatId, string visorId, string skinId, string petId) {
+        public static void SetLook(this PlayerControl target, String playerName, int colorId, string hatId, string visorId, string skinId, string petId) {
             target.RawSetColor(colorId);
             target.RawSetVisor(visorId, colorId);
             target.RawSetHat(hatId, colorId);
-            target.RawSetName(hidePlayerName(PlayerControl.LocalPlayer, target) ? "" : playerName);
+            target.RawSetName(ShouldHidePlayerName(PlayerControl.LocalPlayer, target) ? "" : playerName);
 
 
             SkinViewData nextSkin = null;
@@ -454,7 +449,7 @@ namespace TheOtherThem {
             target.RawSetPet(petId, colorId);
         }
 
-        public static bool roleCanUseVents(this PlayerControl player) {
+        public static bool RoleCanUseVents(this PlayerControl player) {
             bool roleCouldUse = false;
             if (player.IsRole(RoleType.Engineer))
                 roleCouldUse = true;
@@ -482,7 +477,7 @@ namespace TheOtherThem {
             return roleCouldUse;
         }
 
-        public static bool roleCanSabotage(this PlayerControl player)
+        public static bool RoleCanSabotage(this PlayerControl player)
         {
             bool roleCouldUse = false;
             if (Madmate.canSabotage && player.hasModifier(ModifierType.Madmate))
@@ -499,7 +494,7 @@ namespace TheOtherThem {
             return roleCouldUse;
         }
 
-        public static MurderAttemptResult checkMuderAttempt(PlayerControl killer, PlayerControl target, bool blockRewind = false) {
+        public static MurderAttemptResult CheckMuderAttempt(PlayerControl killer, PlayerControl target, bool blockRewind = false) {
             // Modified vanilla checks
             if (AmongUsClient.Instance.IsGameOver) return MurderAttemptResult.SuppressKill;
             if (killer == null || killer.Data == null || killer.Data.IsDead || killer.Data.Disconnected) return MurderAttemptResult.SuppressKill; // Allow non Impostor kills compared to vanilla code
@@ -545,7 +540,7 @@ namespace TheOtherThem {
             // The local player checks for the validity of the kill and performs it afterwards (different to vanilla, where the host performs all the checks)
             // The kill attempt will be shared using a custom RPC, hence combining modded and unmodded versions is impossible
 
-            MurderAttemptResult murder = checkMuderAttempt(killer, target, isMeetingStart);
+            MurderAttemptResult murder = CheckMuderAttempt(killer, target, isMeetingStart);
             if (murder == MurderAttemptResult.PerformKill) {
                 MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.UncheckedMurderPlayer, Hazel.SendOption.Reliable, -1);
                 writer.Write(killer.PlayerId);
@@ -557,7 +552,7 @@ namespace TheOtherThem {
             return murder;            
         }
     
-        public static void shareGameVersion() {
+        public static void ShareGameVersion() {
             MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.VersionHandshake, Hazel.SendOption.Reliable, -1);
             writer.WritePacked(Main.Version.Major);
             writer.WritePacked(Main.Version.Minor);
@@ -569,8 +564,8 @@ namespace TheOtherThem {
             RPCProcedure.versionHandshake(Main.Version.Major, Main.Version.Minor, Main.Version.Build, Main.Version.Revision, Assembly.GetExecutingAssembly().ManifestModule.ModuleVersionId, AmongUsClient.Instance.ClientId);
         }
 
-        public static List<PlayerControl> getKillerTeamMembers(PlayerControl player) {
-            List<PlayerControl> team = new List<PlayerControl>();
+        public static List<PlayerControl> GetKillerTeamMembers(PlayerControl player) {
+            List<PlayerControl> team = new();
             foreach(PlayerControl p in PlayerControl.AllPlayerControls) {
                 if (player.Data.Role.IsImpostor && p.Data.Role.IsImpostor && player.PlayerId != p.PlayerId && team.All(x => x.PlayerId != p.PlayerId)) team.Add(p);
                 else if (player.IsRole(RoleType.Jackal) && p.IsRole(RoleType.Sidekick)) team.Add(p); 
@@ -580,7 +575,7 @@ namespace TheOtherThem {
             return team;
         }
 
-        public static void shuffle<T>(this IList<T> self, int startAt = 0)
+        public static void Shuffle<T>(this IList<T> self, int startAt = 0)
         {
             for (int i = startAt; i < self.Count - 1; i++) {
                 T value = self[i];
@@ -590,7 +585,7 @@ namespace TheOtherThem {
             }
         }
 
-        public static void shuffle<T>(this System.Random r, IList<T> self)
+        public static void Shuffle<T>(this System.Random r, IList<T> self)
         {
             for (int i = 0; i < self.Count; i++) {
                 T value = self[i];
@@ -605,7 +600,7 @@ namespace TheOtherThem {
             pc.MurderPlayer(target, MurderResultFlags.Succeeded | MurderResultFlags.DecisionByHost);
         }
 
-        public static void resetMorph(this PlayerControl pc)
+        public static void ResetMorph(this PlayerControl pc)
         {
             pc.RejectShapeshift();
         }

@@ -17,7 +17,7 @@ namespace TheOtherThem.Objects {
 
         public static Sprite getFootprintSprite() {
             if (sprite) return sprite;
-            sprite = Helpers.loadSpriteFromResources("TheOtherThem.Resources.Footprint.png", 600f);
+            sprite = Helpers.LoadSpriteFromResources("TheOtherThem.Resources.Footprint.png", 600f);
             return sprite;
         }
 

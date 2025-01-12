@@ -59,7 +59,7 @@ namespace TheOtherThem
                         return;
                     }
 
-                    MurderAttemptResult murderAttemptResult = Helpers.checkMuderAttempt(PlayerControl.LocalPlayer, Local.currentTarget);
+                    MurderAttemptResult murderAttemptResult = Helpers.CheckMuderAttempt(PlayerControl.LocalPlayer, Local.currentTarget);
                     if (murderAttemptResult == MurderAttemptResult.SuppressKill) return;
 
                     if (murderAttemptResult == MurderAttemptResult.PerformKill)

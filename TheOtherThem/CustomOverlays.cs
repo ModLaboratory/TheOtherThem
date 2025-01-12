@@ -39,12 +39,12 @@ namespace TheOtherThem {
 
             if (helpButton == null)
             {
-                helpButton = Helpers.loadSpriteFromResources("TheOtherThem.Resources.HelpButton.png", 115f);
+                helpButton = Helpers.LoadSpriteFromResources("TheOtherThem.Resources.HelpButton.png", 115f);
             }
 
             if (colorBG == null)
             {
-                colorBG = Helpers.loadSpriteFromResources("TheOtherThem.Resources.White.png", 100f);
+                colorBG = Helpers.LoadSpriteFromResources("TheOtherThem.Resources.White.png", 100f);
             }
 
             if (meetingUnderlay == null)

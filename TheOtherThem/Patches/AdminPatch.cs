@@ -192,7 +192,7 @@ namespace TheOtherThem.Patches {
                                         if (Hacker.onlyColorType)
                                         {
                                             var id = Mathf.Max(0, Palette.PlayerColors.IndexOf(color));
-                                            color = Helpers.isLighterColor((byte)id) ? Palette.PlayerColors[7] : Palette.PlayerColors[6];
+                                            color = Helpers.IsLighterColor((byte)id) ? Palette.PlayerColors[7] : Palette.PlayerColors[6];
                                         }
                                         roomColors.Add(color);
                                     }
@@ -207,7 +207,7 @@ namespace TheOtherThem.Patches {
                                         {
                                             var color = Palette.PlayerColors[playerInfo.Object.CurrentOutfit.ColorId];
                                             if (Hacker.onlyColorType)
-                                                color = Helpers.isLighterColor(playerInfo.Object.CurrentOutfit.ColorId) ? Palette.PlayerColors[7] : Palette.PlayerColors[6];
+                                                color = Helpers.IsLighterColor(playerInfo.Object.CurrentOutfit.ColorId) ? Palette.PlayerColors[7] : Palette.PlayerColors[6];
                                             roomColors.Add(color);
                                         }
                                     }

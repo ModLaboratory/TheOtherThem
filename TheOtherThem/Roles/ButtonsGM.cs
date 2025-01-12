@@ -66,7 +66,7 @@ namespace TheOtherThem
             {
                 return () =>
                 {
-                    PlayerControl target = Helpers.playerById(index);
+                    PlayerControl target = Helpers.PlayerById(index);
                     if (!MapOptions.playerIcons.ContainsKey(index) || target.Data.Disconnected)
                     {
                         return;
@@ -83,7 +83,7 @@ namespace TheOtherThem
             {
                 return () =>
                 {
-                    PlayerControl target = Helpers.playerById(index);
+                    PlayerControl target = Helpers.PlayerById(index);
                     if (!MapOptions.playerIcons.ContainsKey(index) || target.Data.Disconnected)
                     {
                         return;
@@ -113,7 +113,7 @@ namespace TheOtherThem
                     if ((GM.gm == null || PlayerControl.LocalPlayer != GM.gm) ||
                         (!MapOptions.playerIcons.ContainsKey(index)) ||
                         (!GM.canWarp) ||
-                        (Helpers.playerById(index).Data.Disconnected))
+                        (Helpers.PlayerById(index).Data.Disconnected))
                     {
                         return false;
                     }
@@ -129,7 +129,7 @@ namespace TheOtherThem
                     if ((GM.gm == null || PlayerControl.LocalPlayer != GM.gm) ||
                         (!MapOptions.playerIcons.ContainsKey(index)) ||
                         (!GM.canKill) ||
-                        (Helpers.playerById(index).Data.Disconnected))
+                        (Helpers.PlayerById(index).Data.Disconnected))
                     {
                         return false;
                     }
@@ -182,7 +182,7 @@ namespace TheOtherThem
                         gmKillButtons[index].LocalScale = scale;
                     }
 
-                    PlayerControl target = Helpers.playerById(index);
+                    PlayerControl target = Helpers.PlayerById(index);
                     if (target.Data.IsDead)
                     {
                         gmKillButtons[index].buttonText = ModTranslation.GetString("gmRevive");

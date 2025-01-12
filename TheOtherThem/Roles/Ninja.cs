@@ -129,7 +129,7 @@ namespace TheOtherThem
         public static Sprite getButtonSprite()
         {
             if (buttonSprite) return buttonSprite;
-            buttonSprite = Helpers.loadSpriteFromResources("TheOtherThem.Resources.NinjaButton.png", 115f);
+            buttonSprite = Helpers.LoadSpriteFromResources("TheOtherThem.Resources.NinjaButton.png", 115f);
             return buttonSprite;
         }
 
@@ -225,11 +225,11 @@ namespace TheOtherThem
                 if (IsRole(__instance.myPlayer))
                 {
                     var ninja = __instance.myPlayer;
-                    if (ninja == null || ninja.isDead()) return;
+                    if (ninja == null || ninja.IsDead()) return;
 
                     bool canSee = 
-                        PlayerControl.LocalPlayer.isImpostor() ||
-                        PlayerControl.LocalPlayer.isDead() ||
+                        PlayerControl.LocalPlayer.IsImpostor() ||
+                        PlayerControl.LocalPlayer.IsDead() ||
                         (Lighter.canSeeNinja && PlayerControl.LocalPlayer.IsRole(RoleType.Lighter) && Lighter.isLightActive(PlayerControl.LocalPlayer));
 
                     var opacity = canSee ? 0.1f : 0.0f;

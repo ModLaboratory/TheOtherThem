@@ -42,11 +42,11 @@ namespace TheOtherThem
         public override void OnDeath(PlayerControl killer = null)
         {
             killer = killer ?? meetingKiller;
-            if (killer != null && killer != Player && killer.IsAlive() && !killer.isGM())
+            if (killer != null && killer != Player && killer.IsAlive() && !killer.IsGM())
             {
-                if ((revengeCrew && killer.isCrew()) ||
+                if ((revengeCrew && killer.IsCrewmate()) ||
                     (revengeNeutral && killer.IsNeutral()) ||
-                    (revengeImpostor && killer.isImpostor()))
+                    (revengeImpostor && killer.IsImpostor()))
                 {
                     if (meetingKiller == null)
                     {

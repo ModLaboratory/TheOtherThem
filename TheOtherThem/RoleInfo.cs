@@ -218,7 +218,7 @@ namespace TheOtherThem
             if (p.IsRole(RoleType.SerialKiller)) infos.Add(serialKiller);
             if (p.IsRole(RoleType.Watcher))
             {
-                if (p.isImpostor()) infos.Add(evilWatcher);
+                if (p.IsImpostor()) infos.Add(evilWatcher);
                 else infos.Add(niceWatcher);
             }
             if (p.IsRole(RoleType.Fox)) infos.Add(fox);
@@ -244,7 +244,7 @@ namespace TheOtherThem
             if (infos.Count == 0 && !p.Data.Role.IsImpostor) infos.Add(crewmate); // Just Crewmate
 
             // Modifier
-            if (p.isLovers()) infos.Add(lovers);
+            if (p.IsInLove()) infos.Add(lovers);
 
             if (excludeRoles != null)
                 infos.RemoveAll(x => excludeRoles.Contains(x.MyRoleType));

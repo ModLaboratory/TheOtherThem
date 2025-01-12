@@ -158,7 +158,7 @@ namespace TheOtherThem.Patches
                     gameOverReason == GameOverReason.ImpostorBySabotage && !p.Role.IsImpostor ? FinalStatus.Sabotage :
                     FinalStatus.Alive;
 
-                if (gameOverReason == GameOverReason.HumansByTask && p.Object.isCrew()) tasksCompleted = tasksTotal;
+                if (gameOverReason == GameOverReason.HumansByTask && p.Object.IsCrewmate()) tasksCompleted = tasksTotal;
 
                 AdditionalTempData.playerRoles.Add(new AdditionalTempData.PlayerRoleInfo()
                 {
@@ -173,7 +173,7 @@ namespace TheOtherThem.Patches
                 });
             }
 
-            AdditionalTempData.isGM = CustomOptionHolder.gmEnabled.GetBool() && PlayerControl.LocalPlayer.isGM();
+            AdditionalTempData.isGM = CustomOptionHolder.gmEnabled.GetBool() && PlayerControl.LocalPlayer.IsGM();
             AdditionalTempData.plagueDoctorInfected = PlagueDoctor.infected;
             AdditionalTempData.plagueDoctorProgress = PlagueDoctor.progress;
 
@@ -853,7 +853,7 @@ namespace TheOtherThem.Patches
                         {
                             foreach (var task in player.Data.Tasks)
                             {
-                                if (player.Data.IsDead && player.isCrew())
+                                if (player.Data.IsDead && player.IsCrewmate())
                                 {
                                     if (!task.Complete)
                                     {
@@ -999,8 +999,8 @@ namespace TheOtherThem.Patches
                         NetworkedPlayerInfo playerInfo = GameData.Instance.AllPlayers[i];
                         if (!playerInfo.Disconnected)
                         {
-                            if (playerInfo.Object.isCrew()) numCrew++;
-                            if (!playerInfo.IsDead && !playerInfo.Object.isGM())
+                            if (playerInfo.Object.IsCrewmate()) numCrew++;
+                            if (!playerInfo.IsDead && !playerInfo.Object.IsGM())
                             {
                                 numTotalAlive++;
 
@@ -1035,7 +1035,7 @@ namespace TheOtherThem.Patches
 
                     // In the special case of Mafia being enabled, but only the janitor's left alive,
                     // count it as zero impostors alive bc they can't actually do anything.
-                    if (Godfather.godfather?.isDead() == true && Mafioso.mafioso?.isDead() == true && Janitor.janitor?.isDead() == false)
+                    if (Godfather.godfather?.IsDead() == true && Mafioso.mafioso?.IsDead() == true && Janitor.janitor?.IsDead() == false)
                     {
                         numImpostorsAlive = 0;
                     }

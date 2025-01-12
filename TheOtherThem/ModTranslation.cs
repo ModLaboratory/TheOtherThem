@@ -100,7 +100,7 @@ namespace TheOtherThem
             key = key.Replace("\\", ".");
             key = "TheOtherThem.Resources." + key;
 
-            return Helpers.loadSpriteFromResources(key, pixelsPerUnit);
+            return Helpers.LoadSpriteFromResources(key, pixelsPerUnit);
         }
     }
 

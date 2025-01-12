@@ -154,7 +154,7 @@ namespace TheOtherThem
             public static bool canSabotage { get { return canKill || CustomOptionHolder.mafiosoCanSabotage.GetBool(); } }
             public static bool canRepair { get { return canKill || CustomOptionHolder.mafiosoCanRepair.GetBool(); } }
             public static bool canVent { get { return canKill || CustomOptionHolder.mafiosoCanVent.GetBool();  } }
-            public static bool canKill { get { return Godfather.godfather == null || Godfather.godfather.isDead(); } }
+            public static bool canKill { get { return Godfather.godfather == null || Godfather.godfather.IsDead(); } }
 
             public static void clearAndReload()
             {
@@ -296,7 +296,7 @@ namespace TheOtherThem
             public static Sprite getSoulSprite()
             {
                 if (soulSprite) return soulSprite;
-                soulSprite = Helpers.loadSpriteFromResources("TheOtherThem.Resources.Soul.png", 500f);
+                soulSprite = Helpers.LoadSpriteFromResources("TheOtherThem.Resources.Soul.png", 500f);
                 return soulSprite;
             }
 
@@ -438,7 +438,7 @@ namespace TheOtherThem
         public static Sprite getTrackCorpsesButtonSprite()
         {
             if (trackCorpsesButtonSprite) return trackCorpsesButtonSprite;
-            trackCorpsesButtonSprite = Helpers.loadSpriteFromResources("TheOtherThem.Resources.PathfindButton.png", 115f);
+            trackCorpsesButtonSprite = Helpers.LoadSpriteFromResources("TheOtherThem.Resources.PathfindButton.png", 115f);
             return trackCorpsesButtonSprite;
         }
 
@@ -835,7 +835,7 @@ namespace TheOtherThem
             public static Sprite getAnimatedVentSealedSprite()
             {
                 if (animatedVentSealedSprite) return animatedVentSealedSprite;
-                animatedVentSealedSprite = Helpers.loadSpriteFromResources("TheOtherThem.Resources.AnimatedVentSealed.png", 160f);
+                animatedVentSealedSprite = Helpers.LoadSpriteFromResources("TheOtherThem.Resources.AnimatedVentSealed.png", 160f);
                 return animatedVentSealedSprite;
             }
 
@@ -843,7 +843,7 @@ namespace TheOtherThem
             public static Sprite getStaticVentSealedSprite()
             {
                 if (staticVentSealedSprite) return staticVentSealedSprite;
-                staticVentSealedSprite = Helpers.loadSpriteFromResources("TheOtherThem.Resources.StaticVentSealed.png", 160f);
+                staticVentSealedSprite = Helpers.LoadSpriteFromResources("TheOtherThem.Resources.StaticVentSealed.png", 160f);
                 return staticVentSealedSprite;
             }
 
@@ -912,7 +912,7 @@ namespace TheOtherThem
 
             public static bool dousedEveryoneAlive()
             {
-                return PlayerControl.AllPlayerControls.ToArray().All(x => { return x == Arsonist.arsonist || x.Data.IsDead || x.Data.Disconnected || x.isGM() || Arsonist.dousedPlayers.Any(y => y.PlayerId == x.PlayerId); });
+                return PlayerControl.AllPlayerControls.ToArray().All(x => { return x == Arsonist.arsonist || x.Data.IsDead || x.Data.Disconnected || x.IsGM() || Arsonist.dousedPlayers.Any(y => y.PlayerId == x.PlayerId); });
             }
 
             public static void updateStatus()
@@ -953,7 +953,7 @@ namespace TheOtherThem
                             visibleCounter++;
                         }
                         bool isDoused = dousedPlayers.Any(x => x.PlayerId == p.PlayerId);
-                        MapOptions.playerIcons[p.PlayerId].setSemiTransparent(!isDoused);
+                        MapOptions.playerIcons[p.PlayerId].SetSemiTransparent(!isDoused);
                     }
                 }
             }
@@ -993,7 +993,7 @@ namespace TheOtherThem
             public static Sprite getTargetSprite()
             {
                 if (targetSprite) return targetSprite;
-                targetSprite = Helpers.loadSpriteFromResources("TheOtherThem.Resources.TargetIcon.png", 150f);
+                targetSprite = Helpers.LoadSpriteFromResources("TheOtherThem.Resources.TargetIcon.png", 150f);
                 return targetSprite;
             }
 
@@ -1110,7 +1110,7 @@ namespace TheOtherThem
         private static Sprite buttonSprite;
         public static Sprite getButtonSprite() {
             if (buttonSprite) return buttonSprite;
-            buttonSprite = Helpers.loadSpriteFromResources("TheOtherThem.Resources.VultureButton.png", 115f);
+            buttonSprite = Helpers.LoadSpriteFromResources("TheOtherThem.Resources.VultureButton.png", 115f);
             return buttonSprite;
         }
 
@@ -1149,14 +1149,14 @@ namespace TheOtherThem
         private static Sprite soulSprite;
         public static Sprite getSoulSprite() {
             if (soulSprite) return soulSprite;
-            soulSprite = Helpers.loadSpriteFromResources("TheOtherThem.Resources.Soul.png", 500f);
+            soulSprite = Helpers.LoadSpriteFromResources("TheOtherThem.Resources.Soul.png", 500f);
             return soulSprite;
         }
 
         private static Sprite question;
         public static Sprite getQuestionSprite() {
             if (question) return question;
-            question = Helpers.loadSpriteFromResources("TheOtherThem.Resources.MediumButton.png", 115f);
+            question = Helpers.LoadSpriteFromResources("TheOtherThem.Resources.MediumButton.png", 115f);
             return question;
         }
 
@@ -1190,7 +1190,7 @@ namespace TheOtherThem
 
         public static Sprite getTargetSprite() {
             if (targetSprite) return targetSprite;
-            targetSprite = Helpers.loadSpriteFromResources("", 150f);
+            targetSprite = Helpers.LoadSpriteFromResources("", 150f);
             return targetSprite;
         }
 
@@ -1222,7 +1222,7 @@ namespace TheOtherThem
 
         public static Sprite getTargetSprite() {
             if (blank) return blank;
-            blank = Helpers.loadSpriteFromResources("TheOtherThem.Resources.PursuerButton.png", 115f);
+            blank = Helpers.LoadSpriteFromResources("TheOtherThem.Resources.PursuerButton.png", 115f);
             return blank;
         }
 
@@ -1256,14 +1256,14 @@ namespace TheOtherThem
         private static Sprite buttonSprite;
         public static Sprite getButtonSprite() {
             if (buttonSprite) return buttonSprite;
-            buttonSprite = Helpers.loadSpriteFromResources("TheOtherThem.Resources.SpellButton.png", 115f);
+            buttonSprite = Helpers.LoadSpriteFromResources("TheOtherThem.Resources.SpellButton.png", 115f);
             return buttonSprite;
         }
 
         private static Sprite spelledOverlaySprite;
         public static Sprite getSpelledOverlaySprite() {
             if (spelledOverlaySprite) return spelledOverlaySprite;
-            spelledOverlaySprite = Helpers.loadSpriteFromResources("TheOtherThem.Resources.SpellButtonMeeting.png", 225f);
+            spelledOverlaySprite = Helpers.LoadSpriteFromResources("TheOtherThem.Resources.SpellButtonMeeting.png", 225f);
             return spelledOverlaySprite;
         }
 

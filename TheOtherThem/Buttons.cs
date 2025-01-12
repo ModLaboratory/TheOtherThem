@@ -581,7 +581,7 @@ namespace TheOtherThem
             vampireKillButton = new CustomButton(
                 () =>
                 {
-                    MurderAttemptResult murder = Helpers.checkMuderAttempt(Vampire.vampire, Vampire.currentTarget);
+                    MurderAttemptResult murder = Helpers.CheckMuderAttempt(Vampire.vampire, Vampire.currentTarget);
                     if (murder == MurderAttemptResult.PerformKill)
                     {
                         if (Vampire.targetNearGarlic)
@@ -678,7 +678,7 @@ namespace TheOtherThem
                     writer.EndMessage();
                     RPCProcedure.placeGarlic(buff);
                 },
-                () => { return !Vampire.localPlacedGarlic && PlayerControl.LocalPlayer.IsAlive() && Vampire.garlicsActive && !PlayerControl.LocalPlayer.isGM(); },
+                () => { return !Vampire.localPlacedGarlic && PlayerControl.LocalPlayer.IsAlive() && Vampire.garlicsActive && !PlayerControl.LocalPlayer.IsGM(); },
                 () => { return PlayerControl.LocalPlayer.CanMove && !Vampire.localPlacedGarlic; },
                 () => { },
                 Vampire.getGarlicButtonSprite(),
@@ -1121,7 +1121,7 @@ namespace TheOtherThem
                     {
                         if (MapOptions.playerIcons.ContainsKey(p.PlayerId))
                         {
-                            MapOptions.playerIcons[p.PlayerId].setSemiTransparent(false);
+                            MapOptions.playerIcons[p.PlayerId].SetSemiTransparent(false);
                         }
                     }
                 }
@@ -1248,7 +1248,7 @@ namespace TheOtherThem
                     string msg = "";
 
                     int randomNumber = Medium.target.killerIfExisting?.PlayerId == Mini.mini?.PlayerId ? TheOtherRoles.rnd.Next(3) : TheOtherRoles.rnd.Next(4);
-                    string typeOfColor = Helpers.isLighterColor(Medium.target.killerIfExisting.Data.DefaultOutfit.ColorId) ?
+                    string typeOfColor = Helpers.IsLighterColor(Medium.target.killerIfExisting.Data.DefaultOutfit.ColorId) ?
                         ModTranslation.GetString("detectiveColorLight") :
                         ModTranslation.GetString("detectiveColorDark");
                     float timeSinceDeath = ((float)(Medium.meetingStartTime - Medium.target.timeOfDeath).TotalMilliseconds);
@@ -1383,7 +1383,7 @@ namespace TheOtherThem
                 () =>
                 {
                     if (Witch.spellCastingTarget == null) return;
-                    MurderAttemptResult attempt = Helpers.checkMuderAttempt(Witch.witch, Witch.spellCastingTarget);
+                    MurderAttemptResult attempt = Helpers.CheckMuderAttempt(Witch.witch, Witch.spellCastingTarget);
                     if (attempt == MurderAttemptResult.PerformKill)
                     {
                         MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.SetFutureSpelled, Hazel.SendOption.Reliable, -1);

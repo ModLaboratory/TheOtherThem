@@ -19,7 +19,7 @@ namespace TheOtherThem.Patches
         public static Sprite getCorpseSprite()
         {
             if (corpseSprite) return corpseSprite;
-            corpseSprite = Helpers.loadSpriteFromResources("TheOtherThem.Resources.CorpseIcon.png", 115f);
+            corpseSprite = Helpers.LoadSpriteFromResources("TheOtherThem.Resources.CorpseIcon.png", 115f);
             return corpseSprite;
         }
 
@@ -60,7 +60,7 @@ namespace TheOtherThem.Patches
 
             foreach (PlayerControl p in players)
             {
-                if (p.isGM()) continue;
+                if (p.IsGM()) continue;
 
                 byte id = p.PlayerId;
                 mapIcons[id] = UnityEngine.Object.Instantiate(__instance.HerePoint, __instance.HerePoint.transform.parent);
@@ -79,11 +79,11 @@ namespace TheOtherThem.Patches
         {
             static void Postfix(MapBehaviour __instance)
             {
-                if (PlayerControl.LocalPlayer.isGM())
+                if (PlayerControl.LocalPlayer.IsGM())
                 {
                     foreach (PlayerControl p in PlayerControl.AllPlayerControls)
                     {
-                        if (p == null || p.isGM()) continue;
+                        if (p == null || p.IsGM()) continue;
 
                         byte id = p.PlayerId;
                         if (!mapIcons.ContainsKey(id))
@@ -131,7 +131,7 @@ namespace TheOtherThem.Patches
         {
             static void Prefix(MapBehaviour __instance)
             {
-                if (PlayerControl.LocalPlayer.isGM())
+                if (PlayerControl.LocalPlayer.IsGM())
                 {
                     useButtonPos = HudManager.Instance.UseButton.transform.localPosition;
                 }
@@ -140,7 +140,7 @@ namespace TheOtherThem.Patches
 
             static void Postfix(MapBehaviour __instance)
             {
-                if (PlayerControl.LocalPlayer.isGM())
+                if (PlayerControl.LocalPlayer.IsGM())
                 {
                     if (mapIcons == null || corpseIcons == null)
                         initializeIcons(__instance);
@@ -169,7 +169,7 @@ namespace TheOtherThem.Patches
         {
             static void Postfix(MapBehaviour __instance)
             {
-                if (PlayerControl.LocalPlayer.isGM())
+                if (PlayerControl.LocalPlayer.IsGM())
                 {
                     HudManager.Instance.UseButton.transform.localPosition = useButtonPos;
                 }

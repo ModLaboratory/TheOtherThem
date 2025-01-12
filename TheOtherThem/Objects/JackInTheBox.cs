@@ -17,7 +17,7 @@ namespace TheOtherThem.Objects {
             if (boxAnimationSprites == null || boxAnimationSprites.Length == 0) return null;
             index = Mathf.Clamp(index, 0, boxAnimationSprites.Length - 1);
             if (boxAnimationSprites[index] == null)
-                boxAnimationSprites[index] = (Helpers.loadSpriteFromResources($"TheOtherThem.Resources.TricksterAnimation.trickster_box_00{(index + 1):00}.png", 175f));
+                boxAnimationSprites[index] = (Helpers.LoadSpriteFromResources($"TheOtherThem.Resources.TricksterAnimation.trickster_box_00{(index + 1):00}.png", 175f));
             return boxAnimationSprites[index];
         }
 

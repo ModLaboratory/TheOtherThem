@@ -208,7 +208,7 @@ namespace TheOtherThem
                     }
                     else
                     {
-                        p.resetMorph();
+                        p.ResetMorph();
                     }
                 }
             }
@@ -286,7 +286,7 @@ namespace TheOtherThem
             public static Sprite getCheckSprite()
             {
                 if (spriteCheck) return spriteCheck;
-                spriteCheck = Helpers.loadSpriteFromResources("TheOtherThem.Resources.SwapperCheck.png", 150f);
+                spriteCheck = Helpers.LoadSpriteFromResources("TheOtherThem.Resources.SwapperCheck.png", 150f);
                 return spriteCheck;
             }
 
@@ -320,13 +320,13 @@ namespace TheOtherThem
             public static Sprite getZoomInSprite()
             {
                 if (zoomInSprite) return zoomInSprite;
-                zoomInSprite = Helpers.loadSpriteFromResources("TheOtherThem.Resources.GMZoomIn.png", 115f / 2f);
+                zoomInSprite = Helpers.LoadSpriteFromResources("TheOtherThem.Resources.GMZoomIn.png", 115f / 2f);
                 return zoomInSprite;
             }
             public static Sprite getZoomOutSprite()
             {
                 if (zoomOutSprite) return zoomOutSprite;
-                zoomOutSprite = Helpers.loadSpriteFromResources("TheOtherThem.Resources.GMZoomOut.png", 115f / 2f);
+                zoomOutSprite = Helpers.LoadSpriteFromResources("TheOtherThem.Resources.GMZoomOut.png", 115f / 2f);
                 return zoomOutSprite;
             }
 

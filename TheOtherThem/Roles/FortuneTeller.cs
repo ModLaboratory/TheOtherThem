@@ -112,7 +112,7 @@ namespace TheOtherThem
                 {
                     if (PlayerControl.LocalPlayer.CanMove && Local.numUsed < 1 && Local.canDivine(index))
                     {
-                        PlayerControl p = Helpers.playerById(index);
+                        PlayerControl p = Helpers.PlayerById(index);
                         Local.divine(p);
                     }
                 };
@@ -147,7 +147,7 @@ namespace TheOtherThem
             {
                 MapOptions.playerIcons[index].transform.localScale = Vector3.one * 0.25f;
                 MapOptions.playerIcons[index].gameObject.SetActive(PlayerControl.LocalPlayer.CanMove);
-                MapOptions.playerIcons[index].setSemiTransparent(transparent);
+                MapOptions.playerIcons[index].SetSemiTransparent(transparent);
             }
 
             Func<bool> fortuneTellerCouldUse(byte index)
@@ -157,7 +157,7 @@ namespace TheOtherThem
                     //　占い師以外の場合、リソースがない場合はボタンを表示しない
                     if (!MapOptions.playerIcons.ContainsKey(index) ||
                         !PlayerControl.LocalPlayer.IsRole(RoleType.FortuneTeller) ||
-                        PlayerControl.LocalPlayer.isDead() ||
+                        PlayerControl.LocalPlayer.IsDead() ||
                         PlayerControl.LocalPlayer.PlayerId == index ||
                         !isCompletedNumTasks(PlayerControl.LocalPlayer) ||
                         Local.numUsed >= 1)
@@ -238,7 +238,7 @@ namespace TheOtherThem
                 foreach (PlayerControl p in PlayerControl.AllPlayerControls)
                 {
                     if (!progress.ContainsKey(p.PlayerId)) progress[p.PlayerId] = 0f;
-                    if (p.isDead()) continue;
+                    if (p.IsDead()) continue;
                     var fortuneTeller = PlayerControl.LocalPlayer;
                     float distance = Vector3.Distance(p.transform.position, fortuneTeller.transform.position);
                     // 障害物判定
@@ -256,7 +256,7 @@ namespace TheOtherThem
 
         public void impostorArrowUpdate()
         {
-            if (PlayerControl.LocalPlayer.isImpostor())
+            if (PlayerControl.LocalPlayer.IsImpostor())
             {
 
                 // 前フレームからの経過時間をマイナスする
@@ -280,7 +280,7 @@ namespace TheOtherThem
 
                     foreach (var p in Players)
                     {
-                        if (p.Player.isDead()) continue;
+                        if (p.Player.IsDead()) continue;
                         if (!p.divinedFlag) continue;
 
                         Arrow arrow = new Arrow(FortuneTeller.color);
@@ -313,7 +313,7 @@ namespace TheOtherThem
             Color color = Color.white;
 
             if (divineResult == DivineResults.BlackWhite) {
-                if (p.isCrew())
+                if (p.IsCrewmate())
                 {
                     msgBase = "divineMessageIsCrew";
                     color = Color.white;
@@ -327,7 +327,7 @@ namespace TheOtherThem
 
             else if (divineResult == DivineResults.Team) {
                 msgBase = "divineMessageTeam";
-                if (p.isCrew())
+                if (p.IsCrewmate())
                 {
                     msgInfo = ModTranslation.GetString("divineCrew");
                     color = Color.white;

@@ -169,12 +169,12 @@ namespace TheOtherThem
 
         public static void setLovers(byte playerId1, byte playerId2)
         {
-            Lovers.addCouple(Helpers.playerById(playerId1), Helpers.playerById(playerId2));
+            Lovers.addCouple(Helpers.PlayerById(playerId1), Helpers.PlayerById(playerId2));
         }
 
         public static void overrideNativeRole(byte playerId, byte roleType)
         {
-            var player = Helpers.playerById(playerId);
+            var player = Helpers.PlayerById(playerId);
             player.roleAssigned = false;
             DestroyableSingleton<RoleManager>.Instance.SetRole(player, (RoleTypes)roleType);
         }
@@ -191,7 +191,7 @@ namespace TheOtherThem
 
         public static void useUncheckedVent(int ventId, byte playerId, byte isEnter)
         {
-            PlayerControl player = Helpers.playerById(playerId);
+            PlayerControl player = Helpers.PlayerById(playerId);
             if (player == null) return;
             // Fill dummy MessageReader and call MyPhysics.HandleRpc as the corountines cannot be accessed
             MessageReader reader = new MessageReader();
@@ -207,8 +207,8 @@ namespace TheOtherThem
 
         public static void uncheckedMurderPlayer(byte sourceId, byte targetId, byte showAnimation)
         {
-            PlayerControl source = Helpers.playerById(sourceId);
-            PlayerControl target = Helpers.playerById(targetId);
+            PlayerControl source = Helpers.PlayerById(sourceId);
+            PlayerControl target = Helpers.PlayerById(targetId);
             if (source != null && target != null)
             {
                 if (showAnimation == 0) KillAnimationCoPerformKillPatch.hideNextAnimation = true;
@@ -218,14 +218,14 @@ namespace TheOtherThem
 
         public static void uncheckedCmdReportDeadBody(byte sourceId, byte targetId)
         {
-            PlayerControl source = Helpers.playerById(sourceId);
-            PlayerControl target = Helpers.playerById(targetId);
+            PlayerControl source = Helpers.PlayerById(sourceId);
+            PlayerControl target = Helpers.PlayerById(targetId);
             if (source != null && target != null) source.ReportDeadBody(target.Data);
         }
 
         public static void uncheckedExilePlayer(byte targetId)
         {
-            PlayerControl target = Helpers.playerById(targetId);
+            PlayerControl target = Helpers.PlayerById(targetId);
             if (target != null)
             {
                 target.Exiled();
@@ -257,8 +257,8 @@ namespace TheOtherThem
 
         public static void uncheckedSetTasks(byte playerId, byte[] taskTypeIds)
         {
-            var player = Helpers.playerById(playerId);
-            player.clearAllTasks();
+            var player = Helpers.PlayerById(playerId);
+            player.ClearAllTasks();
 
             player.Data.SetTasks(taskTypeIds);
         }
@@ -294,8 +294,8 @@ namespace TheOtherThem
 
         public static void sheriffKill(byte sheriffId, byte targetId, bool misfire)
         {
-            PlayerControl sheriff = Helpers.playerById(sheriffId);
-            PlayerControl target = Helpers.playerById(targetId);
+            PlayerControl sheriff = Helpers.PlayerById(sheriffId);
+            PlayerControl target = Helpers.PlayerById(targetId);
             if (sheriff == null || target == null) return;
 
             Sheriff role = Sheriff.GetRole(sheriff);
@@ -329,7 +329,7 @@ namespace TheOtherThem
             })));
 
             if (TimeMaster.timeMaster == null || PlayerControl.LocalPlayer == TimeMaster.timeMaster) return; // Time Master himself does not rewind
-            if (PlayerControl.LocalPlayer.isGM()) return; // GM does not rewind
+            if (PlayerControl.LocalPlayer.IsGM()) return; // GM does not rewind
 
             TimeMaster.isRewinding = true;
 
@@ -352,7 +352,7 @@ namespace TheOtherThem
         public static void medicSetShielded(byte shieldedId)
         {
             Medic.usedShield = true;
-            Medic.shielded = Helpers.playerById(shieldedId);
+            Medic.shielded = Helpers.PlayerById(shieldedId);
             Medic.futureShielded = null;
         }
 
@@ -388,7 +388,7 @@ namespace TheOtherThem
         public static void shifterShift(byte targetId)
         {
             PlayerControl oldShifter = Shifter.shifter;
-            PlayerControl player = Helpers.playerById(targetId);
+            PlayerControl player = Helpers.PlayerById(targetId);
             if (player == null || oldShifter == null) return;
 
             Shifter.futureShift = null;
@@ -465,7 +465,7 @@ namespace TheOtherThem
 
         public static void morphlingMorph(byte playerId)
         {
-            PlayerControl target = Helpers.playerById(playerId);
+            PlayerControl target = Helpers.PlayerById(playerId);
             if (Morphling.morphling == null || target == null) return;
             Morphling.startMorph(target);
         }
@@ -512,7 +512,7 @@ namespace TheOtherThem
 
         public static void jackalCreatesSidekick(byte targetId)
         {
-            PlayerControl player = Helpers.playerById(targetId);
+            PlayerControl player = Helpers.PlayerById(targetId);
             if (player == null) return;
 
             if (!Jackal.canCreateSidekickFromImpostor && player.Data.Role.IsImpostor) {
@@ -546,17 +546,17 @@ namespace TheOtherThem
 
         public static void erasePlayerRoles(byte playerId, bool ignoreLovers = false)
         {
-            PlayerControl player = Helpers.playerById(playerId);
+            PlayerControl player = Helpers.PlayerById(playerId);
             if (player == null) return;
 
             // Don't give a former neutral role tasks because that destroys the balance.
             if (player.IsNeutral())
-                player.clearAllTasks();
+                player.ClearAllTasks();
 
             player.EraseAllRoles();
             player.eraseAllModifiers();
 
-            if (!ignoreLovers && player.isLovers())
+            if (!ignoreLovers && player.IsInLove())
             { // The whole Lover couple is being erased
                 Lovers.eraseCouple(player);
             }
@@ -564,7 +564,7 @@ namespace TheOtherThem
 
         public static void setFutureErased(byte playerId)
         {
-            PlayerControl player = Helpers.playerById(playerId);
+            PlayerControl player = Helpers.PlayerById(playerId);
             if (Eraser.futureErased == null)
                 Eraser.futureErased = new List<PlayerControl>();
             if (player != null)
@@ -577,18 +577,18 @@ namespace TheOtherThem
         {
             if (Shifter.isNeutral && !Shifter.shiftPastShifters && Shifter.pastShifters.Contains(playerId))
                 return;
-            Shifter.futureShift = Helpers.playerById(playerId);
+            Shifter.futureShift = Helpers.PlayerById(playerId);
         }
 
         public static void setFutureShielded(byte playerId)
         {
-            Medic.futureShielded = Helpers.playerById(playerId);
+            Medic.futureShielded = Helpers.PlayerById(playerId);
             Medic.usedShield = true;
         }
 
         public static void setFutureSpelled(byte playerId)
         {
-            PlayerControl player = Helpers.playerById(playerId);
+            PlayerControl player = Helpers.PlayerById(playerId);
             if (Witch.futureSpelled == null)
                 Witch.futureSpelled = new List<PlayerControl>();
             if (player != null)
@@ -719,7 +719,7 @@ namespace TheOtherThem
 
         public static void arsonistDouse(byte playerId)
         {
-            Arsonist.dousedPlayers.Add(Helpers.playerById(playerId));
+            Arsonist.dousedPlayers.Add(Helpers.PlayerById(playerId));
         }
 
         public static void arsonistWin()
@@ -751,7 +751,7 @@ namespace TheOtherThem
 
         public static void lawyerSetTarget(byte playerId)
         {
-            Lawyer.target = Helpers.playerById(playerId);
+            Lawyer.target = Helpers.PlayerById(playerId);
         }
 
         public static void lawyerPromotesToPursuer()
@@ -771,27 +771,27 @@ namespace TheOtherThem
 
         public static void guesserShoot(byte killerId, byte dyingTargetId, byte guessedTargetId, byte guessedRoleId)
         {
-            PlayerControl killer = Helpers.playerById(killerId);
-            PlayerControl dyingTarget = Helpers.playerById(dyingTargetId);
+            PlayerControl killer = Helpers.PlayerById(killerId);
+            PlayerControl dyingTarget = Helpers.PlayerById(dyingTargetId);
             if (dyingTarget == null) return;
             if (dyingTarget.IsRole(RoleType.NekoKabocha))
             {
                 NekoKabocha.meetingKill(dyingTarget, killer);
             }
             dyingTarget.Exiled();
-            PlayerControl dyingLoverPartner = Lovers.bothDie ? dyingTarget.getPartner() : null; // Lover check
+            PlayerControl dyingLoverPartner = Lovers.bothDie ? dyingTarget.GetPartner() : null; // Lover check
 
             Guesser.remainingShots(killerId, true);
             if (Constants.ShouldPlaySfx()) SoundManager.Instance.PlaySound(dyingTarget.KillSfx, false, 0.8f);
 
-            PlayerControl guesser = Helpers.playerById(killerId);
+            PlayerControl guesser = Helpers.PlayerById(killerId);
             if (HudManager.Instance != null && guesser != null)
                 if (PlayerControl.LocalPlayer == dyingTarget)
                     HudManager.Instance.KillOverlay.ShowKillAnimation(guesser.Data, dyingTarget.Data);
                 else if (dyingLoverPartner != null && PlayerControl.LocalPlayer == dyingLoverPartner)
                     HudManager.Instance.KillOverlay.ShowKillAnimation(dyingLoverPartner.Data, dyingLoverPartner.Data);
 
-            PlayerControl guessedTarget = Helpers.playerById(guessedTargetId);
+            PlayerControl guessedTarget = Helpers.PlayerById(guessedTargetId);
             if (Guesser.showInfoInGhostChat && PlayerControl.LocalPlayer.Data.IsDead && guessedTarget != null)
             {
                 RoleInfo roleInfo = RoleInfo.AllRoleInfos.FirstOrDefault(x => (byte)x.MyRoleType == guessedRoleId);
@@ -805,7 +805,7 @@ namespace TheOtherThem
 
         public static void setBlanked(byte playerId, byte value)
         {
-            PlayerControl target = Helpers.playerById(playerId);
+            PlayerControl target = Helpers.PlayerById(playerId);
             if (target == null) return;
             Pursuer.blankedList.RemoveAll(x => x.PlayerId == playerId);
             if (value > 0) Pursuer.blankedList.Add(target);
@@ -824,34 +824,34 @@ namespace TheOtherThem
 
         public static void ninjaStealth(byte playerId, bool stealthed)
         {
-            PlayerControl player = Helpers.playerById(playerId);
+            PlayerControl player = Helpers.PlayerById(playerId);
             Ninja.setStealthed(player, stealthed);
         }
         public static void foxStealth(byte playerId, bool stealthed)
         {
-            PlayerControl player = Helpers.playerById(playerId);
+            PlayerControl player = Helpers.PlayerById(playerId);
             Fox.setStealthed(player, stealthed);
         }
 
         public static void foxCreatesImmoralist(byte targetId)
         {
-            PlayerControl player = Helpers.playerById(targetId);
+            PlayerControl player = Helpers.PlayerById(targetId);
             DestroyableSingleton<RoleManager>.Instance.SetRole(player, RoleTypes.Crewmate);
             erasePlayerRoles(player.PlayerId, true);
             player.SetRole(RoleType.Immoralist);
-            player.clearAllTasks();
+            player.ClearAllTasks();
         }
 
         public static void GMKill(byte targetId)
         {
-            PlayerControl target = Helpers.playerById(targetId);
+            PlayerControl target = Helpers.PlayerById(targetId);
 
             if (target == null) return;
             target.MyPhysics.ExitAllVents();
             target.Exiled();
             finalStatuses[target.PlayerId] = FinalStatus.GMExecuted;
 
-            PlayerControl partner = target.getPartner(); // Lover check
+            PlayerControl partner = target.GetPartner(); // Lover check
             if (partner != null)
             {
                 partner?.MyPhysics.ExitAllVents();
@@ -869,13 +869,13 @@ namespace TheOtherThem
 
         public static void GMRevive(byte targetId)
         {
-            PlayerControl target = Helpers.playerById(targetId);
+            PlayerControl target = Helpers.PlayerById(targetId);
             if (target == null) return;
             target.Revive();
             updateMeeting(targetId, false);
             finalStatuses[target.PlayerId] = FinalStatus.Alive;
 
-            PlayerControl partner = target.getPartner(); // Lover check
+            PlayerControl partner = target.GetPartner(); // Lover check
             if (partner != null)
             {
                 partner.Revive();
@@ -883,7 +883,7 @@ namespace TheOtherThem
                 finalStatuses[partner.PlayerId] = FinalStatus.Alive;
             }
 
-            if (PlayerControl.LocalPlayer.isGM())
+            if (PlayerControl.LocalPlayer.IsGM())
             {
                 HudManager.Instance.ShadowQuad.gameObject.SetActive(false);
             }
@@ -906,7 +906,7 @@ namespace TheOtherThem
                     {
                         if (pva.VotedFor != targetId) continue;
                         pva.UnsetVote();
-                        var voteAreaPlayer = Helpers.playerById(pva.TargetPlayerId);
+                        var voteAreaPlayer = Helpers.PlayerById(pva.TargetPlayerId);
                         if (!voteAreaPlayer.AmOwner) continue;
                         MeetingHud.Instance.ClearVote();
                     }
@@ -947,7 +947,7 @@ namespace TheOtherThem
 
         public static void plagueDoctorInfected(byte targetId)
         {
-            var p = Helpers.playerById(targetId);
+            var p = Helpers.PlayerById(targetId);
             if (!PlagueDoctor.infected.ContainsKey(targetId))
             {
                 PlagueDoctor.infected[targetId] = p;
@@ -967,16 +967,16 @@ namespace TheOtherThem
 
         public static void serialKillerSuicide(byte serialKillerId)
         {
-            PlayerControl serialKiller = Helpers.playerById(serialKillerId);
+            PlayerControl serialKiller = Helpers.PlayerById(serialKillerId);
             if (serialKiller == null) return;
             serialKiller.MurderPlayerQuick(serialKiller);
         }
 		
         public static void fortuneTellerUsedDivine(byte fortuneTellerId, byte targetId) {
-            PlayerControl fortuneTeller = Helpers.playerById(fortuneTellerId);
-            PlayerControl target = Helpers.playerById(targetId);
+            PlayerControl fortuneTeller = Helpers.PlayerById(fortuneTellerId);
+            PlayerControl target = Helpers.PlayerById(targetId);
             if (target == null) return;
-            if (target.isDead()) return;
+            if (target.IsDead()) return;
             // 呪殺
             if (target.IsRole(RoleType.Fox)) {
                 KillAnimationCoPerformKillPatch.hideNextAnimation = true;
@@ -993,7 +993,7 @@ namespace TheOtherThem
             }
 
             // インポスターの場合は占い師の位置に矢印を表示
-            if (PlayerControl.LocalPlayer.isImpostor()) {
+            if (PlayerControl.LocalPlayer.IsImpostor()) {
                 FortuneTeller.fortuneTellerMessage(ModTranslation.GetString("fortuneTellerDivinedSomeone"), 5f, Color.white);
                 FortuneTeller.setDivinedFlag(fortuneTeller, true);
             }

@@ -14,11 +14,11 @@ namespace TheOtherThem.Patches {
     class HudManagerUpdatePatch
     {
         static void resetNameTagsAndColors() {
-            Dictionary<byte, PlayerControl> playersById = Helpers.allPlayersById();
+            Dictionary<byte, PlayerControl> playersById = Helpers.AllPlayersById();
 
             foreach (PlayerControl player in PlayerControl.AllPlayerControls) {
-                player.cosmetics.nameText.text = Helpers.hidePlayerName(PlayerControl.LocalPlayer, player) ? "" : player.CurrentOutfit.PlayerName;
-                if (PlayerControl.LocalPlayer.isImpostor() && player.isImpostor()) {
+                player.cosmetics.nameText.text = Helpers.ShouldHidePlayerName(PlayerControl.LocalPlayer, player) ? "" : player.CurrentOutfit.PlayerName;
+                if (PlayerControl.LocalPlayer.IsImpostor() && player.IsImpostor()) {
                     player.cosmetics.nameText.color = Palette.ImpostorRed;
                 } else {
                     player.cosmetics.nameText.color = Color.white;
@@ -39,13 +39,13 @@ namespace TheOtherThem.Patches {
                 }
             }
 
-            if (PlayerControl.LocalPlayer.isImpostor()) {
-                List<PlayerControl> impostors = PlayerControl.AllPlayerControls.ToArray().Where(x => x.isImpostor()).ToList();
+            if (PlayerControl.LocalPlayer.IsImpostor()) {
+                List<PlayerControl> impostors = PlayerControl.AllPlayerControls.ToArray().Where(x => x.IsImpostor()).ToList();
                 foreach (PlayerControl player in impostors)
                     player.cosmetics.nameText.color = Palette.ImpostorRed;
                 if (MeetingHud.Instance != null)
                     foreach (PlayerVoteArea player in MeetingHud.Instance.playerStates) {
-                        PlayerControl playerControl = Helpers.playerById((byte)player.TargetPlayerId);
+                        PlayerControl playerControl = Helpers.PlayerById((byte)player.TargetPlayerId);
                         if (playerControl != null && playerControl.Data.Role.IsImpostor)
                             player.NameText.color =  Palette.ImpostorRed;
                     }
@@ -172,7 +172,7 @@ namespace TheOtherThem.Patches {
                 {
                     foreach (var p in PlayerControl.AllPlayerControls)
                     {
-                        if (p.isImpostor() || p.IsRole(RoleType.Spy))
+                        if (p.IsImpostor() || p.IsRole(RoleType.Spy))
                         {
                             setPlayerNameColor(p, Palette.ImpostorRed);
                         }
@@ -247,13 +247,13 @@ namespace TheOtherThem.Patches {
                  MeetingHud.Instance.state == MeetingHud.VoteStates.Discussion);
             
             // Lovers
-            if (PlayerControl.LocalPlayer.isLovers() && PlayerControl.LocalPlayer.IsAlive()) {
+            if (PlayerControl.LocalPlayer.IsInLove() && PlayerControl.LocalPlayer.IsAlive()) {
                 string suffix = Lovers.getIcon(PlayerControl.LocalPlayer);
                 var lover1 = PlayerControl.LocalPlayer;
-                var lover2 = PlayerControl.LocalPlayer.getPartner();
+                var lover2 = PlayerControl.LocalPlayer.GetPartner();
 
                 lover1.cosmetics.nameText.text += suffix;
-                if (!Helpers.hidePlayerName(lover2))
+                if (!Helpers.ShouldHidePlayerName(lover2))
                     lover2.cosmetics.nameText.text += suffix;
 
                 if (meetingShow)
@@ -261,7 +261,7 @@ namespace TheOtherThem.Patches {
                         if (lover1.PlayerId == player.TargetPlayerId || lover2.PlayerId == player.TargetPlayerId)
                             player.NameText.text += suffix;
             }
-            else if (MapOptions.ghostsSeeRoles && PlayerControl.LocalPlayer.isDead())
+            else if (MapOptions.ghostsSeeRoles && PlayerControl.LocalPlayer.IsDead())
             {
                 foreach (var couple in Lovers.couples)
                 {
@@ -281,7 +281,7 @@ namespace TheOtherThem.Patches {
             bool localIsKnowingTarget = Lawyer.lawyer != null && Lawyer.target != null && Lawyer.targetKnows && Lawyer.target == PlayerControl.LocalPlayer;
             if (localIsLawyer || (localIsKnowingTarget && !Lawyer.lawyer.Data.IsDead)) {
                 string suffix = Helpers.ColorString(Lawyer.color, " §");
-                if (!Helpers.hidePlayerName(Lawyer.target))
+                if (!Helpers.ShouldHidePlayerName(Lawyer.target))
                     Lawyer.target.cosmetics.nameText.text += suffix;
 
                 if (meetingShow)
@@ -294,8 +294,8 @@ namespace TheOtherThem.Patches {
             if (PlayerControl.LocalPlayer != null && MapOptions.showLighterDarker) {
                 if (meetingShow) {
                     foreach (PlayerVoteArea player in MeetingHud.Instance.playerStates) {
-                        var target = Helpers.playerById(player.TargetPlayerId);
-                        if (target != null)  player.NameText.text += $" ({(Helpers.isLighterColor(target.Data.DefaultOutfit.ColorId) ? ModTranslation.GetString("detectiveLightLabel") : ModTranslation.GetString("detectiveDarkLabel"))})";
+                        var target = Helpers.PlayerById(player.TargetPlayerId);
+                        if (target != null)  player.NameText.text += $" ({(Helpers.IsLighterColor(target.Data.DefaultOutfit.ColorId) ? ModTranslation.GetString("detectiveLightLabel") : ModTranslation.GetString("detectiveDarkLabel"))})";
                     }
                 }
             }
@@ -324,7 +324,7 @@ namespace TheOtherThem.Patches {
             if (growingProgress != 1f)
                 suffix = " <color=#FAD934FF>(" + Mathf.FloorToInt(growingProgress * 18) + ")</color>"; 
 
-            if (!Helpers.hidePlayerName(Mini.mini))
+            if (!Helpers.ShouldHidePlayerName(Mini.mini))
                 Mini.mini.cosmetics.nameText.text += suffix;
 
             if (MeetingHud.Instance != null) {
@@ -333,7 +333,7 @@ namespace TheOtherThem.Patches {
                         player.NameText.text += suffix;
             }
 
-            if (Morphling.morphling != null && Morphling.morphTarget == Mini.mini && Morphling.morphTimer > 0f && !Helpers.hidePlayerName(Morphling.morphling))
+            if (Morphling.morphling != null && Morphling.morphTarget == Mini.mini && Morphling.morphTimer > 0f && !Helpers.ShouldHidePlayerName(Morphling.morphling))
                 Morphling.morphling.cosmetics.nameText.text += suffix;
         }
 

@@ -105,7 +105,7 @@ namespace TheOtherThem
                     List<PlayerControl> newInfected = new List<PlayerControl>();
                     foreach (PlayerControl target in PlayerControl.AllPlayerControls)
                     { // 非感染プレイヤーのループ
-                        if (target == Player || target.isDead() || infected.ContainsKey(target.PlayerId) || target.inVent) continue;
+                        if (target == Player || target.IsDead() || infected.ContainsKey(target.PlayerId) || target.inVent) continue;
 
                         // データが無い場合は作成する
                         if (!progress.ContainsKey(target.PlayerId))
@@ -115,7 +115,7 @@ namespace TheOtherThem
 
                         foreach (var source in infected.Values.ToList())
                         { // 感染プレイヤーのループ
-                            if (source.isDead()) continue;
+                            if (source.IsDead()) continue;
                             float distance = Vector3.Distance(source.transform.position, target.transform.position);
                             // 障害物判定
                             bool anythingBetween = PhysicsHelpers.AnythingBetween(source.GetTruePosition(), target.GetTruePosition(), Constants.ShipAndObjectsMask, false);
@@ -156,7 +156,7 @@ namespace TheOtherThem
                     bool winFlag = true;
                     foreach (PlayerControl p in PlayerControl.AllPlayerControls)
                     {
-                        if (p.isDead()) continue;
+                        if (p.IsDead()) continue;
                         if (p == Player) continue;
                         if (!infected.ContainsKey(p.PlayerId))
                         {
@@ -187,7 +187,7 @@ namespace TheOtherThem
                 return;
             }
 
-            if ((Player != null && PlayerControl.LocalPlayer == Player) || PlayerControl.LocalPlayer.isDead())
+            if ((Player != null && PlayerControl.LocalPlayer == Player) || PlayerControl.LocalPlayer.IsDead())
             {
                 if (statusText == null)
                 {
@@ -246,7 +246,7 @@ namespace TheOtherThem
                     plagueDoctorButton.Timer = plagueDoctorButton.MaxTimer;
                     Local.currentTarget = null;
                 },
-                () => {/*ボタンが有効になる条件*/ return PlayerControl.LocalPlayer.IsRole(RoleType.PlagueDoctor) && Local.numInfections > 0 && !PlayerControl.LocalPlayer.isDead(); },
+                () => {/*ボタンが有効になる条件*/ return PlayerControl.LocalPlayer.IsRole(RoleType.PlagueDoctor) && Local.numInfections > 0 && !PlayerControl.LocalPlayer.IsDead(); },
                 () => {/*ボタンが使える条件*/
                     if (numInfectionsText != null)
                     {
@@ -277,7 +277,7 @@ namespace TheOtherThem
         public static Sprite getSyringeIcon()
         {
             if (plagueDoctorIcon) return plagueDoctorIcon;
-            plagueDoctorIcon = Helpers.loadSpriteFromResources("TheOtherThem.Resources.InfectButton.png", 115f);
+            plagueDoctorIcon = Helpers.LoadSpriteFromResources("TheOtherThem.Resources.InfectButton.png", 115f);
             return plagueDoctorIcon;
         }
 
@@ -290,7 +290,7 @@ namespace TheOtherThem
         {
             foreach (var pc in PlayerControl.AllPlayerControls)
             {
-                dead[pc.PlayerId] = pc.isDead();
+                dead[pc.PlayerId] = pc.IsDead();
             }
         }
 

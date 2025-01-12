@@ -350,7 +350,7 @@ namespace TheOtherThem
 
         public List<byte> generateTasks()
         {
-            return Helpers.generateTasks(commonTasks, shortTasks, longTasks);
+            return Helpers.GenerateTasks(commonTasks, shortTasks, longTasks);
         }
 
         public CustomTasksOption(int id, int commonDef, int longDef, int shortDef, CustomOption parent = null)

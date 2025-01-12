@@ -89,7 +89,7 @@ namespace TheOtherThem
                 List<PlayerControl> crewNoRole = new List<PlayerControl>();
                 List<PlayerControl> validCrewmates = new List<PlayerControl>();
 
-                foreach (var player in PlayerControl.AllPlayerControls.ToArray().Where(x => x.isCrew() && !hasModifier(x)).ToList())
+                foreach (var player in PlayerControl.AllPlayerControls.ToArray().Where(x => x.IsCrewmate() && !hasModifier(x)).ToList())
                 {
                     var info = RoleInfo.getRoleInfoForPlayer(player, includeHidden: true);
                     if (info.Contains(RoleInfo.crewmate))
@@ -125,7 +125,7 @@ namespace TheOtherThem
 
         public override void OnDeath(PlayerControl killer = null)
         {
-            player.clearAllTasks();
+            player.ClearAllTasks();
         }
 
         public override void HandleDisconnect(PlayerControl player, DisconnectReasons reason) { }
@@ -147,7 +147,7 @@ namespace TheOtherThem
 
         public void assignTasks()
         {
-            player.generateAndAssignTasks(numCommonTasks, numShortTasks, numLongTasks);
+            player.GenerateAndAssignTasks(numCommonTasks, numShortTasks, numLongTasks);
         }
 
         public static bool knowsImpostors(PlayerControl player)

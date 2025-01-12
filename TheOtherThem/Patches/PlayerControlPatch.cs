@@ -26,8 +26,8 @@ namespace TheOtherThem.Patches
             float num = GameManager.Instance.LogicOptions.GetKillDistance();
             if (!ShipStatus.Instance) return result;
             if (targetingPlayer == null) targetingPlayer = PlayerControl.LocalPlayer;
-            if (targetingPlayer.isDead() || targetingPlayer.inVent) return result;
-            if (targetingPlayer.isGM()) return result;
+            if (targetingPlayer.IsDead() || targetingPlayer.inVent) return result;
+            if (targetingPlayer.IsGM()) return result;
 
             if (untargetablePlayers == null)
             {
@@ -189,7 +189,7 @@ namespace TheOtherThem.Patches
                 blockShift = new List<PlayerControl>();
                 foreach (var playerId in Shifter.pastShifters)
                 {
-                    blockShift.Add(Helpers.playerById((byte)playerId));
+                    blockShift.Add(Helpers.PlayerById((byte)playerId));
                 }
             }
 
@@ -221,7 +221,7 @@ namespace TheOtherThem.Patches
                 Detective.timer = Detective.footprintIntervall;
                 foreach (PlayerControl player in PlayerControl.AllPlayerControls)
                 {
-                    if (player != null && player != PlayerControl.LocalPlayer && !player.Data.IsDead && !player.inVent && !player.isGM())
+                    if (player != null && player != PlayerControl.LocalPlayer && !player.Data.IsDead && !player.inVent && !player.IsGM())
                     {
                         new Footprint(Detective.footprintDuration, Detective.anonymousFootprints, player);
                     }
@@ -501,14 +501,14 @@ namespace TheOtherThem.Patches
                 }
             }
 
-            var canSeeEverything = PlayerControl.LocalPlayer.isDead() || PlayerControl.LocalPlayer.isGM();
+            var canSeeEverything = PlayerControl.LocalPlayer.IsDead() || PlayerControl.LocalPlayer.IsGM();
             foreach (PlayerControl p in PlayerControl.AllPlayerControls)
             {
                 if (p == null) continue;
 
                 var canSeeInfo =
                     canSeeEverything ||
-                    p == PlayerControl.LocalPlayer || p.isGM() || 
+                    p == PlayerControl.LocalPlayer || p.IsGM() || 
                     (Lawyer.lawyerKnowsRole && PlayerControl.LocalPlayer == Lawyer.lawyer && p == Lawyer.target);
 
                 if (canSeeInfo)
@@ -575,14 +575,14 @@ namespace TheOtherThem.Patches
                         playerInfoText = $"{roleNames}";
                         meetingInfoText = playerInfoText;
                     }
-                    else if (p.isGM() || PlayerControl.LocalPlayer.isGM())
+                    else if (p.IsGM() || PlayerControl.LocalPlayer.IsGM())
                     {
                         playerInfoText = $"{roleNames} {taskInfo}".Trim();
                         meetingInfoText = playerInfoText;
                     }
 
                     playerInfo.text = playerInfoText;
-                    playerInfo.gameObject.SetActive(p.Visible && !Helpers.hidePlayerName(p));
+                    playerInfo.gameObject.SetActive(p.Visible && !Helpers.ShouldHidePlayerName(p));
                     if (meetingInfo != null) meetingInfo.text = MeetingHud.Instance.state == MeetingHud.VoteStates.Results ? "" : meetingInfoText;
                 }
             }
@@ -716,7 +716,7 @@ namespace TheOtherThem.Patches
                 var possibleTargets = new List<PlayerControl>();
                 foreach (PlayerControl p in PlayerControl.AllPlayerControls)
                 {
-                    if (!p.Data.IsDead && !p.Data.Disconnected && !p.Data.Role.IsImpostor && p != Spy.spy && (p != Mini.mini || Mini.isGrownUp()) && !p.isGM() && BountyHunter.bountyHunter.getPartner() != p) possibleTargets.Add(p);
+                    if (!p.Data.IsDead && !p.Data.Disconnected && !p.Data.Role.IsImpostor && p != Spy.spy && (p != Mini.mini || Mini.isGrownUp()) && !p.IsGM() && BountyHunter.bountyHunter.GetPartner() != p) possibleTargets.Add(p);
                 }
                 BountyHunter.bounty = possibleTargets[TheOtherRoles.rnd.Next(0, possibleTargets.Count)];
                 if (BountyHunter.bounty == null) return;
@@ -760,12 +760,12 @@ namespace TheOtherThem.Patches
                 DeadPlayer deadPlayer = DeadPlayers?.Where(x => x.player?.PlayerId == Bait.bait.PlayerId)?.FirstOrDefault();
                 if (deadPlayer.killerIfExisting != null && Bait.reportDelay <= 0f)
                 {
-                    Helpers.handleVampireBiteOnBodyReport(); // Manually call Vampire handling, since the CmdReportDeadBody Prefix won't be called
+                    Helpers.HandleVampireBiteOnBodyReport(); // Manually call Vampire handling, since the CmdReportDeadBody Prefix won't be called
 
                     byte reporter = deadPlayer.killerIfExisting.PlayerId;
                     if (Bait.bait.hasModifier(ModifierType.Madmate))
                     {
-                        var candidates = PlayerControl.AllPlayerControls.ToArray().Where(x => x.IsAlive() && !x.isImpostor() && !x.isDummy).ToList();
+                        var candidates = PlayerControl.AllPlayerControls.ToArray().Where(x => x.IsAlive() && !x.IsImpostor() && !x.isDummy).ToList();
                         int i = rnd.Next(0, candidates.Count);
                         reporter = candidates.Count > 0 ? candidates[i].PlayerId : deadPlayer.killerIfExisting.PlayerId;
                     }
@@ -871,7 +871,7 @@ namespace TheOtherThem.Patches
 
             foreach (byte playerID in MapOptions.playerIcons.Keys)
             {
-                PlayerControl pc = Helpers.playerById(playerID);
+                PlayerControl pc = Helpers.PlayerById(playerID);
                 PoolablePlayer pp = MapOptions.playerIcons[playerID];
                 if (pc.Data.Disconnected)
                 {
@@ -882,11 +882,11 @@ namespace TheOtherThem.Patches
                 pp.gameObject.SetActive(showIcon);
                 if (pc.Data.IsDead)
                 {
-                    pp.setSemiTransparent(true);
+                    pp.SetSemiTransparent(true);
                 }
                 else
                 {
-                    pp.setSemiTransparent(false);
+                    pp.SetSemiTransparent(false);
                 }
             }
 
@@ -972,7 +972,7 @@ namespace TheOtherThem.Patches
                 setBasePlayerOutlines();
 
                 // Update Role Description
-                Helpers.refreshRoleDescription(__instance);
+                Helpers.RefreshRoleDescription(__instance);
 
                 // Update Player Info
                 updatePlayerInfo();
@@ -1058,9 +1058,9 @@ namespace TheOtherThem.Patches
     {
         public static bool Prefix(PlayerControl __instance)
         {
-            Helpers.handleVampireBiteOnBodyReport();
+            Helpers.HandleVampireBiteOnBodyReport();
 
-            if (__instance.isGM())
+            if (__instance.IsGM())
             {
                 return false;
             }
@@ -1097,7 +1097,7 @@ namespace TheOtherThem.Patches
                         }
                         else if (timeSinceDeath < Detective.reportColorDuration * 1000)
                         {
-                            var typeOfColor = Helpers.isLighterColor(deadPlayer.killerIfExisting.Data.DefaultOutfit.ColorId) ?
+                            var typeOfColor = Helpers.IsLighterColor(deadPlayer.killerIfExisting.Data.DefaultOutfit.ColorId) ?
                                 ModTranslation.GetString("detectiveColorLight") :
                                 ModTranslation.GetString("detectiveColorDark");
                             msg = String.Format(ModTranslation.GetString("detectiveReportColor"), typeOfColor);
@@ -1143,7 +1143,7 @@ namespace TheOtherThem.Patches
                 Morphling.resetMorph();
             }
 
-            target.resetMorph();
+            target.ResetMorph();
         }
 
         public static void Postfix(PlayerControl __instance, [HarmonyArgument(0)] PlayerControl target)
@@ -1157,8 +1157,8 @@ namespace TheOtherThem.Patches
             if (resetToDead) __instance.Data.IsDead = true;
 
             // Remove fake tasks when player dies
-            if (target.hasFakeTasks())
-                target.clearAllTasks();
+            if (target.HasFakeTasks())
+                target.ClearAllTasks();
 
             // Sidekick promotion trigger on murder
             if (Sidekick.promotesToJackal && Sidekick.sidekick != null && !Sidekick.sidekick.Data.IsDead && target == Jackal.jackal && Jackal.jackal == PlayerControl.LocalPlayer)
@@ -1277,7 +1277,7 @@ namespace TheOtherThem.Patches
             if (GameManager.Instance.LogicOptions.GetKillCooldown() <= 0f) return false;
             float multiplier = 1f;
             float addition = 0f;
-            if (PlayerControl.LocalPlayer.IsRole(RoleType.Mini) && PlayerControl.LocalPlayer.isImpostor()) multiplier = Mini.isGrownUp() ? 0.66f : 2f;
+            if (PlayerControl.LocalPlayer.IsRole(RoleType.Mini) && PlayerControl.LocalPlayer.IsImpostor()) multiplier = Mini.isGrownUp() ? 0.66f : 2f;
             if (PlayerControl.LocalPlayer.IsRole(RoleType.BountyHunter)) addition = BountyHunter.punishmentTime;
             if (PlayerControl.LocalPlayer.IsRole(RoleType.Ninja) && Ninja.isPenalized(PlayerControl.LocalPlayer)) addition = Ninja.killPenalty;
 
@@ -1333,8 +1333,8 @@ namespace TheOtherThem.Patches
             GameHistory.DeadPlayers.Add(deadPlayer);
 
             // Remove fake tasks when player dies
-            if (__instance.hasFakeTasks())
-                __instance.clearAllTasks();
+            if (__instance.HasFakeTasks())
+                __instance.ClearAllTasks();
 
             __instance.OnDeath(killer: null);
 

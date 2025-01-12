@@ -61,9 +61,9 @@ namespace TheOtherThem {
                 playerInfo.Object &&
                 (GameOptionsManager.Instance.CurrentGameOptions.Cast<NormalGameOptionsV08>().GhostsDoTasks || !playerInfo.IsDead) &&
                 playerInfo.Role && playerInfo.Role.TasksCountTowardProgress &&
-                !(playerInfo.Object.isGM() && !GM.hasTasks) &&
-                !(playerInfo.Object.isLovers() && !Lovers.hasTasks) &&
-                !playerInfo.Object.hasFakeTasks()
+                !(playerInfo.Object.IsGM() && !GM.hasTasks) &&
+                !(playerInfo.Object.IsInLove() && !Lovers.hasTasks) &&
+                !playerInfo.Object.HasFakeTasks()
                 ) {
 
                 for (int j = 0; j < playerInfo.Tasks.Count; j++) {
@@ -84,7 +84,7 @@ namespace TheOtherThem {
                 for (int i = 0; i < __instance.AllPlayers.Count; i++) {
                     NetworkedPlayerInfo playerInfo = __instance.AllPlayers[i];
                     if (playerInfo.Object &&
-                        ((playerInfo.Object?.isLovers() == true && !Lovers.tasksCount) ||
+                        ((playerInfo.Object?.IsInLove() == true && !Lovers.tasksCount) ||
                          (playerInfo.PlayerId == Shifter.shifter?.PlayerId && Shifter.isNeutral) || // Neutral shifter has tasks, but they don't count
                           playerInfo.PlayerId == Lawyer.lawyer?.PlayerId || // Tasks of the Lawyer do not count
                          (playerInfo.PlayerId == Pursuer.pursuer?.PlayerId && Pursuer.pursuer.Data.IsDead) || // Tasks of the Pursuer only count, if he's alive

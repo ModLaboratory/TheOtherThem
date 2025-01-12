@@ -116,7 +116,7 @@ namespace TheOtherThem
 
         public static string getIcon(PlayerControl player)
         {
-            if (isLovers(player))
+            if (IsInLove(player))
             {
                 var couple = couples.Find(x => x.lover1 == player || x.lover2 == player);
                 return couple.icon;
@@ -162,10 +162,10 @@ namespace TheOtherThem
 
         public static void killLovers(PlayerControl player, PlayerControl killer = null)
         {
-            if (!player.isLovers()) return;
+            if (!player.IsInLove()) return;
 
             if (separateTeam && tasksCount)
-                player.clearAllTasks();
+                player.ClearAllTasks();
 
             if (!bothDie) return;
 
@@ -187,7 +187,7 @@ namespace TheOtherThem
                 }
 
                 if (separateTeam && tasksCount)
-                    partner.clearAllTasks();
+                    partner.ClearAllTasks();
             }
         }
 
@@ -201,7 +201,7 @@ namespace TheOtherThem
             return null;
         }
 
-        public static bool isLovers(PlayerControl player)
+        public static bool IsInLove(PlayerControl player)
         {
             return getCouple(player) != null;
         }

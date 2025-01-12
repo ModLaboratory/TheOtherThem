@@ -13,7 +13,7 @@ namespace TheOtherThem.Objects {
         private static Sprite sprite;
         public static Sprite GetSprite() {
             if (sprite) return sprite;
-            sprite = Helpers.loadSpriteFromResources("TheOtherThem.Resources.Arrow.png", 200f);
+            sprite = Helpers.LoadSpriteFromResources("TheOtherThem.Resources.Arrow.png", 200f);
             return sprite;
         }
 

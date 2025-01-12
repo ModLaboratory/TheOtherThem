@@ -802,7 +802,7 @@ namespace TheOtherThem
             Modifier.allModifiers.DoIf(x => x.player == player, x => x.OnDeath(killer));
 
             // Lover suicide trigger on exile/death
-            if (player.isLovers())
+            if (player.IsInLove())
                 Lovers.killLovers(player, killer);
 
             RPCProcedure.updateMeeting(player.PlayerId, true);

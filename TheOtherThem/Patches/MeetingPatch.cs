@@ -33,7 +33,7 @@ namespace TheOtherThem.Patches {
             var nameplate = blankNameplate;
             if (!hideNameplates)
             {
-                var p = Helpers.playerById(playerId != Byte.MaxValue ? playerId : pva.TargetPlayerId);
+                var p = Helpers.PlayerById(playerId != Byte.MaxValue ? playerId : pva.TargetPlayerId);
                 var nameplateId = p?.CurrentOutfit?.NamePlateId;
                 nameplate = ShipStatus.Instance.CosmeticsCache.GetNameplate(nameplateId).Image;
             }
@@ -101,8 +101,8 @@ namespace TheOtherThem.Patches {
                     PlayerVoteArea playerVoteArea = __instance.playerStates[i];
                     byte votedFor = playerVoteArea.VotedFor;
                     if (votedFor != 252 && votedFor != 255 && votedFor != 254) {
-                        PlayerControl player = Helpers.playerById((byte)playerVoteArea.TargetPlayerId);
-                        if (player == null || player.Data == null || player.Data.IsDead || player.Data.Disconnected || player.isGM()) continue;
+                        PlayerControl player = Helpers.PlayerById((byte)playerVoteArea.TargetPlayerId);
+                        if (player == null || player.Data == null || player.Data.IsDead || player.Data.Disconnected || player.IsGM()) continue;
                         
                         // don't try to vote for the GM
                         if (GM.gm != null && votedFor == GM.gm.PlayerId) continue;
@@ -236,7 +236,7 @@ namespace TheOtherThem.Patches {
                     Dictionary<int, int> votesApplied = new Dictionary<int, int>();
                     for (int j = 0; j < states.Length; j++) {
                         MeetingHud.VoterState voterState = states[j];
-                        PlayerControl voter = Helpers.playerById(voterState.VoterId);
+                        PlayerControl voter = Helpers.PlayerById(voterState.VoterId);
                         if (voter == null) continue;
 
                         NetworkedPlayerInfo playerById = GameData.Instance.GetPlayerById(voterState.VoterId);
@@ -291,10 +291,10 @@ namespace TheOtherThem.Patches {
                 if (exiled != null)
                 {
                     finalStatuses[exiled.PlayerId] = FinalStatus.Exiled;
-                    bool isLovers = exiled.Object.isLovers();
+                    bool isLovers = exiled.Object.IsInLove();
 
                     if (isLovers)
-                        finalStatuses[exiled.Object.getPartner().PlayerId] = FinalStatus.Suicide;
+                        finalStatuses[exiled.Object.GetPartner().PlayerId] = FinalStatus.Suicide;
                 }
             }
         }
@@ -444,7 +444,7 @@ namespace TheOtherThem.Patches {
                         selectedButton = button;
                         buttons.ForEach(x => x.GetComponent<SpriteRenderer>().color = x == selectedButton ? Color.red : Color.white);
                     } else {
-                        PlayerControl focusedTarget = Helpers.playerById((byte)__instance.playerStates[buttonTarget].TargetPlayerId);
+                        PlayerControl focusedTarget = Helpers.PlayerById((byte)__instance.playerStates[buttonTarget].TargetPlayerId);
                         if (!(__instance.state == MeetingHud.VoteStates.Voted || __instance.state == MeetingHud.VoteStates.NotVoted) || focusedTarget == null || Guesser.remainingShots(PlayerControl.LocalPlayer.PlayerId) <= 0 ) return;
 
                         if (!Guesser.killsThroughShield && focusedTarget == Medic.shielded) { // Depending on the options, shooting the shielded player will not allow the guess, notifiy everyone about the kill attempt and close the window

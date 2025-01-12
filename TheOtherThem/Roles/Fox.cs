@@ -68,7 +68,7 @@ namespace TheOtherThem
         public override void OnDeath(PlayerControl killer = null)
         {
             exiledFox.Add(Player.PlayerId);
-            Player.clearAllTasks();
+            Player.ClearAllTasks();
             if (!Fox.isFoxAlive())
             {
                 foreach (var immoralist in Immoralist.AllPlayers)
@@ -98,7 +98,7 @@ namespace TheOtherThem
                     List<PlayerControl> untargetablePlayers = new List<PlayerControl>();
                     foreach (var p in PlayerControl.AllPlayerControls)
                     {
-                        if (p.isImpostor() || p.IsRole(RoleType.Jackal) || p.IsRole(RoleType.Sheriff))
+                        if (p.IsImpostor() || p.IsRole(RoleType.Jackal) || p.IsRole(RoleType.Sheriff))
                         {
                             untargetablePlayers.Add(p);
                         }
@@ -131,21 +131,21 @@ namespace TheOtherThem
         public static Sprite getHideButtonSprite()
         {
             if (hideButtonSprite) return hideButtonSprite;
-            hideButtonSprite = Helpers.loadSpriteFromResources("TheOtherThem.Resources.FoxHideButton.png", 115f);
+            hideButtonSprite = Helpers.LoadSpriteFromResources("TheOtherThem.Resources.FoxHideButton.png", 115f);
             return hideButtonSprite;
         }
 
         public static Sprite getRepairButtonSprite()
         {
             if (repairButtonSprite) return repairButtonSprite;
-            repairButtonSprite = Helpers.loadSpriteFromResources("TheOtherThem.Resources.RepairButton.png", 115f);
+            repairButtonSprite = Helpers.LoadSpriteFromResources("TheOtherThem.Resources.RepairButton.png", 115f);
             return repairButtonSprite;
         }
 
         public static Sprite getImmoralistButtonSprite()
         {
             if (immoralistButtonSprite) return immoralistButtonSprite;
-            immoralistButtonSprite = Helpers.loadSpriteFromResources("TheOtherThem.Resources.FoxImmoralistButton.png", 115f);
+            immoralistButtonSprite = Helpers.LoadSpriteFromResources("TheOtherThem.Resources.FoxImmoralistButton.png", 115f);
             return immoralistButtonSprite;
         }
 
@@ -342,7 +342,7 @@ namespace TheOtherThem
                 // インポスターの位置を示すArrorwを描画
                 foreach (PlayerControl p in PlayerControl.AllPlayerControls)
                 {
-                    if (p.isDead()) continue;
+                    if (p.IsDead()) continue;
                     Arrow arrow;
                     // float distance = Vector2.Distance(p.transform.position, PlayerControl.LocalPlayer.transform.position);
                     if (p.Data.Role.IsImpostor || p.IsRole(RoleType.Jackal) || p.IsRole(RoleType.Sheriff))
@@ -426,7 +426,7 @@ namespace TheOtherThem
 
         public void assignTasks()
         {
-            Player.generateAndAssignTasks(numCommonTasks, numShortTasks, numLongTasks);
+            Player.GenerateAndAssignTasks(numCommonTasks, numShortTasks, numLongTasks);
         }
 
         [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.BeginCrewmate))]
@@ -450,12 +450,12 @@ namespace TheOtherThem
                 if (IsRole(__instance.myPlayer))
                 {
                     var fox = __instance.myPlayer;
-                    if (fox == null || fox.isDead()) return;
+                    if (fox == null || fox.IsDead()) return;
 
                     bool canSee =
                         PlayerControl.LocalPlayer.IsRole(RoleType.Fox) ||
                         PlayerControl.LocalPlayer.IsRole(RoleType.Immoralist) ||
-                        PlayerControl.LocalPlayer.isDead() ||
+                        PlayerControl.LocalPlayer.IsDead() ||
                         (PlayerControl.LocalPlayer.IsRole(RoleType.Lighter) && Lighter.isLightActive(PlayerControl.LocalPlayer));
 
                     var opacity = canSee ? 0.1f : 0.0f;

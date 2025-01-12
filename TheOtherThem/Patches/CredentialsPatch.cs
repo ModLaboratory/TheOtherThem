@@ -49,7 +49,7 @@ namespace TheOtherThem.Patches
                 totLogo.transform.SetParent(GameObject.Find("RightPanel").transform, false);
                 totLogo.transform.localPosition = new Vector3(-0.4f, 1f, 5f);
                 var renderer = totLogo.AddComponent<SpriteRenderer>();
-                renderer.sprite = Helpers.loadSpriteFromResources("TheOtherThem.Resources.Banner.png", 300f);
+                renderer.sprite = Helpers.LoadSpriteFromResources("TheOtherThem.Resources.Banner.png", 300f);
 
                 var creditsPopup = Object.Instantiate(popupPrefab, popupPrefab.transform.parent);
                 creditsPopup.name = PopupName;

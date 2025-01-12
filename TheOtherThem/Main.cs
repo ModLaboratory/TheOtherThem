@@ -113,7 +113,7 @@ namespace TheOtherThem
         public static Sprite GetModStamp()
         {
             if (ModStamp) return ModStamp;
-            return ModStamp = Helpers.loadSpriteFromResources("TheOtherThem.Resources.ModStamp.png", 150f);
+            return ModStamp = Helpers.LoadSpriteFromResources("TheOtherThem.Resources.ModStamp.png", 150f);
         }
     }
 

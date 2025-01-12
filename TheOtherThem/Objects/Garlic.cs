@@ -13,14 +13,14 @@ namespace TheOtherThem.Objects {
         private static Sprite garlicSprite;
         public static Sprite getGarlicSprite() {
             if (garlicSprite) return garlicSprite;
-            garlicSprite = Helpers.loadSpriteFromResources("TheOtherThem.Resources.Garlic.png", 300f);
+            garlicSprite = Helpers.LoadSpriteFromResources("TheOtherThem.Resources.Garlic.png", 300f);
             return garlicSprite;
         }
 
         private static Sprite backgroundSprite;
         public static Sprite getBackgroundSprite() {
             if (backgroundSprite) return backgroundSprite;
-            backgroundSprite = Helpers.loadSpriteFromResources("TheOtherThem.Resources.GarlicBackground.png", 60f);
+            backgroundSprite = Helpers.LoadSpriteFromResources("TheOtherThem.Resources.GarlicBackground.png", 60f);
             return backgroundSprite;
         }
 

@@ -31,7 +31,7 @@ namespace TheOtherThem.Patches
                 return true;
             }
 
-            if (pc.isGM() && (isLights || isComms || isReactor || isO2))
+            if (pc.IsGM() && (isLights || isComms || isReactor || isO2))
             {
                 return true;
             }
@@ -118,12 +118,12 @@ namespace TheOtherThem.Patches
                     __result = num;
                     return false;
                 }
-                bool roleCouldUse = @object.roleCanUseVents();
+                bool roleCouldUse = @object.RoleCanUseVents();
 
                 var usableDistance = __instance.UsableDistance;
                 if (__instance.name.StartsWith("JackInTheBoxVent_"))
                 {
-                    if (Trickster.trickster != PlayerControl.LocalPlayer && !PlayerControl.LocalPlayer.isGM())
+                    if (Trickster.trickster != PlayerControl.LocalPlayer && !PlayerControl.LocalPlayer.IsGM())
                     {
                         // Only the Trickster can use the Jack-In-The-Boxes!
                         canUse = false;
@@ -220,10 +220,10 @@ namespace TheOtherThem.Patches
 
                     if (Helpers.ShowButtons)
                     {
-                        if (__instance.roleCanUseVents())
+                        if (__instance.RoleCanUseVents())
                             HudManager.Instance.ImpostorVentButton.Show();
 
-                        if (__instance.roleCanSabotage())
+                        if (__instance.RoleCanSabotage())
                         {
                             HudManager.Instance.SabotageButton.Show();
                             HudManager.Instance.SabotageButton.gameObject.SetActive(true);
@@ -344,7 +344,7 @@ namespace TheOtherThem.Patches
                 var statusText = "";
 
                 // Deactivate emergency button for GM
-                if (PlayerControl.LocalPlayer.isGM())
+                if (PlayerControl.LocalPlayer.IsGM())
                 {
                     roleCanCallEmergency = false;
                     statusText = ModTranslation.GetString("gmMeetingButton");
@@ -419,7 +419,7 @@ namespace TheOtherThem.Patches
 
                     //if (IsBlocked(__instance, pc.Object)) return false;
                     if (__instance.AllowImpostor) return true;
-                    if (!pc.Object.hasFakeTasks()) return true;
+                    if (!pc.Object.HasFakeTasks()) return true;
 
                     return false;
                 }

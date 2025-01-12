@@ -37,7 +37,7 @@ namespace TheOtherThem
 
         public override void OnDeath(PlayerControl killer = null)
         {
-            Player.clearAllTasks();
+            Player.ClearAllTasks();
         }
 
         public override void HandleDisconnect(PlayerControl player, DisconnectReasons reason) { }
@@ -70,7 +70,7 @@ namespace TheOtherThem
         public static Sprite getButtonSprite()
         {
             if (buttonSprite) return buttonSprite;
-            buttonSprite = Helpers.loadSpriteFromResources("TheOtherThem.Resources.SuicideButton.png", 115f);
+            buttonSprite = Helpers.LoadSpriteFromResources("TheOtherThem.Resources.SuicideButton.png", 115f);
             return buttonSprite;
         }
 

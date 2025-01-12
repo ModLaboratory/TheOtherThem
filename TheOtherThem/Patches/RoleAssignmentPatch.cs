@@ -45,8 +45,7 @@ namespace TheOtherThem.Patches
                 PlayerControl host = AmongUsClient.Instance?.GetHost().Character;
                 if (host.Data.Role.IsImpostor)
                 {
-                    Helpers.log("Why are we here");
-                    bool hostIsImpostor = host.Data.Role.IsImpostor;
+                    Main.Logger.LogInfo("Why are we here");
                     if (host.Data.Role.IsImpostor)
                     {
                         int newImpId = 0;
@@ -247,8 +246,8 @@ namespace TheOtherThem.Patches
             // Assign Lovers
             for (int i = 0; i < CustomOptionHolder.loversNumCouples.GetFloat(); i++)
             {
-                var singleCrew = data.crewmates.FindAll(x => !x.isLovers());
-                var singleImps = data.impostors.FindAll(x => !x.isLovers());
+                var singleCrew = data.crewmates.FindAll(x => !x.IsInLove());
+                var singleImps = data.impostors.FindAll(x => !x.IsInLove());
 
                 bool isOnlyRole = !CustomOptionHolder.loversCanHaveAnotherRole.GetBool();
                 if (rnd.Next(1, 101) <= CustomOptionHolder.loversSpawnRate.GetSelection() * 10)
@@ -561,7 +560,7 @@ namespace TheOtherThem.Patches
                 var possibleTargets = new List<PlayerControl>();
                 foreach (PlayerControl p in PlayerControl.AllPlayerControls)
                 {
-                    if (!p.Data.IsDead && !p.Data.Disconnected && !p.isLovers() && (p.Data.Role.IsImpostor || p == Jackal.jackal))
+                    if (!p.Data.IsDead && !p.Data.Disconnected && !p.IsInLove() && (p.Data.Role.IsImpostor || p == Jackal.jackal))
                         possibleTargets.Add(p);
                 }
                 if (possibleTargets.Count == 0)
@@ -615,7 +614,7 @@ namespace TheOtherThem.Patches
             var index = rnd.Next(0, playerList.Count);
             byte playerId = playerList[index].PlayerId;
             if (RoleInfo.lovers.Enabled &&
-                Helpers.playerById(playerId)?.isLovers() == true &&
+                Helpers.PlayerById(playerId)?.IsInLove() == true &&
                 blockLovers.Contains(roleId))
             {
                 return byte.MaxValue;

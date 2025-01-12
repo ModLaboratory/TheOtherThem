@@ -34,7 +34,7 @@ namespace TheOtherThem.Patches {
                     {
                         player.transform.localPosition = Vector3.zero;
                         player.transform.localScale = Vector3.one * 0.3f;
-                        player.setSemiTransparent(false);
+                        player.SetSemiTransparent(false);
                         player.gameObject.SetActive(false);
                     }
                     else
@@ -62,10 +62,10 @@ namespace TheOtherThem.Patches {
 
             if (PlayerControl.LocalPlayer == GM.gm && !GM.hasTasks)
             {
-                PlayerControl.LocalPlayer.clearAllTasks();
+                PlayerControl.LocalPlayer.ClearAllTasks();
             }
 
-            if (PlayerControl.LocalPlayer.isGM())
+            if (PlayerControl.LocalPlayer.IsGM())
             {
                 HudManager.Instance.ShadowQuad.gameObject.SetActive(false);
                 HudManager.Instance.ReportButton.gameObject.SetActiveRecursively(false);
@@ -95,7 +95,7 @@ namespace TheOtherThem.Patches {
             }
 
             // Don't show the GM
-            if (!PlayerControl.LocalPlayer.isGM())
+            if (!PlayerControl.LocalPlayer.IsGM())
             {
                 var newTeam = new Il2CppSystem.Collections.Generic.List<PlayerControl>();
                 foreach (PlayerControl p in yourTeam)
@@ -124,7 +124,7 @@ namespace TheOtherThem.Patches {
             RoleInfo roleInfo = infos.Where(info => info.MyRoleType != RoleType.Lovers).FirstOrDefault();
             if (roleInfo == null) return;
             Main.Logger.LogInfo($"{PlayerControl.LocalPlayer.IsNeutral()} | {roleInfo.MyRoleType}");
-            if (PlayerControl.LocalPlayer.IsNeutral() || PlayerControl.LocalPlayer.isGM())
+            if (PlayerControl.LocalPlayer.IsNeutral() || PlayerControl.LocalPlayer.IsGM())
             {
                 __instance.BackgroundBar.material.color = roleInfo.RoleColor;
                 __instance.TeamTitle.text = roleInfo.Name;
@@ -168,7 +168,7 @@ namespace TheOtherThem.Patches {
                 }
 
                 if (infos.Any(info => info.MyRoleType == RoleType.Lovers)) {
-                    PlayerControl otherLover = PlayerControl.LocalPlayer.getPartner();
+                    PlayerControl otherLover = PlayerControl.LocalPlayer.GetPartner();
                 	intro.RoleBlurbText.text += "\n" + Helpers.ColorString(Lovers.color, String.Format(ModTranslation.GetString("loversFlavor"), otherLover?.Data?.PlayerName ?? ""));
                 } 
             }

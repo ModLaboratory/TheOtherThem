@@ -19,7 +19,7 @@ namespace TheOtherThem.Patches {
         public class AmongUsClientOnPlayerJoinedPatch {
             public static void Postfix() {
                 if (PlayerControl.LocalPlayer != null) {
-                    Helpers.shareGameVersion();
+                    Helpers.ShareGameVersion();
                 }
             }
         }
@@ -54,7 +54,7 @@ namespace TheOtherThem.Patches {
                 // Send version as soon as PlayerControl.LocalPlayer exists
                 if (PlayerControl.LocalPlayer != null && !versionSent) {
                     versionSent = true;
-                    Helpers.shareGameVersion();
+                    Helpers.ShareGameVersion();
                 }
 
                 // Host update with version handshake infos
