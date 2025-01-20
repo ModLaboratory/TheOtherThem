@@ -17,14 +17,14 @@ using UnityEngine;
 
 namespace TheOtherThem
 {
-    [BepInPlugin(ModBaseInfo.Id, "TheOtherThem", ModBaseInfo.VersionString)]
+    [BepInPlugin(ModBasicInfo.Id, "TheOtherThem", ModBasicInfo.VersionString)]
     [BepInProcess("Among Us.exe")]
     public class Main : BasePlugin
     {
-        public static Version Version => Version.Parse(ModBaseInfo.VersionString);
+        public static Version Version => Version.Parse(ModBasicInfo.VersionString);
         internal static BepInEx.Logging.ManualLogSource Logger { get; private set; }
 
-        public Harmony Harmony { get; } = new Harmony(ModBaseInfo.Id);
+        public Harmony Harmony { get; } = new Harmony(ModBasicInfo.Id);
         public static Main Instance { get; private set; }
 
         public static ConfigEntry<bool> DebugMode { get; private set; }
@@ -103,11 +103,11 @@ namespace TheOtherThem
             Logger.LogMessage("");
 
             string currentGameVersion = Application.version;
-            Logger.LogInfo($"{nameof(ModBaseInfo)}.{nameof(ModBaseInfo.VersionString)} = {ModBaseInfo.VersionString}");
+            Logger.LogInfo($"{nameof(ModBasicInfo)}.{nameof(ModBasicInfo.VersionString)} = {ModBasicInfo.VersionString}");
             Logger.LogInfo($"{nameof(Application)}.{nameof(Application.version)} = {currentGameVersion}");
 
-            if (Application.version != ModBaseInfo.SupportedGameVersion)
-                Logger.LogWarning($"Unsupported game version {currentGameVersion} detected ({ModBaseInfo.SupportedGameVersion})");
+            if (Application.version != ModBasicInfo.SupportedGameVersion)
+                Logger.LogWarning($"Unsupported game version {currentGameVersion} detected ({ModBasicInfo.SupportedGameVersion})");
         }
 
         public static Sprite GetModStamp()

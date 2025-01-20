@@ -1,20 +1,15 @@
-using System.Collections.Generic;
-using UnityEngine;
-using BepInEx.Configuration;
-using System;
-using System.Linq;
-using HarmonyLib;
-using Hazel;
-using System.Reflection;
-using System.Text;
-using static TheOtherThem.TheOtherRoles;
-using static TheOtherThem.CustomOption;
 using AmongUs.GameOptions;
-using BepInEx.Unity.IL2CPP;
 using BepInEx;
-using Il2CppInterop.Runtime.InteropTypes.Arrays;
-using TMPro;
+using BepInEx.Configuration;
+using BepInEx.Unity.IL2CPP;
+using Hazel;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using TheOtherThem.ToTRole;
+using TMPro;
+using UnityEngine;
+using static TheOtherThem.CustomOption;
 
 namespace TheOtherThem
 {
@@ -76,13 +71,13 @@ namespace TheOtherThem
 
         public CustomOption(int id, string name, object[] selections, object defaultValue, CustomOption parent, bool isHeader, bool isHidden, string format, int index)
         {
-            Init(id, name, selections, defaultValue, parent, isHeader, isHidden, format, ref index);
+            Init(id, name, selections, defaultValue, parent, isHeader, isHidden, format, index);
         }
 
         private void InitWithoutRegistration(int id, string name, object[] selections, object defaultValue, CustomOption parent, bool isHeader, bool isHidden, string format)
         {
             Id = id;
-            Name = name + $"({Options.Count})";
+            Name = name;
             Format = format;
             Selections = selections;
             int index = Array.IndexOf(selections, defaultValue);
@@ -108,11 +103,11 @@ namespace TheOtherThem
             }
         }
 
-        public void Init(int id, string name, object[] selections, object defaultValue, CustomOption parent, bool isHeader, bool isHidden, string format, ref int insertion)
+        public void Init(int id, string name, object[] selections, object defaultValue, CustomOption parent, bool isHeader, bool isHidden, string format, int insertion)
         {
             InitWithoutRegistration(id, name, selections, defaultValue, parent, isHeader, isHidden, format);
 
-            Options.Insert(insertion++, this);
+            Options.Insert(insertion, this);
         }
 
         private static List<float> Range(float min, float max, float step)
@@ -123,12 +118,25 @@ namespace TheOtherThem
             return selections;
         }
 
-        public static int GetIndex(TeamTypeToT team) => team switch
+        public static int GetIndex(TeamTypeToT team)
         {
-            TeamTypeToT.Crewmate => CustomOptionHolder.OptionInsertionIndices.Crewmate++,
-            TeamTypeToT.Neutral => CustomOptionHolder.OptionInsertionIndices.Neutral++,
-            TeamTypeToT.Impostor => CustomOptionHolder.OptionInsertionIndices.Impostor++
-        };
+            // Creation order in CustomOptionHolder: Impostor => Neutral => Crewmate
+            switch (team)
+            {
+                case TeamTypeToT.Crewmate:
+                    return CustomOptionHolder.OptionInsertionIndices.Crewmate++;
+                case TeamTypeToT.Neutral:
+                    CustomOptionHolder.OptionInsertionIndices.Crewmate++;
+                    return CustomOptionHolder.OptionInsertionIndices.Neutral++;
+                case TeamTypeToT.Impostor:
+                    CustomOptionHolder.OptionInsertionIndices.Crewmate++;
+                    CustomOptionHolder.OptionInsertionIndices.Neutral++;
+                    return CustomOptionHolder.OptionInsertionIndices.Impostor++;
+                default:
+                    Main.Logger.LogError($"This couldn't be possible, but argument {nameof(team)} still had a value {team} out of enum {nameof(TeamTypeToT)} members.");
+                    throw new Exception("JUST LET USER KNOW AN ERROR OCCURED THROUGH NOTIFICATOR");
+            }
+        }
 
         public static CustomOption CreateInsertable(int id, string name, float defaultValue, float min, float max, float step, TeamTypeToT team, CustomOption parent = null, bool isHeader = false, bool isHidden = false, string format = "")
         {
@@ -311,6 +319,7 @@ namespace TheOtherThem
                 countOption = Create(id + 10000, "roleNumAssigned", 1f, 1f, 15f, 1f, this, false, IsHidden, "unitPlayers");
         }
 
+        // Insertable
         public CustomRoleOption(int id, string name, Color color, TeamTypeToT team, int max = 15, bool roleEnabled = true) :
             base(id, Helpers.ColorString(color, name), CustomOptionHolder.rates, "", null, true, false, "", GetIndex(team))
         {

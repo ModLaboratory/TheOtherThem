@@ -1,7 +1,7 @@
 namespace TheOtherThem
 {
     // Modify when release
-    public static class ModBaseInfo
+    public static class ModBasicInfo
     {
         public const string Id = "com.modlaboratory.theotherthem";
         public const string VersionString = "3.5.5";

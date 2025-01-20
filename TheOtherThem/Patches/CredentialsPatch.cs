@@ -11,7 +11,7 @@ namespace TheOtherThem.Patches
     public static class CredentialsPatch
     {
 
-        public const string BaseCredentials = $@"<size=130%><color=#ff8c00>TheOtherThem</color></size> v{ModBaseInfo.VersionString}";
+        public const string BaseCredentials = $@"<size=130%><color=#ff8c00>TheOtherThem</color></size> v{ModBasicInfo.VersionString}";
 
         [HarmonyPatch(typeof(PingTracker), nameof(PingTracker.Update))]
         private static class PingTrackerPatch
