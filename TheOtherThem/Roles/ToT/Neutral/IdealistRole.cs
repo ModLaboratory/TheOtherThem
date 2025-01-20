@@ -11,6 +11,7 @@ namespace TheOtherThem.ToTRole.Impostor
     public class IdealistRole : CustomRole
     {
         public static IdealistRole Instance { get; private set; }
+
         public static CustomRoleOption IdealistSpawnRate { get; set; }
         public static CustomOption IdealistAbilityCooldown { get; set; }
         public static CustomOption WinningGuessedCount { get; set; }
@@ -20,14 +21,15 @@ namespace TheOtherThem.ToTRole.Impostor
         private static NetworkedPlayerInfo Target { get; set; }
 
         IdealistRole() : base("Idealist", Palette.Orange, 
-           (nameKey, roleColor) => IdealistSpawnRate = new(2100, nameKey, roleColor, ref CustomOptionHolder.OptionInsertionIndexes.Neutral, 1), 
+           (nameKey, roleColor) => IdealistSpawnRate = new(2100, nameKey, roleColor, TeamTypeToT.Neutral, 1), 
            RoleType.Idealist, TeamTypeToT.Neutral, true)
         {
             Instance = this;
-            // FIX: SOME FORTUNE TELLER'S OPTIONS ARE UNDER IDEALIST'S
-            IdealistAbilityCooldown = CustomOption.CreateInsertable(2101, "IdealistAbilityCooldown", 30, 10, 60, 5, ref CustomOptionHolder.OptionInsertionIndexes.Neutral, IdealistSpawnRate);
-            WinningGuessedCount = CustomOption.CreateInsertable(2102, "IdealistWinningGuessedCount", 3, 3, 5, 1, ref CustomOptionHolder.OptionInsertionIndexes.Neutral, IdealistSpawnRate);
-            SuicideCountdown = CustomOption.CreateInsertable(2103, "IdealistSuicideCountdown", 30, 10, 60, 5, ref CustomOptionHolder.OptionInsertionIndexes.Neutral, IdealistSpawnRate);
+            System.Console.WriteLine(CustomOptionHolder.OptionInsertionIndices.Neutral);
+            // FIX: SOME FORTUNE TELLER'S OPTIONS ARE UNDER IDEALIST'S; TIMER DOESNT WORK
+            IdealistAbilityCooldown = CustomOption.CreateInsertable(2101, "IdealistAbilityCooldown", 30, 10, 60, 5, TeamTypeToT.Neutral, IdealistSpawnRate);
+            WinningGuessedCount = CustomOption.CreateInsertable(2102, "IdealistWinningGuessedCount", 3, 3, 5, 1, TeamTypeToT.Neutral, IdealistSpawnRate);
+            SuicideCountdown = CustomOption.CreateInsertable(2103, "IdealistSuicideCountdown", 30, 10, 60, 5, TeamTypeToT.Neutral, IdealistSpawnRate);
         }
 
         public override void ClearData()

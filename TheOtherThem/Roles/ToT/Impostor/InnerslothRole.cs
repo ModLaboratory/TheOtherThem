@@ -21,12 +21,12 @@ namespace TheOtherThem.ToTRole.Impostor
         public static CustomButton LagButton { get; set; }
 
         InnerslothRole() : base("Innersloth", Palette.ImpostorRed,
-            (nameKey, roleColor) => InnerslothSpawnRate = new(2000, nameKey, roleColor, ref CustomOptionHolder.OptionInsertionIndexes.Impostor, 1), 
+            (nameKey, roleColor) => InnerslothSpawnRate = new(2000, nameKey, roleColor, TeamTypeToT.Impostor, 1), 
             RoleType.Innersloth, TeamTypeToT.Impostor)
         {
             Instance = this;
 
-            InnerslothAbilltyCooldown = CustomOption.CreateInsertable(2001, "InnerslothAbilityCd", 20, 10, 60, 5, ref CustomOptionHolder.OptionInsertionIndexes.Impostor, InnerslothSpawnRate);
+            InnerslothAbilltyCooldown = CustomOption.CreateInsertable(2001, "InnerslothAbilityCd", 20, 10, 60, 5, TeamTypeToT.Impostor, InnerslothSpawnRate);
         }
 
         public override void ClearData()

@@ -342,7 +342,7 @@ namespace TheOtherThem {
         public static CustomOption foxStealthDuration;
         public static CustomTasksOption foxTasks;
 
-        public static (int Crewmate, int Neutral, int Impostor) OptionInsertionIndexes = new();
+        public static (int Crewmate, int Neutral, int Impostor) OptionInsertionIndices = new();
 
         internal static Dictionary<byte, byte[]> blockedRolePairings = new Dictionary<byte, byte[]>();
 
@@ -369,7 +369,6 @@ namespace TheOtherThem {
             neutralRolesCountMax = CustomOption.Create(303, ColorString(new Color(204f / 255f, 204f / 255f, 0, 1f), "neutralRolesCountMax"), 0f, 0f, 15f, 1f);
             impostorRolesCountMin = CustomOption.Create(304, ColorString(new Color(204f / 255f, 204f / 255f, 0, 1f), "impostorRolesCountMin"), 0f, 0f, 15f, 1f);
             impostorRolesCountMax = CustomOption.Create(305, ColorString(new Color(204f / 255f, 204f / 255f, 0, 1f), "impostorRolesCountMax"), 0f, 0f, 15f, 1f);
-
 
             gmEnabled = CustomOption.Create(400, ColorString(GM.color, "gm"), false, null, true);
             gmIsHost = CustomOption.Create(401, "gmIsHost", true, gmEnabled);
@@ -455,7 +454,7 @@ namespace TheOtherThem {
             nekoKabochaRevengeImpostor = CustomOption.Create(1023, "nekoKabochaRevengeImpostor", true, nekoKabochaSpawnRate);
             nekoKabochaRevengeExile = CustomOption.Create(1024, "nekoKabochaRevengeExile", false, nekoKabochaSpawnRate);
             #endregion
-            OptionInsertionIndexes.Impostor = CustomOption.Options.Count;
+            OptionInsertionIndices.Impostor = CustomOption.Options.Count;
 
             #region NEUTRAL
             madmateSpawnRate = new CustomRoleOption(360, "madmate", Madmate.color);
@@ -566,17 +565,16 @@ namespace TheOtherThem {
             foxStealthDuration = CustomOption.Create(917, "foxStealthDuration", 15f, 1f, 30f, 1f, foxSpawnRate, format: "unitSeconds");
             foxCanCreateImmoralist = CustomOption.Create(918, "foxCanCreateImmoralist", true, foxSpawnRate);
             foxNumRepair = CustomOption.Create(919, "foxNumRepair", 1f, 0f, 5f, 1f, foxSpawnRate, format: "unitTimes");
+            #endregion
+            OptionInsertionIndices.Neutral = CustomOption.Options.Count;
 
-
+            #region CREWMATE
             fortuneTellerSpawnRate = new CustomRoleOption(940, "fortuneTeller", FortuneTeller.color, 15);
             fortuneTellerNumTasks = CustomOption.Create(941, "fortuneTellerNumTasks", 4f, 0f, 25f, 1f, fortuneTellerSpawnRate);
             fortuneTellerResults = CustomOption.Create(942, "fortuneTellerResults ", new string[] { "fortuneTellerResultCrew", "fortuneTellerResultTeam", "fortuneTellerResultRole" }, fortuneTellerSpawnRate);
             fortuneTellerDuration = CustomOption.Create(943, "fortuneTellerDuration ", 20f, 1f, 50f, 0.5f, fortuneTellerSpawnRate, format: "unitSeconds");
             fortuneTellerDistance = CustomOption.Create(944, "fortuneTellerDistance ", 2.5f, 1f, 10f, 0.5f, fortuneTellerSpawnRate, format: "unitMeters");
-            #endregion
-            OptionInsertionIndexes.Neutral = CustomOption.Options.Count;
-
-            #region CREWMATE
+            
             mayorSpawnRate = new CustomRoleOption(80, "mayor", Mayor.color, 1);
             mayorNumVotes = CustomOption.Create(81, "mayorNumVotes", 2f, 2f, 10f, 1f, mayorSpawnRate, format: "unitVotes");
 
@@ -667,7 +665,7 @@ namespace TheOtherThem {
             mediumDuration = CustomOption.Create(372, "mediumDuration", 3f, 0f, 15f, 1f, mediumSpawnRate, format: "unitSeconds");
             mediumOneTimeUse = CustomOption.Create(373, "mediumOneTimeUse", false, mediumSpawnRate);
             #endregion
-            OptionInsertionIndexes.Crewmate = CustomOption.Options.Count;
+            OptionInsertionIndices.Crewmate = CustomOption.Options.Count;
 
             // Other options
             specialOptions = new CustomOptionBlank(null);

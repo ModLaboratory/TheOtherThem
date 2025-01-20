@@ -14,6 +14,7 @@ using BepInEx.Unity.IL2CPP;
 using BepInEx;
 using Il2CppInterop.Runtime.InteropTypes.Arrays;
 using TMPro;
+using TheOtherThem.ToTRole;
 
 namespace TheOtherThem
 {
@@ -73,22 +74,22 @@ namespace TheOtherThem
 
         // =========== INSERTABLE INITIALIZERS =========== \\
 
-        public CustomOption(int id, string name, object[] selections, object defaultValue, CustomOption parent, bool isHeader, bool isHidden, string format, ref int index)
+        public CustomOption(int id, string name, object[] selections, object defaultValue, CustomOption parent, bool isHeader, bool isHidden, string format, int index)
         {
             Init(id, name, selections, defaultValue, parent, isHeader, isHidden, format, ref index);
         }
 
         private void InitWithoutRegistration(int id, string name, object[] selections, object defaultValue, CustomOption parent, bool isHeader, bool isHidden, string format)
         {
-            this.Id = id;
-            this.Name = name;
-            this.Format = format;
-            this.Selections = selections;
+            Id = id;
+            Name = name + $"({Options.Count})";
+            Format = format;
+            Selections = selections;
             int index = Array.IndexOf(selections, defaultValue);
             DefaultSelection = index >= 0 ? index : 0;
-            this.Parent = parent;
-            this.IsHeader = isHeader;
-            this.IsHidden = isHidden;
+            Parent = parent;
+            IsHeader = isHeader;
+            IsHidden = isHidden;
             Type = CustomOptionType.General;
 
             Children = new List<CustomOption>();
@@ -122,19 +123,29 @@ namespace TheOtherThem
             return selections;
         }
 
-        public static CustomOption CreateInsertable(int id, string name, float defaultValue, float min, float max, float step, ref int index, CustomOption parent = null, bool isHeader = false, bool isHidden = false, string format = "")
+        public static int GetIndex(TeamTypeToT team) => team switch
         {
-            return new CustomOption(id, name, Range(min, max, step).Cast<object>().ToArray(), defaultValue, parent, isHeader, isHidden, format, ref index);
+            TeamTypeToT.Crewmate => CustomOptionHolder.OptionInsertionIndices.Crewmate++,
+            TeamTypeToT.Neutral => CustomOptionHolder.OptionInsertionIndices.Neutral++,
+            TeamTypeToT.Impostor => CustomOptionHolder.OptionInsertionIndices.Impostor++
+        };
+
+        public static CustomOption CreateInsertable(int id, string name, float defaultValue, float min, float max, float step, TeamTypeToT team, CustomOption parent = null, bool isHeader = false, bool isHidden = false, string format = "")
+        {
+            var index = GetIndex(team);
+            return new CustomOption(id, name, Range(min, max, step).Cast<object>().ToArray(), defaultValue, parent, isHeader, isHidden, format, index);
         }
 
-        public static CustomOption CreateInsertable(int id, string name, bool defaultValue, ref int index, CustomOption parent = null, bool isHeader = false, bool isHidden = false, string format = "")
+        public static CustomOption CreateInsertable(int id, string name, bool defaultValue, TeamTypeToT team, CustomOption parent = null, bool isHeader = false, bool isHidden = false, string format = "")
         {
-            return new CustomOption(id, name, new string[] { "optionOff", "optionOn" }, defaultValue ? "optionOn" : "optionOff", parent, isHeader, isHidden, format, ref index);
+            var index = GetIndex(team);
+            return new CustomOption(id, name, new string[] { "optionOff", "optionOn" }, defaultValue ? "optionOn" : "optionOff", parent, isHeader, isHidden, format, index);
         }
 
-        public static CustomOption CreateInsertable(int id, string name, string[] selections, ref int index, CustomOption parent = null, bool isHeader = false, bool isHidden = false, string format = "")
+        public static CustomOption CreateInsertable(int id, string name, string[] selections, TeamTypeToT team, CustomOption parent = null, bool isHeader = false, bool isHidden = false, string format = "")
         {
-            return new CustomOption(id, name, selections, "", parent, isHeader, isHidden, format, ref index);
+            var index = GetIndex(team);
+            return new CustomOption(id, name, selections, "", parent, isHeader, isHidden, format, index);
         }
 
         // =============================================== \\
@@ -300,8 +311,8 @@ namespace TheOtherThem
                 countOption = Create(id + 10000, "roleNumAssigned", 1f, 1f, 15f, 1f, this, false, IsHidden, "unitPlayers");
         }
 
-        public CustomRoleOption(int id, string name, Color color, ref int insertion, int max = 15, bool roleEnabled = true) :
-            base(id, Helpers.ColorString(color, name), CustomOptionHolder.rates, "", null, true, false, "", ref insertion)
+        public CustomRoleOption(int id, string name, Color color, TeamTypeToT team, int max = 15, bool roleEnabled = true) :
+            base(id, Helpers.ColorString(color, name), CustomOptionHolder.rates, "", null, true, false, "", GetIndex(team))
         {
             this.roleEnabled = roleEnabled;
 
@@ -312,7 +323,7 @@ namespace TheOtherThem
             }
 
             if (max > 1)
-                countOption = CreateInsertable(id + 10000, "roleNumAssigned", 1f, 1f, 15f, 1f, ref insertion, this, false, IsHidden, "unitPlayers");
+                countOption = CreateInsertable(id + 10000, "roleNumAssigned", 1f, 1f, 15f, 1f, team, this, false, IsHidden, "unitPlayers");
         }
     }
 
@@ -860,7 +871,7 @@ namespace TheOtherThem
     {
         public static bool Prefix(StringOption __instance)
         {
-            CustomOption option = CustomOption.Options.FirstOrDefault(option => option.OptionBehaviour == __instance);
+            CustomOption option = Options.FirstOrDefault(option => option.OptionBehaviour == __instance);
             if (option == null) return true;
 
             __instance.OnValueChanged = new Action<OptionBehaviour>(_ => { });
