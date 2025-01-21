@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using TheOtherThem.Modules;
 using TheOtherThem.Objects;
@@ -45,7 +46,9 @@ namespace TheOtherThem.ToTRole.Neutral
                     Target = t;
 
                     var timer = new Timer();
-                    
+                    var msg = new CustomMessage(() => string.Format(ModTranslation.GetString("IdealistSuicideMessage"), Mathf.CeilToInt(timer.ElapsedTime)),
+                        () => timer.TerminationCheck()); // Causes exceptions, but seems to be safe
+
                     timer = new("IdealistTargetCountdown",
                         SuicideCountdown.GetFloat(),
                         stoppedNormally =>

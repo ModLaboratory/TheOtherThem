@@ -22,8 +22,8 @@ namespace TheOtherThem.ToTRole.Crewmate
         {
             Instance = this;
 
-            PacifistAbilityCooldown = CustomOption.CreateInsertable(2201, "PacifistAbilityCooldown", 30, 10, 60, 5, TeamTypeToT.Neutral, PacifistSpawnRate);
-            CooldownResetUsesLimit = CustomOption.CreateInsertable(2202, "PacifistAbilityUsesLimit", 3, 1, 5, 1, TeamTypeToT.Neutral, PacifistSpawnRate);
+            PacifistAbilityCooldown = CustomOption.CreateInsertable(2201, "PacifistAbilityCooldown", 30, 10, 60, 5, TeamTypeToT.Crewmate, PacifistSpawnRate);
+            CooldownResetUsesLimit = CustomOption.CreateInsertable(2202, "PacifistAbilityUsesLimit", 3, 1, 5, 1, TeamTypeToT.Crewmate, PacifistSpawnRate);
         }
 
         public override void ClearData()

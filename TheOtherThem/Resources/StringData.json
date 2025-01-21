@@ -3844,6 +3844,10 @@
     "0": "Guess",
     "13": "猜测"
   },
+  "IdealistSuicideMessage": {
+    "0": "You will suicide in {0}s if the target is still alive...",
+    "13": "如果目标在{0}秒后依然活着，你将会自杀……"
+  },
   "SelectTargetButton": {
     "0": "SelectTargetButton.png"
   },
