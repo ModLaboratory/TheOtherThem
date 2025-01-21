@@ -84,7 +84,7 @@ namespace TheOtherThem.Modules
         public void SetUnused() 
         { 
             AllTimers.Remove(this);
-            Main.Logger.LogInfo($"Timer {Name} marked as unused");
+            Main.Logger.LogInfo($"Timer {Name} marked as unused, waiting for being collected by GC...");
         }
 
         public class TimerManager : MonoBehaviour
@@ -94,6 +94,8 @@ namespace TheOtherThem.Modules
                 ManagerInstance = this;
 
                 name = nameof(TimerManager);
+                DontDestroyOnLoad(this);
+
                 AllTimers = new();
                 Main.Logger.LogInfo(nameof(TimerManager) + " initialized");
             }
@@ -106,7 +108,8 @@ namespace TheOtherThem.Modules
 
                     if (timer.TerminationCheck())
                     {
-                        timer.SetUnused();
+                        timer.Pause();
+                        Main.Logger.LogInfo($"Timer {timer.Name} terminated");
                         timer.Callback(false);
                     }
 

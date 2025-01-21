@@ -517,7 +517,7 @@ namespace TheOtherThem
             foreach (var t in RoleData.AllRoleTypes.Values)
                 t.GetMethod("Remove").Invoke(null, new[] { player });
 
-            // TOT Roles
+            // ToT Roles
             CustomRole.AllRoles.ForEach(cr => cr.Players.Remove(player.Data));
         }
 

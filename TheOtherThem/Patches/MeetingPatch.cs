@@ -242,7 +242,7 @@ namespace TheOtherThem.Patches {
                         NetworkedPlayerInfo playerById = GameData.Instance.GetPlayerById(voterState.VoterId);
                         if (playerById == null)
                         {
-                            Debug.LogError(string.Format("Couldn't find player info for voter: {0}", voterState.VoterId));
+                            UnityEngine.Debug.LogError(string.Format("Couldn't find player info for voter: {0}", voterState.VoterId));
                         }
                         else if (GM.gm != null && (voterState.VoterId == GM.gm.PlayerId || voterState.VotedForId == GM.gm.PlayerId))
                         {

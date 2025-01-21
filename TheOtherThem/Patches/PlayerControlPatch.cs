@@ -1124,6 +1124,42 @@ namespace TheOtherThem.Patches
         }
     }
 
+    // Code from Among Us v2024.11.26e
+    [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.CheckMurder))]
+    public static class HandleMurderRequestPatch
+    {
+        static bool Prefix(PlayerControl __instance, PlayerControl target)
+        {
+            __instance.logger.Debug(string.Format("Checking if {0} murdered {1}", __instance.PlayerId, (target == null) ? "null player" : target.PlayerId.ToString()), null);
+            __instance.isKilling = false;
+            if (AmongUsClient.Instance.IsGameOver || !AmongUsClient.Instance.AmHost)
+                return false;
+            if (!target || __instance.Data.Disconnected) // MODIFIED
+            {
+                int num = target ? target.PlayerId : -1;
+                __instance.logger.Warning(string.Format("Bad kill from {0} to {1}", __instance.PlayerId, num), null);
+                __instance.RpcMurderPlayer(target, false);
+                return false;
+            }
+            NetworkedPlayerInfo data = target.Data;
+            if (data == null || data.IsDead || target.inVent || target.MyPhysics.Animations.IsPlayingEnterVentAnimation() || target.MyPhysics.Animations.IsPlayingAnyLadderAnimation() || target.inMovingPlat)
+            {
+                __instance.logger.Warning("Invalid target data for kill", null);
+                __instance.RpcMurderPlayer(target, false);
+                return false;
+            }
+            if (MeetingHud.Instance)
+            {
+                __instance.logger.Warning("Tried to kill while a meeting was starting", null);
+                __instance.RpcMurderPlayer(target, false);
+                return false;
+            }
+            __instance.isKilling = true;
+            __instance.RpcMurderPlayer(target, true);
+            return false;
+        }
+    }
+
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.MurderPlayer))]
     public static class MurderPlayerPatch
     {

@@ -4,8 +4,8 @@ using TheOtherThem.Objects;
 using TheOtherThem.Patches;
 using UnityEngine;
 
-namespace TheOtherThem.ToTRole.Impostor
-{
+namespace TheOtherThem.ToTRole.Neutral
+{ 
     [RoleAutoInitialize]
     [HarmonyPatch]
     public class IdealistRole : CustomRole
@@ -25,8 +25,7 @@ namespace TheOtherThem.ToTRole.Impostor
            RoleType.Idealist, TeamTypeToT.Neutral, true)
         {
             Instance = this;
-            System.Console.WriteLine(CustomOptionHolder.OptionInsertionIndices.Neutral);
-            // FIX: SOME FORTUNE TELLER'S OPTIONS ARE UNDER IDEALIST'S; TIMER DOESNT WORK
+            
             IdealistAbilityCooldown = CustomOption.CreateInsertable(2101, "IdealistAbilityCooldown", 30, 10, 60, 5, TeamTypeToT.Neutral, IdealistSpawnRate);
             WinningGuessedCount = CustomOption.CreateInsertable(2102, "IdealistWinningGuessedCount", 3, 3, 5, 1, TeamTypeToT.Neutral, IdealistSpawnRate);
             SuicideCountdown = CustomOption.CreateInsertable(2103, "IdealistSuicideCountdown", 30, 10, 60, 5, TeamTypeToT.Neutral, IdealistSpawnRate);
@@ -41,7 +40,7 @@ namespace TheOtherThem.ToTRole.Impostor
         {
             SelectTargetButton = new(() =>
             {
-                PlayerPickMenu.OpenPlayerPickMenu(GameData.Instance.AllPlayers.ToArray().Where(n => n.PlayerId != PlayerControl.LocalPlayer.PlayerId && !n.IsDead && !n.Disconnected).ToList(), t =>
+                PlayerPickMenu.OpenPlayerPickMenu(GameData.Instance.AllPlayers.ToArray().Where(n => /*n.PlayerId != PlayerControl.LocalPlayer.PlayerId &&*/ !n.IsDead && !n.Disconnected).ToList(), t =>
                 {
                     Target = t;
 

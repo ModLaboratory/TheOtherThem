@@ -613,5 +613,7 @@ namespace TheOtherThem {
             foreach (var item in origin) collection.Add(item);
             return collection;
         }
+
+        public static bool Random() => new System.Random().Next(2) == 1;
     }
 }

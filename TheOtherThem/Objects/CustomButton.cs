@@ -8,18 +8,18 @@ using UnityEngine.UI;
 namespace TheOtherThem.Objects {
     public class CustomButton
     {
-        public static List<CustomButton> buttons = new List<CustomButton>();
+        public static List<CustomButton> Buttons = new List<CustomButton>();
         public ActionButton actionButton;
         public Vector3? PositionOffset;
         public Vector3 LocalScale = Vector3.one;
         public float MaxTimer = float.MaxValue;
         public float Timer = 0f;
         public bool effectCancellable = false;
-        private Action OnClick;
-        private Action OnMeetingEnds;
-        private Func<bool> HasButton;
-        private Func<bool> CouldUse;
-        private Action OnEffectEnds;
+        public Action OnClick;
+        public Action OnMeetingEnds;
+        public Func<bool> HasButton;
+        public Func<bool> CouldUse;
+        public Action OnEffectEnds;
         public bool HasEffect;
         public bool isEffectActive = false;
         public bool showButtonText = true;
@@ -46,7 +46,7 @@ namespace TheOtherThem.Objects {
             this.hotkey = hotkey;
             this.buttonText = buttonText;
             Timer = 16.2f;
-            buttons.Add(this);
+            Buttons.Add(this);
             actionButton = Object.Instantiate(hudManager.KillButton, hudManager.KillButton.transform.parent);
             actionButton.name = buttonText ?? "ModButton";
             actionButton.graphic.sprite = Sprite;
@@ -86,13 +86,13 @@ namespace TheOtherThem.Objects {
 
         public static void HudUpdate()
         {
-            buttons.RemoveAll(item => item.actionButton == null);
+            Buttons.RemoveAll(item => item.actionButton == null);
         
-            for (int i = 0; i < buttons.Count; i++)
+            for (int i = 0; i < Buttons.Count; i++)
             {
                 try
                 {
-                    buttons[i].Update();
+                    Buttons[i].Update();
                 }
                 catch (NullReferenceException)
                 {
@@ -102,13 +102,13 @@ namespace TheOtherThem.Objects {
         }
 
         public static void MeetingEndedUpdate() {
-            buttons.RemoveAll(item => item.actionButton == null);
-            for (int i = 0; i < buttons.Count; i++)
+            Buttons.RemoveAll(item => item.actionButton == null);
+            for (int i = 0; i < Buttons.Count; i++)
             {
                 try
                 {
-                    buttons[i].OnMeetingEnds();
-                    buttons[i].Update();
+                    Buttons[i].OnMeetingEnds();
+                    Buttons[i].Update();
                 }
                 catch (NullReferenceException)
                 {
@@ -118,12 +118,12 @@ namespace TheOtherThem.Objects {
         }
 
         public static void ResetAllCooldowns() {
-            for (int i = 0; i < buttons.Count; i++)
+            for (int i = 0; i < Buttons.Count; i++)
             {
                 try
                 {
-                    buttons[i].Timer = buttons[i].MaxTimer;
-                    buttons[i].Update();
+                    Buttons[i].Timer = Buttons[i].MaxTimer;
+                    Buttons[i].Update();
                 }
                 catch (NullReferenceException)
                 {

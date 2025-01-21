@@ -217,7 +217,7 @@ namespace TheOtherThem.Patches {
                         }
                         else
                         {
-                            Debug.LogWarning("Couldn't find counter for:" + counterArea.RoomType);
+                            UnityEngine.Debug.LogWarning("Couldn't find counter for:" + counterArea.RoomType);
                         }
                     }
                     else
