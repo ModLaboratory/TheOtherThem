@@ -39,6 +39,7 @@ namespace TheOtherThem.Objects
             public void Update()
             {
                 if (!ErrorTextMesh) return;
+                if (Input.GetKeyDown(KeyCode.F3)) CreateOrOverride("This is a test");
                 if (_timer <= 0) ClearErrorString();
 
                 var cam = HudManager.InstanceExists ? HudManager.Instance.PlayerCam.GetComponent<Camera>() : Camera.main;
@@ -46,7 +47,7 @@ namespace TheOtherThem.Objects
                 if (!ErrorTextMesh.transform.parent)
                     ErrorTextMesh.transform.SetParent(cam.transform);
 
-                ErrorTextMesh.transform.SetWorldZ(-1000);
+                ErrorTextMesh.transform.localPosition = new(0, 0, -1000);
                 ErrorTextMesh.color = Palette.ImpostorRed;
                 ErrorTextMesh.alignment = TextAlignmentOptions.Top;
                 ErrorTextMesh.fontSizeMax = 3f;
@@ -64,7 +65,10 @@ namespace TheOtherThem.Objects
                     _timer = _countdown;
                     
                     if (!ErrorTextMesh)
+                    {
                         ErrorTextMesh = new GameObject("ErrorNotification").AddComponent<TextMeshPro>();
+                        ErrorTextMesh.gameObject.layer = LayerMask.NameToLayer("UI");
+                    }
                 }
 
                 if (ErrorTextMesh)
