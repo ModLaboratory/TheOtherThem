@@ -94,8 +94,9 @@ namespace TheOtherThem
         FoxCreatesImmoralist,
         SwapperAnimate,
 
-        // TOT RPCs
-        InnerslothSabotage
+        // ToT RPCs
+        InnerslothSabotage,
+        ResetAllKillCooldown
     }
 
     public static class RPCProcedure
@@ -107,9 +108,9 @@ namespace TheOtherThem
         {
             Garlic.clearGarlics();
             JackInTheBox.clearJackInTheBoxes();
-            MapOptions.clearAndReloadMapOptions();
-            TheOtherRoles.ClearAndReloadRoles();
-            GameHistory.clearGameHistory();
+            clearAndReloadMapOptions();
+            ClearAndReloadRoles();
+            clearGameHistory();
             setCustomButtonCooldowns();
             AdminPatch.ResetData();
             CameraPatch.ResetData();

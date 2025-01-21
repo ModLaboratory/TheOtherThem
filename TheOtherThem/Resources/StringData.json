@@ -3818,7 +3818,7 @@
   },
   "IdealistIntroDesc": {
     "0": "I'm absolutely right!",
-    "13": "我绝对是对的！"
+    "13": "我绝对是正确的！"
   },
   "IdealistShortDesc": {
     "0": "Guess who will be dead next",
@@ -3829,8 +3829,8 @@
     "13": "理想主义者可以选择一个目标以击杀，但是目标必须在指定时间内被击杀，否则理想主义者会自杀。当理想主义者击杀总人数与房间设置相等时，理想主义者胜利。"
   },
   "IdealistAbilityCooldown": {
-    "0": "Ability Cooldown",
-    "13": "技能冷却"
+    "0": "Guessing Cooldown",
+    "13": "猜测技能冷却"
   },
   "IdealistWinningGuessedCount": {
     "0": "Winning Guessed & Dead Target Count",
@@ -3846,6 +3846,41 @@
   },
   "SelectTargetButton": {
     "0": "SelectTargetButton.png"
+  },
+  "Pacifist": {
+    "0": "Pacifist",
+    "13": "和平主义者"
+  },
+  "PacifistIntroDesc": {
+    "0": "World peace!",
+    "13": "世界和平！"
+  },
+  "PacifistShortDesc": {
+    "0": "Save crewmates by resetting the bad's kill cooldown",
+    "13": "重置坏人击杀冷却，救下船员"
+  },
+  "PacifistFullDesc": {
+    "0": "The Pacifist can reset the kill cooldown of bad roles, but the ability has uses limit.",
+    "13": "和平主义者可以重置坏职业的击杀冷却，但是有次数限制。"
+  },
+  "PacifistAbilityCooldown": {
+    "0": "Reset Ability Cooldown",
+    "13": "重置冷却技能冷却"
+  },
+  "PacifistAbilityUsesLimit": {
+    "0": "Ability Uses Limit",
+    "13": "技能使用次数"
+  },
+  "PacifistAbilityLabel": {
+    "0": "Reset",
+    "13": "重置"
+  },
+  "PacifistAbilityRemainingUsesMessage": {
+    "0": "You still have {0} attempts to reset!",
+    "13": "你还有{0}次重置的机会！"
+  },
+  "ResetCooldownButton": {
+    "0": "ResetCooldownButton.png"
   },
   "CreditsToTFull": {
     "0": "<size=120%>Original TORGM (v3.5.4) GitHub Contributors: \n\t{0}\n\nTORGM (v3.5.4) Compatibility: JieGeLovesDengDuaLang\nThe Other Them Developers: JieGeLovesDengDuaLang</size>",

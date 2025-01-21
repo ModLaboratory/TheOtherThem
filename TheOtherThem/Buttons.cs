@@ -16,26 +16,26 @@ namespace TheOtherThem
     [HarmonyPatch(typeof(HudManager), nameof(HudManager.Start))]
     static class HudManagerStartPatch
     {
-        private static CustomButton engineerRepairButton;
-        private static CustomButton janitorCleanButton;
-        private static CustomButton timeMasterShieldButton;
-        private static CustomButton medicShieldButton;
-        private static CustomButton shifterShiftButton;
-        private static CustomButton morphlingButton;
-        private static CustomButton camouflagerButton;
-        private static CustomButton hackerButton;
-        private static CustomButton hackerVitalsButton;
-        private static CustomButton hackerAdminTableButton;
-        private static CustomButton trackerTrackPlayerButton;
-        private static CustomButton trackerTrackCorpsesButton;
-        private static CustomButton vampireKillButton;
-        private static CustomButton garlicButton;
-        private static CustomButton jackalKillButton;
-        private static CustomButton sidekickKillButton;
-        private static CustomButton jackalSidekickButton;
-        private static CustomButton eraserButton;
-        private static CustomButton placeJackInTheBoxButton;
-        private static CustomButton lightsOutButton;
+        public static CustomButton engineerRepairButton;
+        public static CustomButton janitorCleanButton;
+        public static CustomButton timeMasterShieldButton;
+        public static CustomButton medicShieldButton;
+        public static CustomButton shifterShiftButton;
+        public static CustomButton morphlingButton;
+        public static CustomButton camouflagerButton;
+        public static CustomButton hackerButton;
+        public static CustomButton hackerVitalsButton;
+        public static CustomButton hackerAdminTableButton;
+        public static CustomButton trackerTrackPlayerButton;
+        public static CustomButton trackerTrackCorpsesButton;
+        public static CustomButton vampireKillButton;
+        public static CustomButton garlicButton;
+        public static CustomButton jackalKillButton;
+        public static CustomButton sidekickKillButton;
+        public static CustomButton jackalSidekickButton;
+        public static CustomButton eraserButton;
+        public static CustomButton placeJackInTheBoxButton;
+        public static CustomButton lightsOutButton;
         //public static CustomButton showInfoOverlay;
         public static CustomButton cleanerCleanButton;
         public static CustomButton warlockCurseButton;

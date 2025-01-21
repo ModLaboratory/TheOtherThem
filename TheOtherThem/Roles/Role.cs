@@ -29,6 +29,7 @@ namespace TheOtherThem
         Bait,
         Medium,
         FortuneTeller,
+        Pacifist,
 
 
         Impostor = 100,
