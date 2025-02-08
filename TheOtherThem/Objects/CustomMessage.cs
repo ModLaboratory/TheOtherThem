@@ -20,19 +20,21 @@ namespace TheOtherThem.Objects
                 gameObject.transform.SetParent(HudManager.Instance.transform);
                 Object.DestroyImmediate(gameObject.GetComponent<RoomTracker>());
                 _text = gameObject.GetComponent<TMPro.TMP_Text>();
-                _text.text = ModTranslation.GetString(message);
-                if (format != "") _text.text = string.Format(_text.text, format);
 
                 // Use local position to place it in the player's view instead of the world location
                 gameObject.transform.localPosition = new Vector3(0, -1.8f, gameObject.transform.localPosition.z);
                 CustomMessages.Add(this);
 
+                var translated = ModTranslation.GetString(message);
+
                 HudManager.Instance.StartCoroutine(Effects.Lerp(duration, new Action<float>((p) =>
                 {
                     bool even = ((int)(p * duration / 0.25f)) % 2 == 0; // Bool flips every 0.25 seconds
                     if (!doFlash) even = true;
-                    string prefix = (even ? "<color=#FCBA03FF>" : "<color=#FF0000FF>");
-                    _text.text = prefix + message + "</color>";
+                    string prefix = even ? "<color=#FCBA03FF>" : "<color=#FF0000FF>";
+                    string formatted = translated;
+                    if (format != "") formatted = string.Format(formatted, format);
+                    _text.text = prefix + formatted + "</color>";
                     if (_text != null) _text.color = even ? Color.yellow : Color.red;
                     if (p == 1f && _text != null && _text.gameObject != null)
                     {
