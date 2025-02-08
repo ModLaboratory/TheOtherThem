@@ -1,12 +1,10 @@
-using HarmonyLib;
 using Hazel;
 using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
-using static TheOtherThem.TheOtherRoles;
 using static TheOtherThem.GameHistory;
-using System.Reflection;
+using static TheOtherThem.TheOtherRoles;
 
 namespace TheOtherThem.Patches
 {
@@ -32,7 +30,7 @@ namespace TheOtherThem.Patches
             // Don't waste network traffic if we're out of time.
             if (MapOptions.restrictDevices > 0 && MapOptions.restrictVitalsTime > 0f && PlayerControl.LocalPlayer.IsAlive())
             {
-                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.UseVitalsTime, Hazel.SendOption.Reliable, -1);
+                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.UseVitalsTime, SendOption.Reliable, -1);
                 writer.Write(vitalsTimer);
                 AmongUsClient.Instance.FinishRpcImmediately(writer);
                 RPCProcedure.useVitalsTime(vitalsTimer);
@@ -132,7 +130,11 @@ namespace TheOtherThem.Patches
             }
         }
 
-        [HarmonyPatch(typeof(Minigame), nameof(Minigame.Begin))]
+        // Minigame.Close(bool allowMovement) is marked by ObsoleteAttribute("Don't use, I just don't want to reselect the close button event handlers", true)
+        // So if this overload is used the game can't be compiled
+        // What's more, the implementation of it directly calls Minigame.Close()
+        // In short, there's no need to patch this overload
+        [HarmonyPatch(typeof(Minigame), nameof(Minigame.Close), new Type[] { })] 
         class VitalsMinigameClosePatch
         {
             static void Prefix(Minigame __instance)
