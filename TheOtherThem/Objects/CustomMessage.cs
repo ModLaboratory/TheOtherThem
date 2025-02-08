@@ -68,8 +68,10 @@ namespace TheOtherThem.Objects
                     string prefix = even ? "<color=#FCBA03FF>" : "<color=#FF0000FF>";
                     _text.text = prefix + message() + "</color>";
                     if (_text != null) _text.color = even ? Color.yellow : Color.red;
-                    if ((p == 1f && _text != null && _text.gameObject != null) || checkDestroy())
+                    bool destroy = false;
+                    if ((p == 1f && _text != null && _text.gameObject != null) || (destroy = checkDestroy()))
                     {
+                        if (destroy) HudManager.Instance.StopCoroutine(coroutine);
                         Object.Destroy(_text.gameObject);
                         CustomMessages.Remove(this);
                     }
