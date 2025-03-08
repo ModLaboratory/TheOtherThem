@@ -28,7 +28,7 @@ namespace TheOtherThem.Patches {
                 MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.MedicSetShielded, Hazel.SendOption.Reliable, -1);
                 writer.Write(Medic.futureShielded.PlayerId);
                 AmongUsClient.Instance.FinishRpcImmediately(writer);
-                RPCProcedure.medicSetShielded(Medic.futureShielded.PlayerId);
+                RpcProcedure.medicSetShielded(Medic.futureShielded.PlayerId);
             }
 
             // Shifter shift
@@ -36,7 +36,7 @@ namespace TheOtherThem.Patches {
                 MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.ShifterShift, Hazel.SendOption.Reliable, -1);
                 writer.Write(Shifter.futureShift.PlayerId);
                 AmongUsClient.Instance.FinishRpcImmediately(writer);
-                RPCProcedure.shifterShift(Shifter.futureShift.PlayerId);
+                RpcProcedure.shifterShift(Shifter.futureShift.PlayerId);
             }
             Shifter.futureShift = null;
 
@@ -47,7 +47,7 @@ namespace TheOtherThem.Patches {
                         MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.ErasePlayerRoles, Hazel.SendOption.Reliable, -1);
                         writer.Write(target.PlayerId);
                         AmongUsClient.Instance.FinishRpcImmediately(writer);
-                        RPCProcedure.erasePlayerRoles(target.PlayerId);
+                        RpcProcedure.erasePlayerRoles(target.PlayerId);
                     }
                 }
             }
@@ -70,7 +70,7 @@ namespace TheOtherThem.Patches {
                         MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.WitchSpellCast, Hazel.SendOption.Reliable, -1);
                         writer.Write(target.PlayerId);
                         AmongUsClient.Instance.FinishRpcImmediately(writer);
-                        RPCProcedure.witchSpellCast(target.PlayerId);
+                        RpcProcedure.witchSpellCast(target.PlayerId);
                     }
                 }
             }

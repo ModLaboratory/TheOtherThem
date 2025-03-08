@@ -71,7 +71,7 @@ namespace TheOtherThem
                 MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.NekoKabochaExile, Hazel.SendOption.Reliable, -1);
                 writer.Write(target.PlayerId);
                 AmongUsClient.Instance.FinishRpcImmediately(writer);
-                RPCProcedure.nekoKabochaExile(target.PlayerId);
+                RpcProcedure.nekoKabochaExile(target.PlayerId);
             }
             meetingKiller = null;
         }

@@ -34,7 +34,7 @@ namespace TheOtherThem.Patches
                 MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.UseVitalsTime, SendOption.Reliable, -1);
                 writer.Write(_vitalsTimer);
                 AmongUsClient.Instance.FinishRpcImmediately(writer);
-                RPCProcedure.useVitalsTime(_vitalsTimer);
+                RpcProcedure.useVitalsTime(_vitalsTimer);
             }
             _vitalsTimer = 0f;
         }

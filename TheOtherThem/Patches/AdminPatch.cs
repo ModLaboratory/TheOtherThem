@@ -39,7 +39,7 @@ namespace TheOtherThem.Patches {
                 MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.UseAdminTime, Hazel.SendOption.Reliable, -1);
                 writer.Write(adminTimer);
                 AmongUsClient.Instance.FinishRpcImmediately(writer);
-                RPCProcedure.useAdminTime(adminTimer);
+                RpcProcedure.useAdminTime(adminTimer);
             }
             adminTimer = 0f;
         }

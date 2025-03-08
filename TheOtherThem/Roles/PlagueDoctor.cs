@@ -86,7 +86,7 @@ namespace TheOtherThem
                 MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.PlagueDoctorSetInfected, Hazel.SendOption.Reliable, -1);
                 writer.Write(targetId);
                 AmongUsClient.Instance.FinishRpcImmediately(writer);
-                RPCProcedure.plagueDoctorInfected(targetId);
+                RpcProcedure.plagueDoctorInfected(targetId);
             }
         }
 
@@ -149,7 +149,7 @@ namespace TheOtherThem
                         MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.PlagueDoctorSetInfected, Hazel.SendOption.Reliable, -1);
                         writer.Write(targetId);
                         AmongUsClient.Instance.FinishRpcImmediately(writer);
-                        RPCProcedure.plagueDoctorInfected(targetId);
+                        RpcProcedure.plagueDoctorInfected(targetId);
                     }
 
                     // 勝利条件を満たしたか確認する
@@ -169,7 +169,7 @@ namespace TheOtherThem
                     {
                         MessageWriter winWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.PlagueDoctorWin, Hazel.SendOption.Reliable, -1);
                         AmongUsClient.Instance.FinishRpcImmediately(winWriter);
-                        RPCProcedure.plagueDoctorWin();
+                        RpcProcedure.plagueDoctorWin();
                     }
                 }
             }
@@ -240,7 +240,7 @@ namespace TheOtherThem
                     MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.PlagueDoctorSetInfected, Hazel.SendOption.Reliable, -1);
                     writer.Write(targetId);
                     AmongUsClient.Instance.FinishRpcImmediately(writer);
-                    RPCProcedure.plagueDoctorInfected(targetId);
+                    RpcProcedure.plagueDoctorInfected(targetId);
                     Local.numInfections--;
 
                     plagueDoctorButton.Timer = plagueDoctorButton.MaxTimer;

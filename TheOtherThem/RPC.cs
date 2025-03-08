@@ -99,12 +99,12 @@ namespace TheOtherThem
         ResetAllKillCooldown
     }
 
-    public static class RPCProcedure
+    public static class RpcProcedure
     {
 
         // Main Controls
 
-        public static void resetVariables()
+        public static void ResetVariables()
         {
             Garlic.clearGarlics();
             JackInTheBox.clearJackInTheBoxes();
@@ -1021,25 +1021,25 @@ namespace TheOtherThem
                     // Main Controls
 
                     case (byte)CustomRpc.ResetVaribles:
-                        RPCProcedure.resetVariables();
+                        RpcProcedure.ResetVariables();
                         break;
                     case (byte)CustomRpc.ShareOptions:
-                        RPCProcedure.ShareOptions((int)reader.ReadPackedUInt32(), reader);
+                        RpcProcedure.ShareOptions((int)reader.ReadPackedUInt32(), reader);
                         break;
                     case (byte)CustomRpc.ForceEnd:
-                        RPCProcedure.forceEnd();
+                        RpcProcedure.forceEnd();
                         break;
                     case (byte)CustomRpc.SetRole:
                         byte roleId = reader.ReadByte();
                         byte playerId = reader.ReadByte();
                         byte flag = reader.ReadByte();
-                        RPCProcedure.SetRole(roleId, playerId, flag);
+                        RpcProcedure.SetRole(roleId, playerId, flag);
                         break;
                     case (byte)CustomRpc.SetLovers:
-                        RPCProcedure.setLovers(reader.ReadByte(), reader.ReadByte());
+                        RpcProcedure.setLovers(reader.ReadByte(), reader.ReadByte());
                         break;
                     case (byte)CustomRpc.OverrideNativeRole:
-                        RPCProcedure.overrideNativeRole(reader.ReadByte(), reader.ReadByte());
+                        RpcProcedure.overrideNativeRole(reader.ReadByte(), reader.ReadByte());
                         break;
                     case (byte)CustomRpc.VersionHandshake:
                         int major = reader.ReadPackedInt32();
@@ -1059,218 +1059,218 @@ namespace TheOtherThem
                         {
                             guid = new Guid(new byte[16]);
                         }
-                        RPCProcedure.versionHandshake(major, minor, patch, revision == 0xFF ? -1 : revision, guid, versionOwnerId);
+                        RpcProcedure.versionHandshake(major, minor, patch, revision == 0xFF ? -1 : revision, guid, versionOwnerId);
                         break;
                     case (byte)CustomRpc.UseUncheckedVent:
                         int ventId = reader.ReadPackedInt32();
                         byte ventingPlayer = reader.ReadByte();
                         byte isEnter = reader.ReadByte();
-                        RPCProcedure.useUncheckedVent(ventId, ventingPlayer, isEnter);
+                        RpcProcedure.useUncheckedVent(ventId, ventingPlayer, isEnter);
                         break;
                     case (byte)CustomRpc.UncheckedMurderPlayer:
                         byte source = reader.ReadByte();
                         byte target = reader.ReadByte();
                         byte showAnimation = reader.ReadByte();
-                        RPCProcedure.uncheckedMurderPlayer(source, target, showAnimation);
+                        RpcProcedure.uncheckedMurderPlayer(source, target, showAnimation);
                         break;
                     case (byte)CustomRpc.UncheckedExilePlayer:
                         byte exileTarget = reader.ReadByte();
-                        RPCProcedure.uncheckedExilePlayer(exileTarget);
+                        RpcProcedure.uncheckedExilePlayer(exileTarget);
                         break;
                     case (byte)CustomRpc.UncheckedCmdReportDeadBody:
                         byte reportSource = reader.ReadByte();
                         byte reportTarget = reader.ReadByte();
-                        RPCProcedure.uncheckedCmdReportDeadBody(reportSource, reportTarget);
+                        RpcProcedure.uncheckedCmdReportDeadBody(reportSource, reportTarget);
                         break;
                     case (byte)CustomRpc.UncheckedEndGame:
-                        RPCProcedure.uncheckedEndGame(reader.ReadByte());
+                        RpcProcedure.uncheckedEndGame(reader.ReadByte());
                         break;
                     case (byte)CustomRpc.UncheckedSetTasks:
-                        RPCProcedure.uncheckedSetTasks(reader.ReadByte(), reader.ReadBytesAndSize());
+                        RpcProcedure.uncheckedSetTasks(reader.ReadByte(), reader.ReadBytesAndSize());
                         break;
                     case (byte)CustomRpc.DynamicMapOption:
 	                    byte mapId = reader.ReadByte();
-	                    RPCProcedure.dynamicMapOption(mapId);
+	                    RpcProcedure.dynamicMapOption(mapId);
 	                    break;
 
                     // Role functionality
 
                     case (byte)CustomRpc.EngineerFixLights:
-                        RPCProcedure.engineerFixLights();
+                        RpcProcedure.engineerFixLights();
                         break;
                     case (byte)CustomRpc.EngineerUsedRepair:
-                        RPCProcedure.engineerUsedRepair();
+                        RpcProcedure.engineerUsedRepair();
                         break;
                     case (byte)CustomRpc.CleanBody:
-                        RPCProcedure.cleanBody(reader.ReadByte());
+                        RpcProcedure.cleanBody(reader.ReadByte());
                         break;
                     case (byte)CustomRpc.SheriffKill:
-                        RPCProcedure.sheriffKill(reader.ReadByte(), reader.ReadByte(), reader.ReadBoolean());
+                        RpcProcedure.sheriffKill(reader.ReadByte(), reader.ReadByte(), reader.ReadBoolean());
                         break;
                     case (byte)CustomRpc.TimeMasterRewindTime:
-                        RPCProcedure.timeMasterRewindTime();
+                        RpcProcedure.timeMasterRewindTime();
                         break;
                     case (byte)CustomRpc.TimeMasterShield:
-                        RPCProcedure.timeMasterShield();
+                        RpcProcedure.timeMasterShield();
                         break;
                     case (byte)CustomRpc.MedicSetShielded:
-                        RPCProcedure.medicSetShielded(reader.ReadByte());
+                        RpcProcedure.medicSetShielded(reader.ReadByte());
                         break;
                     case (byte)CustomRpc.ShieldedMurderAttempt:
-                        RPCProcedure.shieldedMurderAttempt();
+                        RpcProcedure.shieldedMurderAttempt();
                         break;
                     case (byte)CustomRpc.ShifterShift:
-                        RPCProcedure.shifterShift(reader.ReadByte());
+                        RpcProcedure.shifterShift(reader.ReadByte());
                         break;
                     case (byte)CustomRpc.SwapperSwap:
                         byte playerId1 = reader.ReadByte();
                         byte playerId2 = reader.ReadByte();
-                        RPCProcedure.swapperSwap(playerId1, playerId2);
+                        RpcProcedure.swapperSwap(playerId1, playerId2);
                         break;
                     case (byte)CustomRpc.MorphlingMorph:
-                        RPCProcedure.morphlingMorph(reader.ReadByte());
+                        RpcProcedure.morphlingMorph(reader.ReadByte());
                         break;
                     case (byte)CustomRpc.CamouflagerCamouflage:
-                        RPCProcedure.camouflagerCamouflage();
+                        RpcProcedure.camouflagerCamouflage();
                         break;
                     case (byte)CustomRpc.VampireSetBitten:
                         byte bittenId = reader.ReadByte();
                         byte reset = reader.ReadByte();
-                        RPCProcedure.vampireSetBitten(bittenId, reset);
+                        RpcProcedure.vampireSetBitten(bittenId, reset);
                         break;
                     case (byte)CustomRpc.PlaceGarlic:
-                        RPCProcedure.placeGarlic(reader.ReadBytesAndSize());
+                        RpcProcedure.placeGarlic(reader.ReadBytesAndSize());
                         break;
                     case (byte)CustomRpc.TrackerUsedTracker:
-                        RPCProcedure.trackerUsedTracker(reader.ReadByte());
+                        RpcProcedure.trackerUsedTracker(reader.ReadByte());
                         break;
                     case (byte)CustomRpc.JackalCreatesSidekick:
-                        RPCProcedure.jackalCreatesSidekick(reader.ReadByte());
+                        RpcProcedure.jackalCreatesSidekick(reader.ReadByte());
                         break;
                     case (byte)CustomRpc.SidekickPromotes:
-                        RPCProcedure.sidekickPromotes();
+                        RpcProcedure.sidekickPromotes();
                         break;
                     case (byte)CustomRpc.ErasePlayerRoles:
-                        RPCProcedure.erasePlayerRoles(reader.ReadByte());
+                        RpcProcedure.erasePlayerRoles(reader.ReadByte());
                         break;
                     case (byte)CustomRpc.SetFutureErased:
-                        RPCProcedure.setFutureErased(reader.ReadByte());
+                        RpcProcedure.setFutureErased(reader.ReadByte());
                         break;
                     case (byte)CustomRpc.SetFutureShifted:
-                        RPCProcedure.setFutureShifted(reader.ReadByte());
+                        RpcProcedure.setFutureShifted(reader.ReadByte());
                         break;
                     case (byte)CustomRpc.SetFutureShielded:
-                        RPCProcedure.setFutureShielded(reader.ReadByte());
+                        RpcProcedure.setFutureShielded(reader.ReadByte());
                         break;
                     case (byte)CustomRpc.PlaceJackInTheBox:
-                        RPCProcedure.placeJackInTheBox(reader.ReadBytesAndSize());
+                        RpcProcedure.placeJackInTheBox(reader.ReadBytesAndSize());
                         break;
                     case (byte)CustomRpc.LightsOut:
-                        RPCProcedure.lightsOut();
+                        RpcProcedure.lightsOut();
                         break;
                     case (byte)CustomRpc.PlaceCamera:
-                        RPCProcedure.placeCamera(reader.ReadBytesAndSize(), reader.ReadByte());
+                        RpcProcedure.placeCamera(reader.ReadBytesAndSize(), reader.ReadByte());
                         break;
                     case (byte)CustomRpc.SealVent:
-                        RPCProcedure.sealVent(reader.ReadPackedInt32());
+                        RpcProcedure.sealVent(reader.ReadPackedInt32());
                         break;
                     case (byte)CustomRpc.ArsonistWin:
-                        RPCProcedure.arsonistWin();
+                        RpcProcedure.arsonistWin();
                         break;
                     case (byte)CustomRpc.GuesserShoot:
                         byte killerId = reader.ReadByte();
                         byte dyingTarget = reader.ReadByte();
                         byte guessedTarget = reader.ReadByte();
                         byte guessedRoleId = reader.ReadByte();
-                        RPCProcedure.guesserShoot(killerId, dyingTarget, guessedTarget, guessedRoleId);
+                        RpcProcedure.guesserShoot(killerId, dyingTarget, guessedTarget, guessedRoleId);
                         break;
                     case (byte)CustomRpc.VultureWin:
-                        RPCProcedure.vultureWin();
+                        RpcProcedure.vultureWin();
                         break;
                     case (byte)CustomRpc.LawyerWin:
-                        RPCProcedure.lawyerWin();
+                        RpcProcedure.lawyerWin();
                         break;
                     case (byte)CustomRpc.LawyerSetTarget:
-                        RPCProcedure.lawyerSetTarget(reader.ReadByte());
+                        RpcProcedure.lawyerSetTarget(reader.ReadByte());
                         break;
                     case (byte)CustomRpc.LawyerPromotesToPursuer:
-                        RPCProcedure.lawyerPromotesToPursuer();
+                        RpcProcedure.lawyerPromotesToPursuer();
                         break;
                     case (byte)CustomRpc.SetBlanked:
                         var pid = reader.ReadByte();
                         var blankedValue = reader.ReadByte();
-                        RPCProcedure.setBlanked(pid, blankedValue);
+                        RpcProcedure.setBlanked(pid, blankedValue);
                         break;
                     case (byte)CustomRpc.SetFutureSpelled:
-                        RPCProcedure.setFutureSpelled(reader.ReadByte());
+                        RpcProcedure.setFutureSpelled(reader.ReadByte());
                         break;
                     case (byte)CustomRpc.WitchSpellCast:
-                        RPCProcedure.witchSpellCast(reader.ReadByte());
+                        RpcProcedure.witchSpellCast(reader.ReadByte());
                         break;
 
                     // GM functionality
                     case (byte)CustomRpc.AddModifier:
-                        RPCProcedure.addModifier(reader.ReadByte(), reader.ReadByte());
+                        RpcProcedure.addModifier(reader.ReadByte(), reader.ReadByte());
                         break;
                     case (byte)CustomRpc.SetShifterType:
-                        RPCProcedure.setShifterType(reader.ReadBoolean());
+                        RpcProcedure.setShifterType(reader.ReadBoolean());
                         break;
                     case (byte)CustomRpc.NinjaStealth:
-                        RPCProcedure.ninjaStealth(reader.ReadByte(), reader.ReadBoolean());
+                        RpcProcedure.ninjaStealth(reader.ReadByte(), reader.ReadBoolean());
                         break;
                     case (byte)CustomRpc.ArsonistDouse:
-                        RPCProcedure.arsonistDouse(reader.ReadByte());
+                        RpcProcedure.arsonistDouse(reader.ReadByte());
                         break;
                     case (byte)CustomRpc.VultureEat:
-                        RPCProcedure.vultureEat(reader.ReadByte());
+                        RpcProcedure.vultureEat(reader.ReadByte());
                         break;
 
                     case (byte)CustomRpc.GMKill:
-                        RPCProcedure.GMKill(reader.ReadByte());
+                        RpcProcedure.GMKill(reader.ReadByte());
                         break;
                     case (byte)CustomRpc.GMRevive:
-                        RPCProcedure.GMRevive(reader.ReadByte());
+                        RpcProcedure.GMRevive(reader.ReadByte());
                         break;
                     case (byte)CustomRpc.UseAdminTime:
-                        RPCProcedure.useAdminTime(reader.ReadSingle());
+                        RpcProcedure.useAdminTime(reader.ReadSingle());
                         break;
                     case (byte)CustomRpc.UseCameraTime:
-                        RPCProcedure.useCameraTime(reader.ReadSingle());
+                        RpcProcedure.useCameraTime(reader.ReadSingle());
                         break;
                     case (byte)CustomRpc.UseVitalsTime:
-                        RPCProcedure.useVitalsTime(reader.ReadSingle());
+                        RpcProcedure.useVitalsTime(reader.ReadSingle());
                         break;
                     case (byte)CustomRpc.PlagueDoctorWin:
-                        RPCProcedure.plagueDoctorWin();
+                        RpcProcedure.plagueDoctorWin();
                         break;
                     case (byte)CustomRpc.PlagueDoctorSetInfected:
-                        RPCProcedure.plagueDoctorInfected(reader.ReadByte());
+                        RpcProcedure.plagueDoctorInfected(reader.ReadByte());
                         break;
                     case (byte)CustomRpc.PlagueDoctorUpdateProgress:
                         byte progressTarget = reader.ReadByte();
                         byte[] progressByte = reader.ReadBytes(4);
                         float progress = System.BitConverter.ToSingle(progressByte, 0);
-                        RPCProcedure.plagueDoctorProgress(progressTarget, progress);
+                        RpcProcedure.plagueDoctorProgress(progressTarget, progress);
                         break;
                     case (byte)CustomRpc.NekoKabochaExile:
-                        RPCProcedure.nekoKabochaExile(reader.ReadByte());
+                        RpcProcedure.nekoKabochaExile(reader.ReadByte());
                         break;
                     case (byte)CustomRpc.SerialKillerSuicide:
-                        RPCProcedure.serialKillerSuicide(reader.ReadByte());
+                        RpcProcedure.serialKillerSuicide(reader.ReadByte());
                         break;
                     case (byte)CustomRpc.SwapperAnimate:
-                        RPCProcedure.swapperAnimate();
+                        RpcProcedure.swapperAnimate();
                         break;
                     case (byte)CustomRpc.FortuneTellerUsedDivine:
                         byte fId = reader.ReadByte();
                         byte tId = reader.ReadByte();
-                        RPCProcedure.fortuneTellerUsedDivine(fId, tId);
+                        RpcProcedure.fortuneTellerUsedDivine(fId, tId);
                         break;
                     case (byte)CustomRpc.FoxStealth:
-                        RPCProcedure.foxStealth(reader.ReadByte(), reader.ReadBoolean());
+                        RpcProcedure.foxStealth(reader.ReadByte(), reader.ReadBoolean());
                         break;
                     case (byte)CustomRpc.FoxCreatesImmoralist:
-                        RPCProcedure.foxCreatesImmoralist(reader.ReadByte());
+                        RpcProcedure.foxCreatesImmoralist(reader.ReadByte());
                         break;
                 }
 

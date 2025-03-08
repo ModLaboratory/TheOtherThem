@@ -94,14 +94,14 @@ namespace TheOtherThem
                         MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.GMKill, Hazel.SendOption.Reliable, -1);
                         writer.Write(index);
                         AmongUsClient.Instance.FinishRpcImmediately(writer);
-                        RPCProcedure.GMKill(index);
+                        RpcProcedure.GMKill(index);
                     }
                     else
                     {
                         MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.GMRevive, Hazel.SendOption.Reliable, -1);
                         writer.Write(index);
                         AmongUsClient.Instance.FinishRpcImmediately(writer);
-                        RPCProcedure.GMRevive(index);
+                        RpcProcedure.GMRevive(index);
                     }
                 };
             };

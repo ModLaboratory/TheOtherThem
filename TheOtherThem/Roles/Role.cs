@@ -728,7 +728,7 @@ namespace TheOtherThem
             { // Promote Sidekick and hence override the the Jackal or erase Jackal
                 if (Sidekick.promotesToJackal && Sidekick.sidekick != null && Sidekick.sidekick.IsAlive())
                 {
-                    RPCProcedure.sidekickPromotes();
+                    RpcProcedure.sidekickPromotes();
                 }
                 else
                 {
@@ -806,7 +806,7 @@ namespace TheOtherThem
             if (player.IsInLove())
                 Lovers.killLovers(player, killer);
 
-            RPCProcedure.updateMeeting(player.PlayerId, true);
+            RpcProcedure.updateMeeting(player.PlayerId, true);
         }
 
         public static void InitTOTRoles()

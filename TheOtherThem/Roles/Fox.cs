@@ -196,7 +196,7 @@ namespace TheOtherThem
                     writer.Write(PlayerControl.LocalPlayer.PlayerId);
                     writer.Write(true);
                     AmongUsClient.Instance.FinishRpcImmediately(writer);
-                    RPCProcedure.foxStealth(PlayerControl.LocalPlayer.PlayerId, true);
+                    RpcProcedure.foxStealth(PlayerControl.LocalPlayer.PlayerId, true);
                 },
                 () => { return PlayerControl.LocalPlayer.IsRole(RoleType.Fox) && !PlayerControl.LocalPlayer.Data.IsDead; },
                 () =>
@@ -229,7 +229,7 @@ namespace TheOtherThem
                     writer.Write(PlayerControl.LocalPlayer.PlayerId);
                     writer.Write(false);
                     AmongUsClient.Instance.FinishRpcImmediately(writer);
-                    RPCProcedure.foxStealth(PlayerControl.LocalPlayer.PlayerId, false);
+                    RpcProcedure.foxStealth(PlayerControl.LocalPlayer.PlayerId, false);
                 }
             );
             foxButton.buttonText = ModTranslation.GetString("FoxStealthText");
@@ -250,7 +250,7 @@ namespace TheOtherThem
                         {
                             MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.EngineerFixLights, Hazel.SendOption.Reliable, -1);
                             AmongUsClient.Instance.FinishRpcImmediately(writer);
-                            RPCProcedure.engineerFixLights();
+                            RpcProcedure.engineerFixLights();
                         }
                         else if (task.TaskType == TaskTypes.RestoreOxy)
                         {
@@ -302,7 +302,7 @@ namespace TheOtherThem
                     MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.FoxCreatesImmoralist, Hazel.SendOption.Reliable, -1);
                     writer.Write(currentTarget.PlayerId);
                     AmongUsClient.Instance.FinishRpcImmediately(writer);
-                    RPCProcedure.foxCreatesImmoralist(currentTarget.PlayerId);
+                    RpcProcedure.foxCreatesImmoralist(currentTarget.PlayerId);
                 },
                 () => { return !Immoralist.Exists && canCreateImmoralist && PlayerControl.LocalPlayer.IsRole(RoleType.Fox) && PlayerControl.LocalPlayer.IsAlive(); },
                 () => { return canCreateImmoralist && Fox.currentTarget != null && PlayerControl.LocalPlayer.CanMove; },

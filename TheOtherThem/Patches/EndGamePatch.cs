@@ -422,7 +422,7 @@ namespace TheOtherThem.Patches
             }
 
             // Reset Settings
-            RPCProcedure.resetVariables();
+            RpcProcedure.ResetVariables();
         }
 
         public static class EndGameNavigationPatch

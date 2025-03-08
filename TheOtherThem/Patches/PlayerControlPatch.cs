@@ -300,7 +300,7 @@ namespace TheOtherThem.Patches
             {
                 MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.SidekickPromotes, Hazel.SendOption.Reliable, -1);
                 AmongUsClient.Instance.FinishRpcImmediately(writer);
-                RPCProcedure.sidekickPromotes();
+                RpcProcedure.sidekickPromotes();
             }
         }
 
@@ -774,7 +774,7 @@ namespace TheOtherThem.Patches
                     writer.Write(reporter);
                     writer.Write(Bait.bait.PlayerId);
                     AmongUsClient.Instance.FinishRpcImmediately(writer);
-                    RPCProcedure.uncheckedCmdReportDeadBody(reporter, Bait.bait.PlayerId);
+                    RpcProcedure.uncheckedCmdReportDeadBody(reporter, Bait.bait.PlayerId);
                     Bait.reported = true;
                 }
             }
@@ -912,7 +912,7 @@ namespace TheOtherThem.Patches
                 Lawyer.winsAfterMeetings = false; // Avoid sending mutliple RPCs until the host finshes the game
                 MessageWriter winWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.LawyerWin, Hazel.SendOption.Reliable, -1);
                 AmongUsClient.Instance.FinishRpcImmediately(winWriter);
-                RPCProcedure.lawyerWin();
+                RpcProcedure.lawyerWin();
                 return;
             }
 
@@ -921,7 +921,7 @@ namespace TheOtherThem.Patches
             {
                 MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.LawyerPromotesToPursuer, Hazel.SendOption.Reliable, -1);
                 AmongUsClient.Instance.FinishRpcImmediately(writer);
-                RPCProcedure.lawyerPromotesToPursuer();
+                RpcProcedure.lawyerPromotesToPursuer();
                 return;
             }
         }
@@ -1201,7 +1201,7 @@ namespace TheOtherThem.Patches
             {
                 MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.SidekickPromotes, Hazel.SendOption.Reliable, -1);
                 AmongUsClient.Instance.FinishRpcImmediately(writer);
-                RPCProcedure.sidekickPromotes();
+                RpcProcedure.sidekickPromotes();
             }
 
             // Pursuer promotion trigger on murder (the host sends the call such that everyone recieves the update before a possible game End)
@@ -1209,7 +1209,7 @@ namespace TheOtherThem.Patches
             {
                 MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.LawyerPromotesToPursuer, Hazel.SendOption.Reliable, -1);
                 AmongUsClient.Instance.FinishRpcImmediately(writer);
-                RPCProcedure.lawyerPromotesToPursuer();
+                RpcProcedure.lawyerPromotesToPursuer();
             }
 
             // Cleaner Button Sync
@@ -1379,7 +1379,7 @@ namespace TheOtherThem.Patches
             {
                 MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.SidekickPromotes, Hazel.SendOption.Reliable, -1);
                 AmongUsClient.Instance.FinishRpcImmediately(writer);
-                RPCProcedure.sidekickPromotes();
+                RpcProcedure.sidekickPromotes();
             }
 
             // Pursuer promotion trigger on exile (the host sends the call such that everyone recieves the update before a possible game End)
@@ -1387,7 +1387,7 @@ namespace TheOtherThem.Patches
             {
                 MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.LawyerPromotesToPursuer, Hazel.SendOption.Reliable, -1);
                 AmongUsClient.Instance.FinishRpcImmediately(writer);
-                RPCProcedure.lawyerPromotesToPursuer();
+                RpcProcedure.lawyerPromotesToPursuer();
             }
         }
     }

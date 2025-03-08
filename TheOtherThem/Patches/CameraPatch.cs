@@ -29,7 +29,7 @@ namespace TheOtherThem.Patches {
                 MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.UseCameraTime, Hazel.SendOption.Reliable, -1);
                 writer.Write(cameraTimer);
                 AmongUsClient.Instance.FinishRpcImmediately(writer);
-                RPCProcedure.useCameraTime(cameraTimer);
+                RpcProcedure.useCameraTime(cameraTimer);
             }
             cameraTimer = 0f;
         }

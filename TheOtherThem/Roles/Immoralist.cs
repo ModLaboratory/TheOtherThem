@@ -63,7 +63,7 @@ namespace TheOtherThem
             byte targetId = PlayerControl.LocalPlayer.PlayerId;
             MessageWriter killWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.SerialKillerSuicide, Hazel.SendOption.Reliable, -1); killWriter.Write(targetId);
             AmongUsClient.Instance.FinishRpcImmediately(killWriter);
-            RPCProcedure.serialKillerSuicide(targetId);
+            RpcProcedure.serialKillerSuicide(targetId);
         }
 
         private static Sprite buttonSprite;

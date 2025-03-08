@@ -119,7 +119,7 @@ namespace TheOtherThem {
             writer.Write(player.PlayerId);
             writer.WriteBytesAndSize(taskTypeIds.ToArray());
             AmongUsClient.Instance.FinishRpcImmediately(writer);
-            RPCProcedure.uncheckedSetTasks(player.PlayerId, taskTypeIds.ToArray());
+            RpcProcedure.uncheckedSetTasks(player.PlayerId, taskTypeIds.ToArray());
         }
 
         public static Sprite LoadSpriteFromResources(string path, float pixelsPerUnit) {
@@ -194,7 +194,7 @@ namespace TheOtherThem {
             writer.Write(byte.MaxValue);
             writer.Write(byte.MaxValue);
             AmongUsClient.Instance.FinishRpcImmediately(writer);
-            RPCProcedure.vampireSetBitten(byte.MaxValue, byte.MaxValue);
+            RpcProcedure.vampireSetBitten(byte.MaxValue, byte.MaxValue);
         }
 
         public static void RefreshRoleDescription(PlayerControl player) {
@@ -506,7 +506,7 @@ namespace TheOtherThem {
                 writer.Write(killer.PlayerId);
                 writer.Write((byte)0);
                 AmongUsClient.Instance.FinishRpcImmediately(writer);
-                RPCProcedure.setBlanked(killer.PlayerId, 0);
+                RpcProcedure.setBlanked(killer.PlayerId, 0);
 
                 return MurderAttemptResult.BlankKill;
             }
@@ -515,7 +515,7 @@ namespace TheOtherThem {
             if (Medic.shielded != null && Medic.shielded == target) {
                 MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(killer.NetId, (byte)CustomRpc.ShieldedMurderAttempt, Hazel.SendOption.Reliable, -1);
                 AmongUsClient.Instance.FinishRpcImmediately(writer);
-                RPCProcedure.shieldedMurderAttempt();
+                RpcProcedure.shieldedMurderAttempt();
                 return MurderAttemptResult.SuppressKill;
             }
 
@@ -529,7 +529,7 @@ namespace TheOtherThem {
                 if (!blockRewind) { // Only rewind the attempt was not called because a meeting startet 
                     MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(killer.NetId, (byte)CustomRpc.TimeMasterRewindTime, Hazel.SendOption.Reliable, -1);
                     AmongUsClient.Instance.FinishRpcImmediately(writer);
-                    RPCProcedure.timeMasterRewindTime();
+                    RpcProcedure.timeMasterRewindTime();
                 }
                 return MurderAttemptResult.SuppressKill;
             }
@@ -547,7 +547,7 @@ namespace TheOtherThem {
                 writer.Write(target.PlayerId);
                 writer.Write(showAnimation ? Byte.MaxValue : 0);
                 AmongUsClient.Instance.FinishRpcImmediately(writer);
-                RPCProcedure.uncheckedMurderPlayer(killer.PlayerId, target.PlayerId, showAnimation ? Byte.MaxValue : (byte)0);
+                RpcProcedure.uncheckedMurderPlayer(killer.PlayerId, target.PlayerId, showAnimation ? Byte.MaxValue : (byte)0);
             }
             return murder;            
         }
@@ -561,7 +561,7 @@ namespace TheOtherThem {
             writer.Write((byte)(Main.Version.Revision < 0 ? 0xFF : Main.Version.Revision));
             writer.Write(Assembly.GetExecutingAssembly().ManifestModule.ModuleVersionId.ToByteArray());
             AmongUsClient.Instance.FinishRpcImmediately(writer);
-            RPCProcedure.versionHandshake(Main.Version.Major, Main.Version.Minor, Main.Version.Build, Main.Version.Revision, Assembly.GetExecutingAssembly().ManifestModule.ModuleVersionId, AmongUsClient.Instance.ClientId);
+            RpcProcedure.versionHandshake(Main.Version.Major, Main.Version.Minor, Main.Version.Build, Main.Version.Revision, Assembly.GetExecutingAssembly().ManifestModule.ModuleVersionId, AmongUsClient.Instance.ClientId);
         }
 
         public static List<PlayerControl> GetKillerTeamMembers(PlayerControl player) {

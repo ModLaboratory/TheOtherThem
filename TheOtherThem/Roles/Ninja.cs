@@ -148,7 +148,7 @@ namespace TheOtherThem
                     writer.Write(PlayerControl.LocalPlayer.PlayerId);
                     writer.Write(true);
                     AmongUsClient.Instance.FinishRpcImmediately(writer);
-                    RPCProcedure.ninjaStealth(PlayerControl.LocalPlayer.PlayerId, true);
+                    RpcProcedure.ninjaStealth(PlayerControl.LocalPlayer.PlayerId, true);
                 },
                 () => { return PlayerControl.LocalPlayer.IsRole(RoleType.Ninja) && !PlayerControl.LocalPlayer.Data.IsDead; },
                 () => {
@@ -179,7 +179,7 @@ namespace TheOtherThem
                     writer.Write(PlayerControl.LocalPlayer.PlayerId);
                     writer.Write(false);
                     AmongUsClient.Instance.FinishRpcImmediately(writer);
-                    RPCProcedure.ninjaStealth(PlayerControl.LocalPlayer.PlayerId, false);
+                    RpcProcedure.ninjaStealth(PlayerControl.LocalPlayer.PlayerId, false);
 
                     PlayerControl.LocalPlayer.SetKillTimerUnchecked(Math.Max(PlayerControl.LocalPlayer.killTimer, Ninja.killPenalty));
                 }

@@ -136,7 +136,7 @@ namespace TheOtherThem.Patches {
                         {
                             MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.SwapperAnimate, Hazel.SendOption.Reliable, -1);
                             AmongUsClient.Instance.FinishRpcImmediately(writer);
-                            RPCProcedure.swapperAnimate();
+                            RpcProcedure.swapperAnimate();
                         }
                     }
                 }
@@ -312,7 +312,7 @@ namespace TheOtherThem.Patches {
                     MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.GMRevive, Hazel.SendOption.Reliable, -1);
                     writer.Write((byte)target.TargetPlayerId);
                     AmongUsClient.Instance.FinishRpcImmediately(writer);
-                    RPCProcedure.GMRevive(target.TargetPlayerId);
+                    RpcProcedure.GMRevive(target.TargetPlayerId);
 
                     renderer.sprite = Guesser.getTargetSprite();
                     renderer.color = Color.red;
@@ -322,7 +322,7 @@ namespace TheOtherThem.Patches {
                     MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.GMKill, Hazel.SendOption.Reliable, -1);
                     writer.Write((byte)target.TargetPlayerId);
                     AmongUsClient.Instance.FinishRpcImmediately(writer);
-                    RPCProcedure.GMKill(target.TargetPlayerId);
+                    RpcProcedure.GMKill(target.TargetPlayerId);
 
                     renderer.sprite = Swapper.getCheckSprite();
                     renderer.color = Color.green;
@@ -368,7 +368,7 @@ namespace TheOtherThem.Patches {
                         writer.Write((byte)secondPlayer.TargetPlayerId);
                         AmongUsClient.Instance.FinishRpcImmediately(writer);
 
-                        RPCProcedure.swapperSwap((byte)firstPlayer.TargetPlayerId, (byte)secondPlayer.TargetPlayerId);
+                        RpcProcedure.swapperSwap((byte)firstPlayer.TargetPlayerId, (byte)secondPlayer.TargetPlayerId);
                     }
                 }
             }
@@ -453,7 +453,7 @@ namespace TheOtherThem.Patches {
 
                             MessageWriter murderAttemptWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.ShieldedMurderAttempt, Hazel.SendOption.Reliable, -1);
                             AmongUsClient.Instance.FinishRpcImmediately(murderAttemptWriter);
-                            RPCProcedure.shieldedMurderAttempt();
+                            RpcProcedure.shieldedMurderAttempt();
                             return;
                         }
 
@@ -481,7 +481,7 @@ namespace TheOtherThem.Patches {
                         writer.Write(focusedTarget.PlayerId);
                         writer.Write((byte)roleInfo.MyRoleType);
                         AmongUsClient.Instance.FinishRpcImmediately(writer);
-                        RPCProcedure.guesserShoot(PlayerControl.LocalPlayer.PlayerId, dyingTarget.PlayerId, focusedTarget.PlayerId, (byte)roleInfo.MyRoleType);
+                        RpcProcedure.guesserShoot(PlayerControl.LocalPlayer.PlayerId, dyingTarget.PlayerId, focusedTarget.PlayerId, (byte)roleInfo.MyRoleType);
                     }
                 }));
 
