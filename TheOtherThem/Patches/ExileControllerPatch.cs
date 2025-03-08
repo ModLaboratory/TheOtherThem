@@ -78,15 +78,15 @@ namespace TheOtherThem.Patches {
 
             // SecurityGuard vents and cameras
             var allCameras = ShipStatus.Instance.AllCameras.ToList();
-            MapOptions.camerasToAdd.ForEach(camera => {
+            MapOptions.CamerasToAdd.ForEach(camera => {
                 camera.gameObject.SetActive(true);
                 camera.gameObject.GetComponent<SpriteRenderer>().color = Color.white;
                 allCameras.Add(camera);
             });
             ShipStatus.Instance.AllCameras = allCameras.ToArray();
-            MapOptions.camerasToAdd = new List<SurvCamera>();
+            MapOptions.CamerasToAdd = new List<SurvCamera>();
 
-            foreach (Vent vent in MapOptions.ventsToSeal) {
+            foreach (Vent vent in MapOptions.VentsToSeal) {
                 PowerTools.SpriteAnim animator = vent.GetComponent<PowerTools.SpriteAnim>(); 
                 animator?.Stop();
                 vent.EnterVentAnim = vent.ExitVentAnim = null;
@@ -94,10 +94,10 @@ namespace TheOtherThem.Patches {
                 vent.myRend.color = Color.white;
                 vent.name = "SealedVent_" + vent.name;
             }
-            MapOptions.ventsToSeal = new List<Vent>();
+            MapOptions.VentsToSeal = new List<Vent>();
 
             // 1 = reset per turn
-            if (MapOptions.restrictDevices == 1)
+            if (MapOptions.RestrictDevices == 1)
                 MapOptions.resetDeviceTimes();
         }
     }

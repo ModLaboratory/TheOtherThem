@@ -35,10 +35,13 @@ namespace TheOtherThem.ToTRole.Crewmate
         {
             ResetAllKillCooldownButton = new(() =>
             {
-                var writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.ResetAllKillCooldown, Hazel.SendOption.Reliable);
+                var writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.ResetAllKillCooldown, SendOption.Reliable);
                 AmongUsClient.Instance.FinishRpcImmediately(writer);
+
                 RemainingUses--;
                 _ = new CustomMessage("PacifistAbilityRemainingUsesMessage", 3f, RemainingUses.ToString(), false);
+                
+                ResetAllKillCooldownButton.ResetTimer();
             },
             CanLocalPlayerUse,
             () => RemainingUses > 0,
@@ -61,7 +64,7 @@ namespace TheOtherThem.ToTRole.Crewmate
             if (callId == (byte)CustomRpc.ResetAllKillCooldown)
             {
                 HudManagerStartPatch.vampireKillButton.ResetTimer();
-                PlayerControl.LocalPlayer.SetKillTimer(float.PositiveInfinity); // Set kill timer to cooldown that is set by host
+                PlayerControl.LocalPlayer.SetKillTimer(float.PositiveInfinity); // Set kill timer to cooldown set by host
             }
         }
     }

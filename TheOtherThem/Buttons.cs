@@ -1119,9 +1119,9 @@ namespace TheOtherThem
 
                     foreach (PlayerControl p in Arsonist.dousedPlayers)
                     {
-                        if (MapOptions.playerIcons.ContainsKey(p.PlayerId))
+                        if (MapOptions.PlayerIcons.ContainsKey(p.PlayerId))
                         {
-                            MapOptions.playerIcons[p.PlayerId].SetSemiTransparent(false);
+                            MapOptions.PlayerIcons[p.PlayerId].SetSemiTransparent(false);
                         }
                     }
                 }

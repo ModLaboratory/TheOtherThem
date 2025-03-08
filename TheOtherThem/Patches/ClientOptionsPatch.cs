@@ -14,17 +14,17 @@ namespace TheOtherThem.Patches
     {
         private static SelectionBehaviour[] AllOptions = {
             //new SelectionBehaviour("streamerModeButton", () => Main.StreamerMode.Value = !Main.StreamerMode.Value, Main.StreamerMode.Value),
-            new SelectionBehaviour("ghostsSeeTasksButton", () => MapOptions.ghostsSeeTasks = Main.GhostsSeeTasks.Value = !Main.GhostsSeeTasks.Value, Main.GhostsSeeTasks.Value),
-            new SelectionBehaviour("ghostsSeeVotesButton", () => MapOptions.ghostsSeeVotes = Main.GhostsSeeVotes.Value = !Main.GhostsSeeVotes.Value, Main.GhostsSeeVotes.Value),
-            new SelectionBehaviour("ghostsSeeRolesButton", () => MapOptions.ghostsSeeRoles = Main.GhostsSeeRoles.Value = !Main.GhostsSeeRoles.Value, Main.GhostsSeeRoles.Value),
-            new SelectionBehaviour("showRoleSummaryButton", () => MapOptions.showRoleSummary = Main.ShowRoleSummary.Value = !Main.ShowRoleSummary.Value, Main.ShowRoleSummary.Value),
+            new SelectionBehaviour("ghostsSeeTasksButton", () => MapOptions.GhostsSeeTasks = Main.GhostsSeeTasks.Value = !Main.GhostsSeeTasks.Value, Main.GhostsSeeTasks.Value),
+            new SelectionBehaviour("ghostsSeeVotesButton", () => MapOptions.GhostsSeeVotes = Main.GhostsSeeVotes.Value = !Main.GhostsSeeVotes.Value, Main.GhostsSeeVotes.Value),
+            new SelectionBehaviour("ghostsSeeRolesButton", () => MapOptions.GhostsSeeRoles = Main.GhostsSeeRoles.Value = !Main.GhostsSeeRoles.Value, Main.GhostsSeeRoles.Value),
+            new SelectionBehaviour("showRoleSummaryButton", () => MapOptions.ShowRoleSummary = Main.ShowRoleSummary.Value = !Main.ShowRoleSummary.Value, Main.ShowRoleSummary.Value),
             new SelectionBehaviour("hideNameplates", () => {
-                MapOptions.hideNameplates = Main.HideNameplates.Value = !Main.HideNameplates.Value;
+                MapOptions.HideNameplates = Main.HideNameplates.Value = !Main.HideNameplates.Value;
                 MeetingHudPatch.nameplatesChanged = true;
-                return MapOptions.hideNameplates;
+                return MapOptions.HideNameplates;
             }, Main.HideNameplates.Value),
-            new SelectionBehaviour("showLighterDarker", () => MapOptions.showLighterDarker = Main.ShowLighterDarker.Value = !Main.ShowLighterDarker.Value, Main.ShowLighterDarker.Value),
-            new SelectionBehaviour("hideTaskArrows", () => MapOptions.hideTaskArrows = Main.HideTaskArrows.Value = !Main.HideTaskArrows.Value, Main.HideTaskArrows.Value),
+            new SelectionBehaviour("showLighterDarker", () => MapOptions.ShowLighterOrDarker = Main.ShowLighterDarker.Value = !Main.ShowLighterDarker.Value, Main.ShowLighterDarker.Value),
+            new SelectionBehaviour("hideTaskArrows", () => MapOptions.HideTaskArrows = Main.HideTaskArrows.Value = !Main.HideTaskArrows.Value, Main.HideTaskArrows.Value),
         };
         
         private static GameObject popUp;

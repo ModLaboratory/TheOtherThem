@@ -112,7 +112,7 @@ namespace TheOtherThem.Patches
                 float num = float.MaxValue;
                 PlayerControl @object = pc.Object;
 
-                if (MapOptions.disableVents)
+                if (MapOptions.DisableVents)
                 {
                     canUse = couldUse = false;
                     __result = num;
@@ -392,7 +392,7 @@ namespace TheOtherThem.Patches
                 if (__instance.state == 1)
                 {
                     int localRemaining = PlayerControl.LocalPlayer.RemainingEmergencies;
-                    int teamRemaining = Mathf.Max(0, maxNumberOfMeetings - meetingsCount);
+                    int teamRemaining = Mathf.Max(0, MaxNumberOfMeetings - MeetingsCount);
                     int remaining = Mathf.Min(localRemaining, (Mayor.mayor != null && Mayor.mayor == PlayerControl.LocalPlayer) ? 1 : teamRemaining);
 
                     __instance.StatusText.text = "<size=100%>" + String.Format(ModTranslation.GetString("meetingStatus"), PlayerControl.LocalPlayer.name) + "</size>";
@@ -468,7 +468,7 @@ namespace TheOtherThem.Patches
     {
         static void Prefix(MedScanMinigame __instance)
         {
-            if (MapOptions.allowParallelMedBayScans)
+            if (MapOptions.AllowParallelMedBayScans)
             {
                 __instance.medscan.CurrentUser = PlayerControl.LocalPlayer.PlayerId;
                 __instance.medscan.UsersList.Clear();

@@ -560,17 +560,17 @@ namespace TheOtherThem.Patches
                         }
                         meetingInfoText = $"{roleNames} {taskInfo}".Trim();
                     }
-                    else if (MapOptions.ghostsSeeRoles && MapOptions.ghostsSeeTasks)
+                    else if (MapOptions.GhostsSeeRoles && MapOptions.GhostsSeeTasks)
                     {
                         playerInfoText = $"{roleNames} {taskInfo}".Trim();
                         meetingInfoText = playerInfoText;
                     }
-                    else if (MapOptions.ghostsSeeTasks)
+                    else if (MapOptions.GhostsSeeTasks)
                     {
                         playerInfoText = $"{taskInfo}".Trim();
                         meetingInfoText = playerInfoText;
                     }
-                    else if (MapOptions.ghostsSeeRoles || (Lawyer.lawyerKnowsRole && PlayerControl.LocalPlayer == Lawyer.lawyer && p == Lawyer.target))
+                    else if (MapOptions.GhostsSeeRoles || (Lawyer.lawyerKnowsRole && PlayerControl.LocalPlayer == Lawyer.lawyer && p == Lawyer.target))
                     {
                         playerInfoText = $"{roleNames}";
                         meetingInfoText = playerInfoText;
@@ -697,7 +697,7 @@ namespace TheOtherThem.Patches
                 if (BountyHunter.cooldownText != null && BountyHunter.cooldownText.gameObject != null) UnityEngine.Object.Destroy(BountyHunter.cooldownText.gameObject);
                 BountyHunter.cooldownText = null;
                 BountyHunter.bounty = null;
-                foreach (PoolablePlayer p in MapOptions.playerIcons.Values)
+                foreach (PoolablePlayer p in MapOptions.PlayerIcons.Values)
                 {
                     if (p != null && p.gameObject != null) p.gameObject.SetActive(false);
                 }
@@ -724,9 +724,9 @@ namespace TheOtherThem.Patches
                 // Show poolable player
                 if (HudManager.Instance != null && HudManager.Instance.UseButton != null)
                 {
-                    foreach (PoolablePlayer pp in MapOptions.playerIcons.Values) pp.gameObject.SetActive(false);
-                    if (MapOptions.playerIcons.ContainsKey(BountyHunter.bounty.PlayerId) && MapOptions.playerIcons[BountyHunter.bounty.PlayerId].gameObject != null)
-                        MapOptions.playerIcons[BountyHunter.bounty.PlayerId].gameObject.SetActive(true);
+                    foreach (PoolablePlayer pp in MapOptions.PlayerIcons.Values) pp.gameObject.SetActive(false);
+                    if (MapOptions.PlayerIcons.ContainsKey(BountyHunter.bounty.PlayerId) && MapOptions.PlayerIcons[BountyHunter.bounty.PlayerId].gameObject != null)
+                        MapOptions.PlayerIcons[BountyHunter.bounty.PlayerId].gameObject.SetActive(true);
                 }
             }
 
@@ -869,10 +869,10 @@ namespace TheOtherThem.Patches
 
             bool showIcon = (GM.canWarp || GM.canKill) && MeetingHud.Instance == null;
 
-            foreach (byte playerID in MapOptions.playerIcons.Keys)
+            foreach (byte playerID in MapOptions.PlayerIcons.Keys)
             {
                 PlayerControl pc = Helpers.PlayerById(playerID);
-                PoolablePlayer pp = MapOptions.playerIcons[playerID];
+                PoolablePlayer pp = MapOptions.PlayerIcons[playerID];
                 if (pc.Data.Disconnected)
                 {
                     pp.gameObject.SetActive(false);

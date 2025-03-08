@@ -397,7 +397,7 @@ namespace TheOtherThem {
             if (Camouflager.camouflageTimer > 0f) return true; // No names are visible
             if (!source.IsImpostor() && Ninja.isStealthed(target)) return true; // Hide ninja nametags from non-impostors
             if (!source.IsRole(RoleType.Fox) && !source.Data.IsDead && Fox.isStealthed(target)) return true;
-            if (MapOptions.hideOutOfSightNametags && GameStarted && ShipStatus.Instance != null && source.transform != null && target.transform != null)
+            if (MapOptions.HideOutOfSightNametags && GameStarted && ShipStatus.Instance != null && source.transform != null && target.transform != null)
             {
                 float distMod = 1.025f;
                 float distance = Vector3.Distance(source.transform.position, target.transform.position);
@@ -405,7 +405,7 @@ namespace TheOtherThem {
 
                 if (distance > ShipStatus.Instance.CalculateLightRadius(source.Data) * distMod || anythingBetween) return true;
             }
-            if (!MapOptions.hidePlayerNames) return false; // All names are visible
+            if (!MapOptions.HidePlayerNames) return false; // All names are visible
             if (source.IsImpostor() && (target.IsImpostor() || target.IsRole(RoleType.Spy))) return false; // Members of team Impostors see the names of Impostors/Spies
             if (source.GetPartner() == target) return false; // Members of team Lovers see the names of each other
             if ((source.IsRole(RoleType.Jackal) || source.IsRole(RoleType.Sidekick)) && (target.IsRole(RoleType.Jackal) || target.IsRole(RoleType.Sidekick) || target == Jackal.fakeSidekick)) return false; // Members of team Jackal see the names of each other

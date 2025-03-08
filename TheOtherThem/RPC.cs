@@ -108,7 +108,7 @@ namespace TheOtherThem
         {
             Garlic.clearGarlics();
             JackInTheBox.clearJackInTheBoxes();
-            clearAndReloadMapOptions();
+            ClearAndReloadMapOptions();
             ClearAndReloadRoles();
             clearGameHistory();
             setCustomButtonCooldowns();
@@ -697,7 +697,7 @@ namespace TheOtherThem
             {
                 camera.gameObject.SetActive(false);
             }
-            MapOptions.camerasToAdd.Add(camera);
+            MapOptions.CamerasToAdd.Add(camera);
         }
 
         public static void sealVent(int ventId)
@@ -716,7 +716,7 @@ namespace TheOtherThem
                 vent.name = "FutureSealedVent_" + vent.name;
             }
 
-            MapOptions.ventsToSeal.Add(vent);
+            MapOptions.VentsToSeal.Add(vent);
         }
 
         public static void arsonistDouse(byte playerId)
@@ -921,17 +921,17 @@ namespace TheOtherThem
 
         public static void useAdminTime(float time)
         {
-            MapOptions.restrictAdminTime -= time;
+            MapOptions.RestrictAdminTime -= time;
         }
 
         public static void useCameraTime(float time)
         {
-            MapOptions.restrictCamerasTime -= time;
+            MapOptions.RestrictCamerasTime -= time;
         }
 
         public static void useVitalsTime(float time)
         {
-            MapOptions.restrictVitalsTime -= time;
+            MapOptions.RestrictVitalsTime -= time;
         }
 
         public static void plagueDoctorWin()

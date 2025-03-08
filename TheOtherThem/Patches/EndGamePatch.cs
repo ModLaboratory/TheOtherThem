@@ -631,7 +631,7 @@ namespace TheOtherThem.Patches
                         }
                     }
 
-                    if (MapOptions.showRoleSummary)
+                    if (MapOptions.ShowRoleSummary)
                     {
                         var position = Camera.main.ViewportToWorldPoint(new Vector3(0f, 1f, Camera.main.nearClipPlane));
                         GameObject roleSummary = UnityEngine.Object.Instantiate(__instance.WinText.gameObject);

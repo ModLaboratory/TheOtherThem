@@ -15,7 +15,7 @@ namespace TheOtherThem {
         {
             public static void Postfix(NormalPlayerTask __instance)
             {
-                bool showArrows = !MapOptions.hideTaskArrows && !__instance.IsComplete && __instance.TaskStep > 0;
+                bool showArrows = !MapOptions.HideTaskArrows && !__instance.IsComplete && __instance.TaskStep > 0;
                 __instance.Arrow?.gameObject?.SetActive(showArrows);
             }
         }
@@ -25,7 +25,7 @@ namespace TheOtherThem {
         {
             public static void Postfix(AirshipUploadTask __instance)
             {
-                bool showArrows = !MapOptions.hideTaskArrows && !__instance.IsComplete && __instance.TaskStep > 0;
+                bool showArrows = !MapOptions.HideTaskArrows && !__instance.IsComplete && __instance.TaskStep > 0;
                 __instance.Arrows?.DoIf(x => x != null, x => x.gameObject?.SetActive(showArrows));
             }
         }
@@ -35,7 +35,7 @@ namespace TheOtherThem {
         {
             public static void Postfix(NormalPlayerTask __instance)
             {
-                if (MapOptions.hideTaskArrows)
+                if (MapOptions.HideTaskArrows)
                 {
                     __instance.Arrow?.gameObject?.SetActive(false);
                 }
@@ -47,7 +47,7 @@ namespace TheOtherThem {
         {
             public static void Postfix(AirshipUploadTask __instance)
             {
-                if (MapOptions.hideTaskArrows)
+                if (MapOptions.HideTaskArrows)
                 {
                     __instance.Arrows?.DoIf(x => x != null, x => x.gameObject?.SetActive(false));
                 }

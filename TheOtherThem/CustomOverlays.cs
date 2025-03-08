@@ -119,7 +119,7 @@ namespace TheOtherThem {
 
         public static void showInfoOverlay()
         {
-            if (overlayShown || MapOptions.hideSettings) return;
+            if (overlayShown || MapOptions.HideSettings) return;
 
             HudManager hudManager = DestroyableSingleton<HudManager>.Instance;
             if (ShipStatus.Instance == null || PlayerControl.LocalPlayer == null || hudManager == null || HudManager.Instance.IsIntroDisplayed || (!PlayerControl.LocalPlayer.CanMove && MeetingHud.Instance == null))

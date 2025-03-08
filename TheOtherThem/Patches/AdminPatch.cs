@@ -34,7 +34,7 @@ namespace TheOtherThem.Patches {
         static void UseAdminTime()
         {
             // Don't waste network traffic if we're out of time.
-            if (MapOptions.restrictDevices > 0 && MapOptions.restrictAdminTime > 0f && PlayerControl.LocalPlayer.IsAlive())
+            if (MapOptions.RestrictDevices > 0 && MapOptions.RestrictAdminTime > 0f && PlayerControl.LocalPlayer.IsAlive())
             {
                 MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.UseAdminTime, Hazel.SendOption.Reliable, -1);
                 writer.Write(adminTimer);
@@ -102,7 +102,7 @@ namespace TheOtherThem.Patches {
 
                 playerColors = new Dictionary<SystemTypes, List<Color>>();
 
-                if (MapOptions.restrictDevices > 0)
+                if (MapOptions.RestrictDevices > 0)
                 {
                     if (OutOfTime == null)
                     {
@@ -120,7 +120,7 @@ namespace TheOtherThem.Patches {
                         TimeRemaining.color = Palette.White;
                     }
 
-                    if (MapOptions.restrictAdminTime <= 0f)
+                    if (MapOptions.RestrictAdminTime <= 0f)
                     {
                         __instance.BackgroundColor.SetColor(Palette.DisabledGrey);
                         OutOfTime.gameObject.SetActive(true);
@@ -135,7 +135,7 @@ namespace TheOtherThem.Patches {
 
                     clearedIcons = false;
                     OutOfTime.gameObject.SetActive(false);
-                    string timeString = TimeSpan.FromSeconds(MapOptions.restrictAdminTime).ToString(@"mm\:ss\.ff");
+                    string timeString = TimeSpan.FromSeconds(MapOptions.RestrictAdminTime).ToString(@"mm\:ss\.ff");
                     TimeRemaining.text = String.Format(ModTranslation.GetString("timeRemaining"), timeString);
                     //TimeRemaining.color = MapOptions.restrictAdminTime > 10f ? Palette.AcceptedGreen : Palette.ImpostorRed;
                     TimeRemaining.gameObject.SetActive(true);

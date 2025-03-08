@@ -924,7 +924,7 @@ namespace TheOtherThem
 
             public static void updateIcons()
             {
-                foreach (PoolablePlayer pp in MapOptions.playerIcons.Values)
+                foreach (PoolablePlayer pp in MapOptions.PlayerIcons.Values)
                 {
                     pp.gameObject.SetActive(false);
                 }
@@ -939,21 +939,21 @@ namespace TheOtherThem
                     foreach (PlayerControl p in PlayerControl.AllPlayerControls)
                     {
                         if (p.PlayerId == PlayerControl.LocalPlayer.PlayerId) continue;
-                        if (!MapOptions.playerIcons.ContainsKey(p.PlayerId)) continue;
+                        if (!MapOptions.PlayerIcons.ContainsKey(p.PlayerId)) continue;
 
                         if (p.Data.IsDead || p.Data.Disconnected)
                         {
-                            MapOptions.playerIcons[p.PlayerId].gameObject.SetActive(false);
+                            MapOptions.PlayerIcons[p.PlayerId].gameObject.SetActive(false);
                         }
                         else
                         {
-                            MapOptions.playerIcons[p.PlayerId].gameObject.SetActive(true);
-                            MapOptions.playerIcons[p.PlayerId].transform.localScale = Vector3.one * 0.25f;
-                            MapOptions.playerIcons[p.PlayerId].transform.localPosition = bottomLeft + Vector3.right * visibleCounter * 0.45f;
+                            MapOptions.PlayerIcons[p.PlayerId].gameObject.SetActive(true);
+                            MapOptions.PlayerIcons[p.PlayerId].transform.localScale = Vector3.one * 0.25f;
+                            MapOptions.PlayerIcons[p.PlayerId].transform.localPosition = bottomLeft + Vector3.right * visibleCounter * 0.45f;
                             visibleCounter++;
                         }
                         bool isDoused = dousedPlayers.Any(x => x.PlayerId == p.PlayerId);
-                        MapOptions.playerIcons[p.PlayerId].SetSemiTransparent(!isDoused);
+                        MapOptions.PlayerIcons[p.PlayerId].SetSemiTransparent(!isDoused);
                     }
                 }
             }
@@ -966,7 +966,7 @@ namespace TheOtherThem
                 triggerArsonistWin = false;
                 dousedEveryone = false;
                 dousedPlayers = new List<PlayerControl>();
-                foreach (PoolablePlayer p in MapOptions.playerIcons.Values)
+                foreach (PoolablePlayer p in MapOptions.PlayerIcons.Values)
                 {
                     if (p != null && p.gameObject != null) p.gameObject.SetActive(false);
                 }
@@ -1061,7 +1061,7 @@ namespace TheOtherThem
                 arrow = null;
                 if (cooldownText != null && cooldownText.gameObject != null) UnityEngine.Object.Destroy(cooldownText.gameObject);
                 cooldownText = null;
-                foreach (PoolablePlayer p in MapOptions.playerIcons.Values)
+                foreach (PoolablePlayer p in MapOptions.PlayerIcons.Values)
                 {
                     if (p != null && p.gameObject != null) p.gameObject.SetActive(false);
                 }

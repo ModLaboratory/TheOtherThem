@@ -24,7 +24,7 @@ namespace TheOtherThem.Patches {
         static void UseCameraTime()
         {
             // Don't waste network traffic if we're out of time.
-            if (MapOptions.restrictDevices > 0 && MapOptions.restrictCamerasTime > 0f && PlayerControl.LocalPlayer.IsAlive())
+            if (MapOptions.RestrictDevices > 0 && MapOptions.RestrictCamerasTime > 0f && PlayerControl.LocalPlayer.IsAlive())
             {
                 MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.UseCameraTime, Hazel.SendOption.Reliable, -1);
                 writer.Write(cameraTimer);
@@ -90,7 +90,7 @@ namespace TheOtherThem.Patches {
                     if (cameraTimer > 0.1f)
                         UseCameraTime();
 
-                    if (MapOptions.restrictDevices > 0)
+                    if (MapOptions.RestrictDevices > 0)
                     {
                         if (TimeRemaining == null)
                         {
@@ -102,13 +102,13 @@ namespace TheOtherThem.Patches {
                             TimeRemaining.color = Palette.White;
                         }
 
-                        if (MapOptions.restrictCamerasTime <= 0f)
+                        if (MapOptions.RestrictCamerasTime <= 0f)
                         {
                             __instance.Close();
                             return false;
                         }
 
-                        string timeString = TimeSpan.FromSeconds(MapOptions.restrictCamerasTime).ToString(@"mm\:ss\.ff");
+                        string timeString = TimeSpan.FromSeconds(MapOptions.RestrictCamerasTime).ToString(@"mm\:ss\.ff");
                         TimeRemaining.text = String.Format(ModTranslation.GetString("timeRemaining"), timeString);
                         TimeRemaining.gameObject.SetActive(true);
 
@@ -201,7 +201,7 @@ namespace TheOtherThem.Patches {
                     if (cameraTimer > 0.1f)
                         UseCameraTime();
 
-                    if (MapOptions.restrictDevices > 0)
+                    if (MapOptions.RestrictDevices > 0)
                     {
                         if (TimeRemaining == null)
                         {
@@ -213,13 +213,13 @@ namespace TheOtherThem.Patches {
                             TimeRemaining.color = Palette.White;
                         }
 
-                        if (MapOptions.restrictCamerasTime <= 0f)
+                        if (MapOptions.RestrictCamerasTime <= 0f)
                         {
                             __instance.Close();
                             return false;
                         }
 
-                        string timeString = TimeSpan.FromSeconds(MapOptions.restrictCamerasTime).ToString(@"mm\:ss\.ff");
+                        string timeString = TimeSpan.FromSeconds(MapOptions.RestrictCamerasTime).ToString(@"mm\:ss\.ff");
                         TimeRemaining.text = String.Format(ModTranslation.GetString("timeRemaining"), timeString);
                         TimeRemaining.gameObject.SetActive(true);
                     }
@@ -272,7 +272,7 @@ namespace TheOtherThem.Patches {
                     if (cameraTimer > 0.1f)
                         UseCameraTime();
 
-                    if (MapOptions.restrictDevices > 0)
+                    if (MapOptions.RestrictDevices > 0)
                     {
                         if (TimeRemaining == null)
                         {
@@ -284,13 +284,13 @@ namespace TheOtherThem.Patches {
                             TimeRemaining.color = Palette.White;
                         }
 
-                        if (MapOptions.restrictCamerasTime <= 0f)
+                        if (MapOptions.RestrictCamerasTime <= 0f)
                         {
                             __instance.Close();
                             return false;
                         }
 
-                        string timeString = TimeSpan.FromSeconds(MapOptions.restrictCamerasTime).ToString(@"mm\:ss\.ff");
+                        string timeString = TimeSpan.FromSeconds(MapOptions.RestrictCamerasTime).ToString(@"mm\:ss\.ff");
                         TimeRemaining.text = String.Format(ModTranslation.GetString("timeRemaining"), timeString);
                         TimeRemaining.gameObject.SetActive(true);
                     }

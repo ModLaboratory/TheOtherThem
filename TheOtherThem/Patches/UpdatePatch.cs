@@ -261,7 +261,7 @@ namespace TheOtherThem.Patches {
                         if (lover1.PlayerId == player.TargetPlayerId || lover2.PlayerId == player.TargetPlayerId)
                             player.NameText.text += suffix;
             }
-            else if (MapOptions.ghostsSeeRoles && PlayerControl.LocalPlayer.IsDead())
+            else if (MapOptions.GhostsSeeRoles && PlayerControl.LocalPlayer.IsDead())
             {
                 foreach (var couple in Lovers.couples)
                 {
@@ -291,7 +291,7 @@ namespace TheOtherThem.Patches {
             }
 
             // Hacker and Detective
-            if (PlayerControl.LocalPlayer != null && MapOptions.showLighterDarker) {
+            if (PlayerControl.LocalPlayer != null && MapOptions.ShowLighterOrDarker) {
                 if (meetingShow) {
                     foreach (PlayerVoteArea player in MeetingHud.Instance.playerStates) {
                         var target = Helpers.PlayerById(player.TargetPlayerId);

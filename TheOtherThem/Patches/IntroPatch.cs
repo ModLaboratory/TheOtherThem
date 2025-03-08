@@ -22,7 +22,7 @@ namespace TheOtherThem.Patches {
                     player.SetFlipX(true);
                     player.TogglePet(false);
                     player.cosmetics.nameText.text = p.Data.DefaultOutfit.PlayerName;
-                    MapOptions.playerIcons[p.PlayerId] = player;
+                    MapOptions.PlayerIcons[p.PlayerId] = player;
 
                     if (PlayerControl.LocalPlayer == BountyHunter.bountyHunter)
                     {

@@ -2,91 +2,90 @@ using System.Collections.Generic;
 using System.Collections;
 using System;
 using UnityEngine;
-using static TheOtherThem.TheOtherRoles;
 
 namespace TheOtherThem{
     static class MapOptions {
         // Set values
-        public static int maxNumberOfMeetings = 10;
-        public static bool blockSkippingInEmergencyMeetings = false;
-        public static bool noVoteIsSelfVote = false;
-        public static bool hidePlayerNames = false;
-        public static bool hideSettings = false;
-        public static bool hideOutOfSightNametags = false;
+        public static int MaxNumberOfMeetings { get; set; } = 10;
+        public static bool BlockSkippingInEmergencyMeetings { get; set; } = false;
+        public static bool NoVotingIsSelfVoting { get; set; } = false;
+        public static bool HidePlayerNames { get; set; } = false;
+        public static bool HideSettings { get; set; } = false;
+        public static bool HideOutOfSightNametags { get; set; } = false;
 
-        public static bool randomizeColors = false;
-        public static bool allowDupeNames = false;
+        public static bool RandomizeColors { get; set; } = false;
+        public static bool AllowDupeNames { get; set; } = false;
 
-        public static int restrictDevices = 0;
-        public static float restrictAdminTime = 600f;
-        public static float restrictAdminTimeMax = 600f;
-        public static float restrictCamerasTime = 600f;
-        public static float restrictCamerasTimeMax = 600f;
-        public static float restrictVitalsTime = 600f;
-        public static float restrictVitalsTimeMax = 600f;
-        public static bool disableVents = false;
+        public static int RestrictDevices { get; set; } = 0;
+        public static float RestrictAdminTime { get; set; } = 600f;
+        public static float RestrictAdminTimeMax { get; set; } = 600f;
+        public static float RestrictCamerasTime { get; set; } = 600f;
+        public static float RestrictCamerasTimeMax { get; set; } = 600f;
+        public static float RestrictVitalsTime { get; set; } = 600f;
+        public static float RestrictVitalsTimeMax { get; set; } = 600f;
+        public static bool DisableVents { get; set; } = false;
 
-        public static bool ghostsSeeRoles = true;
-        public static bool ghostsSeeTasks = true;
-        public static bool ghostsSeeVotes = true;
-        public static bool showRoleSummary = true;
-        public static bool hideNameplates = false;
-        public static bool allowParallelMedBayScans = false;
-        public static bool showLighterDarker = false;
-        public static bool hideTaskArrows = false;
+        public static bool GhostsSeeRoles { get; set; } = true;
+        public static bool GhostsSeeTasks { get; set; } = true;
+        public static bool GhostsSeeVotes { get; set; } = true;
+        public static bool ShowRoleSummary { get; set; } = true;
+        public static bool HideNameplates { get; set; } = false;
+        public static bool AllowParallelMedBayScans { get; set; } = false;
+        public static bool ShowLighterOrDarker { get; set; } = false;
+        public static bool HideTaskArrows { get; set; } = false;
 
         // Updating values
-        public static int meetingsCount = 0;
-        public static List<SurvCamera> camerasToAdd = new List<SurvCamera>();
-        public static List<Vent> ventsToSeal = new List<Vent>();
-        public static Dictionary<byte, PoolablePlayer> playerIcons = new Dictionary<byte, PoolablePlayer>();
+        public static int MeetingsCount { get; set; } = 0;
+        public static List<SurvCamera> CamerasToAdd { get; set; } = new();
+        public static List<Vent> VentsToSeal { get; set; } = new();
+        public static Dictionary<byte, PoolablePlayer> PlayerIcons { get; set; } = new();
 
-        public static void clearAndReloadMapOptions() {
-            meetingsCount = 0;
-            camerasToAdd = new List<SurvCamera>();
-            ventsToSeal = new List<Vent>();
-            playerIcons = new Dictionary<byte, PoolablePlayer>();
+        public static void ClearAndReloadMapOptions() {
+            MeetingsCount = 0;
+            CamerasToAdd = new List<SurvCamera>();
+            VentsToSeal = new List<Vent>();
+            PlayerIcons = new Dictionary<byte, PoolablePlayer>();
 
-            maxNumberOfMeetings = Mathf.RoundToInt(CustomOptionHolder.maxNumberOfMeetings.GetSelection());
-            blockSkippingInEmergencyMeetings = CustomOptionHolder.blockSkippingInEmergencyMeetings.GetBool();
-            noVoteIsSelfVote = CustomOptionHolder.noVoteIsSelfVote.GetBool();
-            hidePlayerNames = CustomOptionHolder.hidePlayerNames.GetBool();
+            MaxNumberOfMeetings = Mathf.RoundToInt(CustomOptionHolder.maxNumberOfMeetings.GetSelection());
+            BlockSkippingInEmergencyMeetings = CustomOptionHolder.blockSkippingInEmergencyMeetings.GetBool();
+            NoVotingIsSelfVoting = CustomOptionHolder.noVoteIsSelfVote.GetBool();
+            HidePlayerNames = CustomOptionHolder.hidePlayerNames.GetBool();
 
-            hideOutOfSightNametags = CustomOptionHolder.hideOutOfSightNametags.GetBool();
+            HideOutOfSightNametags = CustomOptionHolder.hideOutOfSightNametags.GetBool();
 
-            hideSettings = CustomOptionHolder.hideSettings.GetBool();
+            HideSettings = CustomOptionHolder.hideSettings.GetBool();
 
-            randomizeColors = CustomOptionHolder.uselessOptions.GetBool() && CustomOptionHolder.playerColorRandom.GetBool();
-            allowDupeNames = CustomOptionHolder.uselessOptions.GetBool() && CustomOptionHolder.playerNameDupes.GetBool();
+            RandomizeColors = CustomOptionHolder.uselessOptions.GetBool() && CustomOptionHolder.playerColorRandom.GetBool();
+            AllowDupeNames = CustomOptionHolder.uselessOptions.GetBool() && CustomOptionHolder.playerNameDupes.GetBool();
 
-            restrictDevices = CustomOptionHolder.restrictDevices.GetSelection();
-            restrictAdminTime = restrictAdminTimeMax = CustomOptionHolder.restrictAdmin.GetFloat();
-            restrictCamerasTime = restrictCamerasTimeMax = CustomOptionHolder.restrictCameras.GetFloat();
-            restrictVitalsTime = restrictVitalsTimeMax = CustomOptionHolder.restrictVents.GetFloat();
-            disableVents = CustomOptionHolder.disableVents.GetBool();
+            RestrictDevices = CustomOptionHolder.restrictDevices.GetSelection();
+            RestrictAdminTime = RestrictAdminTimeMax = CustomOptionHolder.restrictAdmin.GetFloat();
+            RestrictCamerasTime = RestrictCamerasTimeMax = CustomOptionHolder.restrictCameras.GetFloat();
+            RestrictVitalsTime = RestrictVitalsTimeMax = CustomOptionHolder.restrictVents.GetFloat();
+            DisableVents = CustomOptionHolder.disableVents.GetBool();
 
-            allowParallelMedBayScans = CustomOptionHolder.allowParallelMedBayScans.GetBool();
-            ghostsSeeRoles = Main.GhostsSeeRoles.Value;
-            ghostsSeeTasks = Main.GhostsSeeTasks.Value;
-            ghostsSeeVotes = Main.GhostsSeeVotes.Value;
-            showRoleSummary = Main.ShowRoleSummary.Value;
-            hideNameplates = Main.HideNameplates.Value;
-            showLighterDarker = Main.ShowLighterDarker.Value;
-            hideTaskArrows = Main.HideTaskArrows.Value;
+            AllowParallelMedBayScans = CustomOptionHolder.allowParallelMedBayScans.GetBool();
+            GhostsSeeRoles = Main.GhostsSeeRoles.Value;
+            GhostsSeeTasks = Main.GhostsSeeTasks.Value;
+            GhostsSeeVotes = Main.GhostsSeeVotes.Value;
+            ShowRoleSummary = Main.ShowRoleSummary.Value;
+            HideNameplates = Main.HideNameplates.Value;
+            ShowLighterOrDarker = Main.ShowLighterDarker.Value;
+            HideTaskArrows = Main.HideTaskArrows.Value;
         }
 
         public static void resetDeviceTimes()
         {
-            restrictAdminTime = restrictAdminTimeMax;
-            restrictCamerasTime = restrictCamerasTimeMax;
-            restrictVitalsTime = restrictVitalsTimeMax;
+            RestrictAdminTime = RestrictAdminTimeMax;
+            RestrictCamerasTime = RestrictCamerasTimeMax;
+            RestrictVitalsTime = RestrictVitalsTimeMax;
         }
 
         public static bool canUseAdmin
         {
             get
             {
-                return restrictDevices == 0 || restrictAdminTime > 0f;
+                return RestrictDevices == 0 || RestrictAdminTime > 0f;
             }
         }
 
@@ -94,7 +93,7 @@ namespace TheOtherThem{
         {
             get
             {
-                return restrictDevices == 0 || restrictAdminTimeMax > 0f;
+                return RestrictDevices == 0 || RestrictAdminTimeMax > 0f;
             }
         }
 
@@ -102,7 +101,7 @@ namespace TheOtherThem{
         {
             get
             {
-                return restrictDevices == 0 || restrictCamerasTime > 0f;
+                return RestrictDevices == 0 || RestrictCamerasTime > 0f;
             }
         }
 
@@ -110,7 +109,7 @@ namespace TheOtherThem{
         {
             get
             {
-                return restrictDevices == 0 || restrictCamerasTimeMax > 0f;
+                return RestrictDevices == 0 || RestrictCamerasTimeMax > 0f;
             }
         }
 
@@ -118,7 +117,7 @@ namespace TheOtherThem{
         {
             get
             {
-                return restrictDevices == 0 || restrictVitalsTime > 0f;
+                return RestrictDevices == 0 || RestrictVitalsTime > 0f;
             }
         }
 
@@ -126,7 +125,7 @@ namespace TheOtherThem{
         {
             get
             {
-                return restrictDevices == 0 || restrictVitalsTimeMax > 0f;
+                return RestrictDevices == 0 || RestrictVitalsTimeMax > 0f;
             }
         }
     }

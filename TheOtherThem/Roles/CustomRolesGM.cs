@@ -353,7 +353,7 @@ namespace TheOtherThem
                 canWarp = CustomOptionHolder.gmCanWarp.GetBool();
                 canKill = CustomOptionHolder.gmCanKill.GetBool();
 
-                foreach (PoolablePlayer p in MapOptions.playerIcons.Values)
+                foreach (PoolablePlayer p in MapOptions.PlayerIcons.Values)
                 {
                     if (p != null && p.gameObject != null) p.gameObject.SetActive(false);
                 }

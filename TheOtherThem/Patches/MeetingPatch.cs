@@ -31,7 +31,7 @@ namespace TheOtherThem.Patches {
             blankNameplate = blankNameplate ?? ShipStatus.Instance.CosmeticsCache.GetNameplate("nameplate_NoPlate").Image;
 
             var nameplate = blankNameplate;
-            if (!hideNameplates)
+            if (!HideNameplates)
             {
                 var p = Helpers.PlayerById(playerId != Byte.MaxValue ? playerId : pva.TargetPlayerId);
                 var nameplateId = p?.CurrentOutfit?.NamePlateId;
@@ -67,7 +67,7 @@ namespace TheOtherThem.Patches {
                     return;
 
                 // Deactivate skip Button if skipping on emergency meetings is disabled
-                if (blockSkippingInEmergencyMeetings)
+                if (BlockSkippingInEmergencyMeetings)
                     __instance.SkipVoteButton?.gameObject?.SetActive(false);
 
                 updateMeetingText(__instance);
@@ -177,8 +177,8 @@ namespace TheOtherThem.Patches {
             {
                 __result = false;
                 if (GM.gm != null && GM.gm.PlayerId == suspectStateIdx) return false;
-                if (noVoteIsSelfVote && PlayerControl.LocalPlayer.PlayerId == suspectStateIdx) return false;
-                if (blockSkippingInEmergencyMeetings && suspectStateIdx == -1) return false;
+                if (NoVotingIsSelfVoting && PlayerControl.LocalPlayer.PlayerId == suspectStateIdx) return false;
+                if (BlockSkippingInEmergencyMeetings && suspectStateIdx == -1) return false;
 
                 return true;
             }
@@ -188,7 +188,7 @@ namespace TheOtherThem.Patches {
         class MeetingHudBloopAVoteIconPatch {
             public static bool Prefix(MeetingHud __instance, [HarmonyArgument(0)]NetworkedPlayerInfo voterPlayer, [HarmonyArgument(1)]int index, [HarmonyArgument(2)]Transform parent) {
                 SpriteRenderer spriteRenderer = UnityEngine.Object.Instantiate<SpriteRenderer>(__instance.PlayerVotePrefab);
-                if (!GameManager.Instance.LogicOptions.GetAnonymousVotes() || (PlayerControl.LocalPlayer.Data.IsDead && MapOptions.ghostsSeeVotes) || PlayerControl.LocalPlayer.IsRole(RoleType.Watcher))
+                if (!GameManager.Instance.LogicOptions.GetAnonymousVotes() || (PlayerControl.LocalPlayer.Data.IsDead && MapOptions.GhostsSeeVotes) || PlayerControl.LocalPlayer.IsRole(RoleType.Watcher))
                     PlayerMaterial.SetColors(voterPlayer.DefaultOutfit.ColorId, spriteRenderer);
                 else
                     PlayerMaterial.SetColors(Palette.DisabledGrey, spriteRenderer);
@@ -414,7 +414,7 @@ namespace TheOtherThem.Patches {
                     roleInfo == RoleInfo.niceMini || 
 					(!Guesser.evilGuesserCanGuessSpy && guesserRole == RoleType.EvilGuesser && roleInfo.MyRoleType == RoleType.Spy) ||
                     roleInfo == RoleInfo.gm ||
-                    (Guesser.onlyAvailableRoles && !roleInfo.Enabled && !MapOptions.hideSettings))
+                    (Guesser.onlyAvailableRoles && !roleInfo.Enabled && !MapOptions.HideSettings))
                     continue; // Not guessable roles
 				if (Guesser.guesserCantGuessSnitch && Snitch.snitch != null) {
                     var (playerCompleted, playerTotal) = TasksHandler.taskInfo(Snitch.snitch.Data);
@@ -677,7 +677,7 @@ namespace TheOtherThem.Patches {
                 // Reset vampire bitten
                 Vampire.bitten = null;
                 // Count meetings
-                if (meetingTarget == null) meetingsCount++;
+                if (meetingTarget == null) MeetingsCount++;
                 // Save the meeting target
                 target = meetingTarget;
             }

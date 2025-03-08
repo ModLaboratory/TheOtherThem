@@ -29,7 +29,7 @@ namespace TheOtherThem.Patches
         static void UseVitalsTime()
         {
             // Don't waste network traffic if we're out of time.
-            if (MapOptions.restrictDevices > 0 && MapOptions.restrictVitalsTime > 0f && PlayerControl.LocalPlayer.IsAlive())
+            if (MapOptions.RestrictDevices > 0 && MapOptions.RestrictVitalsTime > 0f && PlayerControl.LocalPlayer.IsAlive())
             {
                 MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.UseVitalsTime, SendOption.Reliable, -1);
                 writer.Write(_vitalsTimer);
@@ -48,10 +48,10 @@ namespace TheOtherThem.Patches
 
                 if (Hacker.hacker != null && PlayerControl.LocalPlayer == Hacker.hacker)
                 {
-                    _hackerTexts = new List<TMPro.TextMeshPro>();
+                    _hackerTexts = new();
                     foreach (VitalsPanel panel in __instance.vitals)
                     {
-                        TMPro.TextMeshPro text = Object.Instantiate(__instance.SabText, panel.transform);
+                        TextMeshPro text = Object.Instantiate(__instance.SabText, panel.transform);
                         _hackerTexts.Add(text);
                         Object.DestroyImmediate(text.GetComponent<AlphaBlink>());
                         text.gameObject.SetActive(false);
@@ -71,26 +71,26 @@ namespace TheOtherThem.Patches
                 if (_vitalsTimer > 0.1f)
                     UseVitalsTime();
 
-                if (MapOptions.restrictDevices > 0)
+                if (MapOptions.RestrictDevices > 0)
                 {
                     if (_timeRemaining == null)
                     {
-                        _timeRemaining = UnityEngine.Object.Instantiate(HudManager.Instance.TaskPanel.taskText, __instance.transform);
-                        _timeRemaining.alignment = TMPro.TextAlignmentOptions.BottomRight;
+                        _timeRemaining = Object.Instantiate(HudManager.Instance.TaskPanel.taskText, __instance.transform);
+                        _timeRemaining.alignment = TextAlignmentOptions.BottomRight;
                         _timeRemaining.transform.position = Vector3.zero;
                         _timeRemaining.transform.localPosition = new Vector3(1.7f, 4.45f);
                         _timeRemaining.transform.localScale *= 1.8f;
                         _timeRemaining.color = Palette.White;
                     }
 
-                    if (MapOptions.restrictVitalsTime <= 0f)
+                    if (MapOptions.RestrictVitalsTime <= 0f)
                     {
                         __instance.Close();
                         return false;
                     }
 
-                    string timeString = TimeSpan.FromSeconds(MapOptions.restrictVitalsTime).ToString(@"mm\:ss\.ff");
-                    _timeRemaining.text = String.Format(ModTranslation.GetString("timeRemaining"), timeString);
+                    string timeString = TimeSpan.FromSeconds(MapOptions.RestrictVitalsTime).ToString(@"mm\:ss\.ff");
+                    _timeRemaining.text = string.Format(ModTranslation.GetString("timeRemaining"), timeString);
                     _timeRemaining.gameObject.SetActive(true);
                 }
 

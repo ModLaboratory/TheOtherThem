@@ -139,15 +139,15 @@ namespace TheOtherThem
                 {
                     fortuneTellerButtons[index].PositionOffset = pos;
                     fortuneTellerButtons[index].LocalScale = scale;
-                    MapOptions.playerIcons[index].transform.localPosition = iconBase + pos;
+                    MapOptions.PlayerIcons[index].transform.localPosition = iconBase + pos;
                 }
             }
 
             void setIconPos(byte index, bool transparent)
             {
-                MapOptions.playerIcons[index].transform.localScale = Vector3.one * 0.25f;
-                MapOptions.playerIcons[index].gameObject.SetActive(PlayerControl.LocalPlayer.CanMove);
-                MapOptions.playerIcons[index].SetSemiTransparent(transparent);
+                MapOptions.PlayerIcons[index].transform.localScale = Vector3.one * 0.25f;
+                MapOptions.PlayerIcons[index].gameObject.SetActive(PlayerControl.LocalPlayer.CanMove);
+                MapOptions.PlayerIcons[index].SetSemiTransparent(transparent);
             }
 
             Func<bool> fortuneTellerCouldUse(byte index)
@@ -155,15 +155,15 @@ namespace TheOtherThem
                 return () =>
                 {
                     //　占い師以外の場合、リソースがない場合はボタンを表示しない
-                    if (!MapOptions.playerIcons.ContainsKey(index) ||
+                    if (!MapOptions.PlayerIcons.ContainsKey(index) ||
                         !PlayerControl.LocalPlayer.IsRole(RoleType.FortuneTeller) ||
                         PlayerControl.LocalPlayer.IsDead() ||
                         PlayerControl.LocalPlayer.PlayerId == index ||
                         !isCompletedNumTasks(PlayerControl.LocalPlayer) ||
                         Local.numUsed >= 1)
                     {
-                        if (MapOptions.playerIcons.ContainsKey(index))
-                            MapOptions.playerIcons[index].gameObject.SetActive(false);
+                        if (MapOptions.PlayerIcons.ContainsKey(index))
+                            MapOptions.PlayerIcons[index].gameObject.SetActive(false);
                         if (fortuneTellerButtons.Count > index)
                             fortuneTellerButtons[index].setActive(false);
 
@@ -193,7 +193,7 @@ namespace TheOtherThem
                     // アイコンの位置と透明度を変更
                     setIconPos(index, !Local.canDivine(index));
 
-                    MapOptions.playerIcons[index].gameObject.SetActive(Helpers.ShowButtons && PlayerControl.LocalPlayer.CanMove);
+                    MapOptions.PlayerIcons[index].gameObject.SetActive(Helpers.ShowButtons && PlayerControl.LocalPlayer.CanMove);
                     fortuneTellerButtons[index].setActive(Helpers.ShowButtons && PlayerControl.LocalPlayer.CanMove);
 
                     return PlayerControl.LocalPlayer.CanMove && Local.numUsed < 1 && Local.canDivine(index);

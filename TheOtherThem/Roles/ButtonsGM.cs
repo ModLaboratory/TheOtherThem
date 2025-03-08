@@ -67,7 +67,7 @@ namespace TheOtherThem
                 return () =>
                 {
                     PlayerControl target = Helpers.PlayerById(index);
-                    if (!MapOptions.playerIcons.ContainsKey(index) || target.Data.Disconnected)
+                    if (!MapOptions.PlayerIcons.ContainsKey(index) || target.Data.Disconnected)
                     {
                         return;
                     }
@@ -84,7 +84,7 @@ namespace TheOtherThem
                 return () =>
                 {
                     PlayerControl target = Helpers.PlayerById(index);
-                    if (!MapOptions.playerIcons.ContainsKey(index) || target.Data.Disconnected)
+                    if (!MapOptions.PlayerIcons.ContainsKey(index) || target.Data.Disconnected)
                     {
                         return;
                     }
@@ -111,7 +111,7 @@ namespace TheOtherThem
                 return () =>
                 {
                     if ((GM.gm == null || PlayerControl.LocalPlayer != GM.gm) ||
-                        (!MapOptions.playerIcons.ContainsKey(index)) ||
+                        (!MapOptions.PlayerIcons.ContainsKey(index)) ||
                         (!GM.canWarp) ||
                         (Helpers.PlayerById(index).Data.Disconnected))
                     {
@@ -127,7 +127,7 @@ namespace TheOtherThem
                 return () =>
                 {
                     if ((GM.gm == null || PlayerControl.LocalPlayer != GM.gm) ||
-                        (!MapOptions.playerIcons.ContainsKey(index)) ||
+                        (!MapOptions.PlayerIcons.ContainsKey(index)) ||
                         (!GM.canKill) ||
                         (Helpers.PlayerById(index).Data.Disconnected))
                     {
@@ -142,7 +142,7 @@ namespace TheOtherThem
             {
                 return () =>
                 {
-                    if (!MapOptions.playerIcons.ContainsKey(index) || !GM.canWarp)
+                    if (!MapOptions.PlayerIcons.ContainsKey(index) || !GM.canWarp)
                     {
                         return false;
                     }
@@ -156,7 +156,7 @@ namespace TheOtherThem
                     {
                         gmButtons[index].PositionOffset = pos;
                         gmButtons[index].LocalScale = scale;
-                        MapOptions.playerIcons[index].transform.localPosition = iconBase + pos;
+                        MapOptions.PlayerIcons[index].transform.localPosition = iconBase + pos;
                         //TheOtherRolesPlugin.Instance.Log.LogInfo($"Updated {index}: {pos.x}, {pos.y}, {pos.z}");
                     }
 
@@ -169,7 +169,7 @@ namespace TheOtherThem
             {
                 return () =>
                 {
-                    if (!MapOptions.playerIcons.ContainsKey(index) || !GM.canKill)
+                    if (!MapOptions.PlayerIcons.ContainsKey(index) || !GM.canKill)
                     {
                         return false;
                     }
