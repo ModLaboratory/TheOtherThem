@@ -13,6 +13,15 @@ using Iced.Intel;
 
 namespace TheOtherThem
 {
+    [HarmonyPatch(typeof(GameManager), nameof(GameManager.StartGame))]
+    static class GameStartPatch
+    {
+        static void Prefix()
+        {
+            CustomButton.ResetAllCooldowns();
+        }
+    }
+
     [HarmonyPatch(typeof(HudManager), nameof(HudManager.Start))]
     static class HudManagerStartPatch
     {

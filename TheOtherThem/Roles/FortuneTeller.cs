@@ -165,7 +165,7 @@ namespace TheOtherThem
                         if (MapOptions.PlayerIcons.ContainsKey(index))
                             MapOptions.PlayerIcons[index].gameObject.SetActive(false);
                         if (fortuneTellerButtons.Count > index)
-                            fortuneTellerButtons[index].setActive(false);
+                            fortuneTellerButtons[index].SetActive(false);
 
                         return false;
                     }
@@ -194,7 +194,7 @@ namespace TheOtherThem
                     setIconPos(index, !Local.canDivine(index));
 
                     MapOptions.PlayerIcons[index].gameObject.SetActive(Helpers.ShowButtons && PlayerControl.LocalPlayer.CanMove);
-                    fortuneTellerButtons[index].setActive(Helpers.ShowButtons && PlayerControl.LocalPlayer.CanMove);
+                    fortuneTellerButtons[index].SetActive(Helpers.ShowButtons && PlayerControl.LocalPlayer.CanMove);
 
                     return PlayerControl.LocalPlayer.CanMove && Local.numUsed < 1 && Local.canDivine(index);
                 };
