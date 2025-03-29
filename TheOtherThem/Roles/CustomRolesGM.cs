@@ -44,13 +44,13 @@ namespace TheOtherThem
         public static void FixedUpdate(PlayerControl player)
         {
             Role.AllRoles.DoIf(x => x.Player == player, x => x.FixedUpdate());
-            Modifier.allModifiers.DoIf(x => x.player == player, x => x.FixedUpdate());
+            Modifier.AllModifiers.DoIf(x => x.Player == player, x => x.FixedUpdate());
         }
 
         public static void OnMeetingStart()
         {
             Role.AllRoles.Do(x => x.OnMeetingStart());
-            Modifier.allModifiers.Do(x => x.OnMeetingStart());
+            Modifier.AllModifiers.Do(x => x.OnMeetingStart());
 
             GM.resetZoom();
             Camouflager.resetCamouflage();
@@ -60,7 +60,7 @@ namespace TheOtherThem
         public static void OnMeetingEnd()
         {
             Role.AllRoles.Do(x => x.OnMeetingEnd());
-            Modifier.allModifiers.Do(x => x.OnMeetingEnd());
+            Modifier.AllModifiers.Do(x => x.OnMeetingEnd());
 
             CustomOverlays.hideInfoOverlay();
             CustomOverlays.hideBlackBG();
@@ -74,7 +74,7 @@ namespace TheOtherThem
                 if (AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started)
                 {
                     Role.AllRoles.Do(x => x.HandleDisconnect(player, reason));
-                    Modifier.allModifiers.Do(x => x.HandleDisconnect(player, reason));
+                    Modifier.AllModifiers.Do(x => x.HandleDisconnect(player, reason));
 
                     Lovers.HandleDisconnect(player, reason);
                     Shifter.HandleDisconnect(player, reason);

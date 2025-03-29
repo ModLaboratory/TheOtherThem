@@ -160,7 +160,7 @@ namespace TheOtherThem
             }
         }
 
-        public static void killLovers(PlayerControl player, PlayerControl killer = null)
+        public static void KillLovers(PlayerControl player, PlayerControl killer = null)
         {
             if (!player.IsInLove()) return;
 

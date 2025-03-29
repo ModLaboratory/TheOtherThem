@@ -874,14 +874,14 @@ namespace TheOtherThem
             PlayerControl target = Helpers.PlayerById(targetId);
             if (target == null) return;
             target.Revive();
-            updateMeeting(targetId, false);
+            UpdateMeeting(targetId, false);
             finalStatuses[target.PlayerId] = FinalStatus.Alive;
 
             PlayerControl partner = target.GetPartner(); // Lover check
             if (partner != null)
             {
                 partner.Revive();
-                updateMeeting(partner.PlayerId, false);
+                UpdateMeeting(partner.PlayerId, false);
                 finalStatuses[partner.PlayerId] = FinalStatus.Alive;
             }
 
@@ -891,7 +891,7 @@ namespace TheOtherThem
             }
         }
 
-        public static void updateMeeting(byte targetId, bool dead = true)
+        public static void UpdateMeeting(byte targetId, bool dead = true)
         {
             if (MeetingHud.Instance)
             {

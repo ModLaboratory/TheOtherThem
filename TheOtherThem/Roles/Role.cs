@@ -220,8 +220,6 @@ namespace TheOtherThem
     {
         public static bool IsRole(this PlayerControl player, RoleType role)
         {
-            //Main.Logger.LogInfo($"{nameof(IsRole)}: {role}");
-
             foreach (var t in RoleData.AllRoleTypes)
             {
                 if (role == t.Key)
@@ -794,22 +792,22 @@ namespace TheOtherThem
         public static void OnKill(this PlayerControl player, PlayerControl target)
         {
             Role.AllRoles.DoIf(x => x.Player == player, x => x.OnKill(target));
-            Modifier.allModifiers.DoIf(x => x.player == player, x => x.OnKill(target));
+            Modifier.AllModifiers.DoIf(x => x.Player == player, x => x.OnKill(target));
         }
 
         public static void OnDeath(this PlayerControl player, PlayerControl killer)
         {
             Role.AllRoles.DoIf(x => x.Player == player, x => x.OnDeath(killer));
-            Modifier.allModifiers.DoIf(x => x.player == player, x => x.OnDeath(killer));
+            Modifier.AllModifiers.DoIf(x => x.Player == player, x => x.OnDeath(killer));
 
             // Lover suicide trigger on exile/death
             if (player.IsInLove())
-                Lovers.killLovers(player, killer);
+                Lovers.KillLovers(player, killer);
 
-            RpcProcedure.updateMeeting(player.PlayerId, true);
+            RpcProcedure.UpdateMeeting(player.PlayerId, true);
         }
 
-        public static void InitTOTRoles()
+        public static void InitTownOfThemRoles()
         {
             var currentAssembly = Assembly.GetExecutingAssembly();
             currentAssembly.GetTypes().Where(t => t.IsDefined(typeof(RoleAutoInitializeAttribute), true) && typeof(CustomRole).IsAssignableFrom(t)).Do(t => Activator.CreateInstance(t, true));

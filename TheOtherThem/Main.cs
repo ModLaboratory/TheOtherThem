@@ -1,6 +1,7 @@
 ﻿global using HarmonyLib;
 global using Object = UnityEngine.Object;
 using AmongUs.Data.Legacy;
+using AmongUs.Data.Player;
 using AmongUs.GameOptions;
 using BepInEx;
 using BepInEx.Configuration;
@@ -8,7 +9,6 @@ using BepInEx.Unity.IL2CPP;
 using Hazel;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using TheOtherThem.Modules;
@@ -62,7 +62,7 @@ namespace TheOtherThem
             ModTranslation.Load();
             Logger = Log;
             DebugMode = Config.Bind("Custom", "Enable Debug Mode", false);
-            //StreamerMode = Config.Bind("Custom", "Enable Streamer Mode", false);
+            StreamerMode = Config.Bind("Custom", "Enable Streamer Mode", false);
             GhostsSeeTasks = Config.Bind("Custom", "Ghosts See Remaining Tasks", true);
             GhostsSeeRoles = Config.Bind("Custom", "Ghosts See Roles", true);
             GhostsSeeVotes = Config.Bind("Custom", "Ghosts See Votes", true);
@@ -71,8 +71,8 @@ namespace TheOtherThem
             ShowLighterDarker = Config.Bind("Custom", "Show Lighter / Darker", false);
             HideTaskArrows = Config.Bind("Custom", "Hide Task Arrows", false);
             ShowPopUpVersion = Config.Bind("Custom", "Show PopUp", "0");
-            //StreamerModeReplacementText = Config.Bind("Custom", "Streamer Mode Replacement Text", "\n\nThe Other Roles GM");
-            //StreamerModeReplacementColor = Config.Bind("Custom", "Streamer Mode Replacement Text Hex Color", "#87AAF5FF");
+            StreamerModeReplacementText = Config.Bind("Custom", "Streamer Mode Replacement Text", "\n\nThe Other Roles GM");
+            StreamerModeReplacementColor = Config.Bind("Custom", "Streamer Mode Replacement Text Hex Color", "#87AAF5FF");
             DebugRepo = Config.Bind("Custom", "Debug Hat Repo", "");
 
             Ip = Config.Bind("Custom", "Custom Server IP", "127.0.0.1");
@@ -81,14 +81,14 @@ namespace TheOtherThem
 
             UpdateRegions();
 
-            GameOptionsData.RecommendedImpostors = Enumerable.Repeat(3, 16).ToArray();
-            GameOptionsData.MaxImpostors = Enumerable.Repeat(15, 16).ToArray(); // Max Imp = Recommended Imp = 3
-            GameOptionsData.MinPlayers = Enumerable.Repeat(4, 15).ToArray(); // Min Players = 4
+            NormalGameOptionsV09.RecommendedImpostors = Enumerable.Repeat(3, 16).ToArray();
+            NormalGameOptionsV09.MaxImpostors = Enumerable.Repeat(15, 16).ToArray(); // Max Imp = Recommended Imp = 3
+            NormalGameOptionsV09.MinPlayers = Enumerable.Repeat(4, 15).ToArray(); // Min Players = 4
 
             DebugMode = Config.Bind("Custom", "Enable Debug Mode", false);
             Instance = this;
             CustomOptionHolder.Load();
-            RoleHelpers.InitTOTRoles();
+            RoleHelpers.InitTownOfThemRoles();
             CustomColors.Load();
 
             Harmony.PatchAll();
@@ -118,7 +118,7 @@ namespace TheOtherThem
     }
 
     // Deactivate bans, since I always leave my local testing game and ban myself
-    [HarmonyPatch(typeof(StatsManager), nameof(StatsManager.AmBanned), MethodType.Getter)]
+    [HarmonyPatch(typeof(PlayerBanData), nameof(PlayerBanData.IsBanned), MethodType.Getter)]
     public static class AmBannedPatch
     {
         public static void Postfix(out bool __result)

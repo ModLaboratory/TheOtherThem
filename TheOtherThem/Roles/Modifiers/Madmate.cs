@@ -115,39 +115,29 @@ namespace TheOtherThem
 
         public Madmate()
         {
-            ModType = modId = ModifierType.Madmate;
+            ModType = ModId = ModifierType.Madmate;
         }
-
-        public override void OnMeetingStart() { }
-        public override void OnMeetingEnd() { }
-        public override void FixedUpdate() { }
-        public override void OnKill(PlayerControl target) { }
 
         public override void OnDeath(PlayerControl killer = null)
         {
-            player.ClearAllTasks();
+            Player.ClearAllTasks();
         }
-
-        public override void HandleDisconnect(PlayerControl player, DisconnectReasons reason) { }
-
-        public static void MakeButtons(HudManager hm) { }
-        public static void SetButtonCooldowns() { }
 
         [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.BeginCrewmate))]
         class BeginCrewmatePatch
         {
-            public static void Postfix(ShipStatus __instance)
+            public static void Postfix()
             {
                 if (hasTasks && hasModifier(PlayerControl.LocalPlayer))
                 {
-                    local.assignTasks();
+                    local.AssignTasks();
                 }
             }
         }
 
-        public void assignTasks()
+        public void AssignTasks()
         {
-            player.GenerateAndAssignTasks(numCommonTasks, numShortTasks, numLongTasks);
+            Player.GenerateAndAssignTasks(numCommonTasks, numShortTasks, numLongTasks);
         }
 
         public static bool knowsImpostors(PlayerControl player)

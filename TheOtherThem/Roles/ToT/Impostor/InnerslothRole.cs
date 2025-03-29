@@ -74,7 +74,7 @@ namespace TheOtherThem.ToTRole.Impostor
             var sys = ShipStatus.Instance.Systems[SystemTypes.Comms];
             var mapId = TutorialManager.InstanceExists ? AmongUsClient.Instance.TutorialMapId : GameOptionsManager.Instance.currentGameOptions.MapId;
 
-            if ((MapNames)mapId == MapNames.Mira)
+            if ((MapNames)mapId == MapNames.MiraHQ)
                 sys.Cast<HqHudSystemType>().CompletedConsoles.Clear();
             else
                 sys.Cast<HudOverrideSystemType>().IsActive = true;

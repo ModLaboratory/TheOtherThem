@@ -38,21 +38,21 @@ namespace TheOtherThem
 
     public abstract class Modifier
     {
-        public static List<Modifier> allModifiers = new List<Modifier>();
-        public PlayerControl player;
-        public ModifierType modId;
+        public static List<Modifier> AllModifiers { get; } = new List<Modifier>();
+        public PlayerControl Player { get; set; }
+        public ModifierType ModId { get; init; }
 
-        public abstract void OnMeetingStart();
-        public abstract void OnMeetingEnd();
-        public abstract void FixedUpdate();
-        public abstract void OnKill(PlayerControl target);
-        public abstract void OnDeath(PlayerControl killer = null);
-        public abstract void HandleDisconnect(PlayerControl player, DisconnectReasons reason);
+        public virtual void OnMeetingStart() { }
+        public virtual void OnMeetingEnd() { }
+        public virtual void FixedUpdate() { }
+        public virtual void OnKill(PlayerControl target) { }
+        public virtual void OnDeath(PlayerControl killer = null) { }
+        public virtual void HandleDisconnect(PlayerControl player, DisconnectReasons reason) { }
         public virtual void ResetModifier() { }
 
         public static void ClearAll()
         {
-            allModifiers = new List<Modifier>();
+            AllModifiers.Clear();
         }
     }
 
@@ -64,16 +64,16 @@ namespace TheOtherThem
 
         public void Init(PlayerControl player)
         {
-            this.player = player;
+            this.Player = player;
             players.Add((T)this);
-            allModifiers.Add(this);
+            AllModifiers.Add(this);
         }
 
         public static T local
         {
             get
             {
-                return players.FirstOrDefault(x => x.player == PlayerControl.LocalPlayer);
+                return players.FirstOrDefault(x => x.Player == PlayerControl.LocalPlayer);
             }
         }
 
@@ -81,7 +81,7 @@ namespace TheOtherThem
         {
             get
             {
-                return players.Select(x => x.player).ToList();
+                return players.Select(x => x.Player).ToList();
             }
         }
 
@@ -89,7 +89,7 @@ namespace TheOtherThem
         {
             get
             {
-                return players.Select(x => x.player).Where(x => x.IsAlive()).ToList();
+                return players.Select(x => x.Player).Where(x => x.IsAlive()).ToList();
             }
         }
 
@@ -97,7 +97,7 @@ namespace TheOtherThem
         {
             get
             {
-                return players.Select(x => x.player).Where(x => !x.IsAlive()).ToList();
+                return players.Select(x => x.Player).Where(x => !x.IsAlive()).ToList();
             }
         }
 
@@ -109,12 +109,12 @@ namespace TheOtherThem
         public static T getModifier(PlayerControl player = null)
         {
             player = player ?? PlayerControl.LocalPlayer;
-            return players.FirstOrDefault(x => x.player == player);
+            return players.FirstOrDefault(x => x.Player == player);
         }
 
         public static bool hasModifier(PlayerControl player)
         {
-            return players.Any(x => x.player == player);
+            return players.Any(x => x.Player == player);
         }
 
         public static void addModifier(PlayerControl player)
@@ -125,17 +125,17 @@ namespace TheOtherThem
 
         public static void eraseModifier(PlayerControl player)
         {
-            players.DoIf(x => x.player == player, x => x.ResetModifier());
-            players.RemoveAll(x => x.player == player && x.modId == ModType);
-            allModifiers.RemoveAll(x => x.player == player && x.modId == ModType);
+            players.DoIf(x => x.Player == player, x => x.ResetModifier());
+            players.RemoveAll(x => x.Player == player && x.ModId == ModType);
+            AllModifiers.RemoveAll(x => x.Player == player && x.ModId == ModType);
         }
 
         public static void swapModifier(PlayerControl p1, PlayerControl p2)
         {
-            var index = players.FindIndex(x => x.player == p1);
+            var index = players.FindIndex(x => x.Player == p1);
             if (index >= 0)
             {
-                players[index].player = p2;
+                players[index].Player = p2;
             }
         }
     }

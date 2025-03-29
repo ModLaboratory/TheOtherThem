@@ -9,7 +9,7 @@ using static TheOtherThem.TheOtherRoles;
 
 namespace TheOtherThem.Patches
 {
-    [HarmonyPatch(typeof(RoleOptionsData), nameof(RoleOptionsData.GetNumPerGame))]
+    [HarmonyPatch(typeof(IRoleOptionsCollection), nameof(IRoleOptionsCollection.GetNumPerGame))]
     class RoleOptionsDataGetNumPerGamePatch
     {
         public static void Postfix(ref int __result, ref RoleTypes role)
@@ -24,9 +24,9 @@ namespace TheOtherThem.Patches
     [HarmonyPatch(typeof(RoleManager), nameof(RoleManager.SelectRoles))]
     class RoleManagerSelectRolesPatch
     {
-        private static List<byte> blockLovers = new List<byte>();
-        public static int blockedAssignments = 0;
-        public static int maxBlocks = 10;
+        private static List<byte> _blockedLovers = new();
+        private static int _blockedAssignments = 0;
+        private const int MaxBlocks = 10;
 
         public static void Postfix()
         {
@@ -76,20 +76,20 @@ namespace TheOtherThem.Patches
                 }
             }
 
-            blockLovers = new List<byte> {
+            _blockedLovers = new List<byte> {
                 (byte)RoleType.Bait,
             };
 
             if (!Lovers.hasTasks)
             {
-                blockLovers.Add((byte)RoleType.Snitch);
-                blockLovers.Add((byte)RoleType.FortuneTeller);
-                blockLovers.Add((byte)RoleType.Fox);
+                _blockedLovers.Add((byte)RoleType.Snitch);
+                _blockedLovers.Add((byte)RoleType.FortuneTeller);
+                _blockedLovers.Add((byte)RoleType.Fox);
             }
 
             if (!CustomOptionHolder.arsonistCanBeLovers.GetBool())
             {
-                blockLovers.Add((byte)RoleType.Arsonist);
+                _blockedLovers.Add((byte)RoleType.Arsonist);
             }
 
             var data = GetRoleAssignmentData();
@@ -414,7 +414,7 @@ namespace TheOtherThem.Patches
 
         private static void AssignEnsuredRoles(RoleAssignmentData data)
         {
-            blockedAssignments = 0;
+            _blockedAssignments = 0;
 
             // Get all roles where the chance to occur is set to 100%
             List<byte> ensuredCrewmateRoles = data.CrewSettings.Where(x => x.Value.rate == 10).Select(x => Enumerable.Repeat(x.Key, x.Value.count)).SelectMany(x => x).ToList();
@@ -442,12 +442,12 @@ namespace TheOtherThem.Patches
                 var index = rnd.Next(0, rolesToAssign[roleType].Count);
                 var roleId = rolesToAssign[roleType][index];
                 var player = SetRoleToRandomPlayer(rolesToAssign[roleType][index], players);
-                if (player == byte.MaxValue && blockedAssignments < maxBlocks)
+                if (player == byte.MaxValue && _blockedAssignments < MaxBlocks)
                 {
-                    blockedAssignments++;
+                    _blockedAssignments++;
                     continue;
                 }
-                blockedAssignments = 0;
+                _blockedAssignments = 0;
 
                 rolesToAssign[roleType].RemoveAt(index);
 
@@ -480,7 +480,7 @@ namespace TheOtherThem.Patches
 
         private static void AssignChanceRoles(RoleAssignmentData data)
         {
-            blockedAssignments = 0;
+            _blockedAssignments = 0;
 
             // Get all roles where the chance to occur is set grater than 0% but not 100% and build a ticket pool based on their weight
             List<byte> crewmateTickets = data.CrewSettings.Where(x => x.Value.rate > 0 && x.Value.rate < 10).Select(x => Enumerable.Repeat(x.Key, x.Value.rate * x.Value.count)).SelectMany(x => x).ToList();
@@ -509,12 +509,12 @@ namespace TheOtherThem.Patches
                 var index = rnd.Next(0, rolesToAssign[roleType].Count);
                 var roleId = rolesToAssign[roleType][index];
                 var player = SetRoleToRandomPlayer(rolesToAssign[roleType][index], players);
-                if (player == byte.MaxValue && blockedAssignments < maxBlocks)
+                if (player == byte.MaxValue && _blockedAssignments < MaxBlocks)
                 {
-                    blockedAssignments++;
+                    _blockedAssignments++;
                     continue;
                 }
-                blockedAssignments = 0;
+                _blockedAssignments = 0;
 
                 rolesToAssign[roleType].RemoveAll(x => x == roleId);
 
@@ -615,7 +615,7 @@ namespace TheOtherThem.Patches
             byte playerId = playerList[index].PlayerId;
             if (RoleInfo.lovers.Enabled &&
                 Helpers.PlayerById(playerId)?.IsInLove() == true &&
-                blockLovers.Contains(roleId))
+                _blockedLovers.Contains(roleId))
                     return byte.MaxValue;
 
             if (removePlayer) playerList.RemoveAt(index);
