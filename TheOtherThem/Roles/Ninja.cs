@@ -54,7 +54,7 @@ namespace TheOtherThem
                 }
                 else
                 {
-                    Player.SetKillTimer(GameOptionsManager.Instance.CurrentGameOptions.Cast<NormalGameOptionsV08>().KillCooldown);
+                    Player.SetKillTimer(GameOptionsManager.Instance.CurrentGameOptions.Cast<NormalGameOptionsV09>().KillCooldown);
                 }
             }
         }
@@ -116,7 +116,7 @@ namespace TheOtherThem
             penalized = stealthed;
             float penalty = penalized ? killPenalty : 0f;
             if (PlayerControl.LocalPlayer == Player)
-                Player.SetKillTimerUnchecked(GameOptionsManager.Instance.CurrentGameOptions.Cast<NormalGameOptionsV08>().KillCooldown + penalty);
+                Player.SetKillTimerUnchecked(GameOptionsManager.Instance.CurrentGameOptions.Cast<NormalGameOptionsV09>().KillCooldown + penalty);
         }
 
         public override void OnDeath(PlayerControl killer)

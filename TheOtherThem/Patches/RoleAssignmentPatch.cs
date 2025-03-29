@@ -429,6 +429,7 @@ namespace TheOtherThem.Patches
                     (data.MaxNeutralRoles > 0 && ensuredNeutralRoles.Count > 0)
                 )))
             {
+                System.Console.WriteLine("ensure");
                 Dictionary<TeamType, List<byte>> rolesToAssign = new Dictionary<TeamType, List<byte>>();
                 if (data.Crewmates.Count > 0 && data.MaxCrewmateRoles > 0 && ensuredCrewmateRoles.Count > 0) rolesToAssign.Add(TeamType.Crewmate, ensuredCrewmateRoles);
                 if (data.Crewmates.Count > 0 && data.MaxNeutralRoles > 0 && ensuredNeutralRoles.Count > 0) rolesToAssign.Add(TeamType.Neutral, ensuredNeutralRoles);

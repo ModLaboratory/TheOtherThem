@@ -15,7 +15,8 @@ namespace TheOtherThem.ToTRole.Impostor
     {
         public static InnerslothRole Instance { get; private set; }
 
-        private static bool CustomSabotageStarted = false;
+        private static bool _customSabotageStarted = false;
+
         public static CustomRoleOption InnerslothSpawnRate { get; set; }
         public static CustomOption InnerslothAbilltyCooldown { get; set; }
         public static CustomButton LagButton { get; set; }
@@ -31,7 +32,7 @@ namespace TheOtherThem.ToTRole.Impostor
 
         public override void ClearData()
         {
-            CustomSabotageStarted = false;
+            _customSabotageStarted = false;
         }
 
         public override (CustomButton, float)[] CreateButtons()
@@ -43,7 +44,7 @@ namespace TheOtherThem.ToTRole.Impostor
                 CustomSabotageComms();
             },
             CanLocalPlayerUse,
-            () => !CustomSabotageStarted,
+            () => !_customSabotageStarted,
             () => { },
             ModTranslation.GetImage("LagButton", 1000),
             new(-2, 1, 0),
@@ -84,7 +85,7 @@ namespace TheOtherThem.ToTRole.Impostor
 
         static IEnumerator CoCustomSabotage()
         {
-            CustomSabotageStarted = true;
+            _customSabotageStarted = true;
             yield return null;
 
             while (IsCommsSabotaged())
@@ -100,16 +101,19 @@ namespace TheOtherThem.ToTRole.Impostor
 
             PlayerControl.LocalPlayer.moveable = true;
             LagButton.ResetTimer();
-            CustomSabotageStarted = false;
+            _customSabotageStarted = false;
         }
 
         [HarmonyPatch(typeof(TranslationController), nameof(TranslationController.GetString), new Type[] { typeof(TaskTypes) })]
         [HarmonyPrefix]
         static bool OverrideTaskPanelInfoPatch(TaskTypes task, ref string __result)
         {
-            if (task != TaskTypes.FixComms) return true;
-            __result = ModTranslation.GetString("InnerslothFixCommsTaskInfoOverride");
-            return false;
+            if (task == TaskTypes.FixComms && _customSabotageStarted)
+            {
+                __result = ModTranslation.GetString("InnerslothFixCommsTaskInfoOverride");
+                return false;
+            }
+            return true;
         }
     }
 }

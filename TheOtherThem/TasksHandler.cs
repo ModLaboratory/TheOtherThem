@@ -59,7 +59,7 @@ namespace TheOtherThem {
             int CompletedTasks = 0;
             if (!playerInfo.Disconnected && playerInfo.Tasks != null &&
                 playerInfo.Object &&
-                (GameOptionsManager.Instance.CurrentGameOptions.Cast<NormalGameOptionsV08>().GhostsDoTasks || !playerInfo.IsDead) &&
+                (GameOptionsManager.Instance.CurrentGameOptions.Cast<NormalGameOptionsV09>().GhostsDoTasks || !playerInfo.IsDead) &&
                 playerInfo.Role && playerInfo.Role.TasksCountTowardProgress &&
                 !(playerInfo.Object.IsGM() && !GM.hasTasks) &&
                 !(playerInfo.Object.IsInLove() && !Lovers.hasTasks) &&

@@ -266,7 +266,7 @@ namespace TheOtherThem
         }
 
         public static void dynamicMapOption(byte mapId) {
-            GameOptionsManager.Instance.CurrentGameOptions.Cast<NormalGameOptionsV08>().MapId = mapId;
+            GameOptionsManager.Instance.CurrentGameOptions.Cast<NormalGameOptionsV09>().MapId = mapId;
         }
 
         // Role functionality
@@ -686,7 +686,7 @@ namespace TheOtherThem
                 default: camera.NewName = StringNames.ExitButton; break;
             }
 
-            if (GameOptionsManager.Instance.CurrentGameOptions.Cast<NormalGameOptionsV08>().MapId == 2 || GameOptionsManager.Instance.CurrentGameOptions.Cast<NormalGameOptionsV08>().MapId == 4) camera.transform.localRotation = new Quaternion(0, 0, 1, 1); // Polus and Airship 
+            if (GameOptionsManager.Instance.CurrentGameOptions.Cast<NormalGameOptionsV09>().MapId == 2 || GameOptionsManager.Instance.CurrentGameOptions.Cast<NormalGameOptionsV09>().MapId == 4) camera.transform.localRotation = new Quaternion(0, 0, 1, 1); // Polus and Airship 
 
             if (PlayerControl.LocalPlayer == SecurityGuard.securityGuard)
             {

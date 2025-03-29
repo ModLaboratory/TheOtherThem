@@ -147,7 +147,7 @@ namespace TheOtherThem.Patches {
             if (Mini.mini != null && PlayerControl.LocalPlayer == Mini.mini && Mini.mini.Data.Role.IsImpostor)
             {
                 var multiplier = Mini.isGrownUp() ? 0.66f : 2f;
-                Mini.mini.SetKillTimer(GameOptionsManager.Instance.CurrentGameOptions.Cast<NormalGameOptionsV08>().KillCooldown * multiplier);
+                Mini.mini.SetKillTimer(GameOptionsManager.Instance.CurrentGameOptions.Cast<NormalGameOptionsV09>().KillCooldown * multiplier);
             }
 
             // Seer spawn souls
