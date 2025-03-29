@@ -1,5 +1,7 @@
 ﻿global using HarmonyLib;
 global using Object = UnityEngine.Object;
+global using Il2CppCollections = Il2CppSystem.Collections;
+global using Il2CppGenericCollections = Il2CppSystem.Collections.Generic;
 using AmongUs.Data.Legacy;
 using AmongUs.Data.Player;
 using AmongUs.GameOptions;
@@ -98,9 +100,9 @@ namespace TheOtherThem
 
             System.Console.OutputEncoding = Encoding.UTF8;
 
-            Logger.LogMessage("");
-            Logger.LogMessage($"======= TOT LOADED! =======");
-            Logger.LogMessage("");
+            Logger.LogSuccess("");
+            Logger.LogSuccess($"======= TOT LOADED! =======");
+            Logger.LogSuccess("");
 
             string currentGameVersion = Application.version;
             Logger.LogInfo($"{nameof(ModBasicInfo)}.{nameof(ModBasicInfo.VersionString)} = {ModBasicInfo.VersionString}");

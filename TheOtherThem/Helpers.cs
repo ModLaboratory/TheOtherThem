@@ -15,6 +15,9 @@ using TheOtherThem.Patches;
 using Il2CppInterop.Runtime.InteropTypes.Arrays;
 using Il2CppInterop.Runtime;
 using TheOtherThem.ToTRole;
+using BepInEx.Logging;
+using BepInEx;
+using BepInEx.Unity.IL2CPP;
 
 namespace TheOtherThem {
 
@@ -607,13 +610,21 @@ namespace TheOtherThem {
 
         public static void Destroy(this Object obj) => Object.Destroy(obj);
 
-        public static Il2CppSystem.Collections.Generic.List<T> ToIl2CppList<T>(this List<T> origin)
+        public static Il2CppGenericCollections.List<T> ToIl2CppList<T>(this List<T> origin)
         {
-            Il2CppSystem.Collections.Generic.List<T> collection = new();
+            Il2CppGenericCollections.List<T> collection = new();
             foreach (var item in origin) collection.Add(item);
             return collection;
         }
 
         public static bool Random() => new System.Random().Next(2) == 1;
+
+        public static void LogSuccess(this ManualLogSource logger, string message)
+        {
+            string formatted = $"[Success:{logger.SourceName, 10}] {message}";
+            (BepInEx.Logging.Logger.Listeners.FirstOrDefault(l => l is DiskLogListener) as DiskLogListener).LogWriter.WriteLine(formatted);
+            ConsoleManager.SetConsoleColor(ConsoleColor.Green);
+            ConsoleManager.StandardOutStream.WriteLine(formatted);
+        }
     }
 }
