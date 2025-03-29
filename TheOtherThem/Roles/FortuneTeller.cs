@@ -346,7 +346,7 @@ namespace TheOtherThem
 
             else if (divineResult == DivineResults.Role) { 
                 msgBase = "divineMessageRole";
-                msgInfo = String.Join(" ", RoleInfo.getRoleInfoForPlayer(p).Select(x => Helpers.ColorString(x.RoleColor, x.Name)).ToArray());
+                msgInfo = String.Join(" ", RoleInfo.GetRoleInfoForPlayer(p).Select(x => Helpers.ColorString(x.RoleColor, x.Name)).ToArray());
             }
 
             string msg = string.Format(ModTranslation.GetString(msgBase), p.name, msgInfo);

@@ -226,7 +226,7 @@ namespace TheOtherThem.Patches {
                     if (player == null) return;
                     // Exile role text
                     if (id == StringNames.ExileTextPN || id == StringNames.ExileTextSN || id == StringNames.ExileTextPP || id == StringNames.ExileTextSP) {
-                        __result = string.Format(ModTranslation.GetString("EjectionText"), player.Data.PlayerName, string.Join(" ", RoleInfo.getRoleInfoForPlayer(player).Select(x => x.Name).ToArray()));
+                        __result = string.Format(ModTranslation.GetString("EjectionText"), player.Data.PlayerName, string.Join(" ", RoleInfo.GetRoleInfoForPlayer(player).Select(x => x.Name).ToArray()));
                     }
                     // Hide number of remaining impostors on Jester win
                     if (id == StringNames.ImpostorsRemainP || id == StringNames.ImpostorsRemainS) {

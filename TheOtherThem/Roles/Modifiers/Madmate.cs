@@ -91,7 +91,7 @@ namespace TheOtherThem
 
                 foreach (var player in PlayerControl.AllPlayerControls.ToArray().Where(x => x.IsCrewmate() && !hasModifier(x)).ToList())
                 {
-                    var info = RoleInfo.getRoleInfoForPlayer(player, includeHidden: true);
+                    var info = RoleInfo.GetRoleInfoForPlayer(player, includeHidden: true);
                     if (info.Contains(RoleInfo.crewmate))
                     {
                         crewNoRole.Add(player);

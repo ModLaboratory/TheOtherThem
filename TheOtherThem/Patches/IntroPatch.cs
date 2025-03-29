@@ -120,7 +120,7 @@ namespace TheOtherThem.Patches {
         }
 
         public static void setupIntroTeam(IntroCutscene __instance, ref  Il2CppSystem.Collections.Generic.List<PlayerControl> yourTeam) {
-            List<RoleInfo> infos = RoleInfo.getRoleInfoForPlayer(PlayerControl.LocalPlayer);
+            List<RoleInfo> infos = RoleInfo.GetRoleInfoForPlayer(PlayerControl.LocalPlayer);
             RoleInfo roleInfo = infos.Where(info => info.MyRoleType != RoleType.Lovers).FirstOrDefault();
             if (roleInfo == null) return;
             Main.Logger.LogInfo($"{PlayerControl.LocalPlayer.IsNeutral()} | {roleInfo.MyRoleType}");
@@ -138,7 +138,7 @@ namespace TheOtherThem.Patches {
             public static void Postfix(IntroCutscene._ShowRole_d__41 __instance) {
                 if (!CustomOptionHolder.activateRoles.GetBool()) return; // Don't override the intro of the vanilla roles
 
-                List<RoleInfo> infos = RoleInfo.getRoleInfoForPlayer(PlayerControl.LocalPlayer, new RoleType[] { RoleType.Lovers });
+                List<RoleInfo> infos = RoleInfo.GetRoleInfoForPlayer(PlayerControl.LocalPlayer, new RoleType[] { RoleType.Lovers });
                 RoleInfo roleInfo = infos.FirstOrDefault();
 
                 var intro = __instance.__4__this;

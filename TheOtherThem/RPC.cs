@@ -101,7 +101,6 @@ namespace TheOtherThem
 
     public static class RpcProcedure
     {
-
         // Main Controls
 
         public static void ResetVariables()

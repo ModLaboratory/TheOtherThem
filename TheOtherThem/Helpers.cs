@@ -203,7 +203,7 @@ namespace TheOtherThem {
         public static void RefreshRoleDescription(PlayerControl player) {
             if (player == null) return;
 
-            List<RoleInfo> infos = RoleInfo.getRoleInfoForPlayer(player); 
+            List<RoleInfo> infos = RoleInfo.GetRoleInfoForPlayer(player); 
 
             var toRemove = new List<PlayerTask>();
             foreach (PlayerTask t in player.myTasks) {

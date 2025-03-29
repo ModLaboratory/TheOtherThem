@@ -152,7 +152,7 @@ namespace TheOtherThem {
             infoOverlayRules.enabled = true;
 
             string rolesText = "";
-            foreach (RoleInfo r in RoleInfo.getRoleInfoForPlayer(PlayerControl.LocalPlayer))
+            foreach (RoleInfo r in RoleInfo.GetRoleInfoForPlayer(PlayerControl.LocalPlayer))
             {string roleDesc = r.FullDescription;
                 rolesText += $"<size=150%>{r.NameColored}</size>" +
                     (roleDesc != "" ? $"\n{r.FullDescription}" : "") + "\n\n";

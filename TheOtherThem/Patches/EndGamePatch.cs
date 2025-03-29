@@ -149,7 +149,7 @@ namespace TheOtherThem.Patches
             foreach (var p in GameData.Instance.AllPlayers)
             {
                 //var p = pc.Data;
-                var roles = RoleInfo.getRoleInfoForPlayer(p.Object, excludeRoles, includeHidden: true);
+                var roles = RoleInfo.GetRoleInfoForPlayer(p.Object, excludeRoles, includeHidden: true);
                 var (tasksCompleted, tasksTotal) = TasksHandler.taskInfo(p);
                 var finalStatus = finalStatuses[p.PlayerId] =
                     p.Disconnected == true ? FinalStatus.Disconnected :

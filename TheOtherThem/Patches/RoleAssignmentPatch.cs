@@ -30,6 +30,8 @@ namespace TheOtherThem.Patches
 
         public static void Postfix()
         {
+            Main.Logger.LogMessage("SelectRole patch triggered");
+
             MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.ResetVaribles, Hazel.SendOption.Reliable, -1);
             AmongUsClient.Instance.FinishRpcImmediately(writer);
             RpcProcedure.ResetVariables();
@@ -42,13 +44,17 @@ namespace TheOtherThem.Patches
         {
             if (CustomOptionHolder.gmEnabled.GetBool() && CustomOptionHolder.gmIsHost.GetBool())
             {
+                Main.Logger.LogMessage("Host GM");
                 PlayerControl host = AmongUsClient.Instance?.GetHost().Character;
+
                 if (host.Data.Role.IsImpostor)
                 {
                     Main.Logger.LogInfo("Why are we here");
                     if (host.Data.Role.IsImpostor)
                     {
-                        int newImpId = 0;
+                        Main.Logger.LogMessage("Host impostor");
+
+                        int newImpId;
                         PlayerControl newImp;
                         while (true)
                         {
@@ -61,7 +67,9 @@ namespace TheOtherThem.Patches
                             break;
                         }
 
-                        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.OverrideNativeRole, Hazel.SendOption.Reliable, -1);
+                        Main.Logger.LogMessage("Selected new impostor && override native roles");
+
+                        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.OverrideNativeRole, SendOption.Reliable, -1);
                         writer.Write(host.PlayerId);
                         writer.Write((byte)RoleTypes.Crewmate);
                         AmongUsClient.Instance.FinishRpcImmediately(writer);
@@ -200,6 +208,8 @@ namespace TheOtherThem.Patches
                 crewSettings.Add((byte)RoleType.Spy, CustomOptionHolder.spySpawnRate.Data);
             }
 
+            Main.Logger.LogMessage("Get assignment data");
+
             return new RoleAssignmentData
             {
                 Crewmates = crewmates,
@@ -216,11 +226,11 @@ namespace TheOtherThem.Patches
         private static void AssignSpecialRoles(RoleAssignmentData data)
         {
             // Assign GM
-            if (CustomOptionHolder.gmEnabled.GetBool() == true)
+            if (CustomOptionHolder.gmEnabled.GetBool())
             {
                 byte gmID = 0;
 
-                if (CustomOptionHolder.gmIsHost.GetBool() == true)
+                if (CustomOptionHolder.gmIsHost.GetBool())
                 {
                     PlayerControl host = AmongUsClient.Instance?.GetHost().Character;
                     gmID = SetRoleToHost((byte)RoleType.GM, host);
@@ -309,6 +319,8 @@ namespace TheOtherThem.Patches
                 SetRoleToRandomPlayer((byte)RoleType.Mafioso, data.Impostors);
                 data.MaxImpostorRoles -= 3;
             }
+
+            Main.Logger.LogMessage("Special roles assigned");
         }
 
         private static void SelectFactionForFactionIndependentRoles(RoleAssignmentData data)
@@ -414,6 +426,8 @@ namespace TheOtherThem.Patches
 
         private static void AssignEnsuredRoles(RoleAssignmentData data)
         {
+            Main.Logger.LogMessage("Assigning ensured roles");
+
             _blockedAssignments = 0;
 
             // Get all roles where the chance to occur is set to 100%
@@ -429,7 +443,7 @@ namespace TheOtherThem.Patches
                     (data.MaxNeutralRoles > 0 && ensuredNeutralRoles.Count > 0)
                 )))
             {
-                System.Console.WriteLine("ensure");
+                Main.Logger.LogMessage("Loop");
                 Dictionary<TeamType, List<byte>> rolesToAssign = new Dictionary<TeamType, List<byte>>();
                 if (data.Crewmates.Count > 0 && data.MaxCrewmateRoles > 0 && ensuredCrewmateRoles.Count > 0) rolesToAssign.Add(TeamType.Crewmate, ensuredCrewmateRoles);
                 if (data.Crewmates.Count > 0 && data.MaxNeutralRoles > 0 && ensuredNeutralRoles.Count > 0) rolesToAssign.Add(TeamType.Neutral, ensuredNeutralRoles);
@@ -438,11 +452,11 @@ namespace TheOtherThem.Patches
                 // Randomly select a pool of roles to assign a role from next (Crewmate role, Neutral role or Impostor role) 
                 // then select one of the roles from the selected pool to a player 
                 // and remove the role (and any potentially blocked role pairings) from the pool(s)
-                var roleType = rolesToAssign.Keys.ElementAt(rnd.Next(0, rolesToAssign.Keys.Count()));
+                var roleType = rolesToAssign.Keys.ElementAt(rnd.Next(0, rolesToAssign.Keys.Count));
                 var players = roleType == TeamType.Crewmate || roleType == TeamType.Neutral ? data.Crewmates : data.Impostors;
                 var index = rnd.Next(0, rolesToAssign[roleType].Count);
                 var roleId = rolesToAssign[roleType][index];
-                var player = SetRoleToRandomPlayer(rolesToAssign[roleType][index], players);
+                var player = SetRoleToRandomPlayer(roleId, players);
                 if (player == byte.MaxValue && _blockedAssignments < MaxBlocks)
                 {
                     _blockedAssignments++;
@@ -610,7 +624,7 @@ namespace TheOtherThem.Patches
 
         private static byte SetRoleToRandomPlayer(byte roleId, List<PlayerControl> playerList, byte flag = 0, bool removePlayer = true)
         {
-            Main.Logger.LogInfo("set role to random player " + (RoleType)roleId);
+            Main.Logger.LogInfo("Set role to random player " + (RoleType)roleId);
 
             var index = rnd.Next(0, playerList.Count);
             byte playerId = playerList[index].PlayerId;

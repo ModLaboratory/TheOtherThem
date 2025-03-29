@@ -310,7 +310,7 @@ namespace TheOtherThem
 
             try
             {
-                return CustomRole.AllRoles.FirstOrDefault(cr => cr.MyRoleType == role).Players.Any(p => p.PlayerId == player.PlayerId);
+                return CustomRole.AllRoles.FirstOrDefault(cr => cr.MyRoleType == role).Players.Any(p => p == player.Data);
             }
             catch
             {
