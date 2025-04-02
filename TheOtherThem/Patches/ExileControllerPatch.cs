@@ -151,19 +151,19 @@ namespace TheOtherThem.Patches {
             }
 
             // Seer spawn souls
-            if (Seer.deadBodyPositions != null && Seer.seer != null && PlayerControl.LocalPlayer == Seer.seer && (Seer.mode == 0 || Seer.mode == 2))
+            if (Seer.DeadBodyPositions != null && Seer.seer != null && PlayerControl.LocalPlayer == Seer.seer && (Seer.mode == 0 || Seer.mode == 2))
             {
-                foreach (Vector3 pos in Seer.deadBodyPositions)
+                foreach (Vector3 pos in Seer.DeadBodyPositions)
                 {
-                    GameObject soul = new GameObject();
+                    GameObject soul = new();
                     soul.transform.position = pos;
                     soul.layer = 5;
                     var rend = soul.AddComponent<SpriteRenderer>();
-                    rend.sprite = Seer.getSoulSprite();
+                    rend.sprite = Seer.GetSoulSprite();
 
                     if (Seer.limitSoulDuration)
                     {
-                        HudManager.Instance.StartCoroutine(Effects.Lerp(Seer.soulDuration, new Action<float>((p) => {
+                        HudManager.Instance.StartCoroutine(Effects.Lerp(Seer.SoulDuration, new Action<float>((p) => {
                             if (rend != null)
                             {
                                 var tmp = rend.color;
@@ -174,14 +174,14 @@ namespace TheOtherThem.Patches {
                         })));
                     }
                 }
-                Seer.deadBodyPositions = new List<Vector3>();
+                Seer.DeadBodyPositions = new();
             }
 
             // Tracker reset deadBodyPositions
-            Tracker.deadBodyPositions = new List<Vector3>();
+            Tracker.DeadBodyPositions = new();
 
             // Arsonist deactivate dead poolable players
-            Arsonist.updateIcons();
+            Arsonist.UpdateIcons();
 
             // Force Bounty Hunter Bounty Update
             if (BountyHunter.bountyHunter != null && BountyHunter.bountyHunter == PlayerControl.LocalPlayer)
@@ -200,7 +200,7 @@ namespace TheOtherThem.Patches {
                 {
                     foreach ((DeadPlayer db, Vector3 ps) in Medium.featureDeadBodies)
                     {
-                        GameObject s = new GameObject();
+                        GameObject s = new();
                         s.transform.position = ps;
                         s.layer = 5;
                         var rend = s.AddComponent<SpriteRenderer>();
@@ -219,7 +219,7 @@ namespace TheOtherThem.Patches {
 
     [HarmonyPatch(typeof(TranslationController), nameof(TranslationController.GetString), new Type[] { typeof(StringNames), typeof(Il2CppReferenceArray<Il2CppSystem.Object>) })]
     class ExileControllerMessagePatch {
-        static void Postfix(ref string __result, [HarmonyArgument(0)]StringNames id) {
+        static void Postfix(ref string __result, [HarmonyArgument(0)] StringNames id) {
             try {
                 if (ExileController.Instance != null && ExileController.Instance.initData.networkedPlayer != null) {
                     PlayerControl player = ExileController.Instance.initData.networkedPlayer.Object;

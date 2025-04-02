@@ -108,7 +108,7 @@ namespace TheOtherThem
             Garlic.clearGarlics();
             JackInTheBox.clearJackInTheBoxes();
             ClearAndReloadMapOptions();
-            ClearAndReloadRoles();
+            TheOtherRoles.ClearAndReloadRoles();
             clearGameHistory();
             setCustomButtonCooldowns();
             AdminPatch.ResetData();
@@ -541,7 +541,7 @@ namespace TheOtherThem
             Jackal.removeCurrentJackal();
             Jackal.jackal = Sidekick.sidekick;
             Jackal.canCreateSidekick = Jackal.jackalPromotedFromSidekickCanCreateSidekick;
-            Sidekick.clearAndReload();
+            Sidekick.ClearAndReload();
             return;
         }
 
@@ -759,7 +759,7 @@ namespace TheOtherThem
         {
             PlayerControl player = Lawyer.lawyer;
             PlayerControl client = Lawyer.target;
-            Lawyer.clearAndReload();
+            Lawyer.ClearAndReload();
             Pursuer.pursuer = player;
 
             if (player.PlayerId == PlayerControl.LocalPlayer.PlayerId && client != null)

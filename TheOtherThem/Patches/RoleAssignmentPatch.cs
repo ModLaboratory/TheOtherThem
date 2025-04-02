@@ -453,10 +453,16 @@ namespace TheOtherThem.Patches
                 // then select one of the roles from the selected pool to a player 
                 // and remove the role (and any potentially blocked role pairings) from the pool(s)
                 var roleType = rolesToAssign.Keys.ElementAt(rnd.Next(0, rolesToAssign.Keys.Count));
+                Main.Logger.LogMessage("Current for " + roleType);
+
                 var players = roleType == TeamType.Crewmate || roleType == TeamType.Neutral ? data.Crewmates : data.Impostors;
-                var index = rnd.Next(0, rolesToAssign[roleType].Count);
-                var roleId = rolesToAssign[roleType][index];
+                var chosenRoles = rolesToAssign[roleType];
+
+                var index = rnd.Next(0, chosenRoles.Count);
+                var roleId = chosenRoles[index];
+
                 var player = SetRoleToRandomPlayer(roleId, players);
+
                 if (player == byte.MaxValue && _blockedAssignments < MaxBlocks)
                 {
                     _blockedAssignments++;

@@ -435,7 +435,7 @@ namespace TheOtherThem.Patches
             // Handle corpses tracking
             if (Tracker.tracker != null && Tracker.tracker == PlayerControl.LocalPlayer && Tracker.corpsesTrackingTimer >= 0f && !Tracker.tracker.Data.IsDead)
             {
-                bool arrowsCountChanged = Tracker.localArrows.Count != Tracker.deadBodyPositions.Count();
+                bool arrowsCountChanged = Tracker.localArrows.Count != Tracker.DeadBodyPositions.Count();
                 int index = 0;
 
                 if (arrowsCountChanged)
@@ -443,7 +443,7 @@ namespace TheOtherThem.Patches
                     foreach (Arrow arrow in Tracker.localArrows) UnityEngine.Object.Destroy(arrow.arrow);
                     Tracker.localArrows = new List<Arrow>();
                 }
-                foreach (Vector3 position in Tracker.deadBodyPositions)
+                foreach (Vector3 position in Tracker.DeadBodyPositions)
                 {
                     if (arrowsCountChanged)
                     {
@@ -1250,10 +1250,10 @@ namespace TheOtherThem.Patches
                     if (p == 1f && renderer != null) renderer.enabled = false;
                 })));
             }
-            if (Seer.deadBodyPositions != null) Seer.deadBodyPositions.Add(target.transform.position);
+            if (Seer.DeadBodyPositions != null) Seer.DeadBodyPositions.Add(target.transform.position);
 
             // Tracker store body positions
-            if (Tracker.deadBodyPositions != null) Tracker.deadBodyPositions.Add(target.transform.position);
+            if (Tracker.DeadBodyPositions != null) Tracker.DeadBodyPositions.Add(target.transform.position);
 
             // Medium add body
             if (Medium.deadBodies != null)

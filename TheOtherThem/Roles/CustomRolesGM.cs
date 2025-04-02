@@ -21,7 +21,7 @@ namespace TheOtherThem
     public static class TheOtherRolesGM
     {
 
-        public static void clearAndReloadRoles()
+        public static void ClearAndReloadRoles()
         {
             Morphling.clearAndReload();
             Camouflager.clearAndReload();

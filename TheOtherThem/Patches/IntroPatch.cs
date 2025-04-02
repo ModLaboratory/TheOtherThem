@@ -56,7 +56,7 @@ namespace TheOtherThem.Patches {
                 }
             }
 
-            Arsonist.updateIcons();
+            Arsonist.UpdateIcons();
             Morphling.resetMorph();
             Camouflager.resetCamouflage();
 

@@ -681,44 +681,44 @@ namespace TheOtherThem
             CustomRole.AllRoles.ForEach(cr => cr.ClearData());
 
             // Crewmate roles
-            if (player.IsRole(RoleType.Mayor)) Mayor.clearAndReload();
-            if (player.IsRole(RoleType.Engineer)) Engineer.clearAndReload();
-            if (player.IsRole(RoleType.Detective)) Detective.clearAndReload();
-            if (player.IsRole(RoleType.TimeMaster)) TimeMaster.clearAndReload();
-            if (player.IsRole(RoleType.Medic)) Medic.clearAndReload();
+            if (player.IsRole(RoleType.Mayor)) Mayor.ClearAndReload();
+            if (player.IsRole(RoleType.Engineer)) Engineer.ClearAndReload();
+            if (player.IsRole(RoleType.Detective)) Detective.ClearAndReload();
+            if (player.IsRole(RoleType.TimeMaster)) TimeMaster.ClearAndReload();
+            if (player.IsRole(RoleType.Medic)) Medic.ClearAndReload();
             if (player.IsRole(RoleType.Shifter)) Shifter.clearAndReload();
-            if (player.IsRole(RoleType.Seer)) Seer.clearAndReload();
-            if (player.IsRole(RoleType.Hacker)) Hacker.clearAndReload();
-            if (player.IsRole(RoleType.Mini)) Mini.clearAndReload();
-            if (player.IsRole(RoleType.Tracker)) Tracker.clearAndReload();
-            if (player.IsRole(RoleType.Snitch)) Snitch.clearAndReload();
+            if (player.IsRole(RoleType.Seer)) Seer.ClearAndReload();
+            if (player.IsRole(RoleType.Hacker)) Hacker.ClearAndReload();
+            if (player.IsRole(RoleType.Mini)) Mini.ClearAndReload();
+            if (player.IsRole(RoleType.Tracker)) Tracker.ClearAndReload();
+            if (player.IsRole(RoleType.Snitch)) Snitch.ClearAndReload();
             if (player.IsRole(RoleType.Swapper)) Swapper.clearAndReload();
-            if (player.IsRole(RoleType.Spy)) Spy.clearAndReload();
-            if (player.IsRole(RoleType.SecurityGuard)) SecurityGuard.clearAndReload();
-            if (player.IsRole(RoleType.Bait)) Bait.clearAndReload();
-            if (player.IsRole(RoleType.Medium)) Medium.clearAndReload();
+            if (player.IsRole(RoleType.Spy)) Spy.ClearAndReload();
+            if (player.IsRole(RoleType.SecurityGuard)) SecurityGuard.ClearAndReload();
+            if (player.IsRole(RoleType.Bait)) Bait.ClearAndReload();
+            if (player.IsRole(RoleType.Medium)) Medium.ClearAndReload();
 
             // Impostor roles
             if (player.IsRole(RoleType.Morphling)) Morphling.clearAndReload();
             if (player.IsRole(RoleType.Camouflager)) Camouflager.clearAndReload();
-            if (player.IsRole(RoleType.Godfather)) Godfather.clearAndReload();
-            if (player.IsRole(RoleType.Mafioso)) Mafioso.clearAndReload();
-            if (player.IsRole(RoleType.Janitor)) Janitor.clearAndReload();
-            if (player.IsRole(RoleType.Vampire)) Vampire.clearAndReload();
-            if (player.IsRole(RoleType.Eraser)) Eraser.clearAndReload();
-            if (player.IsRole(RoleType.Trickster)) Trickster.clearAndReload();
-            if (player.IsRole(RoleType.Cleaner)) Cleaner.clearAndReload();
-            if (player.IsRole(RoleType.Warlock)) Warlock.clearAndReload();
-            if (player.IsRole(RoleType.Witch)) Witch.clearAndReload();
+            if (player.IsRole(RoleType.Godfather)) Godfather.ClearAndReload();
+            if (player.IsRole(RoleType.Mafioso)) Mafioso.ClearAndReload();
+            if (player.IsRole(RoleType.Janitor)) Janitor.ClearAndReload();
+            if (player.IsRole(RoleType.Vampire)) Vampire.ClearAndReload();
+            if (player.IsRole(RoleType.Eraser)) Eraser.ClearAndReload();
+            if (player.IsRole(RoleType.Trickster)) Trickster.ClearAndReload();
+            if (player.IsRole(RoleType.Cleaner)) Cleaner.ClearAndReload();
+            if (player.IsRole(RoleType.Warlock)) Warlock.ClearAndReload();
+            if (player.IsRole(RoleType.Witch)) Witch.ClearAndReload();
 
             // Other roles
-            if (player.IsRole(RoleType.Jester)) Jester.clearAndReload();
-            if (player.IsRole(RoleType.Arsonist)) Arsonist.clearAndReload();
-            if (player.IsRole(RoleType.Sidekick)) Sidekick.clearAndReload();
-            if (player.IsRole(RoleType.BountyHunter)) BountyHunter.clearAndReload();
-            if (player.IsRole(RoleType.Vulture)) Vulture.clearAndReload();
-            if (player.IsRole(RoleType.Lawyer)) Lawyer.clearAndReload();
-            if (player.IsRole(RoleType.Pursuer)) Pursuer.clearAndReload();
+            if (player.IsRole(RoleType.Jester)) Jester.ClearAndReload();
+            if (player.IsRole(RoleType.Arsonist)) Arsonist.ClearAndReload();
+            if (player.IsRole(RoleType.Sidekick)) Sidekick.ClearAndReload();
+            if (player.IsRole(RoleType.BountyHunter)) BountyHunter.ClearAndReload();
+            if (player.IsRole(RoleType.Vulture)) Vulture.ClearAndReload();
+            if (player.IsRole(RoleType.Lawyer)) Lawyer.ClearAndReload();
+            if (player.IsRole(RoleType.Pursuer)) Pursuer.ClearAndReload();
             if (Guesser.isGuesser(player.PlayerId)) Guesser.clear(player.PlayerId);
 
 
@@ -730,7 +730,7 @@ namespace TheOtherThem
                 }
                 else
                 {
-                    Jackal.clearAndReload();
+                    Jackal.ClearAndReload();
                 }
             }
         }
