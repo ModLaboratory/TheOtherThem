@@ -1,14 +1,12 @@
-using HarmonyLib;
-using static TheOtherThem.TheOtherRoles;
-using static TheOtherThem.TheOtherRolesGM;
-using System.Collections;
-using System.Collections.Generic;
-using System;
 using AmongUs.GameOptions;
+using System;
+using static TheOtherThem.TheOtherRolesGM;
 
-namespace TheOtherThem {
+namespace TheOtherThem
+{
     [HarmonyPatch]
-    public static class TasksHandler {
+    public static class TaskHandler
+    {
 
         [HarmonyPatch(typeof(NormalPlayerTask), nameof(NormalPlayerTask.FixedUpdate))]
         public static class NormalPlayerTaskPatch
@@ -36,9 +34,7 @@ namespace TheOtherThem {
             public static void Postfix(NormalPlayerTask __instance)
             {
                 if (MapOptions.HideTaskArrows)
-                {
                     __instance.Arrow?.gameObject?.SetActive(false);
-                }
             }
         }
 
@@ -54,7 +50,8 @@ namespace TheOtherThem {
             }
         }
 
-        public static Tuple<int, int> taskInfo(NetworkedPlayerInfo playerInfo) {
+        public static Tuple<int, int> GetTaskInfo(NetworkedPlayerInfo playerInfo)
+        {
             int TotalTasks = 0;
             int CompletedTasks = 0;
             if (!playerInfo.Disconnected && playerInfo.Tasks != null &&
@@ -64,11 +61,14 @@ namespace TheOtherThem {
                 !(playerInfo.Object.IsGM() && !GM.hasTasks) &&
                 !(playerInfo.Object.IsInLove() && !Lovers.hasTasks) &&
                 !playerInfo.Object.HasFakeTasks()
-                ) {
+                )
+            {
 
-                for (int j = 0; j < playerInfo.Tasks.Count; j++) {
+                for (int j = 0; j < playerInfo.Tasks.Count; j++)
+                {
                     TotalTasks++;
-                    if (playerInfo.Tasks[j].Complete) {
+                    if (playerInfo.Tasks[j].Complete)
+                    {
                         CompletedTasks++;
                     }
                 }
@@ -77,11 +77,14 @@ namespace TheOtherThem {
         }
 
         [HarmonyPatch(typeof(GameData), nameof(GameData.RecomputeTaskCounts))]
-        private static class GameDataRecomputeTaskCountsPatch {
-            private static bool Prefix(GameData __instance) {
+        private static class GameDataRecomputeTaskCountsPatch
+        {
+            private static bool Prefix(GameData __instance)
+            {
                 __instance.TotalTasks = 0;
                 __instance.CompletedTasks = 0;
-                for (int i = 0; i < __instance.AllPlayers.Count; i++) {
+                for (int i = 0; i < __instance.AllPlayers.Count; i++)
+                {
                     NetworkedPlayerInfo playerInfo = __instance.AllPlayers[i];
                     if (playerInfo.Object &&
                         ((playerInfo.Object?.IsInLove() == true && !Lovers.tasksCount) ||
@@ -89,11 +92,11 @@ namespace TheOtherThem {
                           playerInfo.PlayerId == Lawyer.lawyer?.PlayerId || // Tasks of the Lawyer do not count
                          (playerInfo.PlayerId == Pursuer.pursuer?.PlayerId && Pursuer.pursuer.Data.IsDead) || // Tasks of the Pursuer only count, if he's alive
                           playerInfo.Object?.IsRole(RoleType.Fox) == true ||
-                         (Madmate.hasTasks && playerInfo.Object?.hasModifier(ModifierType.Madmate) == true)
+                         (Madmate.HasTasks && playerInfo.Object?.HasModifier(ModifierType.Madmate) == true)
                         )
                     )
                         continue;
-                    var (playerCompleted, playerTotal) = taskInfo(playerInfo);
+                    var (playerCompleted, playerTotal) = GetTaskInfo(playerInfo);
                     __instance.TotalTasks += playerTotal;
                     __instance.CompletedTasks += playerCompleted;
                 }

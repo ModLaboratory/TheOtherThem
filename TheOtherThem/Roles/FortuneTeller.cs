@@ -71,7 +71,7 @@ namespace TheOtherThem
 
         public static bool isCompletedNumTasks(PlayerControl p)
         {
-            var (tasksCompleted, tasksTotal) = TasksHandler.taskInfo(p.Data);
+            var (tasksCompleted, tasksTotal) = TaskHandler.GetTaskInfo(p.Data);
             return tasksCompleted >= numTasks;
         }
 

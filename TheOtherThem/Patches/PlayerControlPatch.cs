@@ -542,7 +542,7 @@ namespace TheOtherThem.Patches
                         playerName.transform.localPosition = new Vector3(0.3384f, (0.0311f + 0.0683f), -0.1f);    
                     }
 
-                    var (tasksCompleted, tasksTotal) = TasksHandler.taskInfo(p.Data);
+                    var (tasksCompleted, tasksTotal) = TaskHandler.GetTaskInfo(p.Data);
                     string roleNames = RoleInfo.GetRolesString(p, true, new RoleType[] { RoleType.Lovers });
 
                     var completedStr = commsActive ? "?" : tasksCompleted.ToString();
@@ -611,7 +611,7 @@ namespace TheOtherThem.Patches
 
         public static void securityGuardUpdate() {
             if (SecurityGuard.securityGuard == null || PlayerControl.LocalPlayer != SecurityGuard.securityGuard || SecurityGuard.securityGuard.Data.IsDead) return;
-            var (playerCompleted, _) = TasksHandler.taskInfo(SecurityGuard.securityGuard.Data);
+            var (playerCompleted, _) = TaskHandler.GetTaskInfo(SecurityGuard.securityGuard.Data);
             if (playerCompleted == SecurityGuard.rechargedTasks) {
                 SecurityGuard.rechargedTasks += SecurityGuard.rechargeTasksNumber;
                 if (SecurityGuard.maxCharges > SecurityGuard.charges) SecurityGuard.charges++;
@@ -638,7 +638,7 @@ namespace TheOtherThem.Patches
 
             if (Snitch.snitch == null || Snitch.snitch.Data.IsDead) return;
 
-            var (playerCompleted, playerTotal) = TasksHandler.taskInfo(Snitch.snitch.Data);
+            var (playerCompleted, playerTotal) = TaskHandler.GetTaskInfo(Snitch.snitch.Data);
             int numberOfTasks = playerTotal - playerCompleted;
 
             if (numberOfTasks <= Snitch.taskCountForReveal && (PlayerControl.LocalPlayer.Data.Role.IsImpostor || (Snitch.includeTeamJackal && (PlayerControl.LocalPlayer == Jackal.jackal || PlayerControl.LocalPlayer == Sidekick.sidekick))))
@@ -763,7 +763,7 @@ namespace TheOtherThem.Patches
                     Helpers.HandleVampireBiteOnBodyReport(); // Manually call Vampire handling, since the CmdReportDeadBody Prefix won't be called
 
                     byte reporter = deadPlayer.killerIfExisting.PlayerId;
-                    if (Bait.bait.hasModifier(ModifierType.Madmate))
+                    if (Bait.bait.HasModifier(ModifierType.Madmate))
                     {
                         var candidates = PlayerControl.AllPlayerControls.ToArray().Where(x => x.IsAlive() && !x.IsImpostor() && !x.isDummy).ToList();
                         int i = rnd.Next(0, candidates.Count);
@@ -928,7 +928,7 @@ namespace TheOtherThem.Patches
 
         public static void hackerUpdate() {
             if (Hacker.hacker == null || PlayerControl.LocalPlayer != Hacker.hacker || Hacker.hacker.Data.IsDead) return;
-            var (playerCompleted, _) = TasksHandler.taskInfo(Hacker.hacker.Data);
+            var (playerCompleted, _) = TaskHandler.GetTaskInfo(Hacker.hacker.Data);
             if (playerCompleted == Hacker.rechargedTasks) {
                 Hacker.rechargedTasks += Hacker.rechargeTasksNumber;
                 if (Hacker.toolsNumber > Hacker.chargesVitals) Hacker.chargesVitals++;

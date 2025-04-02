@@ -151,7 +151,7 @@ namespace TheOtherThem.Patches {
                     intro.RoleBlurbText.color = roleInfo.RoleColor;
                 }
 
-                if (PlayerControl.LocalPlayer.hasModifier(ModifierType.Madmate))
+                if (PlayerControl.LocalPlayer.HasModifier(ModifierType.Madmate))
                 {
                     if (roleInfo == RoleInfo.crewmate)
                     {

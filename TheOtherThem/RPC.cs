@@ -402,7 +402,7 @@ namespace TheOtherThem
             }
 
             // Suicide (exile) when impostor or impostor variants
-            if (!Shifter.isNeutral && (player.Data.Role.IsImpostor || player.IsNeutral() || player.hasModifier(ModifierType.Madmate)))
+            if (!Shifter.isNeutral && (player.Data.Role.IsImpostor || player.IsNeutral() || player.HasModifier(ModifierType.Madmate)))
             {
                 oldShifter.Exiled();
                 finalStatuses[oldShifter.PlayerId] = FinalStatus.Suicide;

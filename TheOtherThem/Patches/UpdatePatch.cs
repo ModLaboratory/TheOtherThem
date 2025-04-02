@@ -164,7 +164,7 @@ namespace TheOtherThem.Patches {
                 setPlayerNameColor(PlayerControl.LocalPlayer, FortuneTeller.color);
             }
 
-            if (PlayerControl.LocalPlayer.hasModifier(ModifierType.Madmate))
+            if (PlayerControl.LocalPlayer.HasModifier(ModifierType.Madmate))
             {
                 setPlayerNameColor(PlayerControl.LocalPlayer, Madmate.color);
 

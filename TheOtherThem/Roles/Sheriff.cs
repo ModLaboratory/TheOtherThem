@@ -68,7 +68,7 @@ namespace TheOtherThem
                         byte targetId = Local.currentTarget.PlayerId; ;
                         if ((Local.currentTarget.Data.Role.IsImpostor && (Local.currentTarget != Mini.mini || Mini.isGrownUp())) ||
                             (Sheriff.spyCanDieToSheriff && Spy.spy == Local.currentTarget) ||
-                            (Sheriff.madmateCanDieToSheriff && Local.currentTarget.hasModifier(ModifierType.Madmate)) ||
+                            (Sheriff.madmateCanDieToSheriff && Local.currentTarget.HasModifier(ModifierType.Madmate)) ||
                             (Sheriff.canKillNeutrals && Local.currentTarget.IsNeutral()) ||
                             (Jackal.jackal == Local.currentTarget || Sidekick.sidekick == Local.currentTarget))
                         {
@@ -82,7 +82,7 @@ namespace TheOtherThem
                         }
 
                         // Mad sheriff always misfires.
-                        if (Local.Player.hasModifier(ModifierType.Madmate))
+                        if (Local.Player.HasModifier(ModifierType.Madmate))
                         {
                             misfire = true;
                         }

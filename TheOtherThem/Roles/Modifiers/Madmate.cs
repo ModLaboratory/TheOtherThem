@@ -40,7 +40,7 @@ namespace TheOtherThem
         public static int numLongTasks { get { return CustomOptionHolder.madmateTasks.longTasks; } }
         public static int numShortTasks { get { return CustomOptionHolder.madmateTasks.shortTasks; } }
 
-        public static bool hasTasks { get { return madmateAbility == MadmateAbility.Fanatic; } }
+        public static bool HasTasks { get { return madmateAbility == MadmateAbility.Fanatic; } }
 
         public static string prefix
         {
@@ -128,7 +128,7 @@ namespace TheOtherThem
         {
             public static void Postfix()
             {
-                if (hasTasks && hasModifier(PlayerControl.LocalPlayer))
+                if (HasTasks && hasModifier(PlayerControl.LocalPlayer))
                 {
                     local.AssignTasks();
                 }
@@ -142,12 +142,12 @@ namespace TheOtherThem
 
         public static bool knowsImpostors(PlayerControl player)
         {
-            return hasTasks && hasModifier(player) && tasksComplete(player);
+            return HasTasks && hasModifier(player) && tasksComplete(player);
         }
 
         public static bool tasksComplete(PlayerControl player)
         {
-            if (!hasTasks) return false;
+            if (!HasTasks) return false;
 
             int counter = 0;
             int totalTasks = numCommonTasks + numLongTasks + numShortTasks;

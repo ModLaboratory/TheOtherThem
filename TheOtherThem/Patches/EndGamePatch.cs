@@ -150,7 +150,7 @@ namespace TheOtherThem.Patches
             {
                 //var p = pc.Data;
                 var roles = RoleInfo.GetRoleInfoForPlayer(p.Object, excludeRoles, includeHidden: true);
-                var (tasksCompleted, tasksTotal) = TasksHandler.taskInfo(p);
+                var (tasksCompleted, tasksTotal) = TaskHandler.GetTaskInfo(p);
                 var finalStatus = finalStatuses[p.PlayerId] =
                     p.Disconnected == true ? FinalStatus.Disconnected :
                     finalStatuses.ContainsKey(p.PlayerId) ? finalStatuses[p.PlayerId] :

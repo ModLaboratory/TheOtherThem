@@ -143,7 +143,7 @@ namespace TheOtherThem
 
     public static class ModifierHelpers
     {
-        public static bool hasModifier(this PlayerControl player, ModifierType mod)
+        public static bool HasModifier(this PlayerControl player, ModifierType mod)
         {
             foreach (var t in ModifierData.allModTypes)
             {
@@ -169,7 +169,7 @@ namespace TheOtherThem
 
         public static void eraseModifier(this PlayerControl player, ModifierType mod)
         {
-            if (hasModifier(player, mod))
+            if (HasModifier(player, mod))
             {
                 foreach (var t in ModifierData.allModTypes)
                 {
@@ -195,7 +195,7 @@ namespace TheOtherThem
         {
             foreach (var t in ModifierData.allModTypes)
             {
-                if (player.hasModifier(t.Key))
+                if (player.HasModifier(t.Key))
                 {
                     t.Value.GetMethod("swapModifier", BindingFlags.Public | BindingFlags.Static)?.Invoke(null, new object[] { player, target });
                 }

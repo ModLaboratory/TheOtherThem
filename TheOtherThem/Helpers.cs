@@ -1,25 +1,23 @@
+using BepInEx;
+using BepInEx.Logging;
+using Hazel;
+using Il2CppInterop.Runtime;
+using Il2CppInterop.Runtime.InteropTypes.Arrays;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Reflection;
-using System.Collections;
-using UnityEngine;
 using System.Linq;
+using System.Reflection;
+using TheOtherThem.Modules;
+using TheOtherThem.Patches;
+using TheOtherThem.ToTRole;
+using UnityEngine;
+using static TheOtherThem.GameHistory;
 using static TheOtherThem.TheOtherRoles;
 using static TheOtherThem.TheOtherRolesGM;
-using static TheOtherThem.GameHistory;
-using TheOtherThem.Modules;
-using HarmonyLib;
-using Hazel;
-using TheOtherThem.Patches;
-using Il2CppInterop.Runtime.InteropTypes.Arrays;
-using Il2CppInterop.Runtime;
-using TheOtherThem.ToTRole;
-using BepInEx.Logging;
-using BepInEx;
-using BepInEx.Unity.IL2CPP;
 
-namespace TheOtherThem {
+namespace TheOtherThem
+{
 
     public enum MurderAttemptResult {
         PerformKill,
@@ -245,7 +243,7 @@ namespace TheOtherThem {
                 player.myTasks.Insert(0, task);
             }
 
-            if (player.hasModifier(ModifierType.Madmate))
+            if (player.HasModifier(ModifierType.Madmate))
             {
                 var task = new GameObject("RoleTask").AddComponent<ImportantTextTask>();
                 task.transform.SetParent(player.transform, false);
@@ -307,7 +305,7 @@ namespace TheOtherThem {
 
         public static bool HasFakeTasks(this PlayerControl player) {
             return (player.IsNeutral() && !player.NeutralHasTasks()) || 
-                   (player.hasModifier(ModifierType.Madmate) && !Madmate.hasTasks) || 
+                   (player.HasModifier(ModifierType.Madmate) && !Madmate.HasTasks) || 
                    (player.IsInLove() && Lovers.separateTeam && !Lovers.tasksCount);
         }
 
@@ -462,7 +460,7 @@ namespace TheOtherThem {
                 roleCouldUse = true;
             else if (Spy.canEnterVents && player.IsRole(RoleType.Spy))
                 roleCouldUse = true;
-            else if (Madmate.canEnterVents && player.hasModifier(ModifierType.Madmate))
+            else if (Madmate.canEnterVents && player.HasModifier(ModifierType.Madmate))
                 roleCouldUse = true;
             else if (Vulture.canUseVents && player.IsRole(RoleType.Vulture))
                 roleCouldUse = true;
@@ -483,7 +481,7 @@ namespace TheOtherThem {
         public static bool RoleCanSabotage(this PlayerControl player)
         {
             bool roleCouldUse = false;
-            if (Madmate.canSabotage && player.hasModifier(ModifierType.Madmate))
+            if (Madmate.canSabotage && player.HasModifier(ModifierType.Madmate))
                 roleCouldUse = true;
             else if (Jester.canSabotage && player.IsRole(RoleType.Jester))
                 roleCouldUse = true;
@@ -625,6 +623,12 @@ namespace TheOtherThem {
             (BepInEx.Logging.Logger.Listeners.FirstOrDefault(l => l is DiskLogListener) as DiskLogListener).LogWriter.WriteLine(formatted);
             ConsoleManager.SetConsoleColor(ConsoleColor.Green);
             ConsoleManager.StandardOutStream.WriteLine(formatted);
+        }
+
+        public static void DoIfNotNull<T>(this T obj, Action<T> action) where T: Object
+        {
+            if (obj) 
+                action(obj);
         }
     }
 }

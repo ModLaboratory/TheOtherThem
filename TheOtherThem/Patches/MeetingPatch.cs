@@ -417,7 +417,7 @@ namespace TheOtherThem.Patches {
                     (Guesser.onlyAvailableRoles && !roleInfo.Enabled && !MapOptions.HideSettings))
                     continue; // Not guessable roles
 				if (Guesser.guesserCantGuessSnitch && Snitch.snitch != null) {
-                    var (playerCompleted, playerTotal) = TasksHandler.taskInfo(Snitch.snitch.Data);
+                    var (playerCompleted, playerTotal) = TaskHandler.GetTaskInfo(Snitch.snitch.Data);
                     int numberOfLeftTasks = playerTotal - playerCompleted;
                     if (numberOfLeftTasks <= 0 && roleInfo.MyRoleType == RoleType.Snitch) continue;
                 }

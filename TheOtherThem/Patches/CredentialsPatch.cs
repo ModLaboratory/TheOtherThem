@@ -19,17 +19,16 @@ namespace TheOtherThem.Patches
             static void Postfix(PingTracker __instance)
             {
                 __instance.text.alignment = TextAlignmentOptions.Top;
+
                 var position = __instance.GetComponent<AspectPosition>();
                 position.Alignment = AspectPosition.EdgeAlignments.Top;
                 __instance.text.text = BaseCredentials + $"\nPING: <b>{AmongUsClient.Instance.Ping}</b> ms";
+                
                 if (AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started)
-                {
                     position.DistanceFromEdge = new Vector3(2.25f, 0.11f, 0);
-                }
                 else
-                {
                     position.DistanceFromEdge = new Vector3(0f, 0.1f, 0);
-                }
+                
                 position.AdjustPosition();
             }
         }
@@ -121,7 +120,7 @@ namespace TheOtherThem.Patches
             {
                 Main.Logger.LogInfo("Hide modded main menu components");
                 MainMenuStartPatch.Buttons.DoIf(b => b, b => b.gameObject.SetActive(false));
-                GameObject.Find("ModBanner").SetActive(false);
+                GameObject.Find("ModBanner").DoIfNotNull(banner => banner.SetActive(false));
             }
         }
 
