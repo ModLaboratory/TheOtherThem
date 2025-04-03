@@ -3821,12 +3821,12 @@
     "13": "我绝对是正确的！"
   },
   "IdealistShortDesc": {
-    "0": "Guess who will be dead next",
+    "0": "Guess who will die next",
     "13": "猜猜接下来谁会被杀"
   },
   "IdealistFullDesc": {
-    "0": "The Idealist can select a target to guess it will be killed in certain time, or the Idealist will suicide. When the number of guessed and killed players equals to the number that was set by the host, the Idealist wins.",
-    "13": "理想主义者可以选择一个目标以击杀，但是目标必须在指定时间内被击杀，否则理想主义者会自杀。当理想主义者击杀总人数与房间设置相等时，理想主义者胜利。"
+    "0": "The Idealist can select a target to guess it will be killed within certain time, or the Idealist will suicide. When the amount of guessed and killed players equals to the winning amount set by the host, the Idealist wins.",
+    "13": "理想主义者可以选择一个目标以猜测，但是目标必须在指定时间内被击杀，否则理想主义者会自杀。当理想主义者击杀总人数与房间设置相等时，理想主义者胜利。"
   },
   "IdealistAbilityCooldown": {
     "0": "Guessing Cooldown",
@@ -3864,15 +3864,15 @@
     "13": "重置坏人击杀冷却，救下船员"
   },
   "PacifistFullDesc": {
-    "0": "The Pacifist can reset the kill cooldown of bad roles, but the ability has uses limit.",
+    "0": "The Pacifist can reset the kill cooldown of bad roles, but the ability has use limit.",
     "13": "和平主义者可以重置坏职业的击杀冷却，但是有次数限制。"
   },
   "PacifistAbilityCooldown": {
     "0": "Reset Ability Cooldown",
     "13": "重置冷却技能冷却"
   },
-  "PacifistAbilityUsesLimit": {
-    "0": "Ability Uses Limit",
+  "PacifistAbilityUseLimit": {
+    "0": "Ability Use Limit",
     "13": "技能使用次数"
   },
   "PacifistAbilityLabel": {
