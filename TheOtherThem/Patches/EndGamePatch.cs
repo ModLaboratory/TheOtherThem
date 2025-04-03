@@ -151,9 +151,9 @@ namespace TheOtherThem.Patches
                 //var p = pc.Data;
                 var roles = RoleInfo.GetRoleInfoForPlayer(p.Object, excludeRoles, includeHidden: true);
                 var (tasksCompleted, tasksTotal) = TaskHandler.GetTaskInfo(p);
-                var finalStatus = finalStatuses[p.PlayerId] =
+                var finalStatus = FinalStatuses[p.PlayerId] =
                     p.Disconnected == true ? FinalStatus.Disconnected :
-                    finalStatuses.ContainsKey(p.PlayerId) ? finalStatuses[p.PlayerId] :
+                    FinalStatuses.ContainsKey(p.PlayerId) ? FinalStatuses[p.PlayerId] :
                     p.IsDead == true ? FinalStatus.Dead :
                     gameOverReason == GameOverReason.ImpostorsBySabotage && !p.Role.IsImpostor ? FinalStatus.Sabotage :
                     FinalStatus.Alive;
@@ -164,7 +164,7 @@ namespace TheOtherThem.Patches
                 {
                     PlayerName = p.PlayerName,
                     PlayerId = p.PlayerId,
-                    NameSuffix = Lovers.getIcon(p.Object),
+                    NameSuffix = Lovers.GetIcon(p.Object),
                     Roles = roles,
                     RoleString = RoleInfo.GetRolesString(p.Object, true, excludeRoles, true),
                     TasksTotal = tasksTotal,
@@ -201,12 +201,12 @@ namespace TheOtherThem.Patches
             // GM can't win at all, and we're treating lovers as a separate class
             if (GM.gm != null) notWinners.Add(GM.gm);
 
-            if (Lovers.separateTeam)
+            if (Lovers.SeparateTeam)
             {
-                foreach (var couple in Lovers.couples)
+                foreach (var couple in Lovers.Couples)
                 {
-                    notWinners.Add(couple.lover1);
-                    notWinners.Add(couple.lover2);
+                    notWinners.Add(couple.Lover1);
+                    notWinners.Add(couple.Lover2);
                 }
             }
 
@@ -222,7 +222,7 @@ namespace TheOtherThem.Patches
             bool jesterWin = Jester.jester != null && gameOverReason == (GameOverReason)CustomGameOverReason.JesterWin;
             bool arsonistWin = Arsonist.arsonist != null && gameOverReason == (GameOverReason)CustomGameOverReason.ArsonistWin;
             bool miniLose = Mini.mini != null && gameOverReason == (GameOverReason)CustomGameOverReason.MiniLose;
-            bool loversWin = Lovers.anyAlive() && !(Lovers.separateTeam && gameOverReason == GameOverReason.CrewmatesByTask);
+            bool loversWin = Lovers.AnyAlive && !(Lovers.SeparateTeam && gameOverReason == GameOverReason.CrewmatesByTask);
             bool teamJackalWin = gameOverReason == (GameOverReason)CustomGameOverReason.TeamJackalWin && ((Jackal.jackal != null && Jackal.jackal.IsAlive()) || (Sidekick.sidekick != null && !Sidekick.sidekick.IsAlive()));
             bool vultureWin = Vulture.vulture != null && gameOverReason == (GameOverReason)CustomGameOverReason.VultureWin;
             bool lawyerSoloWin = Lawyer.lawyer != null && gameOverReason == (GameOverReason)CustomGameOverReason.LawyerSoloWin;
@@ -289,7 +289,7 @@ namespace TheOtherThem.Patches
             else if (loversWin)
             {
                 // Double win for lovers, crewmates also win
-                if (GameManager.Instance.DidHumansWin(gameOverReason) && !Lovers.separateTeam && Lovers.anyNonKillingCouples())
+                if (GameManager.Instance.DidHumansWin(gameOverReason) && !Lovers.SeparateTeam && Lovers.AnyNonKillingCouples)
                 {
                     AdditionalTempData.winCondition = WinCondition.LoversTeamWin;
                     AdditionalTempData.additionalWinConditions.Add(WinCondition.LoversTeamWin);
@@ -300,12 +300,12 @@ namespace TheOtherThem.Patches
                     AdditionalTempData.winCondition = WinCondition.LoversSoloWin;
                     EndGameResult.CachedWinners = new Il2CppSystem.Collections.Generic.List<CachedPlayerData>();
 
-                    foreach (var couple in Lovers.couples)
+                    foreach (var couple in Lovers.Couples)
                     {
-                        if (couple.existingAndAlive)
+                        if (couple.ExistingAndAlive)
                         {
-                            EndGameResult.CachedWinners.Add(new CachedPlayerData(couple.lover1.Data));
-                            EndGameResult.CachedWinners.Add(new CachedPlayerData(couple.lover2.Data));
+                            EndGameResult.CachedWinners.Add(new CachedPlayerData(couple.Lover1.Data));
+                            EndGameResult.CachedWinners.Add(new CachedPlayerData(couple.Lover2.Data));
                         }
                     }
                 }
@@ -552,14 +552,14 @@ namespace TheOtherThem.Patches
                     else if (AdditionalTempData.winCondition == WinCondition.LoversTeamWin)
                     {
                         bonusText = "crewWin";
-                        textRenderer.color = Lovers.color;
-                        __instance.BackgroundBar.material.SetColor("_Color", Lovers.color);
+                        textRenderer.color = Lovers.Color;
+                        __instance.BackgroundBar.material.SetColor("_Color", Lovers.Color);
                     }
                     else if (AdditionalTempData.winCondition == WinCondition.LoversSoloWin)
                     {
                         bonusText = "loversWin";
-                        textRenderer.color = Lovers.color;
-                        __instance.BackgroundBar.material.SetColor("_Color", Lovers.color);
+                        textRenderer.color = Lovers.Color;
+                        __instance.BackgroundBar.material.SetColor("_Color", Lovers.Color);
                     }
                     else if (AdditionalTempData.winCondition == WinCondition.JackalWin)
                     {
@@ -974,9 +974,9 @@ namespace TheOtherThem.Patches
 
                 private bool isLover(NetworkedPlayerInfo p)
                 {
-                    foreach (var couple in Lovers.couples)
+                    foreach (var couple in Lovers.Couples)
                     {
-                        if (p.PlayerId == couple.lover1.PlayerId || p.PlayerId == couple.lover2.PlayerId) return true;
+                        if (p.PlayerId == couple.Lover1.PlayerId || p.PlayerId == couple.Lover2.PlayerId) return true;
                     }
                     return false;
                 }
@@ -1028,9 +1028,9 @@ namespace TheOtherThem.Patches
                         }
                     }
 
-                    foreach (var couple in Lovers.couples)
+                    foreach (var couple in Lovers.Couples)
                     {
-                        if (couple.alive) numCouplesAlive++;
+                        if (couple.Alive) numCouplesAlive++;
                     }
 
                     // In the special case of Mafia being enabled, but only the janitor's left alive,

@@ -212,7 +212,7 @@ namespace TheOtherThem.Patches
                         MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.DynamicMapOption, Hazel.SendOption.Reliable, -1);
                         writer.Write(chosenMapId);
                         AmongUsClient.Instance.FinishRpcImmediately(writer);
-                        RpcProcedure.dynamicMapOption(chosenMapId);
+                        RpcProcedure.DynamicMapOption(chosenMapId);
                     }
                 }
                 return continueStart;

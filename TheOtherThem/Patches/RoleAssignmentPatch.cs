@@ -73,13 +73,13 @@ namespace TheOtherThem.Patches
                         writer.Write(host.PlayerId);
                         writer.Write((byte)RoleTypes.Crewmate);
                         AmongUsClient.Instance.FinishRpcImmediately(writer);
-                        RpcProcedure.overrideNativeRole(host.PlayerId, (byte)RoleTypes.Crewmate);
+                        RpcProcedure.OverrideNativeRole(host.PlayerId, (byte)RoleTypes.Crewmate);
 
                         writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.OverrideNativeRole, Hazel.SendOption.Reliable, -1);
                         writer.Write(newImp.PlayerId);
                         writer.Write((byte)RoleTypes.Impostor);
                         AmongUsClient.Instance.FinishRpcImmediately(writer);
-                        RpcProcedure.overrideNativeRole(newImp.PlayerId, (byte)RoleTypes.Impostor);
+                        RpcProcedure.OverrideNativeRole(newImp.PlayerId, (byte)RoleTypes.Impostor);
                     }
                 }
             }
@@ -88,7 +88,7 @@ namespace TheOtherThem.Patches
                 (byte)RoleType.Bait,
             };
 
-            if (!Lovers.hasTasks)
+            if (!Lovers.HasTasks)
             {
                 _blockedLovers.Add((byte)RoleType.Snitch);
                 _blockedLovers.Add((byte)RoleType.FortuneTeller);
@@ -306,7 +306,7 @@ namespace TheOtherThem.Patches
                         writer.Write((byte)lover1);
                         writer.Write((byte)lover2);
                         AmongUsClient.Instance.FinishRpcImmediately(writer);
-                        RpcProcedure.setLovers((byte)lover1, (byte)lover2);
+                        RpcProcedure.SetLovers((byte)lover1, (byte)lover2);
                     }
                 }
             }
@@ -662,7 +662,7 @@ namespace TheOtherThem.Patches
             writer.Write(modId);
             writer.Write(playerId);
             AmongUsClient.Instance.FinishRpcImmediately(writer);
-            RpcProcedure.addModifier(modId, playerId);
+            RpcProcedure.AddModifier(modId, playerId);
             return playerId;
         }
 

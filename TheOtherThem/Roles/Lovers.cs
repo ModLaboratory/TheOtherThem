@@ -1,162 +1,106 @@
-﻿using System.Net;
+﻿using System.Collections.Generic;
 using System.Linq;
-using BepInEx;
-using BepInEx.Configuration;
-using BepInEx.IL2CPP;
-using HarmonyLib;
-using Hazel;
-using System;
-using System.Collections.Generic;
-using System.Collections;
-using System.IO;
+using TheOtherThem.Patches;
 using UnityEngine;
-using TheOtherThem.Objects;
 using static TheOtherThem.GameHistory;
 using static TheOtherThem.TheOtherRoles;
-using static TheOtherThem.TheOtherRolesGM;
-using TheOtherThem.Patches;
 
 namespace TheOtherThem
 {
     public class Couple
     {
-        public PlayerControl lover1;
-        public PlayerControl lover2;
-        public Color color;
+        public PlayerControl Lover1 { get; set; }
+        public PlayerControl Lover2 { get; set; }
+        public Color Color { get; set; }
 
         public Couple(PlayerControl lover1, PlayerControl lover2, Color color)
         {
-            this.lover1 = lover1;
-            this.lover2 = lover2;
-            this.color = color;
+            Lover1 = lover1;
+            Lover2 = lover2;
+            Color = color;
         }
 
-        public string icon
-        {
-            get
-            {
-                return Helpers.ColorString(color, " ♥");
-            }
-        }
+        public string Icon => Helpers.ColorString(Color, " ♥");
+        
+        public bool Existing => Lover1 != null && Lover2 != null && !Lover1.Data.Disconnected && !Lover2.Data.Disconnected;
 
-        public bool existing
-        {
-            get
-            {
-                return lover1 != null && lover2 != null && !lover1.Data.Disconnected && !lover2.Data.Disconnected;
-            }
-        }
+        public bool Alive => Lover1 != null && Lover2 != null && Lover1.IsAlive() && Lover2.IsAlive();
 
-        public bool alive
-        {
-            get
-            {
-                return lover1 != null && lover2 != null && lover1.IsAlive() && lover2.IsAlive();
-            }
-        }
+        public bool ExistingAndAlive => Existing && Alive;
 
-        public bool existingAndAlive
-        {
-            get
-            {
-                return existing && alive;
-            }
-        }
+        public bool ExistingWithKiller => Existing && (Lover1 == Jackal.jackal || Lover2 == Jackal.jackal
+                           || Lover1 == Sidekick.sidekick || Lover2 == Sidekick.sidekick
+                           || Lover1.Data.Role.IsImpostor || Lover2.Data.Role.IsImpostor);
 
-        public bool existingWithKiller
-        {
-            get
-            {
-                return existing && (lover1 == Jackal.jackal || lover2 == Jackal.jackal
-                           || lover1 == Sidekick.sidekick || lover2 == Sidekick.sidekick
-                           || lover1.Data.Role.IsImpostor || lover2.Data.Role.IsImpostor);
-            }
-        }
-
-        public bool hasAliveKillingLover
-        {
-            get
-            {
-                return existingAndAlive && existingWithKiller;
-            }
-        }
+        public bool HasAliveKillingLover => ExistingAndAlive && ExistingWithKiller;
     }
 
     [HarmonyPatch]
     public static class Lovers
     {
-        public static List<Couple> couples = new List<Couple>();
-        public static Color color = new Color32(232, 57, 185, byte.MaxValue);
+        public static List<Couple> Couples { get; } = new();
+        public static Color Color => new Color32(232, 57, 185, byte.MaxValue);
 
-        public static List<Color> loverIconColors = new List<Color>
-            {
-                Lovers.color,                  // pink
-                new Color32(255, 165, 0, 255), // orange
-                new Color32(255, 255, 0, 255), // yellow
-                new Color32(0, 255, 0, 255),   // green
-                new Color32(0, 0, 255, 255),   // blue
-                new Color32(0, 255, 255, 255), // light blue
-                new Color32(255, 0, 0, 255),   // red
-            };
+        public static List<Color> LoverIconColors { get; } = new List<Color>
+        {
+            Color,                  // pink
+            new Color32(255, 165, 0, 255), // orange
+            new Color32(255, 255, 0, 255), // yellow
+            new Color32(0, 255, 0, 255),   // green
+            new Color32(0, 0, 255, 255),   // blue
+            new Color32(0, 255, 255, 255), // light blue
+            new Color32(255, 0, 0, 255),   // red
+        };
 
-        public static bool bothDie { get { return CustomOptionHolder.loversBothDie.GetBool(); } }
+        public static bool BothDie => CustomOptionHolder.loversBothDie.GetBool();
 
         // Making this closer to the au.libhalt.net version of Lovers
-        public static bool separateTeam { get { return CustomOptionHolder.loversSeparateTeam.GetBool(); } }
-        public static bool tasksCount { get { return CustomOptionHolder.loversTasksCount.GetBool(); } }
-        public static bool enableChat { get { return CustomOptionHolder.loversEnableChat.GetBool(); } }
+        public static bool SeparateTeam => CustomOptionHolder.loversSeparateTeam.GetBool();
+        public static bool TasksCount => CustomOptionHolder.loversTasksCount.GetBool();
+        public static bool EnableChat => CustomOptionHolder.loversEnableChat.GetBool();
 
-        public static bool hasTasks
-        {
-            get
-            {
-                return tasksCount;
-            }
-        }
+        public static bool HasTasks => TasksCount;
 
-        public static string getIcon(PlayerControl player)
+        public static string GetIcon(PlayerControl player)
         {
             if (IsInLove(player))
             {
-                var couple = couples.Find(x => x.lover1 == player || x.lover2 == player);
-                return couple.icon;
+                var couple = Couples.Find(x => x.Lover1 == player || x.Lover2 == player);
+                return couple.Icon;
             }
             return "";
         }
 
-        public static void addCouple(PlayerControl player1, PlayerControl player2)
+        public static void AddCouple(PlayerControl player1, PlayerControl player2)
         {
-            var availableColors = new List<Color>(loverIconColors);
-            foreach (var couple in couples)
-            {
-                availableColors.RemoveAll(x => x == couple.color);
-            }
-            couples.Add(new Couple(player1, player2, availableColors[0]));
+            var availableColors = new List<Color>(LoverIconColors);
+            Couples.ForEach(couple => availableColors.RemoveAll(x => x == couple.Color));
+            Couples.Add(new Couple(player1, player2, availableColors[0]));
         }
 
-        public static void eraseCouple(PlayerControl player)
+        public static void EraseCouple(PlayerControl player)
         {
-            couples.RemoveAll(x => x.lover1 == player || x.lover2 == player);
+            Couples.RemoveAll(x => x.Lover1 == player || x.Lover2 == player);
         }
 
-        public static void swapLovers(PlayerControl player1, PlayerControl player2)
+        public static void SwapLovers(PlayerControl player1, PlayerControl player2)
         {
-            var couple1 = couples.FindIndex(x => x.lover1 == player1 || x.lover2 == player1);
-            var couple2 = couples.FindIndex(x => x.lover1 == player2 || x.lover2 == player2);
+            var couple1 = Couples.FindIndex(x => x.Lover1 == player1 || x.Lover2 == player1);
+            var couple2 = Couples.FindIndex(x => x.Lover1 == player2 || x.Lover2 == player2);
 
             // trying to swap within the same couple, just ignore
             if (couple1 == couple2) return;
 
             if (couple1 >= 0)
             {
-                if (couples[couple1].lover1 == player1) couples[couple1].lover1 = player2;
-                if (couples[couple1].lover2 == player1) couples[couple1].lover2 = player2;
+                if (Couples[couple1].Lover1 == player1) Couples[couple1].Lover1 = player2;
+                if (Couples[couple1].Lover2 == player1) Couples[couple1].Lover2 = player2;
             }
 
             if (couple2 >= 0)
             {
-                if (couples[couple2].lover1 == player2) couples[couple2].lover1 = player1;
-                if (couples[couple2].lover2 == player2) couples[couple2].lover2 = player1;
+                if (Couples[couple2].Lover1 == player2) Couples[couple2].Lover1 = player1;
+                if (Couples[couple2].Lover2 == player2) Couples[couple2].Lover2 = player1;
             }
         }
 
@@ -164,98 +108,58 @@ namespace TheOtherThem
         {
             if (!player.IsInLove()) return;
 
-            if (separateTeam && tasksCount)
+            if (SeparateTeam && TasksCount)
                 player.ClearAllTasks();
 
-            if (!bothDie) return;
+            if (!BothDie) return;
 
-            var partner = getPartner(player);
-            if (partner != null)
+            var partner = GetPartner(player);
+            if (partner)
             {
                 if (!partner.Data.IsDead)
                 {
                     if (killer != null)
-                    {
                         partner.MurderPlayerQuick(partner);
-                    }
                     else
-                    {
                         partner.Exiled();
-                    }
 
-                    finalStatuses[partner.PlayerId] = FinalStatus.Suicide;
+                    FinalStatuses[partner.PlayerId] = FinalStatus.Suicide;
                 }
 
-                if (separateTeam && tasksCount)
+                if (SeparateTeam && TasksCount)
                     partner.ClearAllTasks();
             }
         }
 
-        public static PlayerControl getPartner(PlayerControl player)
+        public static bool IsInLove(PlayerControl player) => GetCouple(player) != null;
+
+        public static PlayerControl GetPartner(PlayerControl player)
         {
-            var couple = getCouple(player);
+            var couple = GetCouple(player);
             if (couple != null)
             {
-                return player?.PlayerId == couple.lover1?.PlayerId ? couple.lover2 : couple.lover1;
+                return player?.PlayerId == couple.Lover1?.PlayerId ? couple.Lover2 : couple.Lover1;
             }
             return null;
         }
 
-        public static bool IsInLove(PlayerControl player)
+        public static Couple GetCouple(PlayerControl player)
         {
-            return getCouple(player) != null;
-        }
-
-        public static Couple getCouple(PlayerControl player)
-        {
-            foreach (var pair in couples)
+            foreach (var pair in Couples)
             {
-                if (pair.lover1?.PlayerId == player?.PlayerId || pair.lover2?.PlayerId == player?.PlayerId) return pair;
+                if (pair.Lover1?.PlayerId == player?.PlayerId || pair.Lover2?.PlayerId == player?.PlayerId) return pair;
             }
             return null;
         }
 
-        public static bool existing(PlayerControl player)
-        {
-            return getCouple(player)?.existing == true;
-        }
+        public static bool AnyAlive => Couples.Any(c => c.Alive);
+        public static bool AnyNonKillingCouples => Couples.Any(c => !c.HasAliveKillingLover);
+        public static bool Existing(PlayerControl player) => GetCouple(player)?.Existing == true;
+        public static bool ExistingAndAlive(PlayerControl player) => GetCouple(player)?.ExistingAndAlive == true;
+        public static bool ExistingWithKiller(PlayerControl player) => GetCouple(player)?.ExistingWithKiller == true;
+        
+        public static void HandleDisconnect(PlayerControl player, DisconnectReasons reason) => EraseCouple(player);
 
-        public static bool anyAlive()
-        {
-            foreach (var couple in couples)
-            {
-                if (couple.alive) return true;
-            }
-            return false;
-        }
-
-        public static bool anyNonKillingCouples()
-        {
-            foreach (var couple in couples)
-            {
-                if (!couple.hasAliveKillingLover) return true;
-            }
-            return false;
-        }
-
-        public static bool existingAndAlive(PlayerControl player)
-        {
-            return getCouple(player)?.existingAndAlive == true;
-        }
-
-        public static bool existingWithKiller(PlayerControl player)
-        {
-            return getCouple(player)?.existingWithKiller == true;
-        }
-
-        public static void HandleDisconnect(PlayerControl player, DisconnectReasons reason)
-        {
-            eraseCouple(player);
-        }
-
-        public static void Clear()
-        {
-            couples = new List<Couple>();
-        }
+        public static void Clear() => Couples.Clear();
     }
 }

@@ -78,7 +78,7 @@ namespace TheOtherThem.Modules {
         [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
         public static class EnableChat {
             public static void Postfix(HudManager __instance) {
-                if (__instance?.Chat?.isActiveAndEnabled == false && (AmongUsClient.Instance?.NetworkMode == NetworkModes.FreePlay || (PlayerControl.LocalPlayer.IsInLove() && Lovers.enableChat)))
+                if (__instance?.Chat?.isActiveAndEnabled == false && (AmongUsClient.Instance?.NetworkMode == NetworkModes.FreePlay || (PlayerControl.LocalPlayer.IsInLove() && Lovers.EnableChat)))
                     __instance?.Chat?.SetVisible(true);
             }
         }
@@ -100,7 +100,7 @@ namespace TheOtherThem.Modules {
                 return localPlayer == null ||
                     (MeetingHud.Instance != null || LobbyBehaviour.Instance != null ||
                     localPlayer.IsDead() || localPlayer.PlayerId == sourcePlayer.PlayerId ||
-                    (Lovers.enableChat && localPlayer.GetPartner() == sourcePlayer));
+                    (Lovers.EnableChat && localPlayer.GetPartner() == sourcePlayer));
             }
         }
     }

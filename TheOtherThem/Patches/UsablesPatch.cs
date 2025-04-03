@@ -191,7 +191,7 @@ namespace TheOtherThem.Patches
                     writer.Write(PlayerControl.LocalPlayer.PlayerId);
                     writer.Write(isEnter ? byte.MaxValue : (byte)0);
                     writer.EndMessage();
-                    RpcProcedure.useUncheckedVent(__instance.Id, PlayerControl.LocalPlayer.PlayerId, isEnter ? byte.MaxValue : (byte)0);
+                    RpcProcedure.UseUncheckedVent(__instance.Id, PlayerControl.LocalPlayer.PlayerId, isEnter ? byte.MaxValue : (byte)0);
                     return false;
                 }
 

@@ -1,18 +1,17 @@
-using HarmonyLib;
+using AmongUs.GameOptions;
 using Hazel;
-using static TheOtherThem.TheOtherRoles;
-using static TheOtherThem.TheOtherRolesGM;
-using static TheOtherThem.HudManagerStartPatch;
-using static TheOtherThem.GameHistory;
-using static TheOtherThem.MapOptions;
-using TheOtherThem.Objects;
-using TheOtherThem.Patches;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
-using System;
-using AmongUs.GameOptions;
+using TheOtherThem.Objects;
+using TheOtherThem.Patches;
 using TheOtherThem.ToTRole;
+using UnityEngine;
+using static TheOtherThem.GameHistory;
+using static TheOtherThem.HudManagerStartPatch;
+using static TheOtherThem.MapOptions;
+using static TheOtherThem.TheOtherRoles;
+using static TheOtherThem.TheOtherRolesGM;
 
 namespace TheOtherThem
 {
@@ -106,7 +105,7 @@ namespace TheOtherThem
         public static void ResetVariables()
         {
             Garlic.clearGarlics();
-            JackInTheBox.clearJackInTheBoxes();
+            JackInTheBox.ClearJackInTheBoxes();
             ClearAndReloadMapOptions();
             TheOtherRoles.ClearAndReloadRoles();
             clearGameHistory();
@@ -139,7 +138,7 @@ namespace TheOtherThem
             }
         }
 
-        public static void forceEnd()
+        public static void ForceEnd()
         {
             foreach (PlayerControl player in PlayerControl.AllPlayerControls)
             {
@@ -160,20 +159,20 @@ namespace TheOtherThem
             );
         }
 
-        public static void addModifier(byte modId, byte playerId)
+        public static void AddModifier(byte modId, byte playerId)
         {
             PlayerControl.AllPlayerControls.ToArray().DoIf(
                 x => x.PlayerId == playerId,
-                x => x.addModifier((ModifierType)modId)
+                x => x.AddModifier((ModifierType)modId)
             );
         }
 
-        public static void setLovers(byte playerId1, byte playerId2)
+        public static void SetLovers(byte playerId1, byte playerId2)
         {
-            Lovers.addCouple(Helpers.PlayerById(playerId1), Helpers.PlayerById(playerId2));
+            Lovers.AddCouple(Helpers.PlayerById(playerId1), Helpers.PlayerById(playerId2));
         }
 
-        public static void overrideNativeRole(byte playerId, byte roleType)
+        public static void OverrideNativeRole(byte playerId, byte roleType)
         {
             var player = Helpers.PlayerById(playerId);
             player.roleAssigned = false;
@@ -190,7 +189,7 @@ namespace TheOtherThem
             GameStartManagerPatch.PlayerVersions[clientId] = new(ver, guid);
         }
 
-        public static void useUncheckedVent(int ventId, byte playerId, byte isEnter)
+        public static void UseUncheckedVent(int ventId, byte playerId, byte isEnter)
         {
             PlayerControl player = Helpers.PlayerById(playerId);
             if (player == null) return;
@@ -202,11 +201,11 @@ namespace TheOtherThem
             reader.Buffer = bytes;
             reader.Length = bytes.Length;
 
-            JackInTheBox.startAnimation(ventId);
-            player.MyPhysics.HandleRpc(isEnter != 0 ? (byte)19 : (byte)20, reader);
+            JackInTheBox.StartAnimation(ventId);
+            player.MyPhysics.HandleRpc((byte)(isEnter != 0 ? RpcCalls.EnterVent : RpcCalls.ExitVent), reader);
         }
 
-        public static void uncheckedMurderPlayer(byte sourceId, byte targetId, byte showAnimation)
+        public static void UncheckedMurderPlayer(byte sourceId, byte targetId, byte showAnimation)
         {
             PlayerControl source = Helpers.PlayerById(sourceId);
             PlayerControl target = Helpers.PlayerById(targetId);
@@ -217,20 +216,17 @@ namespace TheOtherThem
             }
         }
 
-        public static void uncheckedCmdReportDeadBody(byte sourceId, byte targetId)
+        public static void UncheckedCmdReportDeadBody(byte sourceId, byte targetId)
         {
             PlayerControl source = Helpers.PlayerById(sourceId);
             PlayerControl target = Helpers.PlayerById(targetId);
             if (source != null && target != null) source.ReportDeadBody(target.Data);
         }
 
-        public static void uncheckedExilePlayer(byte targetId)
+        public static void UncheckedExilePlayer(byte targetId)
         {
             PlayerControl target = Helpers.PlayerById(targetId);
-            if (target != null)
-            {
-                target.Exiled();
-            }
+            target.DoIfNotNull(t => t.Exiled());
         }
 
         public static void uncheckedEndGame(byte reason)
@@ -264,36 +260,30 @@ namespace TheOtherThem
             player.Data.SetTasks(taskTypeIds);
         }
 
-        public static void dynamicMapOption(byte mapId) {
+        public static void DynamicMapOption(byte mapId)
+        {
             GameOptionsManager.Instance.CurrentGameOptions.Cast<NormalGameOptionsV09>().MapId = mapId;
         }
 
         // Role functionality
 
-        public static void engineerFixLights()
+        public static void EngineerFixLights()
         {
-            SwitchSystem switchSystem = ShipStatus.Instance.Systems[SystemTypes.Electrical].Cast<SwitchSystem>();
+            var switchSystem = ShipStatus.Instance.Systems[SystemTypes.Electrical].Cast<SwitchSystem>();
             switchSystem.ActualSwitches = switchSystem.ExpectedSwitches;
         }
 
-        public static void engineerUsedRepair()
+        public static void EngineerUsedRepair()
         {
             Engineer.remainingFixes--;
         }
 
-        public static void cleanBody(byte playerId)
+        public static void CleanBody(byte playerId)
         {
-            DeadBody[] array = UnityEngine.Object.FindObjectsOfType<DeadBody>();
-            for (int i = 0; i < array.Length; i++)
-            {
-                if (GameData.Instance.GetPlayerById(array[i].ParentId).PlayerId == playerId)
-                {
-                    UnityEngine.Object.Destroy(array[i].gameObject);
-                }
-            }
+            Object.FindObjectsOfType<DeadBody>().DoIf(body => GameData.Instance.GetPlayerById(body.ParentId).PlayerId == playerId, body => body.Destroy());
         }
 
-        public static void sheriffKill(byte sheriffId, byte targetId, bool misfire)
+        public static void SheriffKill(byte sheriffId, byte targetId, bool misfire)
         {
             PlayerControl sheriff = Helpers.PlayerById(sheriffId);
             PlayerControl target = Helpers.PlayerById(targetId);
@@ -306,16 +296,16 @@ namespace TheOtherThem
             if (misfire)
             {
                 sheriff.MurderPlayerQuick(sheriff);
-                finalStatuses[sheriffId] = FinalStatus.Misfire;
+                FinalStatuses[sheriffId] = FinalStatus.Misfire;
 
                 if (!Sheriff.misfireKillsTarget) return;
-                finalStatuses[targetId] = FinalStatus.Misfire;
+                FinalStatuses[targetId] = FinalStatus.Misfire;
             }
 
             sheriff.MurderPlayerQuick(target);
         }
 
-        public static void timeMasterRewindTime()
+        public static void TimeMasterRewindTime()
         {
             TimeMaster.shieldActive = false; // Shield is no longer active when rewinding
             if (TimeMaster.timeMaster != null && TimeMaster.timeMaster == PlayerControl.LocalPlayer)
@@ -405,7 +395,7 @@ namespace TheOtherThem
             if (!Shifter.isNeutral && (player.Data.Role.IsImpostor || player.IsNeutral() || player.HasModifier(ModifierType.Madmate)))
             {
                 oldShifter.Exiled();
-                finalStatuses[oldShifter.PlayerId] = FinalStatus.Suicide;
+                FinalStatuses[oldShifter.PlayerId] = FinalStatus.Suicide;
                 return;
             }
 
@@ -422,7 +412,7 @@ namespace TheOtherThem
                 }
 
                 player.swapModifiers(oldShifter);
-                Lovers.swapLovers(oldShifter, player);
+                Lovers.SwapLovers(oldShifter, player);
             }
 
             // Shift role
@@ -516,18 +506,23 @@ namespace TheOtherThem
             PlayerControl player = Helpers.PlayerById(targetId);
             if (player == null) return;
 
-            if (!Jackal.canCreateSidekickFromImpostor && player.Data.Role.IsImpostor) {
+            if (!Jackal.canCreateSidekickFromImpostor && player.Data.Role.IsImpostor)
+            {
                 Jackal.fakeSidekick = player;
-            }else if (!Jackal.canCreateSidekickFromFox && player.IsRole(RoleType.Fox)){
+            }
+            else if (!Jackal.canCreateSidekickFromFox && player.IsRole(RoleType.Fox))
+            {
                 Jackal.fakeSidekick = player;
-            }else {
+            }
+            else
+            {
                 DestroyableSingleton<RoleManager>.Instance.SetRole(player, RoleTypes.Crewmate);
                 erasePlayerRoles(player.PlayerId, true);
                 Sidekick.sidekick = player;
-                if (player.PlayerId == PlayerControl.LocalPlayer.PlayerId) PlayerControl.LocalPlayer.moveable = true; 
-                if(Fox.Exists && !Fox.isFoxAlive())
+                if (player.PlayerId == PlayerControl.LocalPlayer.PlayerId) PlayerControl.LocalPlayer.moveable = true;
+                if (Fox.Exists && !Fox.isFoxAlive())
                 {
-                    foreach(var immoralist in Immoralist.AllPlayers)
+                    foreach (var immoralist in Immoralist.AllPlayers)
                     {
                         immoralist.MurderPlayerQuick(immoralist);
                     }
@@ -559,7 +554,7 @@ namespace TheOtherThem
 
             if (!ignoreLovers && player.IsInLove())
             { // The whole Lover couple is being erased
-                Lovers.eraseCouple(player);
+                Lovers.EraseCouple(player);
             }
         }
 
@@ -730,13 +725,13 @@ namespace TheOtherThem
             foreach (PlayerControl p in livingPlayers)
             {
                 p.Exiled();
-                finalStatuses[p.PlayerId] = FinalStatus.Torched;
+                FinalStatuses[p.PlayerId] = FinalStatus.Torched;
             }
         }
 
         public static void vultureEat(byte playerId)
         {
-            cleanBody(playerId);
+            CleanBody(playerId);
             Vulture.eatenBodies++;
         }
 
@@ -780,7 +775,7 @@ namespace TheOtherThem
                 NekoKabocha.meetingKill(dyingTarget, killer);
             }
             dyingTarget.Exiled();
-            PlayerControl dyingLoverPartner = Lovers.bothDie ? dyingTarget.GetPartner() : null; // Lover check
+            PlayerControl dyingLoverPartner = Lovers.BothDie ? dyingTarget.GetPartner() : null; // Lover check
 
             Guesser.remainingShots(killerId, true);
             if (Constants.ShouldPlaySfx()) SoundManager.Instance.PlaySound(dyingTarget.KillSfx, false, 0.8f);
@@ -814,8 +809,8 @@ namespace TheOtherThem
 
         public static void witchSpellCast(byte playerId)
         {
-            uncheckedExilePlayer(playerId);
-            finalStatuses[playerId] = FinalStatus.Spelled;
+            UncheckedExilePlayer(playerId);
+            FinalStatuses[playerId] = FinalStatus.Spelled;
         }
 
         public static void setShifterType(bool isNeutral)
@@ -850,13 +845,13 @@ namespace TheOtherThem
             if (target == null) return;
             target.MyPhysics.ExitAllVents();
             target.Exiled();
-            finalStatuses[target.PlayerId] = FinalStatus.GMExecuted;
+            FinalStatuses[target.PlayerId] = FinalStatus.GMExecuted;
 
             PlayerControl partner = target.GetPartner(); // Lover check
             if (partner != null)
             {
                 partner?.MyPhysics.ExitAllVents();
-                finalStatuses[partner.PlayerId] = FinalStatus.GMExecuted;
+                FinalStatuses[partner.PlayerId] = FinalStatus.GMExecuted;
             }
 
             if (HudManager.Instance != null && GM.gm != null)
@@ -874,14 +869,14 @@ namespace TheOtherThem
             if (target == null) return;
             target.Revive();
             UpdateMeeting(targetId, false);
-            finalStatuses[target.PlayerId] = FinalStatus.Alive;
+            FinalStatuses[target.PlayerId] = FinalStatus.Alive;
 
             PlayerControl partner = target.GetPartner(); // Lover check
             if (partner != null)
             {
                 partner.Revive();
                 UpdateMeeting(partner.PlayerId, false);
-                finalStatuses[partner.PlayerId] = FinalStatus.Alive;
+                FinalStatuses[partner.PlayerId] = FinalStatus.Alive;
             }
 
             if (PlayerControl.LocalPlayer.IsGM())
@@ -942,7 +937,7 @@ namespace TheOtherThem
                 // Check again so we don't re-kill any lovers
                 if (p.IsAlive())
                     p.Exiled();
-                finalStatuses[p.PlayerId] = FinalStatus.Diseased;
+                FinalStatuses[p.PlayerId] = FinalStatus.Diseased;
             }
         }
 
@@ -962,8 +957,8 @@ namespace TheOtherThem
 
         public static void nekoKabochaExile(byte playerId)
         {
-            uncheckedExilePlayer(playerId);
-            finalStatuses[playerId] = FinalStatus.Revenge;
+            UncheckedExilePlayer(playerId);
+            FinalStatuses[playerId] = FinalStatus.Revenge;
         }
 
         public static void serialKillerSuicide(byte serialKillerId)
@@ -972,14 +967,16 @@ namespace TheOtherThem
             if (serialKiller == null) return;
             serialKiller.MurderPlayerQuick(serialKiller);
         }
-		
-        public static void fortuneTellerUsedDivine(byte fortuneTellerId, byte targetId) {
+
+        public static void fortuneTellerUsedDivine(byte fortuneTellerId, byte targetId)
+        {
             PlayerControl fortuneTeller = Helpers.PlayerById(fortuneTellerId);
             PlayerControl target = Helpers.PlayerById(targetId);
             if (target == null) return;
             if (target.IsDead()) return;
             // 呪殺
-            if (target.IsRole(RoleType.Fox)) {
+            if (target.IsRole(RoleType.Fox))
+            {
                 KillAnimationCoPerformKillPatch.hideNextAnimation = true;
                 if (PlayerControl.LocalPlayer.IsRole(RoleType.FortuneTeller))
                 {
@@ -990,11 +987,12 @@ namespace TheOtherThem
                 {
                     fortuneTeller.MurderPlayerQuick(target);
                 }
-                finalStatuses[targetId] = FinalStatus.Divined;
+                FinalStatuses[targetId] = FinalStatus.Divined;
             }
 
             // インポスターの場合は占い師の位置に矢印を表示
-            if (PlayerControl.LocalPlayer.IsImpostor()) {
+            if (PlayerControl.LocalPlayer.IsImpostor())
+            {
                 FortuneTeller.fortuneTellerMessage(ModTranslation.GetString("fortuneTellerDivinedSomeone"), 5f, Color.white);
                 FortuneTeller.setDivinedFlag(fortuneTeller, true);
             }
@@ -1026,7 +1024,7 @@ namespace TheOtherThem
                         RpcProcedure.ShareOptions((int)reader.ReadPackedUInt32(), reader);
                         break;
                     case (byte)CustomRpc.ForceEnd:
-                        RpcProcedure.forceEnd();
+                        RpcProcedure.ForceEnd();
                         break;
                     case (byte)CustomRpc.SetRole:
                         byte roleId = reader.ReadByte();
@@ -1035,10 +1033,10 @@ namespace TheOtherThem
                         RpcProcedure.SetRole(roleId, playerId, flag);
                         break;
                     case (byte)CustomRpc.SetLovers:
-                        RpcProcedure.setLovers(reader.ReadByte(), reader.ReadByte());
+                        RpcProcedure.SetLovers(reader.ReadByte(), reader.ReadByte());
                         break;
                     case (byte)CustomRpc.OverrideNativeRole:
-                        RpcProcedure.overrideNativeRole(reader.ReadByte(), reader.ReadByte());
+                        RpcProcedure.OverrideNativeRole(reader.ReadByte(), reader.ReadByte());
                         break;
                     case (byte)CustomRpc.VersionHandshake:
                         int major = reader.ReadPackedInt32();
@@ -1064,22 +1062,22 @@ namespace TheOtherThem
                         int ventId = reader.ReadPackedInt32();
                         byte ventingPlayer = reader.ReadByte();
                         byte isEnter = reader.ReadByte();
-                        RpcProcedure.useUncheckedVent(ventId, ventingPlayer, isEnter);
+                        RpcProcedure.UseUncheckedVent(ventId, ventingPlayer, isEnter);
                         break;
                     case (byte)CustomRpc.UncheckedMurderPlayer:
                         byte source = reader.ReadByte();
                         byte target = reader.ReadByte();
                         byte showAnimation = reader.ReadByte();
-                        RpcProcedure.uncheckedMurderPlayer(source, target, showAnimation);
+                        RpcProcedure.UncheckedMurderPlayer(source, target, showAnimation);
                         break;
                     case (byte)CustomRpc.UncheckedExilePlayer:
                         byte exileTarget = reader.ReadByte();
-                        RpcProcedure.uncheckedExilePlayer(exileTarget);
+                        RpcProcedure.UncheckedExilePlayer(exileTarget);
                         break;
                     case (byte)CustomRpc.UncheckedCmdReportDeadBody:
                         byte reportSource = reader.ReadByte();
                         byte reportTarget = reader.ReadByte();
-                        RpcProcedure.uncheckedCmdReportDeadBody(reportSource, reportTarget);
+                        RpcProcedure.UncheckedCmdReportDeadBody(reportSource, reportTarget);
                         break;
                     case (byte)CustomRpc.UncheckedEndGame:
                         RpcProcedure.uncheckedEndGame(reader.ReadByte());
@@ -1088,26 +1086,26 @@ namespace TheOtherThem
                         RpcProcedure.uncheckedSetTasks(reader.ReadByte(), reader.ReadBytesAndSize());
                         break;
                     case (byte)CustomRpc.DynamicMapOption:
-	                    byte mapId = reader.ReadByte();
-	                    RpcProcedure.dynamicMapOption(mapId);
-	                    break;
+                        byte mapId = reader.ReadByte();
+                        RpcProcedure.DynamicMapOption(mapId);
+                        break;
 
                     // Role functionality
 
                     case (byte)CustomRpc.EngineerFixLights:
-                        RpcProcedure.engineerFixLights();
+                        RpcProcedure.EngineerFixLights();
                         break;
                     case (byte)CustomRpc.EngineerUsedRepair:
-                        RpcProcedure.engineerUsedRepair();
+                        RpcProcedure.EngineerUsedRepair();
                         break;
                     case (byte)CustomRpc.CleanBody:
-                        RpcProcedure.cleanBody(reader.ReadByte());
+                        RpcProcedure.CleanBody(reader.ReadByte());
                         break;
                     case (byte)CustomRpc.SheriffKill:
-                        RpcProcedure.sheriffKill(reader.ReadByte(), reader.ReadByte(), reader.ReadBoolean());
+                        RpcProcedure.SheriffKill(reader.ReadByte(), reader.ReadByte(), reader.ReadBoolean());
                         break;
                     case (byte)CustomRpc.TimeMasterRewindTime:
-                        RpcProcedure.timeMasterRewindTime();
+                        RpcProcedure.TimeMasterRewindTime();
                         break;
                     case (byte)CustomRpc.TimeMasterShield:
                         RpcProcedure.timeMasterShield();
@@ -1209,7 +1207,7 @@ namespace TheOtherThem
 
                     // GM functionality
                     case (byte)CustomRpc.AddModifier:
-                        RpcProcedure.addModifier(reader.ReadByte(), reader.ReadByte());
+                        RpcProcedure.AddModifier(reader.ReadByte(), reader.ReadByte());
                         break;
                     case (byte)CustomRpc.SetShifterType:
                         RpcProcedure.setShifterType(reader.ReadBoolean());

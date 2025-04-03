@@ -472,7 +472,7 @@ namespace TheOtherThem {
             miniIsImpRate = CustomOption.Create(182, "miniIsImpRate", rates, miniSpawnRate);
             miniGrowingUpDuration = CustomOption.Create(181, "miniGrowingUpDuration", 400f, 100f, 1500f, 100f, miniSpawnRate, format: "unitSeconds");
 
-            loversSpawnRate = new CustomRoleOption(50, "lovers", Lovers.color, 1);
+            loversSpawnRate = new CustomRoleOption(50, "lovers", Lovers.Color, 1);
             loversImpLoverRate = CustomOption.Create(51, "loversImpLoverRate", rates, loversSpawnRate);
             loversNumCouples = CustomOption.Create(57, "loversNumCouples", 1f, 1f, 7f, 1f, loversSpawnRate, format: "unitCouples");
             loversBothDie = CustomOption.Create(52, "loversBothDie", true, loversSpawnRate);

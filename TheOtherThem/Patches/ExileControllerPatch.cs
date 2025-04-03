@@ -54,14 +54,14 @@ namespace TheOtherThem.Patches {
             Eraser.futureErased = new List<PlayerControl>();
 
             // Trickster boxes
-            if (Trickster.trickster != null && JackInTheBox.hasJackInTheBoxLimitReached()) {
-                JackInTheBox.convertToVents();
+            if (Trickster.trickster != null && JackInTheBox.HasJackInTheBoxLimitReached()) {
+                JackInTheBox.ConvertToVents();
             }
 
             // Witch execute casted spells
             if (Witch.witch != null && Witch.futureSpelled != null && AmongUsClient.Instance.AmHost) {
                 bool exiledIsWitch = exiled != null && exiled.PlayerId == Witch.witch.PlayerId;
-                bool witchDiesWithExiledLover = exiled != null && Lovers.bothDie && exiled.Object.IsInLove() && exiled.Object.GetPartner() == Witch.witch;
+                bool witchDiesWithExiledLover = exiled != null && Lovers.BothDie && exiled.Object.IsInLove() && exiled.Object.GetPartner() == Witch.witch;
 
                 if ((witchDiesWithExiledLover || exiledIsWitch) && Witch.witchVoteSavesTargets) Witch.futureSpelled = new List<PlayerControl>();
                 foreach (PlayerControl target in Witch.futureSpelled) {

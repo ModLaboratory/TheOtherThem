@@ -59,7 +59,7 @@ namespace TheOtherThem
                             HudManager.Instance.KillOverlay.ShowKillAnimation(Player.Data, killer.Data);
                     }
 
-                    finalStatuses[killer.PlayerId] = FinalStatus.Revenge;
+                    FinalStatuses[killer.PlayerId] = FinalStatus.Revenge;
                 }
             }
             else if (killer == null && revengeExile && PlayerControl.LocalPlayer == Player)

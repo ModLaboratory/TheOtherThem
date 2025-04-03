@@ -91,7 +91,7 @@ namespace TheOtherThem
                         killWriter.Write(targetId);
                         killWriter.Write(misfire);
                         AmongUsClient.Instance.FinishRpcImmediately(killWriter);
-                        RpcProcedure.sheriffKill(PlayerControl.LocalPlayer.Data.PlayerId, targetId, misfire);
+                        RpcProcedure.SheriffKill(PlayerControl.LocalPlayer.Data.PlayerId, targetId, misfire);
                     }
 
                     sheriffKillButton.Timer = sheriffKillButton.MaxTimer;

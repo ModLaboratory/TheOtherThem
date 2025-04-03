@@ -290,11 +290,11 @@ namespace TheOtherThem.Patches {
 
                 if (exiled != null)
                 {
-                    finalStatuses[exiled.PlayerId] = FinalStatus.Exiled;
+                    FinalStatuses[exiled.PlayerId] = FinalStatus.Exiled;
                     bool isLovers = exiled.Object.IsInLove();
 
                     if (isLovers)
-                        finalStatuses[exiled.Object.GetPartner().PlayerId] = FinalStatus.Suicide;
+                        FinalStatuses[exiled.Object.GetPartner().PlayerId] = FinalStatus.Suicide;
                 }
             }
         }

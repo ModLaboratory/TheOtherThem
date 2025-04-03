@@ -155,7 +155,7 @@ namespace TheOtherThem
             return false;
         }
 
-        public static void addModifier(this PlayerControl player, ModifierType mod)
+        public static void AddModifier(this PlayerControl player, ModifierType mod)
         {
             foreach (var t in ModifierData.allModTypes)
             {

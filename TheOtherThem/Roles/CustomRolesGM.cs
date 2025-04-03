@@ -69,7 +69,7 @@ namespace TheOtherThem
         [HarmonyPatch(typeof(GameData), nameof(GameData.HandleDisconnect), new Type[] { typeof(PlayerControl), typeof(DisconnectReasons) })]
         class HandleDisconnectPatch
         {
-            public static void Postfix(GameData __instance, PlayerControl player, DisconnectReasons reason)
+            public static void Postfix(PlayerControl player, DisconnectReasons reason)
             {
                 if (AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started)
                 {
@@ -79,7 +79,7 @@ namespace TheOtherThem
                     Lovers.HandleDisconnect(player, reason);
                     Shifter.HandleDisconnect(player, reason);
 
-                    finalStatuses[player.PlayerId] = FinalStatus.Disconnected;
+                    FinalStatuses[player.PlayerId] = FinalStatus.Disconnected;
                 }
             }
         }

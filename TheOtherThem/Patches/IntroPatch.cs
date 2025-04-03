@@ -169,7 +169,7 @@ namespace TheOtherThem.Patches {
 
                 if (infos.Any(info => info.MyRoleType == RoleType.Lovers)) {
                     PlayerControl otherLover = PlayerControl.LocalPlayer.GetPartner();
-                	intro.RoleBlurbText.text += "\n" + Helpers.ColorString(Lovers.color, String.Format(ModTranslation.GetString("loversFlavor"), otherLover?.Data?.PlayerName ?? ""));
+                	intro.RoleBlurbText.text += "\n" + Helpers.ColorString(Lovers.Color, String.Format(ModTranslation.GetString("loversFlavor"), otherLover?.Data?.PlayerName ?? ""));
                 } 
             }
         }

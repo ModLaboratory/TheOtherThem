@@ -248,7 +248,7 @@ namespace TheOtherThem.Patches {
             
             // Lovers
             if (PlayerControl.LocalPlayer.IsInLove() && PlayerControl.LocalPlayer.IsAlive()) {
-                string suffix = Lovers.getIcon(PlayerControl.LocalPlayer);
+                string suffix = Lovers.GetIcon(PlayerControl.LocalPlayer);
                 var lover1 = PlayerControl.LocalPlayer;
                 var lover2 = PlayerControl.LocalPlayer.GetPartner();
 
@@ -263,15 +263,15 @@ namespace TheOtherThem.Patches {
             }
             else if (MapOptions.GhostsSeeRoles && PlayerControl.LocalPlayer.IsDead())
             {
-                foreach (var couple in Lovers.couples)
+                foreach (var couple in Lovers.Couples)
                 {
-                    string suffix = Lovers.getIcon(couple.lover1);
-                    couple.lover1.cosmetics.nameText.text += suffix;
-                    couple.lover2.cosmetics.nameText.text += suffix;
+                    string suffix = Lovers.GetIcon(couple.Lover1);
+                    couple.Lover1.cosmetics.nameText.text += suffix;
+                    couple.Lover2.cosmetics.nameText.text += suffix;
 
                     if (meetingShow)
                         foreach (PlayerVoteArea player in MeetingHud.Instance.playerStates)
-                            if (couple.lover1.PlayerId == player.TargetPlayerId || couple.lover2.PlayerId == player.TargetPlayerId)
+                            if (couple.Lover1.PlayerId == player.TargetPlayerId || couple.Lover2.PlayerId == player.TargetPlayerId)
                                 player.NameText.text += suffix;
                 }
             }

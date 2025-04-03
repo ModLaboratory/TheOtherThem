@@ -203,7 +203,7 @@ namespace TheOtherThem {
             })));
         }
 
-        public static void toggleInfoOverlay()
+        public static void ToggleInfoOverlay()
         {
             if (overlayShown)
                 hideInfoOverlay();
@@ -214,12 +214,10 @@ namespace TheOtherThem {
         [HarmonyPatch(typeof(KeyboardJoystick), nameof(KeyboardJoystick.Update))]
         public static class CustomOverlayKeybinds
         {
-            public static void Postfix(KeyboardJoystick __instance)
+            public static void Postfix()
             {
                 if (Input.GetKeyDown(KeyCode.H) && AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started)
-                {
-                    toggleInfoOverlay();
-                }
+                    ToggleInfoOverlay();
             }
         }
     }

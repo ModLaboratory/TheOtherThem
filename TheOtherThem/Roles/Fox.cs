@@ -83,7 +83,7 @@ namespace TheOtherThem
                         {
                             immoralist.MurderPlayerQuick(immoralist);
                         }
-                        finalStatuses[immoralist.PlayerId] = FinalStatus.Suicide;
+                        FinalStatuses[immoralist.PlayerId] = FinalStatus.Suicide;
                     }
                 }
             }
@@ -250,7 +250,7 @@ namespace TheOtherThem
                         {
                             MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.EngineerFixLights, Hazel.SendOption.Reliable, -1);
                             AmongUsClient.Instance.FinishRpcImmediately(writer);
-                            RpcProcedure.engineerFixLights();
+                            RpcProcedure.EngineerFixLights();
                         }
                         else if (task.TaskType == TaskTypes.RestoreOxy)
                         {

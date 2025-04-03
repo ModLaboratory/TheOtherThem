@@ -265,7 +265,7 @@ namespace TheOtherThem
         public static bool IsDead(this PlayerControl player)
         {
             return player == null || player?.Data?.IsDead == true || player?.Data?.Disconnected == true ||
-                  (finalStatuses != null && finalStatuses.ContainsKey(player.PlayerId) && finalStatuses[player.PlayerId] != FinalStatus.Alive);
+                  (FinalStatuses != null && FinalStatuses.ContainsKey(player.PlayerId) && FinalStatuses[player.PlayerId] != FinalStatus.Alive);
         }
 
         public static bool IsAlive(this PlayerControl player)
@@ -306,7 +306,7 @@ namespace TheOtherThem
         public static bool HasFakeTasks(this PlayerControl player) {
             return (player.IsNeutral() && !player.NeutralHasTasks()) || 
                    (player.HasModifier(ModifierType.Madmate) && !Madmate.HasTasks) || 
-                   (player.IsInLove() && Lovers.separateTeam && !Lovers.tasksCount);
+                   (player.IsInLove() && Lovers.SeparateTeam && !Lovers.TasksCount);
         }
 
         public static bool NeutralHasTasks(this PlayerControl player)
@@ -326,7 +326,7 @@ namespace TheOtherThem
 
         public static PlayerControl GetPartner(this PlayerControl player)
         {
-            return Lovers.getPartner(player);
+            return Lovers.GetPartner(player);
         }
 
         public static bool CanBeErased(this PlayerControl player) {
@@ -530,7 +530,7 @@ namespace TheOtherThem
                 if (!blockRewind) { // Only rewind the attempt was not called because a meeting startet 
                     MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(killer.NetId, (byte)CustomRpc.TimeMasterRewindTime, Hazel.SendOption.Reliable, -1);
                     AmongUsClient.Instance.FinishRpcImmediately(writer);
-                    RpcProcedure.timeMasterRewindTime();
+                    RpcProcedure.TimeMasterRewindTime();
                 }
                 return MurderAttemptResult.SuppressKill;
             }
@@ -548,7 +548,7 @@ namespace TheOtherThem
                 writer.Write(target.PlayerId);
                 writer.Write(showAnimation ? Byte.MaxValue : 0);
                 AmongUsClient.Instance.FinishRpcImmediately(writer);
-                RpcProcedure.uncheckedMurderPlayer(killer.PlayerId, target.PlayerId, showAnimation ? Byte.MaxValue : (byte)0);
+                RpcProcedure.UncheckedMurderPlayer(killer.PlayerId, target.PlayerId, showAnimation ? Byte.MaxValue : (byte)0);
             }
             return murder;            
         }
@@ -625,9 +625,9 @@ namespace TheOtherThem
             ConsoleManager.StandardOutStream.WriteLine(formatted);
         }
 
-        public static void DoIfNotNull<T>(this T obj, Action<T> action) where T: Object
+        public static void DoIfNotNull<T>(this T obj, Action<T> action)
         {
-            if (obj) 
+            if (obj != null) 
                 action(obj);
         }
     }

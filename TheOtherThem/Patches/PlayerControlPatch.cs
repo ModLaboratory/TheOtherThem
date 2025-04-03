@@ -774,7 +774,7 @@ namespace TheOtherThem.Patches
                     writer.Write(reporter);
                     writer.Write(Bait.bait.PlayerId);
                     AmongUsClient.Instance.FinishRpcImmediately(writer);
-                    RpcProcedure.uncheckedCmdReportDeadBody(reporter, Bait.bait.PlayerId);
+                    RpcProcedure.UncheckedCmdReportDeadBody(reporter, Bait.bait.PlayerId);
                     Bait.reported = true;
                 }
             }
