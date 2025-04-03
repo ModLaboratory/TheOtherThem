@@ -1413,7 +1413,7 @@ namespace TheOtherThem.Patches
     {
         public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] string name)
         {
-            if (CustomOptionHolder.uselessOptions.GetBool() && CustomOptionHolder.playerNameDupes.GetBool())
+            if (CustomOptionHolder.UselessOptions.GetBool() && CustomOptionHolder.playerNameDupes.GetBool())
             {
                 __instance.RpcSetName(name);
                 return false;

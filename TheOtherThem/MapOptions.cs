@@ -55,8 +55,8 @@ namespace TheOtherThem{
 
             HideSettings = CustomOptionHolder.hideSettings.GetBool();
 
-            RandomizeColors = CustomOptionHolder.uselessOptions.GetBool() && CustomOptionHolder.playerColorRandom.GetBool();
-            AllowDupeNames = CustomOptionHolder.uselessOptions.GetBool() && CustomOptionHolder.playerNameDupes.GetBool();
+            RandomizeColors = CustomOptionHolder.UselessOptions.GetBool() && CustomOptionHolder.playerColorRandom.GetBool();
+            AllowDupeNames = CustomOptionHolder.UselessOptions.GetBool() && CustomOptionHolder.playerNameDupes.GetBool();
 
             RestrictDevices = CustomOptionHolder.restrictDevices.GetSelection();
             RestrictAdminTime = RestrictAdminTimeMax = CustomOptionHolder.restrictAdmin.GetFloat();

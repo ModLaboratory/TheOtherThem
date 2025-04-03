@@ -180,14 +180,14 @@ namespace TheOtherThem
             DestroyableSingleton<RoleManager>.Instance.SetRole(player, (RoleTypes)roleType);
         }
 
-        public static void versionHandshake(int major, int minor, int build, int revision, Guid guid, int clientId)
+        public static void VersionHandshake(int major, int minor, int build, int revision, Guid guid, int clientId)
         {
-            System.Version ver;
+            Version ver;
             if (revision < 0)
-                ver = new System.Version(major, minor, build);
+                ver = new(major, minor, build);
             else
-                ver = new System.Version(major, minor, build, revision);
-            GameStartManagerPatch.playerVersions[clientId] = new GameStartManagerPatch.PlayerVersion(ver, guid);
+                ver = new(major, minor, build, revision);
+            GameStartManagerPatch.PlayerVersions[clientId] = new(ver, guid);
         }
 
         public static void useUncheckedVent(int ventId, byte playerId, byte isEnter)
@@ -195,7 +195,7 @@ namespace TheOtherThem
             PlayerControl player = Helpers.PlayerById(playerId);
             if (player == null) return;
             // Fill dummy MessageReader and call MyPhysics.HandleRpc as the corountines cannot be accessed
-            MessageReader reader = new MessageReader();
+            var reader = new MessageReader();
             byte[] bytes = BitConverter.GetBytes(ventId);
             if (!BitConverter.IsLittleEndian)
                 Array.Reverse(bytes);
@@ -1058,7 +1058,7 @@ namespace TheOtherThem
                         {
                             guid = new Guid(new byte[16]);
                         }
-                        RpcProcedure.versionHandshake(major, minor, patch, revision == 0xFF ? -1 : revision, guid, versionOwnerId);
+                        RpcProcedure.VersionHandshake(major, minor, patch, revision == 0xFF ? -1 : revision, guid, versionOwnerId);
                         break;
                     case (byte)CustomRpc.UseUncheckedVent:
                         int ventId = reader.ReadPackedInt32();

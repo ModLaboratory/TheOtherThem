@@ -1,6 +1,4 @@
 using Il2CppInterop.HarmonySupport;
-using Il2CppInterop.Runtime;
-using System;
 using System.Reflection;
 using TheOtherThem.Objects;
 

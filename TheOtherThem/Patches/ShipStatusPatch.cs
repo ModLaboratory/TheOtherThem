@@ -62,7 +62,7 @@ namespace TheOtherThem.Patches {
         [HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.Begin))]
         public static bool Prefix(ShipStatus __instance)
         {
-            if (CustomOptionHolder.uselessOptions.GetBool() && CustomOptionHolder.playerColorRandom.GetBool() && AmongUsClient.Instance.AmHost)
+            if (CustomOptionHolder.UselessOptions.GetBool() && CustomOptionHolder.playerColorRandom.GetBool() && AmongUsClient.Instance.AmHost)
             {
                 List<int> colors = Enumerable.Range(0, Palette.PlayerColors.Count).ToList();
                 foreach (PlayerControl p in PlayerControl.AllPlayerControls)

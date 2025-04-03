@@ -259,7 +259,7 @@ namespace TheOtherThem {
 
 		public static CustomOption allowParallelMedBayScans;
 
-        public static CustomOption dynamicMap;
+        public static CustomOption DynamicMap;
         public static CustomOption dynamicMapEnableSkeld;
         public static CustomOption dynamicMapEnableMira;
         public static CustomOption dynamicMapEnablePolus;
@@ -323,7 +323,7 @@ namespace TheOtherThem {
         public static CustomOption hideOutOfSightNametags;
         public static CustomOption refundVotesOnDeath;
 
-        public static CustomOption uselessOptions;
+        public static CustomOption UselessOptions;
         public static CustomOption playerColorRandom;
         public static CustomOption playerNameDupes;
         public static CustomOption disableVents;
@@ -682,18 +682,18 @@ namespace TheOtherThem {
             restrictCameras = CustomOption.Create(502, "disableCameras", 30f, 0f, 600f, 5f, restrictDevices, format: "unitSeconds");
             restrictVents = CustomOption.Create(503, "disableVitals", 30f, 0f, 600f, 5f, restrictDevices, format: "unitSeconds");
 
-            uselessOptions = CustomOption.Create(530, "uselessOptions", false, null, isHeader: true);
-            dynamicMap = CustomOption.Create(8, "playRandomMaps", false, uselessOptions);
-            dynamicMapEnableSkeld = CustomOption.Create(531, "dynamicMapEnableSkeld", true, dynamicMap, false);
-            dynamicMapEnableMira = CustomOption.Create(532, "dynamicMapEnableMira", true, dynamicMap, false);
-            dynamicMapEnablePolus = CustomOption.Create(533, "dynamicMapEnablePolus", true, dynamicMap, false);
-            dynamicMapEnableAirShip = CustomOption.Create(534, "dynamicMapEnableAirShip", true, dynamicMap, false);
-            dynamicMapEnableDleks = CustomOption.Create(535, "dynamicMapEnableDleks", false, dynamicMap, false);
+            UselessOptions = CustomOption.Create(530, "uselessOptions", false, null, isHeader: true);
+            DynamicMap = CustomOption.Create(8, "playRandomMaps", false, UselessOptions);
+            dynamicMapEnableSkeld = CustomOption.Create(531, "dynamicMapEnableSkeld", true, DynamicMap, false);
+            dynamicMapEnableMira = CustomOption.Create(532, "dynamicMapEnableMira", true, DynamicMap, false);
+            dynamicMapEnablePolus = CustomOption.Create(533, "dynamicMapEnablePolus", true, DynamicMap, false);
+            dynamicMapEnableAirShip = CustomOption.Create(534, "dynamicMapEnableAirShip", true, DynamicMap, false);
+            dynamicMapEnableDleks = CustomOption.Create(535, "dynamicMapEnableDleks", false, DynamicMap, false);
 			
-            disableVents = CustomOption.Create(504, "disableVents", false, uselessOptions);
-            hidePlayerNames = CustomOption.Create(6, "hidePlayerNames", false, uselessOptions);
-            playerNameDupes = CustomOption.Create(522, "playerNameDupes", false, uselessOptions);
-            playerColorRandom = CustomOption.Create(521, "playerColorRandom", false, uselessOptions);
+            disableVents = CustomOption.Create(504, "disableVents", false, UselessOptions);
+            hidePlayerNames = CustomOption.Create(6, "hidePlayerNames", false, UselessOptions);
+            playerNameDupes = CustomOption.Create(522, "playerNameDupes", false, UselessOptions);
+            playerColorRandom = CustomOption.Create(521, "playerColorRandom", false, UselessOptions);
 
             blockedRolePairings.Add((byte)RoleType.Vampire, new [] { (byte)RoleType.Warlock});
             blockedRolePairings.Add((byte)RoleType.Warlock, new [] { (byte)RoleType.Vampire});
