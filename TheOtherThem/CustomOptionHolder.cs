@@ -1,21 +1,18 @@
 using System.Collections.Generic;
-using UnityEngine;
-using BepInEx.Configuration;
-using System;
+using System.Collections.ObjectModel;
 using System.Linq;
-using HarmonyLib;
-using Hazel;
-using System.Reflection;
-using System.Text;
+using UnityEngine;
 using static TheOtherThem.TheOtherRoles;
 using static TheOtherThem.TheOtherRolesGM;
-using TheOtherThem.ToTRole.Impostor;
 
-namespace TheOtherThem {
+namespace TheOtherThem
+{
 
-    public class CustomOptionHolder {
-        public static string[] rates = new string[]{"0%", "10%", "20%", "30%", "40%", "50%", "60%", "70%", "80%", "90%", "100%"};
-        public static string[] presets = new string[]{"preset1", "preset2", "preset3", "preset4", "preset5" };
+    public class CustomOptionHolder
+    {
+        public static ReadOnlyCollection<string> Rates { get; } = new(new List<string>() { "0%", "10%", "20%", "30%", "40%", "50%", "60%", "70%", "80%", "90%", "100%" });
+        public static ReadOnlyCollection<string> Presets { get; } = new(new List<string>() { "preset1", "preset2", "preset3", "preset4", "preset5" });
+        public static int PresetCount => Presets.Count;
 
         public static CustomOption presetSelection;
         public static CustomOption activateRoles;
@@ -211,7 +208,7 @@ namespace TheOtherThem {
 
         public static CustomRoleOption cleanerSpawnRate;
         public static CustomOption cleanerCooldown;
-        
+
         public static CustomRoleOption warlockSpawnRate;
         public static CustomOption warlockCooldown;
         public static CustomOption warlockRootTime;
@@ -230,8 +227,8 @@ namespace TheOtherThem {
         public static CustomOption baitHighlightAllVents;
         public static CustomOption baitReportDelay;
         public static CustomOption baitShowKillFlash;
-		
-		public static CustomRoleOption vultureSpawnRate;
+
+        public static CustomRoleOption vultureSpawnRate;
         public static CustomOption vultureCooldown;
         public static CustomOption vultureNumberToWin;
         public static CustomOption vultureCanUseVents;
@@ -257,7 +254,7 @@ namespace TheOtherThem {
         public static CustomOption noVoteIsSelfVote;
         public static CustomOption hidePlayerNames;
 
-		public static CustomOption allowParallelMedBayScans;
+        public static CustomOption allowParallelMedBayScans;
 
         public static CustomOption DynamicMap;
         public static CustomOption dynamicMapEnableSkeld;
@@ -346,21 +343,24 @@ namespace TheOtherThem {
 
         internal static Dictionary<byte, byte[]> blockedRolePairings = new Dictionary<byte, byte[]>();
 
-        public static string ColorString(Color c, string s) {
+        public static string ColorString(Color c, string s)
+        {
             return string.Format("<color=#{0:X2}{1:X2}{2:X2}{3:X2}>{4}</color>", ToByte(c.r), ToByte(c.g), ToByte(c.b), ToByte(c.a), s);
         }
- 
-        private static byte ToByte(float f) {
+
+        private static byte ToByte(float f)
+        {
             f = Mathf.Clamp01(f);
             return (byte)(f * 255);
         }
 
-        public static void Load() {
+        public static void Load()
+        {
 
             // Role Options
             activateRoles = CustomOption.Create(7, ColorString(new Color(204f / 255f, 204f / 255f, 0, 1f), "blockOriginal"), true, null, true);
 
-            presetSelection = CustomOption.Create(0, ColorString(new Color(204f / 255f, 204f / 255f, 0, 1f), "presetSelection"), presets, null, true);
+            presetSelection = CustomOption.Create(0, ColorString(new Color(204f / 255f, 204f / 255f, 0, 1f), "presetSelection"), Presets.ToArray(), null, true);
 
             // Using new id's for the options to not break compatibilty with older versions
             crewmateRolesCountMin = CustomOption.Create(300, ColorString(new Color(204f / 255f, 204f / 255f, 0, 1f), "crewmateRolesCountMin"), 0f, 0f, 15f, 1f, null, true);
@@ -469,38 +469,38 @@ namespace TheOtherThem {
             madmateCanFixComm = CustomOption.Create(365, "madmateCanFixComm", true, madmateSpawnRate);
 
             miniSpawnRate = new CustomRoleOption(180, "mini", Mini.color, 1);
-            miniIsImpRate = CustomOption.Create(182, "miniIsImpRate", rates, miniSpawnRate);
+            miniIsImpRate = CustomOption.Create(182, "miniIsImpRate", Rates.ToArray(), miniSpawnRate);
             miniGrowingUpDuration = CustomOption.Create(181, "miniGrowingUpDuration", 400f, 100f, 1500f, 100f, miniSpawnRate, format: "unitSeconds");
 
             loversSpawnRate = new CustomRoleOption(50, "lovers", Lovers.Color, 1);
-            loversImpLoverRate = CustomOption.Create(51, "loversImpLoverRate", rates, loversSpawnRate);
+            loversImpLoverRate = CustomOption.Create(51, "loversImpLoverRate", Rates.ToArray(), loversSpawnRate);
             loversNumCouples = CustomOption.Create(57, "loversNumCouples", 1f, 1f, 7f, 1f, loversSpawnRate, format: "unitCouples");
             loversBothDie = CustomOption.Create(52, "loversBothDie", true, loversSpawnRate);
             loversCanHaveAnotherRole = CustomOption.Create(53, "loversCanHaveAnotherRole", true, loversSpawnRate);
             loversSeparateTeam = CustomOption.Create(56, "loversSeparateTeam", true, loversSpawnRate);
             loversTasksCount = CustomOption.Create(55, "loversTasksCount", false, loversSpawnRate);
-			loversEnableChat = CustomOption.Create(54, "loversEnableChat", true, loversSpawnRate);
+            loversEnableChat = CustomOption.Create(54, "loversEnableChat", true, loversSpawnRate);
 
             guesserSpawnRate = new CustomRoleOption(310, "guesser", Guesser.color, 1);
-            guesserIsImpGuesserRate = CustomOption.Create(311, "guesserIsImpGuesserRate", rates, guesserSpawnRate);
-            guesserSpawnBothRate = CustomOption.Create(317, "guesserSpawnBothRate", rates, guesserSpawnRate);
+            guesserIsImpGuesserRate = CustomOption.Create(311, "guesserIsImpGuesserRate", Rates.ToArray(), guesserSpawnRate);
+            guesserSpawnBothRate = CustomOption.Create(317, "guesserSpawnBothRate", Rates.ToArray(), guesserSpawnRate);
             guesserNumberOfShots = CustomOption.Create(312, "guesserNumberOfShots", 2f, 1f, 15f, 1f, guesserSpawnRate, format: "unitShots");
             guesserOnlyAvailableRoles = CustomOption.Create(313, "guesserOnlyAvailableRoles", true, guesserSpawnRate);
             guesserHasMultipleShotsPerMeeting = CustomOption.Create(314, "guesserHasMultipleShotsPerMeeting", false, guesserSpawnRate);
             guesserShowInfoInGhostChat = CustomOption.Create(315, "guesserToGhostChat", true, guesserSpawnRate);
             guesserKillsThroughShield = CustomOption.Create(316, "guesserPierceShield", true, guesserSpawnRate);
             guesserEvilCanKillSpy = CustomOption.Create(318, "guesserEvilCanKillSpy", true, guesserSpawnRate);
-			guesserCantGuessSnitchIfTaksDone = CustomOption.Create(319, "guesserCantGuessSnitchIfTaksDone", true, guesserSpawnRate);
+            guesserCantGuessSnitchIfTaksDone = CustomOption.Create(319, "guesserCantGuessSnitchIfTaksDone", true, guesserSpawnRate);
 
             swapperSpawnRate = new CustomRoleOption(150, "swapper", Swapper.color, 1);
-            swapperIsImpRate = CustomOption.Create(153, "swapperIsImpRate", rates, swapperSpawnRate);
+            swapperIsImpRate = CustomOption.Create(153, "swapperIsImpRate", Rates.ToArray(), swapperSpawnRate);
             swapperNumSwaps = CustomOption.Create(154, "swapperNumSwaps", 2f, 1f, 15f, 1f, swapperSpawnRate, format: "unitTimes");
             swapperCanCallEmergency = CustomOption.Create(151, "swapperCanCallEmergency", false, swapperSpawnRate);
             swapperCanOnlySwapOthers = CustomOption.Create(152, "swapperCanOnlySwapOthers", false, swapperSpawnRate);
 
             jesterSpawnRate = new CustomRoleOption(60, "jester", Jester.color, 1);
             jesterCanCallEmergency = CustomOption.Create(61, "jesterCanCallEmergency", true, jesterSpawnRate);
-			jesterCanSabotage = CustomOption.Create(62, "jesterCanSabotage", true, jesterSpawnRate);
+            jesterCanSabotage = CustomOption.Create(62, "jesterCanSabotage", true, jesterSpawnRate);
             jesterHasImpostorVision = CustomOption.Create(63, "jesterHasImpostorVision", false, jesterSpawnRate);
 
             arsonistSpawnRate = new CustomRoleOption(290, "arsonist", Arsonist.color, 1);
@@ -539,7 +539,7 @@ namespace TheOtherThem {
             pursuerBlanksNumber = CustomOption.Create(357, "pursuerNumBlanks", 5f, 0f, 20f, 1f, lawyerSpawnRate, format: "unitShots");
 
             shifterSpawnRate = new CustomRoleOption(70, "shifter", Shifter.color, 1);
-            shifterIsNeutralRate = CustomOption.Create(72, "shifterIsNeutralRate", rates, shifterSpawnRate);
+            shifterIsNeutralRate = CustomOption.Create(72, "shifterIsNeutralRate", Rates.ToArray(), shifterSpawnRate);
             shifterShiftsModifiers = CustomOption.Create(71, "shifterShiftsModifiers", false, shifterSpawnRate);
             shifterPastShifters = CustomOption.Create(73, "shifterPastShifters", false, shifterSpawnRate);
 
@@ -574,7 +574,7 @@ namespace TheOtherThem {
             fortuneTellerResults = CustomOption.Create(942, "fortuneTellerResults ", new string[] { "fortuneTellerResultCrew", "fortuneTellerResultTeam", "fortuneTellerResultRole" }, fortuneTellerSpawnRate);
             fortuneTellerDuration = CustomOption.Create(943, "fortuneTellerDuration ", 20f, 1f, 50f, 0.5f, fortuneTellerSpawnRate, format: "unitSeconds");
             fortuneTellerDistance = CustomOption.Create(944, "fortuneTellerDistance ", 2.5f, 1f, 10f, 0.5f, fortuneTellerSpawnRate, format: "unitMeters");
-            
+
             mayorSpawnRate = new CustomRoleOption(80, "mayor", Mayor.color, 1);
             mayorNumVotes = CustomOption.Create(81, "mayorNumVotes", 2f, 2f, 10f, 1f, mayorSpawnRate, format: "unitVotes");
 
@@ -689,18 +689,18 @@ namespace TheOtherThem {
             dynamicMapEnablePolus = CustomOption.Create(533, "dynamicMapEnablePolus", true, DynamicMap, false);
             dynamicMapEnableAirShip = CustomOption.Create(534, "dynamicMapEnableAirShip", true, DynamicMap, false);
             dynamicMapEnableDleks = CustomOption.Create(535, "dynamicMapEnableDleks", false, DynamicMap, false);
-			
+
             disableVents = CustomOption.Create(504, "disableVents", false, UselessOptions);
             hidePlayerNames = CustomOption.Create(6, "hidePlayerNames", false, UselessOptions);
             playerNameDupes = CustomOption.Create(522, "playerNameDupes", false, UselessOptions);
             playerColorRandom = CustomOption.Create(521, "playerColorRandom", false, UselessOptions);
 
-            blockedRolePairings.Add((byte)RoleType.Vampire, new [] { (byte)RoleType.Warlock});
-            blockedRolePairings.Add((byte)RoleType.Warlock, new [] { (byte)RoleType.Vampire});
-            blockedRolePairings.Add((byte)RoleType.Spy, new [] { (byte)RoleType.Mini});
-            blockedRolePairings.Add((byte)RoleType.Mini, new [] { (byte)RoleType.Spy});
-            blockedRolePairings.Add((byte)RoleType.Vulture, new [] { (byte)RoleType.Cleaner});
-            blockedRolePairings.Add((byte)RoleType.Cleaner, new [] { (byte)RoleType.Vulture});
+            blockedRolePairings.Add((byte)RoleType.Vampire, new[] { (byte)RoleType.Warlock });
+            blockedRolePairings.Add((byte)RoleType.Warlock, new[] { (byte)RoleType.Vampire });
+            blockedRolePairings.Add((byte)RoleType.Spy, new[] { (byte)RoleType.Mini });
+            blockedRolePairings.Add((byte)RoleType.Mini, new[] { (byte)RoleType.Spy });
+            blockedRolePairings.Add((byte)RoleType.Vulture, new[] { (byte)RoleType.Cleaner });
+            blockedRolePairings.Add((byte)RoleType.Cleaner, new[] { (byte)RoleType.Vulture });
         }
     }
 

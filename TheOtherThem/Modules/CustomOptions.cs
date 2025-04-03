@@ -21,6 +21,7 @@ namespace TheOtherThem
         Crewmate,
         Modifier,
     }
+
     public class CustomOption
     {
         public static List<CustomOption> Options { get; } = new List<CustomOption>();
@@ -41,19 +42,10 @@ namespace TheOtherThem
         public bool IsHidden { get; set; }
         public CustomOptionType Type { get; set; }
 
-        public virtual bool Enabled
-        {
-            get
-            {
-                return Helpers.RolesEnabled && GetBool();
-            }
-        }
+        public virtual bool Enabled => Helpers.RolesEnabled && GetBool();
 
         // Option creation
-        public CustomOption()
-        {
-
-        }
+        public CustomOption() { }
 
         public CustomOption(int id, string name, object[] selections, object defaultValue, CustomOption parent, bool isHeader, bool isHidden, string format)
         {
@@ -197,7 +189,7 @@ namespace TheOtherThem
         {
             if (PlayerControl.AllPlayerControls.Count <= 1 || AmongUsClient.Instance?.AmHost == false && PlayerControl.LocalPlayer == null) return;
             
-            MessageWriter messageWriter = AmongUsClient.Instance.StartRpc(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.ShareOptions, Hazel.SendOption.Reliable);
+            MessageWriter messageWriter = AmongUsClient.Instance.StartRpc(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.ShareOptions, SendOption.Reliable);
             messageWriter.WritePacked((uint)Options.Count);
             foreach (CustomOption option in Options)
             {
@@ -305,7 +297,7 @@ namespace TheOtherThem
         }
 
         public CustomRoleOption(int id, string name, Color color, int max = 15, bool roleEnabled = true) :
-            base(id, Helpers.ColorString(color, name), CustomOptionHolder.rates, "", null, true, false, "")
+            base(id, Helpers.ColorString(color, name), CustomOptionHolder.Rates.ToArray(), "", null, true, false, "")
         {
             this.roleEnabled = roleEnabled;
 
@@ -321,7 +313,7 @@ namespace TheOtherThem
 
         // Insertable
         public CustomRoleOption(int id, string name, Color color, TeamTypeToT team, int max = 15, bool roleEnabled = true) :
-            base(id, Helpers.ColorString(color, name), CustomOptionHolder.rates, "", null, true, false, "", GetIndex(team))
+            base(id, Helpers.ColorString(color, name), CustomOptionHolder.Rates.ToArray(), "", null, true, false, "", GetIndex(team))
         {
             this.roleEnabled = roleEnabled;
 
@@ -350,7 +342,7 @@ namespace TheOtherThem
         public CustomDualRoleOption(int id, string name, Color color, RoleType roleType, int max = 15, bool roleEnabled = true) : base(id, name, color, max, roleEnabled)
         {
             roleAssignEqually = new CustomOption(id + 10011, "roleAssignEqually", new string[] { "optionOn", "optionOff" }, "optionOff", this, false, IsHidden, "");
-            roleImpChance = Create(id + 10010, "roleImpChance", CustomOptionHolder.rates, roleAssignEqually, false, IsHidden);
+            roleImpChance = Create(id + 10010, "roleImpChance", CustomOptionHolder.Rates.ToArray(), roleAssignEqually, false, IsHidden);
 
             this.roleType = roleType;
             Type = CustomOptionType.General;
@@ -546,7 +538,7 @@ namespace TheOtherThem
             var torSettingsButton = GameObject.Find(buttonName);
             if (torSettingsButton == null)
             {
-                torSettingsButton = GameObject.Instantiate(buttonTemplate, buttonTemplate.transform.parent);
+                torSettingsButton = Object.Instantiate(buttonTemplate, buttonTemplate.transform.parent);
                 torSettingsButton.transform.localPosition += Vector3.right * 1.75f * (targetMenu - 2);
                 torSettingsButton.name = buttonName;
                 __instance.StartCoroutine(Effects.Lerp(2f, new Action<float>(p => { torSettingsButton.transform.FindChild("FontPlacer").GetComponentInChildren<TextMeshPro>().text = buttonText; })));
@@ -637,7 +629,7 @@ namespace TheOtherThem
                     if (i != 0) num -= 0.59f;
                     if (i % 2 != 0) singles++;
                     headers++; // for header
-                    CategoryHeaderMasked categoryHeaderMasked = UnityEngine.Object.Instantiate<CategoryHeaderMasked>(__instance.categoryHeaderOrigin);
+                    CategoryHeaderMasked categoryHeaderMasked = Object.Instantiate<CategoryHeaderMasked>(__instance.categoryHeaderOrigin);
                     categoryHeaderMasked.SetHeader(StringNames.ImpostorsCategory, 61);
                     categoryHeaderMasked.Title.text = ModTranslation.GetString(option.Name);
                     if ((int)optionType == 99)
@@ -653,7 +645,7 @@ namespace TheOtherThem
                     i = 0;
                 }
 
-                ViewSettingsInfoPanel viewSettingsInfoPanel = UnityEngine.Object.Instantiate<ViewSettingsInfoPanel>(__instance.infoPanelOrigin);
+                ViewSettingsInfoPanel viewSettingsInfoPanel = Object.Instantiate<ViewSettingsInfoPanel>(__instance.infoPanelOrigin);
                 viewSettingsInfoPanel.transform.SetParent(__instance.settingsContainer);
                 viewSettingsInfoPanel.transform.localScale = Vector3.one;
                 float num2;
@@ -718,6 +710,21 @@ namespace TheOtherThem
         }
     }
 
+    [HarmonyPatch(typeof(GameSettingMenu), nameof(GameSettingMenu.Update))]
+    class GameOptionsMenuUpdatePatch
+    {
+        static void Postfix()
+        {
+            var gameSettingsButton = GameObject.Find("GameSettingsButton");
+            if (gameSettingsButton)
+                gameSettingsButton.transform.localPosition = GameOptionsMenuStartPatch.FirstLeftButtonPosition;
+
+            var torSettingsButton = GameObject.Find("TORSettings");
+            if (torSettingsButton)
+                torSettingsButton.transform.localPosition = GameOptionsMenuStartPatch.SecondLeftButtonPosition;
+        }
+    }
+
 
     [HarmonyPatch(typeof(GameSettingMenu), nameof(GameSettingMenu.Start))]
     class GameOptionsMenuStartPatch
@@ -734,19 +741,19 @@ namespace TheOtherThem
 
             if (GameOptionsManager.Instance.currentGameOptions.GameMode == GameModes.HideNSeek) return;
 
-            removeVanillaTabs(__instance);
+            RemoveVanillaTabs(__instance);
 
-            createSettingTabs(__instance);
+            CreateSettingTabs(__instance);
         }
 
-        private static void createSettings(GameOptionsMenu menu, List<CustomOption> options)
+        private static void CreateSettings(GameOptionsMenu menu, List<CustomOption> options)
         {
             float num = 1.5f;
             foreach (CustomOption option in options)
             {
                 if (option.IsHeader)
                 {
-                    CategoryHeaderMasked categoryHeaderMasked = UnityEngine.Object.Instantiate<CategoryHeaderMasked>(menu.categoryHeaderOrigin, Vector3.zero, Quaternion.identity, menu.settingsContainer);
+                    CategoryHeaderMasked categoryHeaderMasked = Object.Instantiate(menu.categoryHeaderOrigin, Vector3.zero, Quaternion.identity, menu.settingsContainer);
                     categoryHeaderMasked.SetHeader(StringNames.ImpostorsCategory, 20);
                     categoryHeaderMasked.Title.text = ModTranslation.GetString(option.Name);
                     categoryHeaderMasked.Title.outlineColor = Color.white;
@@ -755,7 +762,7 @@ namespace TheOtherThem
                     categoryHeaderMasked.transform.localPosition = new Vector3(-0.903f, num, -2f);
                     num -= 0.63f;
                 }
-                OptionBehaviour optionBehaviour = UnityEngine.Object.Instantiate<StringOption>(menu.stringOptionOrigin, Vector3.zero, Quaternion.identity, menu.settingsContainer);
+                OptionBehaviour optionBehaviour = Object.Instantiate<StringOption>(menu.stringOptionOrigin, Vector3.zero, Quaternion.identity, menu.settingsContainer);
                 optionBehaviour.transform.localPosition = new Vector3(0.952f, num, -2f);
                 optionBehaviour.SetClickMask(menu.ButtonClickMask);
 
@@ -801,35 +808,44 @@ namespace TheOtherThem
             }
         }
 
-        private static Vector3 ModButtonPosition = Vector3.zero;
+        public static Vector3 FirstLeftButtonPosition { get; set; } = Vector3.zero;
+        public static Vector3 SecondLeftButtonPosition { get; set; } = Vector3.zero;
 
-        private static void removeVanillaTabs(GameSettingMenu __instance)
+        private static void RemoveVanillaTabs(GameSettingMenu __instance)
         {
             GameObject.Find("What Is This?")?.Destroy();
             GameObject result;
             if (result = GameObject.Find("GamePresetButton"))
             {
-                ModButtonPosition = result.transform.localPosition;
+                SecondLeftButtonPosition = result.transform.localPosition;
                 result.Destroy();
             }
+
+            if (result = GameObject.Find("GameSettingsButton"))
+                FirstLeftButtonPosition = result.transform.localPosition;
+
             GameObject.Find("RoleSettingsButton")?.Destroy();
             __instance.ChangeTab(1, false);
         }
 
-        public static void createCustomButton(GameSettingMenu __instance, int targetMenu, string buttonName, string buttonText)
+        public static void CreateCustomButton(GameSettingMenu __instance, int targetMenu, string buttonName, string buttonText)
         {
             var leftPanel = GameObject.Find("LeftPanel");
+
             var buttonTemplate = GameObject.Find("GameSettingsButton");
+            if (buttonTemplate)
+                buttonTemplate.transform.localPosition = FirstLeftButtonPosition;
+
             var torSettingsButton = GameObject.Find(buttonName);
-            if (torSettingsButton == null)
+            if (!torSettingsButton)
             {
-                torSettingsButton = GameObject.Instantiate(buttonTemplate, leftPanel.transform);
-                torSettingsButton.transform.localPosition = ModButtonPosition;
+                torSettingsButton = Object.Instantiate(buttonTemplate, leftPanel.transform);
+                torSettingsButton.transform.localPosition = SecondLeftButtonPosition;
                 torSettingsButton.name = buttonName;
                 __instance.StartCoroutine(Effects.Lerp(2f, new Action<float>(p => { torSettingsButton.transform.FindChild("FontPlacer").GetComponentInChildren<TextMeshPro>().text = buttonText; })));
                 var torSettingsPassiveButton = torSettingsButton.GetComponent<PassiveButton>();
                 torSettingsPassiveButton.OnClick.RemoveAllListeners();
-                torSettingsPassiveButton.OnClick.AddListener((System.Action)(() => {
+                torSettingsPassiveButton.OnClick.AddListener((Action)(() => {
                     __instance.ChangeTab(targetMenu, false);
                 }));
                 torSettingsPassiveButton.OnMouseOut.RemoveAllListeners();
@@ -839,12 +855,12 @@ namespace TheOtherThem
             }
         }
 
-        public static void createGameOptionsMenu(GameSettingMenu __instance, CustomOptionType optionType, string settingName)
+        public static void CreateGameOptionsMenu(CustomOptionType optionType, string settingName)
         {
             var tabTemplate = GameObject.Find("GAME SETTINGS TAB");
             currentTabs.RemoveAll(x => x == null);
 
-            var torSettingsTab = GameObject.Instantiate(tabTemplate, tabTemplate.transform.parent);
+            var torSettingsTab = Object.Instantiate(tabTemplate, tabTemplate.transform.parent);
             torSettingsTab.name = settingName;
 
             var torSettingsGOM = torSettingsTab.GetComponent<GameOptionsMenu>();
@@ -855,22 +871,20 @@ namespace TheOtherThem
             torSettingsGOM.scrollBar.transform.FindChild("SliderInner").DestroyChildren();
             torSettingsGOM.Children.Clear();
             var relevantOptions = Options.Where(x => x.Type == optionType).ToList();
-            createSettings(torSettingsGOM, relevantOptions);
+            CreateSettings(torSettingsGOM, relevantOptions);
 
             currentTabs.Add(torSettingsTab);
             torSettingsTab.SetActive(false);
         }
 
-        private static void createSettingTabs(GameSettingMenu __instance)
+        private static void CreateSettingTabs(GameSettingMenu __instance)
         {
             // Handle different gamemodes and tabs needed therein.
             int next = 3;
             {
-
                 // create TOR settings
-                createCustomButton(__instance, next++, "TORSettings", ModTranslation.GetString("torSettings"));
-                createGameOptionsMenu(__instance, CustomOptionType.General, "TORSettings");
-
+                CreateCustomButton(__instance, next++, "TORSettings", ModTranslation.GetString("torSettings"));
+                CreateGameOptionsMenu(CustomOptionType.General, "TORSettings");
             }
         }
     }
@@ -895,7 +909,7 @@ namespace TheOtherThem
     {
         public static bool Prefix(StringOption __instance)
         {
-            CustomOption option = CustomOption.Options.FirstOrDefault(option => option.OptionBehaviour == __instance);
+            var option = Options.FirstOrDefault(option => option.OptionBehaviour == __instance);
             if (option == null) return true;
             option.UpdateSelection(option.Selection + 1);
             return false;
@@ -907,7 +921,7 @@ namespace TheOtherThem
     {
         public static bool Prefix(StringOption __instance)
         {
-            CustomOption option = CustomOption.Options.FirstOrDefault(option => option.OptionBehaviour == __instance);
+            var option = Options.FirstOrDefault(option => option.OptionBehaviour == __instance);
             if (option == null) return true;
             option.UpdateSelection(option.Selection - 1);
             return false;
@@ -920,7 +934,7 @@ namespace TheOtherThem
         public static void Postfix(StringOption __instance)
         {
             if (!IL2CPPChainloader.Instance.Plugins.TryGetValue("com.DigiWorm.LevelImposter", out PluginInfo _)) return;
-            CustomOption option = CustomOption.Options.FirstOrDefault(option => option.OptionBehaviour == __instance);
+            var option = Options.FirstOrDefault(option => option.OptionBehaviour == __instance);
             if (option == null) return;
             __instance.Value = __instance.oldValue = option.Selection;
         }
@@ -932,7 +946,7 @@ namespace TheOtherThem
     {
         public static void Postfix()
         {
-            CustomOption.ShareOptionSelections();
+            ShareOptionSelections();
         }
     }
 
@@ -944,7 +958,7 @@ namespace TheOtherThem
             if (PlayerControl.LocalPlayer != null && AmongUsClient.Instance.AmHost)
             {
                 GameManager.Instance.LogicOptions.SyncOptions();
-                CustomOption.ShareOptionSelections();
+                ShareOptionSelections();
             }
         }
     }
