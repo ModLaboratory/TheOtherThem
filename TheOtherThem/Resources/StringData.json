@@ -3796,7 +3796,7 @@
   },
   "InnerslothFullDesc": {
     "0": "The Innersloth has a button, which can sabotage the communications directly, but the sabotage is also able to make crewmates lagging.",
-    "13": "树懒可以使用技能按钮直接破坏通讯，但与此同时所有玩家的行走都会变得卡顿"
+    "13": "树懒可以使用技能按钮直接破坏通讯，但与此同时所有玩家的行走都会变得卡顿。"
   },
   "InnerslothAbilityCd": {
     "0": "Lagging cooldown",

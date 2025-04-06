@@ -1,61 +1,58 @@
 # The Other Them
 
-> [!NOTE]
-> 本文档未翻译完毕！
-
 此分支基于 TORGM `v3.5.4`，支持 Among Us `v16.0.0` (也就是 `v2025.3.25`)。
 
-## Crewmates
+## 船员
 
-### Pacifist
-The Pacifist can reset the kill cooldown of bad roles, but the ability has use limit.
+### 和平主义者
+和平主义者可以重置坏职业的击杀冷却，但是有次数限制。
 
-- Ability icon by [JieGeLovesDengDuaLang](https://github.com/JieGeLovesDengDuaLang)
+- 技能图标制作： [JieGeLovesDengDuaLang](https://github.com/JieGeLovesDengDuaLang)
 
-- Role idea by [YZ-华酱](https://space.bilibili.com/519835400)
+- 职业创意： [YZ-华酱](https://space.bilibili.com/519835400)
 
-#### Game Options
-| Name | Description |
+#### 游戏选项
+| 名称 | 介绍 |
 |----------|:-------------:|
-| Pacifist Spawn Chance | -
-| Reset Ability Cooldown | -
-| Ability Use Limit | -
+| 出生几率 | -
+| 技能冷却 | -
+| 技能次数 | -
 
-## Neutral
+## 中立
 
-### Idealist
-The Idealist can select a target to guess the target will be killed within certain time, or the Idealist will suicide. When the amount of guessed and killed players equals to the winning amount set by the host, the Idealist wins.
+### 理想主义者
+理想主义者可以选择一个目标以猜测，但是目标必须在指定时间内被击杀，否则理想主义者会自杀。当理想主义者击杀总人数与房间设置相等时，理想主义者胜利。
 
-- Ability icon by [JieGeLovesDengDuaLang](https://github.com/JieGeLovesDengDuaLang)
+- 技能图标制作： [JieGeLovesDengDuaLang](https://github.com/JieGeLovesDengDuaLang)
 
-- Role idea by [JieGeLovesDengDuaLang](https://github.com/JieGeLovesDengDuaLang)
+- 职业创意： [JieGeLovesDengDuaLang](https://github.com/JieGeLovesDengDuaLang)
 
-#### Game Options
-| Name | Description |
+#### 游戏选项
+| 名称 | 介绍 |
 |----------|:-------------:|
-| Idealist Spawn Chance | -
-| Guessing Ability Cooldown | -
-| Winning Guessed & Dead Target Count | The amount of players that Idealist should guess correctly to win
-| Suicide Countdown | The time that Idealist's guessing target should be killed within, or Idealist will suicide when time's up
+| 出生几率 | -
+| 技能冷却 | -
+| 胜利所需猜测正确数量 | -
+| 自杀倒计时 | 理想主义者猜测后目标所应死亡的时间范围，若目标未死亡则理想主义者自杀
 
-## Impostors
+## 内鬼
 
-### Innersloth
-The Innersloth can use the ability to sabotage, but the sabotage can make everyone lagging.
+### 树懒
+树懒可以使用技能按钮直接破坏通讯，但与此同时所有玩家的行走都会变得卡顿。
 
-- Ability icon by [Adeerwholoveseverything](https://github.com/Adeerwholoveseverything)
+- 技能图标制作： [Adeerwholoveseverything](https://github.com/Adeerwholoveseverything)
 
-- Role idea by [JieGeLovesDengDuaLang](https://github.com/JieGeLovesDengDuaLang)
+- 职业创意： [JieGeLovesDengDuaLang](https://github.com/JieGeLovesDengDuaLang)
 
-#### Game Options
-| Name | Description |
+#### 游戏选项
+| 名称 | 介绍 |
 |----------|:-------------:|
-| Idealist Spawn Chance | -
-| Lagging Ability Cooldown | -
+| 出生几率 | -
+| 技能冷却 | -
 
 -------------------
 
-**ORIGINAL README OF THIS FORK'S BASE REPOS BELOW**
+**下方本家仓库原README（未译）**
 
 -------------------
 
