@@ -2,32 +2,42 @@
 
 This fork is based on TORGM `v3.5.4`, and it supports Among Us `v16.0.0` (also known as `v2025.3.25`).
 
-## Crewmates
+## Disclaimer
 
-### Pacifist
+This mod is not affiliated with Among Us or Innersloth LLC, and the content contained therein is not endorsed or otherwise sponsored by Innersloth LLC. Portions of the materials contained herein are property of Innersloth LLC. © Innersloth LLC.
+
+## Roles
+
+| Crewmates | Neutral | Impostors | Modifier | 
+|----------|-------------|-----------------|----------------|
+| [Pacifist](#pacifist) | [Idealist](#idealist) | [Innersloth](#innersloth) | Coming soon... |
+
+### Crewmates
+
+#### Pacifist
 The Pacifist can reset the kill cooldown of bad roles, but the ability has use limit.
 
 - Ability icon by [JieGeLovesDengDuaLang](https://github.com/JieGeLovesDengDuaLang)
 
 - Role idea by [YZ-华酱](https://space.bilibili.com/519835400)
 
-#### Game Options
+##### Game Options
 | Name | Description |
 |----------|:-------------:|
 | Pacifist Spawn Chance | -
 | Reset Ability Cooldown | -
 | Ability Use Limit | -
 
-## Neutral
+### Neutral
 
-### Idealist
+#### Idealist
 The Idealist can select a target to guess the target will be killed within certain time, or the Idealist will suicide. When the amount of guessed and killed players equals to the winning amount set by the host, the Idealist wins.
 
 - Ability icon by [JieGeLovesDengDuaLang](https://github.com/JieGeLovesDengDuaLang)
 
 - Role idea by [JieGeLovesDengDuaLang](https://github.com/JieGeLovesDengDuaLang)
 
-#### Game Options
+##### Game Options
 | Name | Description |
 |----------|:-------------:|
 | Idealist Spawn Chance | -
@@ -35,16 +45,16 @@ The Idealist can select a target to guess the target will be killed within certa
 | Winning Guessed & Dead Target Count | The amount of players that Idealist should guess correctly to win
 | Suicide Countdown | The time that Idealist's guessing target should be killed within, or Idealist will suicide when time's up
 
-## Impostors
+### Impostors
 
-### Innersloth
+#### Innersloth
 The Innersloth can use the ability to sabotage, but the sabotage can make everyone lagging.
 
 - Ability icon by [Adeerwholoveseverything](https://github.com/Adeerwholoveseverything)
 
 - Role idea by [JieGeLovesDengDuaLang](https://github.com/JieGeLovesDengDuaLang)
 
-#### Game Options
+##### Game Options
 | Name | Description |
 |----------|:-------------:|
 | Idealist Spawn Chance | -

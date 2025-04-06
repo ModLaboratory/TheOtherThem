@@ -2,32 +2,42 @@
 
 此分支基于 TORGM `v3.5.4`，支持 Among Us `v16.0.0` (也就是 `v2025.3.25`)。
 
-## 船员
+## 免责声明
 
-### 和平主义者
+本模组不隶属于 Among Us 或 Innersloth LLC，其包含的内容也未得到 Innersloth LLC 的认可或以其他方式赞助。此处包含的部分材料是Innersloth LLC的财产。
+
+## 职业
+
+| 船员 | 中立 | 内鬼 | 附加 | 
+|----------|-------------|-----------------|----------------|
+| [和平主义者](#和平主义者) | [理想主义者](#理想主义者) | [树懒](#树懒) | 即将到来…… |
+
+### 船员
+
+#### 和平主义者
 和平主义者可以重置坏职业的击杀冷却，但是有次数限制。
 
 - 技能图标制作： [JieGeLovesDengDuaLang](https://github.com/JieGeLovesDengDuaLang)
 
 - 职业创意： [YZ-华酱](https://space.bilibili.com/519835400)
 
-#### 游戏选项
+##### 游戏选项
 | 名称 | 介绍 |
 |----------|:-------------:|
 | 出生几率 | -
 | 技能冷却 | -
 | 技能次数 | -
 
-## 中立
+### 中立
 
-### 理想主义者
+#### 理想主义者
 理想主义者可以选择一个目标以猜测，但是目标必须在指定时间内被击杀，否则理想主义者会自杀。当理想主义者击杀总人数与房间设置相等时，理想主义者胜利。
 
 - 技能图标制作： [JieGeLovesDengDuaLang](https://github.com/JieGeLovesDengDuaLang)
 
 - 职业创意： [JieGeLovesDengDuaLang](https://github.com/JieGeLovesDengDuaLang)
 
-#### 游戏选项
+##### 游戏选项
 | 名称 | 介绍 |
 |----------|:-------------:|
 | 出生几率 | -
@@ -35,16 +45,16 @@
 | 胜利所需猜测正确数量 | -
 | 自杀倒计时 | 理想主义者猜测后目标所应死亡的时间范围，若目标未死亡则理想主义者自杀
 
-## 内鬼
+### 内鬼
 
-### 树懒
+#### 树懒
 树懒可以使用技能按钮直接破坏通讯，但与此同时所有玩家的行走都会变得卡顿。
 
 - 技能图标制作： [Adeerwholoveseverything](https://github.com/Adeerwholoveseverything)
 
 - 职业创意： [JieGeLovesDengDuaLang](https://github.com/JieGeLovesDengDuaLang)
 
-#### 游戏选项
+##### 游戏选项
 | 名称 | 介绍 |
 |----------|:-------------:|
 | 出生几率 | -
