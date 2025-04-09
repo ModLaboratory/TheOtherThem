@@ -2,6 +2,8 @@
 
 此分支基于 TORGM `v3.5.4`，支持 Among Us `v16.0.0` (也就是 `v2025.3.25`)。
 
+[English README](README.md)
+
 ## 免责声明
 
 本模组不隶属于 Among Us 或 Innersloth LLC，其包含的内容也未得到 Innersloth LLC 的认可或以其他方式赞助。此处包含的部分材料是Innersloth LLC的财产。
