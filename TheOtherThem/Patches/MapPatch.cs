@@ -135,7 +135,7 @@ namespace TheOtherThem.Patches
                 {
                     useButtonPos = HudManager.Instance.UseButton.transform.localPosition;
                 }
-                CustomOverlays.hideInfoOverlay();
+                CustomOverlays.HideInfoOverlay();
             }
 
             static void Postfix(MapBehaviour __instance)

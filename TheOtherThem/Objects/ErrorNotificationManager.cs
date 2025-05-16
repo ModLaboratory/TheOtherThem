@@ -1,5 +1,4 @@
 using System;
-using TheOtherThem.Modules;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -39,7 +38,7 @@ namespace TheOtherThem.Objects
             public void Update()
             {
                 if (!ErrorTextMesh) return;
-                if (Input.GetKeyDown(KeyCode.F3)) CreateOrOverride("This is a test");
+                //if (Input.GetKeyDown(KeyCode.F3)) CreateOrOverride("This is a test");
                 if (_timer <= 0) ClearErrorString();
 
                 var cam = HudManager.InstanceExists ? HudManager.Instance.PlayerCam.GetComponent<Camera>() : Camera.main;

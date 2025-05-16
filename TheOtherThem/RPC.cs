@@ -114,7 +114,7 @@ namespace TheOtherThem
             CameraPatch.ResetData();
             VitalsPatch.ResetData();
             MapBehaviorPatch.resetIcons();
-            CustomOverlays.resetOverlays();
+            CustomOverlays.ResetOverlays();
             CustomRole.ReloadAll();
 
             KillAnimationCoPerformKillPatch.hideNextAnimation = false;

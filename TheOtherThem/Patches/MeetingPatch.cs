@@ -653,8 +653,8 @@ namespace TheOtherThem.Patches {
         public static void startMeeting()
         {
             animateSwap = false;
-            CustomOverlays.showBlackBG();
-            CustomOverlays.hideInfoOverlay();
+            CustomOverlays.ShowBlackBackground();
+            CustomOverlays.HideInfoOverlay();
             TheOtherRolesGM.OnMeetingStart();
         }
 

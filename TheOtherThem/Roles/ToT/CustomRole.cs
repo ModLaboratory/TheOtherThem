@@ -66,8 +66,9 @@ public abstract class CustomRole
 
     public abstract void ClearData();
 
-    public static List<CustomRole> AllRoles => allRoles ??= new();
-    private static List<CustomRole> allRoles;
+    public static List<CustomRole> AllRoles => _allRoles ??= new();
+    private static List<CustomRole> _allRoles;
+
     public static void ReloadAll()
     {
         AllRoles.ForEach(cr => cr.ClearData());

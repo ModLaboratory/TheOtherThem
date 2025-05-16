@@ -11,128 +11,129 @@ namespace TheOtherThem {
     [Harmony]
     public class CustomOverlays {
 
-        public static Sprite helpButton;
-        private static Sprite colorBG;
-        private static SpriteRenderer meetingUnderlay;
-        private static SpriteRenderer infoUnderlay;
-        private static TMPro.TextMeshPro infoOverlayRules;
-        private static TMPro.TextMeshPro infoOverlayRoles;
-        public static bool overlayShown = false;
+        public static Sprite HelpButton { get; set; }
+        public static bool OverlayShown { get; set; } = false;
 
-        public static void resetOverlays()
+        private static Sprite _colorBackground;
+        private static SpriteRenderer _meetingUnderlay;
+        private static SpriteRenderer _infoUnderlay;
+        private static TMPro.TextMeshPro _infoOverlayRules;
+        private static TMPro.TextMeshPro _infoOverlayRoles;
+
+        public static void ResetOverlays()
         {
-            hideBlackBG();
-            hideInfoOverlay();
-            UnityEngine.Object.Destroy(meetingUnderlay);
-            UnityEngine.Object.Destroy(infoUnderlay);
-            UnityEngine.Object.Destroy(infoOverlayRules);
-            UnityEngine.Object.Destroy(infoOverlayRoles);
-            meetingUnderlay = infoUnderlay = null;
-            infoOverlayRules = infoOverlayRoles = null;
-            overlayShown = false;
+            HideBlackBackground();
+            HideInfoOverlay();
+            Object.Destroy(_meetingUnderlay);
+            Object.Destroy(_infoUnderlay);
+            Object.Destroy(_infoOverlayRules);
+            Object.Destroy(_infoOverlayRoles);
+            _meetingUnderlay = _infoUnderlay = null;
+            _infoOverlayRules = _infoOverlayRoles = null;
+            OverlayShown = false;
         }
 
-        public static bool initializeOverlays()
+        public static bool InitializeOverlays()
         {
             HudManager hudManager = DestroyableSingleton<HudManager>.Instance;
             if (hudManager == null) return false;
 
-            if (helpButton == null)
+            if (HelpButton == null)
             {
-                helpButton = Helpers.LoadSpriteFromResources("TheOtherThem.Resources.HelpButton.png", 115f);
+                HelpButton = Helpers.LoadSpriteFromResources("TheOtherThem.Resources.HelpButton.png", 115f);
             }
 
-            if (colorBG == null)
+            if (_colorBackground == null)
             {
-                colorBG = Helpers.LoadSpriteFromResources("TheOtherThem.Resources.White.png", 100f);
+                _colorBackground = Helpers.LoadSpriteFromResources("TheOtherThem.Resources.White.png", 100f);
             }
 
-            if (meetingUnderlay == null)
+            if (_meetingUnderlay == null)
             {
-                meetingUnderlay = UnityEngine.Object.Instantiate(hudManager.FullScreen, hudManager.transform);
-                meetingUnderlay.transform.localPosition = new Vector3(0f, 0f, 20f);
-                meetingUnderlay.gameObject.SetActive(true);
-                meetingUnderlay.enabled = false;
+                _meetingUnderlay = UnityEngine.Object.Instantiate(hudManager.FullScreen, hudManager.transform);
+                _meetingUnderlay.transform.localPosition = new Vector3(0f, 0f, 20f);
+                _meetingUnderlay.gameObject.SetActive(true);
+                _meetingUnderlay.enabled = false;
             }
 
-            if (infoUnderlay == null)
+            if (_infoUnderlay == null)
             {
-                infoUnderlay = UnityEngine.Object.Instantiate(meetingUnderlay, hudManager.transform);
-                infoUnderlay.transform.localPosition = new Vector3(0f, 0f, -900f);
-                infoUnderlay.gameObject.SetActive(true);
-                infoUnderlay.enabled = false;
+                _infoUnderlay = UnityEngine.Object.Instantiate(_meetingUnderlay, hudManager.transform);
+                _infoUnderlay.transform.localPosition = new Vector3(0f, 0f, -900f);
+                _infoUnderlay.gameObject.SetActive(true);
+                _infoUnderlay.enabled = false;
             }
 
-            if (infoOverlayRules == null)
+            if (_infoOverlayRules == null)
             {
-                infoOverlayRules = UnityEngine.Object.Instantiate(HudManager.Instance.TaskPanel.taskText, hudManager.transform);
-                infoOverlayRules.fontSize = infoOverlayRules.fontSizeMin = infoOverlayRules.fontSizeMax = 1.15f;
-                infoOverlayRules.autoSizeTextContainer = false;
-                infoOverlayRules.enableWordWrapping = false;
-                infoOverlayRules.alignment = TMPro.TextAlignmentOptions.TopLeft;
-                infoOverlayRules.transform.position = Vector3.zero;
-                infoOverlayRules.transform.localPosition = new Vector3(-2.5f, 1.15f, -910f);
-                infoOverlayRules.transform.localScale = Vector3.one;
-                infoOverlayRules.color = Palette.White;
-                infoOverlayRules.enabled = false;
+                _infoOverlayRules = UnityEngine.Object.Instantiate(HudManager.Instance.TaskPanel.taskText, hudManager.transform);
+                _infoOverlayRules.fontSize = _infoOverlayRules.fontSizeMin = _infoOverlayRules.fontSizeMax = 1.15f;
+                _infoOverlayRules.autoSizeTextContainer = false;
+                _infoOverlayRules.enableWordWrapping = false;
+                _infoOverlayRules.alignment = TMPro.TextAlignmentOptions.TopLeft;
+                _infoOverlayRules.transform.position = Vector3.zero;
+                _infoOverlayRules.transform.localPosition = new Vector3(-2.5f, 1.15f, -910f);
+                _infoOverlayRules.transform.localScale = Vector3.one;
+                _infoOverlayRules.color = Palette.White;
+                _infoOverlayRules.enabled = false;
             }
 
-            if (infoOverlayRoles == null) { 
-                infoOverlayRoles = UnityEngine.Object.Instantiate(infoOverlayRules, hudManager.transform);
-                infoOverlayRoles.maxVisibleLines = 28;
-                infoOverlayRoles.fontSize = infoOverlayRoles.fontSizeMin = infoOverlayRoles.fontSizeMax = 1.15f;
-                infoOverlayRoles.outlineWidth += 0.02f;
-                infoOverlayRoles.autoSizeTextContainer = false;
-                infoOverlayRoles.enableWordWrapping = false;
-                infoOverlayRoles.alignment = TMPro.TextAlignmentOptions.TopLeft;
-                infoOverlayRoles.transform.position = Vector3.zero;
-                infoOverlayRoles.transform.localPosition = infoOverlayRules.transform.localPosition + new Vector3(2.5f, 0.0f, 0.0f);
-                infoOverlayRoles.transform.localScale = Vector3.one;
-                infoOverlayRoles.color = Palette.White;
-                infoOverlayRoles.enabled = false;
+            if (_infoOverlayRoles == null) { 
+                _infoOverlayRoles = UnityEngine.Object.Instantiate(_infoOverlayRules, hudManager.transform);
+                _infoOverlayRoles.maxVisibleLines = 28;
+                _infoOverlayRoles.fontSize = _infoOverlayRoles.fontSizeMin = _infoOverlayRoles.fontSizeMax = 1.15f;
+                _infoOverlayRoles.outlineWidth += 0.02f;
+                _infoOverlayRoles.autoSizeTextContainer = false;
+                _infoOverlayRoles.enableWordWrapping = false;
+                _infoOverlayRoles.alignment = TMPro.TextAlignmentOptions.TopLeft;
+                _infoOverlayRoles.transform.position = Vector3.zero;
+                _infoOverlayRoles.transform.localPosition = _infoOverlayRules.transform.localPosition + new Vector3(2.5f, 0.0f, 0.0f);
+                _infoOverlayRoles.transform.localScale = Vector3.one;
+                _infoOverlayRoles.color = Palette.White;
+                _infoOverlayRoles.enabled = false;
             }
 
             return true;
         }
 
-        public static void showBlackBG()
+        public static void ShowBlackBackground()
         {
             if (HudManager.Instance == null) return;
-            if (!initializeOverlays()) return;
+            if (!InitializeOverlays()) return;
 
-            meetingUnderlay.sprite = colorBG;
-            meetingUnderlay.enabled = true;
-            meetingUnderlay.transform.localScale = new Vector3(20f, 20f, 1f);
+            _meetingUnderlay.sprite = _colorBackground;
+            _meetingUnderlay.enabled = true;
+            _meetingUnderlay.transform.localScale = new Vector3(20f, 20f, 1f);
             var clearBlack = new Color32(0, 0, 0, 0);
 
             HudManager.Instance.StartCoroutine(Effects.Lerp(0.2f, new Action<float>(t =>
             {
-                meetingUnderlay.color = Color.Lerp(clearBlack, Palette.Black, t);
+                _meetingUnderlay.color = Color.Lerp(clearBlack, Palette.Black, t);
             })));
         }
 
-        public static void hideBlackBG()
+        public static void HideBlackBackground()
         {
-            if (meetingUnderlay == null) return;
-            meetingUnderlay.enabled = false;
+            if (_meetingUnderlay == null) return;
+            _meetingUnderlay.enabled = false;
         }
 
-        public static void showInfoOverlay()
+        public static void ShowInfoOverlay()
         {
-            if (overlayShown || MapOptions.HideSettings) return;
+            if (OverlayShown || MapOptions.HideSettings) return;
 
             HudManager hudManager = DestroyableSingleton<HudManager>.Instance;
             if (ShipStatus.Instance == null || PlayerControl.LocalPlayer == null || hudManager == null || HudManager.Instance.IsIntroDisplayed || (!PlayerControl.LocalPlayer.CanMove && MeetingHud.Instance == null))
                 return;
 
-            if (!initializeOverlays()) return;
+            if (!InitializeOverlays()) return;
 
             if (MapBehaviour.Instance != null)
                 MapBehaviour.Instance.Close();
 
             hudManager.SetHudActive(false);
 
-            overlayShown = true;
+            OverlayShown = true;
 
             Transform parent;
             if (MeetingHud.Instance != null)
@@ -140,16 +141,16 @@ namespace TheOtherThem {
             else
                 parent = hudManager.transform;
 
-            infoUnderlay.transform.parent = parent;
-            infoOverlayRules.transform.parent = parent;
-            infoOverlayRoles.transform.parent = parent;
+            _infoUnderlay.transform.parent = parent;
+            _infoOverlayRules.transform.parent = parent;
+            _infoOverlayRoles.transform.parent = parent;
 
-            infoUnderlay.sprite = colorBG;
-            infoUnderlay.color = new Color(0.1f, 0.1f, 0.1f, 0.88f);
-            infoUnderlay.transform.localScale = new Vector3(7.5f, 5f, 1f);
-            infoUnderlay.enabled = true;
+            _infoUnderlay.sprite = _colorBackground;
+            _infoUnderlay.color = new Color(0.1f, 0.1f, 0.1f, 0.88f);
+            _infoUnderlay.transform.localScale = new Vector3(7.5f, 5f, 1f);
+            _infoUnderlay.enabled = true;
 
-            infoOverlayRules.enabled = true;
+            _infoOverlayRules.enabled = true;
 
             string rolesText = "";
             foreach (RoleInfo r in RoleInfo.GetRoleInfoForPlayer(PlayerControl.LocalPlayer))
@@ -158,57 +159,57 @@ namespace TheOtherThem {
                     (roleDesc != "" ? $"\n{r.FullDescription}" : "") + "\n\n";
             }
 
-            infoOverlayRoles.text = rolesText;
-            infoOverlayRoles.enabled = true;
+            _infoOverlayRoles.text = rolesText;
+            _infoOverlayRoles.enabled = true;
 
             var underlayTransparent = new Color(0.1f, 0.1f, 0.1f, 0.0f);
             var underlayOpaque = new Color(0.1f, 0.1f, 0.1f, 0.88f);
             HudManager.Instance.StartCoroutine(Effects.Lerp(0.2f, new Action<float>(t =>
             {
-                infoUnderlay.color = Color.Lerp(underlayTransparent, underlayOpaque, t);
-                infoOverlayRules.color = Color.Lerp(Palette.ClearWhite, Palette.White, t);
-                infoOverlayRoles.color = Color.Lerp(Palette.ClearWhite, Palette.White, t);
+                _infoUnderlay.color = Color.Lerp(underlayTransparent, underlayOpaque, t);
+                _infoOverlayRules.color = Color.Lerp(Palette.ClearWhite, Palette.White, t);
+                _infoOverlayRoles.color = Color.Lerp(Palette.ClearWhite, Palette.White, t);
             })));
         }
 
-        public static void hideInfoOverlay()
+        public static void HideInfoOverlay()
         {
-            if (!overlayShown) return;
+            if (!OverlayShown) return;
 
             if (MeetingHud.Instance == null) DestroyableSingleton<HudManager>.Instance.SetHudActive(true);
 
-            overlayShown = false;
+            OverlayShown = false;
             var underlayTransparent = new Color(0.1f, 0.1f, 0.1f, 0.0f);
             var underlayOpaque = new Color(0.1f, 0.1f, 0.1f, 0.88f);
 
             HudManager.Instance.StartCoroutine(Effects.Lerp(0.2f, new Action<float>(t =>
             {
-                if (infoUnderlay != null)
+                if (_infoUnderlay != null)
                 {
-                    infoUnderlay.color = Color.Lerp(underlayOpaque, underlayTransparent, t);
-                    if (t >= 1.0f) infoUnderlay.enabled = false;
+                    _infoUnderlay.color = Color.Lerp(underlayOpaque, underlayTransparent, t);
+                    if (t >= 1.0f) _infoUnderlay.enabled = false;
                 }
 
-                if (infoOverlayRules != null)
+                if (_infoOverlayRules != null)
                 {
-                    infoOverlayRules.color = Color.Lerp(Palette.White, Palette.ClearWhite, t);
-                    if (t >= 1.0f) infoOverlayRules.enabled = false;
+                    _infoOverlayRules.color = Color.Lerp(Palette.White, Palette.ClearWhite, t);
+                    if (t >= 1.0f) _infoOverlayRules.enabled = false;
                 }
 
-                if (infoOverlayRoles != null)
+                if (_infoOverlayRoles != null)
                 {
-                    infoOverlayRoles.color = Color.Lerp(Palette.White, Palette.ClearWhite, t);
-                    if (t >= 1.0f) infoOverlayRoles.enabled = false;
+                    _infoOverlayRoles.color = Color.Lerp(Palette.White, Palette.ClearWhite, t);
+                    if (t >= 1.0f) _infoOverlayRoles.enabled = false;
                 }
             })));
         }
 
         public static void ToggleInfoOverlay()
         {
-            if (overlayShown)
-                hideInfoOverlay();
+            if (OverlayShown)
+                HideInfoOverlay();
             else
-                showInfoOverlay();
+                ShowInfoOverlay();
         }
 
         [HarmonyPatch(typeof(KeyboardJoystick), nameof(KeyboardJoystick.Update))]

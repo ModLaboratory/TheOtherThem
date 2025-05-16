@@ -62,8 +62,8 @@ namespace TheOtherThem
             Role.AllRoles.Do(x => x.OnMeetingEnd());
             Modifier.AllModifiers.Do(x => x.OnMeetingEnd());
 
-            CustomOverlays.hideInfoOverlay();
-            CustomOverlays.hideBlackBG();
+            CustomOverlays.HideInfoOverlay();
+            CustomOverlays.HideBlackBackground();
         }
 
         [HarmonyPatch(typeof(GameData), nameof(GameData.HandleDisconnect), new Type[] { typeof(PlayerControl), typeof(DisconnectReasons) })]
