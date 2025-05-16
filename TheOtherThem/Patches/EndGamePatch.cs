@@ -75,21 +75,21 @@ namespace TheOtherThem.Patches
     static class AdditionalTempData
     {
         // Should be implemented using a proper GameOverReason in the future
-        public static WinCondition winCondition = WinCondition.Default;
-        public static List<WinCondition> additionalWinConditions = new List<WinCondition>();
-        public static List<PlayerRoleInfo> playerRoles = new List<PlayerRoleInfo>();
-        public static bool isGM = false;
-        public static GameOverReason gameOverReason;
+        public static WinCondition WinCondition { get; set; } = WinCondition.Default;
+        public static List<WinCondition> AdditionalWinConditions { get; set; } = new();
+        public static List<PlayerRoleInfo> PlayerRoles { get; set; } = new();
+        public static bool IsGM { get; set; } = false;
+        public static GameOverReason GameOverReason { get; set; }
 
-        public static Dictionary<int, PlayerControl> plagueDoctorInfected = new Dictionary<int, PlayerControl>();
-        public static Dictionary<int, float> plagueDoctorProgress = new Dictionary<int, float>();
+        public static Dictionary<int, PlayerControl> PlagueDoctorInfected { get; set; } = new();
+        public static Dictionary<int, float> PlagueDoctorProgress { get; set; } = new();
 
-        public static void clear()
+        public static void Clear()
         {
-            playerRoles.Clear();
-            additionalWinConditions.Clear();
-            winCondition = WinCondition.Default;
-            isGM = false;
+            PlayerRoles.Clear();
+            AdditionalWinConditions.Clear();
+            WinCondition = WinCondition.Default;
+            IsGM = false;
         }
 
         internal class PlayerRoleInfo
@@ -114,13 +114,13 @@ namespace TheOtherThem.Patches
             Camouflager.resetCamouflage();
             Morphling.resetMorph();
 
-            AdditionalTempData.gameOverReason = endGameResult.GameOverReason;
+            AdditionalTempData.GameOverReason = endGameResult.GameOverReason;
             if ((int)endGameResult.GameOverReason >= 10) endGameResult.GameOverReason = GameOverReason.ImpostorsByKill;
         }
 
         public static void Postfix(AmongUsClient __instance, [HarmonyArgument(0)] ref EndGameResult endGameResult)
         {
-            var gameOverReason = AdditionalTempData.gameOverReason;
+            var gameOverReason = AdditionalTempData.GameOverReason;
 
             // 狐の勝利条件を満たしたか確認する
             bool isFoxAlive = Fox.isFoxAlive();
@@ -142,7 +142,7 @@ namespace TheOtherThem.Patches
                     gameOverReason = (GameOverReason)CustomGameOverReason.FoxWin;
                 }
             }
-            AdditionalTempData.clear();
+            AdditionalTempData.Clear();
 
             //foreach (var pc in PlayerControl.AllPlayerControls)
             var excludeRoles = new RoleType[] { RoleType.Lovers };
@@ -160,7 +160,7 @@ namespace TheOtherThem.Patches
 
                 if (gameOverReason == GameOverReason.CrewmatesByTask && p.Object.IsCrewmate()) tasksCompleted = tasksTotal;
 
-                AdditionalTempData.playerRoles.Add(new AdditionalTempData.PlayerRoleInfo()
+                AdditionalTempData.PlayerRoles.Add(new AdditionalTempData.PlayerRoleInfo()
                 {
                     PlayerName = p.PlayerName,
                     PlayerId = p.PlayerId,
@@ -173,9 +173,9 @@ namespace TheOtherThem.Patches
                 });
             }
 
-            AdditionalTempData.isGM = CustomOptionHolder.gmEnabled.GetBool() && PlayerControl.LocalPlayer.IsGM();
-            AdditionalTempData.plagueDoctorInfected = PlagueDoctor.infected;
-            AdditionalTempData.plagueDoctorProgress = PlagueDoctor.progress;
+            AdditionalTempData.IsGM = CustomOptionHolder.gmEnabled.GetBool() && PlayerControl.LocalPlayer.IsGM();
+            AdditionalTempData.PlagueDoctorInfected = PlagueDoctor.infected;
+            AdditionalTempData.PlagueDoctorProgress = PlagueDoctor.progress;
 
 
             // Remove Jester, Arsonist, Vulture, Jackal, former Jackals and Sidekick from winners (if they win, they'll be readded)
@@ -228,7 +228,7 @@ namespace TheOtherThem.Patches
             bool lawyerSoloWin = Lawyer.lawyer != null && gameOverReason == (GameOverReason)CustomGameOverReason.LawyerSoloWin;
             bool plagueDoctorWin = PlagueDoctor.Exists && gameOverReason == (GameOverReason)CustomGameOverReason.PlagueDoctorWin;
             bool foxWin = Fox.Exists && gameOverReason == (GameOverReason)CustomGameOverReason.FoxWin;
-            bool everyoneDead = AdditionalTempData.playerRoles.All(x => x.Status != FinalStatus.Alive);
+            bool everyoneDead = AdditionalTempData.PlayerRoles.All(x => x.Status != FinalStatus.Alive);
 
             
             // Mini lose
@@ -238,7 +238,7 @@ namespace TheOtherThem.Patches
                 CachedPlayerData wpd = new CachedPlayerData(Mini.mini.Data);
                 wpd.IsYou = false; // If "no one is the Mini", it will display the Mini, but also show defeat to everyone
                 EndGameResult.CachedWinners.Add(wpd);
-                AdditionalTempData.winCondition = WinCondition.MiniLose;
+                AdditionalTempData.WinCondition = WinCondition.MiniLose;
             }
 
             // Jester win
@@ -247,7 +247,7 @@ namespace TheOtherThem.Patches
                 EndGameResult.CachedWinners = new Il2CppSystem.Collections.Generic.List<CachedPlayerData>();
                 CachedPlayerData wpd = new CachedPlayerData(Jester.jester.Data);
                 EndGameResult.CachedWinners.Add(wpd);
-                AdditionalTempData.winCondition = WinCondition.JesterWin;
+                AdditionalTempData.WinCondition = WinCondition.JesterWin;
             }
 
             // Arsonist win
@@ -256,7 +256,7 @@ namespace TheOtherThem.Patches
                 EndGameResult.CachedWinners = new Il2CppSystem.Collections.Generic.List<CachedPlayerData>();
                 CachedPlayerData wpd = new CachedPlayerData(Arsonist.arsonist.Data);
                 EndGameResult.CachedWinners.Add(wpd);
-                AdditionalTempData.winCondition = WinCondition.ArsonistWin;
+                AdditionalTempData.WinCondition = WinCondition.ArsonistWin;
             }
 
             else if (plagueDoctorWin)
@@ -266,14 +266,14 @@ namespace TheOtherThem.Patches
                     EndGameResult.CachedWinners = new Il2CppSystem.Collections.Generic.List<CachedPlayerData>();
                     CachedPlayerData wpd = new CachedPlayerData(pd.Player.Data);
                     EndGameResult.CachedWinners.Add(wpd);
-                    AdditionalTempData.winCondition = WinCondition.PlagueDoctorWin;
+                    AdditionalTempData.WinCondition = WinCondition.PlagueDoctorWin;
                 }
             }
 
             else if (everyoneDead)
             {
                 EndGameResult.CachedWinners = new Il2CppSystem.Collections.Generic.List<CachedPlayerData>();
-                AdditionalTempData.winCondition = WinCondition.EveryoneDied;
+                AdditionalTempData.WinCondition = WinCondition.EveryoneDied;
             }
 
             // Vulture win
@@ -282,7 +282,7 @@ namespace TheOtherThem.Patches
                 EndGameResult.CachedWinners = new Il2CppSystem.Collections.Generic.List<CachedPlayerData>();
                 CachedPlayerData wpd = new CachedPlayerData(Vulture.vulture.Data);
                 EndGameResult.CachedWinners.Add(wpd);
-                AdditionalTempData.winCondition = WinCondition.VultureWin;
+                AdditionalTempData.WinCondition = WinCondition.VultureWin;
             }
 
             // Lovers win conditions
@@ -291,13 +291,13 @@ namespace TheOtherThem.Patches
                 // Double win for lovers, crewmates also win
                 if (GameManager.Instance.DidHumansWin(gameOverReason) && !Lovers.SeparateTeam && Lovers.AnyNonKillingCouples)
                 {
-                    AdditionalTempData.winCondition = WinCondition.LoversTeamWin;
-                    AdditionalTempData.additionalWinConditions.Add(WinCondition.LoversTeamWin);
+                    AdditionalTempData.WinCondition = WinCondition.LoversTeamWin;
+                    AdditionalTempData.AdditionalWinConditions.Add(WinCondition.LoversTeamWin);
                 }
                 // Lovers solo win
                 else
                 {
-                    AdditionalTempData.winCondition = WinCondition.LoversSoloWin;
+                    AdditionalTempData.WinCondition = WinCondition.LoversSoloWin;
                     EndGameResult.CachedWinners = new Il2CppSystem.Collections.Generic.List<CachedPlayerData>();
 
                     foreach (var couple in Lovers.Couples)
@@ -315,7 +315,7 @@ namespace TheOtherThem.Patches
             else if (teamJackalWin)
             {
                 // Jackal wins if nobody except jackal is alive
-                AdditionalTempData.winCondition = WinCondition.JackalWin;
+                AdditionalTempData.WinCondition = WinCondition.JackalWin;
                 EndGameResult.CachedWinners = new Il2CppSystem.Collections.Generic.List<CachedPlayerData>();
                 CachedPlayerData wpd = new CachedPlayerData(Jackal.jackal.Data);
                 wpd.IsImpostor = false;
@@ -340,7 +340,7 @@ namespace TheOtherThem.Patches
                 EndGameResult.CachedWinners = new Il2CppSystem.Collections.Generic.List<CachedPlayerData>();
                 CachedPlayerData wpd = new CachedPlayerData(Lawyer.lawyer.Data);
                 EndGameResult.CachedWinners.Add(wpd);
-                AdditionalTempData.winCondition = WinCondition.LawyerSoloWin;
+                AdditionalTempData.WinCondition = WinCondition.LawyerSoloWin;
             }
             else if (foxWin)
             {
@@ -355,7 +355,7 @@ namespace TheOtherThem.Patches
                     CachedPlayerData wpd = new CachedPlayerData(immoralist.Player.Data);
                     EndGameResult.CachedWinners.Add(wpd);
                 }
-                AdditionalTempData.winCondition = WinCondition.FoxWin;
+                AdditionalTempData.WinCondition = WinCondition.FoxWin;
             }
 
             // Madmate win with impostors
@@ -385,11 +385,11 @@ namespace TheOtherThem.Patches
                     if (Lawyer.lawyer.IsAlive())
                     { // The Lawyer steals the clients win
                         EndGameResult.CachedWinners.Remove(winningClient);
-                        AdditionalTempData.additionalWinConditions.Add(WinCondition.AdditionalLawyerStolenWin);
+                        AdditionalTempData.AdditionalWinConditions.Add(WinCondition.AdditionalLawyerStolenWin);
                     }
                     else
                     { // The Lawyer wins together with the client
-                        AdditionalTempData.additionalWinConditions.Add(WinCondition.AdditionalLawyerBonusWin);
+                        AdditionalTempData.AdditionalWinConditions.Add(WinCondition.AdditionalLawyerBonusWin);
                     }
                 }
             }
@@ -405,20 +405,20 @@ namespace TheOtherThem.Patches
                     oppWin = true;
                 }
                 if (oppWin)
-                    AdditionalTempData.additionalWinConditions.Add(WinCondition.OpportunistWin);
+                    AdditionalTempData.AdditionalWinConditions.Add(WinCondition.OpportunistWin);
 
                 // Possible Additional winner: Pursuer
                 if (Pursuer.pursuer != null && Pursuer.pursuer.IsAlive())
                 {
                     if (!EndGameResult.CachedWinners.ToArray().Any(x => x.PlayerName == Pursuer.pursuer.Data.PlayerName))
                         EndGameResult.CachedWinners.Add(new CachedPlayerData(Pursuer.pursuer.Data));
-                    AdditionalTempData.additionalWinConditions.Add(WinCondition.AdditionalAlivePursuerWin);
+                    AdditionalTempData.AdditionalWinConditions.Add(WinCondition.AdditionalAlivePursuerWin);
                 }
             }
 
             foreach (CachedPlayerData wpd in EndGameResult.CachedWinners)
             {
-                wpd.IsDead = wpd.IsDead || AdditionalTempData.playerRoles.Any(x => x.PlayerName == wpd.PlayerName && x.Status != FinalStatus.Alive);
+                wpd.IsDead = wpd.IsDead || AdditionalTempData.PlayerRoles.Any(x => x.PlayerName == wpd.PlayerName && x.Status != FinalStatus.Alive);
             }
 
             // Reset Settings
@@ -491,7 +491,7 @@ namespace TheOtherThem.Patches
                         nameText.transform.localPosition = new Vector3(nameText.transform.localPosition.x, nameText.transform.localPosition.y, -15f);
                         nameText.text = CachedPlayerData2.PlayerName;
 
-                        foreach (var data in AdditionalTempData.playerRoles)
+                        foreach (var data in AdditionalTempData.PlayerRoles)
                         {
                             if (data.PlayerName != CachedPlayerData2.PlayerName) continue;
                             nameText.text += data.NameSuffix + $"\n<size=80%>{data.RoleString}</size>";
@@ -505,7 +505,7 @@ namespace TheOtherThem.Patches
                     textRenderer = bonusTextObject.GetComponent<TMPro.TMP_Text>();
                     textRenderer.text = "";
 
-                    if (AdditionalTempData.isGM)
+                    if (AdditionalTempData.IsGM)
                     {
                         __instance.WinText.text = ModTranslation.GetString("gmGameOver");
                         __instance.WinText.color = GM.color;
@@ -513,85 +513,85 @@ namespace TheOtherThem.Patches
 
                     string bonusText = "";
 
-                    if (AdditionalTempData.winCondition == WinCondition.JesterWin)
+                    if (AdditionalTempData.WinCondition == WinCondition.JesterWin)
                     {
                         bonusText = "jesterWin";
                         textRenderer.color = Jester.color;
                         __instance.BackgroundBar.material.SetColor("_Color", Jester.color);
                     }
-                    else if (AdditionalTempData.winCondition == WinCondition.ArsonistWin)
+                    else if (AdditionalTempData.WinCondition == WinCondition.ArsonistWin)
                     {
                         bonusText = "arsonistWin";
                         textRenderer.color = Arsonist.color;
                         __instance.BackgroundBar.material.SetColor("_Color", Arsonist.color);
                     }
-                    else if (AdditionalTempData.winCondition == WinCondition.VultureWin)
+                    else if (AdditionalTempData.WinCondition == WinCondition.VultureWin)
                     {
                         bonusText = "vultureWin";
                         textRenderer.color = Vulture.color;
                         __instance.BackgroundBar.material.SetColor("_Color", Vulture.color);
                     }
-                    else if (AdditionalTempData.winCondition == WinCondition.LawyerSoloWin)
+                    else if (AdditionalTempData.WinCondition == WinCondition.LawyerSoloWin)
                     {
                         bonusText = "lawyerWin";
                         textRenderer.color = Lawyer.color;
                         __instance.BackgroundBar.material.SetColor("_Color", Lawyer.color);
                     }
-                    else if (AdditionalTempData.winCondition == WinCondition.PlagueDoctorWin)
+                    else if (AdditionalTempData.WinCondition == WinCondition.PlagueDoctorWin)
                     {
                         bonusText = "plagueDoctorWin";
                         textRenderer.color = PlagueDoctor.color;
                         __instance.BackgroundBar.material.SetColor("_Color", PlagueDoctor.color);
                     }
-                    else if (AdditionalTempData.winCondition == WinCondition.FoxWin)
+                    else if (AdditionalTempData.WinCondition == WinCondition.FoxWin)
                     {
                         bonusText = "foxWin";
                         textRenderer.color = Fox.color;
                         __instance.BackgroundBar.material.SetColor("_Color", Fox.color);
                     }
-                    else if (AdditionalTempData.winCondition == WinCondition.LoversTeamWin)
+                    else if (AdditionalTempData.WinCondition == WinCondition.LoversTeamWin)
                     {
                         bonusText = "crewWin";
                         textRenderer.color = Lovers.Color;
                         __instance.BackgroundBar.material.SetColor("_Color", Lovers.Color);
                     }
-                    else if (AdditionalTempData.winCondition == WinCondition.LoversSoloWin)
+                    else if (AdditionalTempData.WinCondition == WinCondition.LoversSoloWin)
                     {
                         bonusText = "loversWin";
                         textRenderer.color = Lovers.Color;
                         __instance.BackgroundBar.material.SetColor("_Color", Lovers.Color);
                     }
-                    else if (AdditionalTempData.winCondition == WinCondition.JackalWin)
+                    else if (AdditionalTempData.WinCondition == WinCondition.JackalWin)
                     {
                         bonusText = "jackalWin";
                         textRenderer.color = Jackal.color;
                         __instance.BackgroundBar.material.SetColor("_Color", Jackal.color);
                     }
-                    else if (AdditionalTempData.winCondition == WinCondition.EveryoneDied)
+                    else if (AdditionalTempData.WinCondition == WinCondition.EveryoneDied)
                     {
                         bonusText = "everyoneDied";
                         textRenderer.color = Palette.DisabledGrey;
                         __instance.BackgroundBar.material.SetColor("_Color", Palette.DisabledGrey);
                     }
-                    else if (AdditionalTempData.winCondition == WinCondition.MiniLose)
+                    else if (AdditionalTempData.WinCondition == WinCondition.MiniLose)
                     {
                         bonusText = "miniDied";
                         textRenderer.color = Mini.color;
                         __instance.BackgroundBar.material.SetColor("_Color", Palette.DisabledGrey);
                     }
-                    else if (AdditionalTempData.gameOverReason == GameOverReason.CrewmatesByTask || AdditionalTempData.gameOverReason == GameOverReason.CrewmatesByVote)
+                    else if (AdditionalTempData.GameOverReason == GameOverReason.CrewmatesByTask || AdditionalTempData.GameOverReason == GameOverReason.CrewmatesByVote)
                     {
                         bonusText = "crewWin";
                         textRenderer.color = Palette.White;
                     }
-                    else if (AdditionalTempData.gameOverReason == GameOverReason.ImpostorsByKill || AdditionalTempData.gameOverReason == GameOverReason.ImpostorsBySabotage || AdditionalTempData.gameOverReason == GameOverReason.ImpostorsByVote)
+                    else if (AdditionalTempData.GameOverReason == GameOverReason.ImpostorsByKill || AdditionalTempData.GameOverReason == GameOverReason.ImpostorsBySabotage || AdditionalTempData.GameOverReason == GameOverReason.ImpostorsByVote)
                     {
                         bonusText = "impostorWin";
                         textRenderer.color = Palette.ImpostorRed;
                     }
 
                     string extraText = "";
-                    foreach (WinCondition w in AdditionalTempData.additionalWinConditions)
+                    foreach (WinCondition w in AdditionalTempData.AdditionalWinConditions)
                     {
                         switch (w)
                         {
@@ -618,7 +618,7 @@ namespace TheOtherThem.Patches
                         textRenderer.text = ModTranslation.GetString(bonusText);
                     }
 
-                    foreach (WinCondition cond in AdditionalTempData.additionalWinConditions)
+                    foreach (WinCondition cond in AdditionalTempData.AdditionalWinConditions)
                     {
                         switch (cond)
                         {
@@ -640,7 +640,7 @@ namespace TheOtherThem.Patches
 
                         var roleSummaryText = new StringBuilder();
                         roleSummaryText.AppendLine(ModTranslation.GetString("roleSummaryText"));
-                        AdditionalTempData.playerRoles.Sort((x, y) =>
+                        AdditionalTempData.PlayerRoles.Sort((x, y) =>
                         {
                             RoleInfo roleX = x.Roles.FirstOrDefault();
                             RoleInfo roleY = y.Roles.FirstOrDefault();
@@ -659,8 +659,8 @@ namespace TheOtherThem.Patches
 
                         });
 
-                        bool plagueExists = AdditionalTempData.playerRoles.Any(x => x.Roles.Contains(RoleInfo.plagueDoctor));
-                        foreach (var data in AdditionalTempData.playerRoles)
+                        bool plagueExists = AdditionalTempData.PlayerRoles.Any(x => x.Roles.Contains(RoleInfo.plagueDoctor));
+                        foreach (var data in AdditionalTempData.PlayerRoles)
                         {
                             var taskInfo = data.TasksTotal > 0 ? $"<color=#FAD934FF>{data.TasksCompleted}/{data.TasksTotal}</color>" : "";
                             string aliveDead = ModTranslation.GetString("roleSummary" + data.Status.ToString(), def: "-");
@@ -668,13 +668,13 @@ namespace TheOtherThem.Patches
                             if (plagueExists && !data.Roles.Contains(RoleInfo.plagueDoctor))
                             {
                                 result += "<pos=52.5%>";
-                                if (AdditionalTempData.plagueDoctorInfected.ContainsKey(data.PlayerId))
+                                if (AdditionalTempData.PlagueDoctorInfected.ContainsKey(data.PlayerId))
                                 {
                                     result += Helpers.ColorString(Color.red, ModTranslation.GetString("plagueDoctorInfectedText"));
                                 }
                                 else
                                 {
-                                    float progress = AdditionalTempData.plagueDoctorProgress.ContainsKey(data.PlayerId) ? AdditionalTempData.plagueDoctorProgress[data.PlayerId] : 0f;
+                                    float progress = AdditionalTempData.PlagueDoctorProgress.ContainsKey(data.PlayerId) ? AdditionalTempData.PlagueDoctorProgress[data.PlayerId] : 0f;
                                     result += PlagueDoctor.getProgressString(progress);
                                 }
                             }
@@ -693,7 +693,7 @@ namespace TheOtherThem.Patches
                         roleSummaryTextMeshRectTransform.anchoredPosition = new Vector2(position.x + 3.5f, position.y - 0.1f);
                         roleSummaryTextMesh.text = roleSummaryText.ToString();
                     }
-                    AdditionalTempData.clear();
+                    AdditionalTempData.Clear();
                 }
             }
 
@@ -972,7 +972,7 @@ namespace TheOtherThem.Patches
                     GetPlayerCounts();
                 }
 
-                private bool isLover(NetworkedPlayerInfo p)
+                private bool IsLover(NetworkedPlayerInfo p)
                 {
                     foreach (var couple in Lovers.Couples)
                     {
@@ -1004,7 +1004,7 @@ namespace TheOtherThem.Patches
                             {
                                 numTotalAlive++;
 
-                                bool lover = isLover(playerInfo);
+                                bool lover = IsLover(playerInfo);
                                 if (lover) numLoversAlive++;
 
                                 if (playerInfo.Role.IsImpostor)
