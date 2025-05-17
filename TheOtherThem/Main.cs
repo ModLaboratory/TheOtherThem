@@ -2,13 +2,13 @@
 global using Object = UnityEngine.Object;
 global using Il2CppCollections = Il2CppSystem.Collections;
 global using Il2CppGenericCollections = Il2CppSystem.Collections.Generic;
+global using Hazel;
 using AmongUs.Data.Legacy;
 using AmongUs.Data.Player;
 using AmongUs.GameOptions;
 using BepInEx;
 using BepInEx.Configuration;
 using BepInEx.Unity.IL2CPP;
-using Hazel;
 using System;
 using System.Collections.Generic;
 using System.Linq;

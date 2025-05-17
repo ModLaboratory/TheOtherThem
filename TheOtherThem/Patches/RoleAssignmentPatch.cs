@@ -56,14 +56,21 @@ namespace TheOtherThem.Patches
 
                         int newImpId;
                         PlayerControl newImp;
+
                         while (true)
                         {
+                            if (PlayerControl.AllPlayerControls.Count == 1)
+                            {
+                                newImpId = PlayerControl.LocalPlayer.PlayerId;
+                                break;
+                            }
+
                             newImpId = rnd.Next(0, PlayerControl.AllPlayerControls.Count);
                             newImp = PlayerControl.AllPlayerControls[newImpId];
+
                             if (newImp == host || newImp.Data.Role.IsImpostor)
-                            {
                                 continue;
-                            }
+                            
                             break;
                         }
 

@@ -26,9 +26,9 @@ public abstract class CustomRole
     /// <param name="roleType"></param>
     /// <param name="teamType"></param>
     /// <param name="winnable">Whether this role is winnable.</param>
-    /// <param name="generalOrStatisticalWinnable"><see cref="true"/> for adding the <see cref="CanWin(ShipStatus)"/> to general handler list; Otherwise, add <see cref="CanWin(ShipStatus, PlayerStatistics)"/> statistical list.</param>
+    /// <param name="needsStatisticalWinningInfo"><see cref="true"/> for adding the <see cref="CanWin(ShipStatus)"/> to general handler list; Otherwise, add <see cref="CanWin(ShipStatus, PlayerStatistics)"/> statistical list.</param>
     /// <param name="winnableInsertionIndex">The index of the order checking end. <seealso cref="-1"/> for adding directly.</param>
-    public CustomRole(string translationName, Color roleColor, BaseRoleOptionGetter baseOptionGetter, RoleType roleType, TeamTypeToT teamType, bool winnable = false, bool generalOrStatisticalWinnable = true, int winnableInsertionIndex = -1)
+    public CustomRole(string translationName, Color roleColor, BaseRoleOptionGetter baseOptionGetter, RoleType roleType, TeamTypeToT teamType, bool winnable = false, bool needsStatisticalWinningInfo = false, int winnableInsertionIndex = -1)
     {
         MyRoleInfo = new(translationName, roleColor, baseOptionGetter(translationName, roleColor), roleType);
         MyRoleType = roleType;
@@ -37,23 +37,23 @@ public abstract class CustomRole
 
         if (winnable)
         {
-            if (generalOrStatisticalWinnable)
-            {
-                var general = CheckEndCriteriaPatch.GeneralEndCheckingHandler;
-                if (winnableInsertionIndex == -1) 
-                    winnableInsertionIndex = general.Count;
-                general.Insert(winnableInsertionIndex, CanWin);
-            }
-            else
+            if (needsStatisticalWinningInfo)
             {
                 var statistical = CheckEndCriteriaPatch.StatisticalEndCheckingHandler;
                 if (winnableInsertionIndex == -1)
                     winnableInsertionIndex = statistical.Count;
                 statistical.Insert(winnableInsertionIndex, CanWin);
             }
+            else
+            {
+                var general = CheckEndCriteriaPatch.GeneralEndCheckingHandler;
+                if (winnableInsertionIndex == -1)
+                    winnableInsertionIndex = general.Count;
+                general.Insert(winnableInsertionIndex, CanWin);
+            }
         }
         
-        Main.Logger.LogInfo($"{translationName} ({nameof(winnable)} = {winnable}, {nameof(generalOrStatisticalWinnable)} = {generalOrStatisticalWinnable}, {nameof(winnableInsertionIndex)} = {winnableInsertionIndex}) registered");
+        Main.Logger.LogInfo($"{translationName} ({nameof(winnable)} = {winnable}, {nameof(needsStatisticalWinningInfo)} = {needsStatisticalWinningInfo}, {nameof(winnableInsertionIndex)} = {winnableInsertionIndex}) registered");
     }
 
     public bool CanLocalPlayerUse() => PlayerControl.LocalPlayer.IsRole(MyRoleType) && PlayerControl.LocalPlayer.IsAlive();

@@ -69,6 +69,7 @@ namespace TheOtherThem
         Fox,
         Immoralist,
         Idealist,
+        Phoenix,
 
 
         GM = 200,
