@@ -3,6 +3,8 @@ using Il2CppInterop.Runtime.InteropTypes.Arrays;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using TheOtherThem.Objects;
+using TMPro;
 using UnityEngine;
 
 namespace TheOtherThem.Patches
@@ -47,12 +49,12 @@ namespace TheOtherThem.Patches
         public class GameStartManagerUpdatePatch
         {
             //private static bool _update = false;
+            static int _textId;
 
-            //public static void Prefix(GameStartManager __instance)
-            //{
-            //    if (!AmongUsClient.Instance.AmHost || !GameData.Instance || AmongUsClient.Instance.AmLocalHost) return; // Not host or no instance
-            //    _update = GameData.Instance.PlayerCount != __instance.LastPlayerCount;
-            //}
+            public static void Prefix(GameStartManager __instance)
+            {
+                __instance.MinPlayers = 1;
+            }
 
             public static void Postfix(GameStartManager __instance)
             {
@@ -66,7 +68,7 @@ namespace TheOtherThem.Patches
                 // Host update with version handshake infos
                 if (AmongUsClient.Instance.AmHost)
                 {
-                    bool blockStart = false;
+                    bool versionMismatch = false;
                     string message = "";
                     foreach (InnerNet.ClientData client in AmongUsClient.Instance.allClients.ToArray())
                     {
@@ -76,7 +78,7 @@ namespace TheOtherThem.Patches
                             continue;
                         else if (!PlayerVersions.ContainsKey(client.Id))
                         {
-                            blockStart = true;
+                            versionMismatch = true;
                             message += $"<color=#FF0000FF>{client.Character.Data.PlayerName}:  {ModTranslation.GetString("errorNotInstalled")}\n</color>";
                         }
                         else
@@ -86,31 +88,39 @@ namespace TheOtherThem.Patches
                             if (diff > 0)
                             {
                                 message += $"<color=#FF0000FF>{client.Character.Data.PlayerName}:  {ModTranslation.GetString("errorOlderVersion")} (v{PlayerVersions[client.Id].Version.ToString()})\n</color>";
-                                blockStart = true;
+                                versionMismatch = true;
                             }
                             else if (diff < 0)
                             {
                                 message += $"<color=#FF0000FF>{client.Character.Data.PlayerName}:  {ModTranslation.GetString("errorNewerVersion")} (v{PlayerVersions[client.Id].Version.ToString()})\n</color>";
-                                blockStart = true;
+                                versionMismatch = true;
                             }
                             else if (!version.GuidMatches())
                             { // version presumably matches, check if Guid matches
                                 message += $"<color=#FF0000FF>{client.Character.Data.PlayerName}:  {ModTranslation.GetString("errorWrongVersion")} v{PlayerVersions[client.Id].Version.ToString()} <size=30%>({version.Guid.ToString()})</size>\n</color>";
-                                blockStart = true;
+                                versionMismatch = true;
                             }
                         }
                     }
-                    if (blockStart)
+                    if (versionMismatch)
                     {
-                        __instance.StartButton.SetButtonEnableState(true);
-                        __instance.GameStartText.text = message;
-                        __instance.GameStartText.transform.localPosition = __instance.StartButton.transform.localPosition + Vector3.up * 2;
+                        SetStartButtonEnabled(false);
+                        if (ErrorNotification.HasError(_textId))
+                            ErrorNotification.SetErrorString(_textId, message, float.PositiveInfinity);
+                        else
+                            _textId = ErrorNotification.AddErrorString(message, float.PositiveInfinity);
                     }
                     else
                     {
-                        __instance.StartButton.SetButtonEnableState(false);
-                        __instance.GameStartText.transform.localPosition = __instance.StartButton.transform.localPosition;
+                        SetStartButtonEnabled(true);
+                        ErrorNotification.RemoveErrorString(_textId);
                     }
+                }
+
+                void SetStartButtonEnabled(bool enabled)
+                {
+                    __instance.StartButton.SetButtonEnableState(enabled);
+                    __instance.StartButton.buttonText.text = TranslationController.Instance.GetString(enabled ? StringNames.StartLabel : StringNames.WaitingForPlayers);
                 }
 
                 // Client update with handshake infos
@@ -123,19 +133,15 @@ namespace TheOtherThem.Patches
                         {
                             _kickingTimer = 0;
                             AmongUsClient.Instance.ExitGame(DisconnectReasons.ExitGame);
-                            SceneChanger.ChangeScene("MainMenu");
+                            SceneChanger.ChangeScene(Constants.MAIN_MENU_SCENE);
                         }
 
-                        __instance.GameStartText.text = String.Format(ModTranslation.GetString("errorHostNoVersion"), Math.Round(10 - _kickingTimer));
-                        __instance.GameStartText.transform.localPosition = __instance.StartButton.transform.localPosition + Vector3.up * 2;
+                        ErrorNotification.AddErrorString(string.Format(ModTranslation.GetString("errorHostNoVersion"), Math.Round(10 - _kickingTimer)), float.PositiveInfinity);
                     }
                     else
                     {
-                        __instance.GameStartText.transform.localPosition = __instance.StartButton.transform.localPosition;
                         if (__instance.startState != GameStartManager.StartingStates.Countdown)
-                        {
-                            __instance.GameStartText.text = string.Empty;
-                        }
+                            ErrorNotification.RemoveErrorString(_textId);
                     }
                 }
 

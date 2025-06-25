@@ -682,9 +682,9 @@ namespace TheOtherThem
                     Buffer.BlockCopy(BitConverter.GetBytes(pos.x), 0, buff, 0 * sizeof(float), sizeof(float));
                     Buffer.BlockCopy(BitConverter.GetBytes(pos.y), 0, buff, 1 * sizeof(float), sizeof(float));
 
-                    MessageWriter writer = AmongUsClient.Instance.StartRpc(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.PlaceGarlic, Hazel.SendOption.Reliable);
+                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.PlaceGarlic, Hazel.SendOption.Reliable);
                     writer.WriteBytesAndSize(buff);
-                    writer.EndMessage();
+                    AmongUsClient.Instance.FinishRpcImmediately(writer);
                     RpcProcedure.placeGarlic(buff);
                 },
                 () => { return !Vampire.localPlacedGarlic && PlayerControl.LocalPlayer.IsAlive() && Vampire.garlicsActive && !PlayerControl.LocalPlayer.IsGM(); },
@@ -791,9 +791,9 @@ namespace TheOtherThem
                     Buffer.BlockCopy(BitConverter.GetBytes(pos.x), 0, buff, 0 * sizeof(float), sizeof(float));
                     Buffer.BlockCopy(BitConverter.GetBytes(pos.y), 0, buff, 1 * sizeof(float), sizeof(float));
 
-                    MessageWriter writer = AmongUsClient.Instance.StartRpc(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.PlaceJackInTheBox, Hazel.SendOption.Reliable);
+                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.PlaceJackInTheBox, Hazel.SendOption.Reliable);
                     writer.WriteBytesAndSize(buff);
-                    writer.EndMessage();
+                    AmongUsClient.Instance.FinishRpcImmediately(writer);
                     RpcProcedure.placeJackInTheBox(buff);
                 },
                 () => { return Trickster.trickster != null && Trickster.trickster == PlayerControl.LocalPlayer && PlayerControl.LocalPlayer.IsAlive() && !JackInTheBox.HasJackInTheBoxLimitReached(); },
@@ -936,9 +936,9 @@ namespace TheOtherThem
                 {
                     if (SecurityGuard.ventTarget != null)
                     { // Seal vent
-                        MessageWriter writer = AmongUsClient.Instance.StartRpc(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.SealVent, Hazel.SendOption.Reliable);
+                        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.SealVent, Hazel.SendOption.Reliable);
                         writer.WritePacked(SecurityGuard.ventTarget.Id);
-                        writer.EndMessage();
+                        AmongUsClient.Instance.FinishRpcImmediately(writer);
                         RpcProcedure.sealVent(SecurityGuard.ventTarget.Id);
                         SecurityGuard.ventTarget = null;
 
@@ -960,10 +960,10 @@ namespace TheOtherThem
                             roomId = 255;
                         }
 
-                        MessageWriter writer = AmongUsClient.Instance.StartRpc(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.PlaceCamera, Hazel.SendOption.Reliable);
+                        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.PlaceCamera, Hazel.SendOption.Reliable);
                         writer.WriteBytesAndSize(buff);
                         writer.Write(roomId);
-                        writer.EndMessage();
+                        AmongUsClient.Instance.FinishRpcImmediately(writer);
                         RpcProcedure.placeCamera(buff, roomId);
                     }
                     securityGuardButton.Timer = securityGuardButton.MaxTimer;

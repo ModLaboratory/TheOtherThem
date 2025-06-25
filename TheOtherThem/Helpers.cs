@@ -630,5 +630,22 @@ namespace TheOtherThem
             if (obj != null) 
                 action(obj);
         }
+
+        public static T[] Reverse<T>(this T[] array)
+        {
+            var length = array.Length;
+            T[] reversed = new T[length];
+            Array.Copy(array, reversed, length);
+            Array.Reverse(reversed);
+            return reversed;
+        }
+    }
+
+    public class ListenableQueue<T> : Queue<T>
+    {
+        public void Add(T element)
+        {
+
+        }
     }
 }

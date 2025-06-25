@@ -189,14 +189,14 @@ namespace TheOtherThem
         {
             if (PlayerControl.AllPlayerControls.Count <= 1 || AmongUsClient.Instance?.AmHost == false && PlayerControl.LocalPlayer == null) return;
             
-            MessageWriter messageWriter = AmongUsClient.Instance.StartRpc(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.ShareOptions, SendOption.Reliable);
+            MessageWriter messageWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.ShareOptions, SendOption.Reliable);
             messageWriter.WritePacked((uint)Options.Count);
             foreach (CustomOption option in Options)
             {
                 messageWriter.WritePacked((uint)option.Id);
                 messageWriter.WritePacked(Convert.ToUInt32(option.Selection));
             }
-            messageWriter.EndMessage();
+            AmongUsClient.Instance.FinishRpcImmediately(messageWriter);
         }
 
         // Getter

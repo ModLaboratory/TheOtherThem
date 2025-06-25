@@ -15,7 +15,7 @@ namespace TheOtherThem.Patches
 
         public static void Postfix()
         {
-            ErrorNotification.SetErrorString(ModTranslation.GetString("ManagedExceptinOccuredMsg"));
+            ErrorNotification.AddErrorString(ModTranslation.GetString("ManagedExceptinOccuredMsg"));
         }
     }
 }

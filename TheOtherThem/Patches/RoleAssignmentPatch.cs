@@ -55,7 +55,7 @@ namespace TheOtherThem.Patches
                         Main.Logger.LogMessage("Host impostor");
 
                         int newImpId;
-                        PlayerControl newImp;
+                        PlayerControl newImp = null;
 
                         while (true)
                         {

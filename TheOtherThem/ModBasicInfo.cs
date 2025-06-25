@@ -2,6 +2,7 @@ namespace TheOtherThem
 {
     // Modify when release
     // REMIND MYSELF: Don't forget to change to Release before compiling for the release version!!!
+    // Also change the version in the .csproj file!!!!!!
     public static class ModBasicInfo
     {
         public const string Id = "com.modlaboratory.theotherthem";
