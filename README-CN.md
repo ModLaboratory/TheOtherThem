@@ -1,6 +1,6 @@
-# The Other Them
+﻿# The Other Them
 
-此分支基于 TORGM `v3.5.4`，支持 Among Us `v16.0.0` (也就是 `v2025.3.25`)。
+此分支基于 TORGM `v3.5.4`，支持 Among Us `v16.1.0` (也就是 `v2025.6.10`)。
 
 [English README](README.md)
 

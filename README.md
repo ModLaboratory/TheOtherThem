@@ -1,6 +1,6 @@
-# The Other Them
+﻿# The Other Them
 
-This fork is based on TORGM `v3.5.4`, and it supports Among Us `v16.0.0` (also known as `v2025.3.25`).
+This fork is based on TORGM `v3.5.4`, and it supports Among Us `v16.1.0` (also known as `v2025.6.10`).
 
 [简体中文自述文件](README-CN.md)
 
