@@ -51,11 +51,6 @@ namespace TheOtherThem.Patches
             //private static bool _update = false;
             static int _textId;
 
-            public static void Prefix(GameStartManager __instance)
-            {
-                __instance.MinPlayers = 1;
-            }
-
             public static void Postfix(GameStartManager __instance)
             {
                 // Send version as soon as PlayerControl.LocalPlayer exists
@@ -73,6 +68,7 @@ namespace TheOtherThem.Patches
                     foreach (InnerNet.ClientData client in AmongUsClient.Instance.allClients.ToArray())
                     {
                         if (client.Character == null) continue;
+                        if (client.Character.PlayerId == 0) continue;
                         var dummyComponent = client.Character.GetComponent<DummyBehaviour>();
                         if (dummyComponent != null && dummyComponent.enabled)
                             continue;
@@ -87,17 +83,17 @@ namespace TheOtherThem.Patches
                             int diff = Main.Version.CompareTo(version.Version);
                             if (diff > 0)
                             {
-                                message += $"<color=#FF0000FF>{client.Character.Data.PlayerName}:  {ModTranslation.GetString("errorOlderVersion")} (v{PlayerVersions[client.Id].Version.ToString()})\n</color>";
+                                message += $"<color=#FF0000FF>{client.Character.Data.PlayerName}:  {ModTranslation.GetString("errorOlderVersion")} (v{PlayerVersions[client.Id].Version})\n</color>";
                                 versionMismatch = true;
                             }
                             else if (diff < 0)
                             {
-                                message += $"<color=#FF0000FF>{client.Character.Data.PlayerName}:  {ModTranslation.GetString("errorNewerVersion")} (v{PlayerVersions[client.Id].Version.ToString()})\n</color>";
+                                message += $"<color=#FF0000FF>{client.Character.Data.PlayerName}:  {ModTranslation.GetString("errorNewerVersion")} (v{PlayerVersions[client.Id].Version})\n</color>";
                                 versionMismatch = true;
                             }
                             else if (!version.GuidMatches())
                             { // version presumably matches, check if Guid matches
-                                message += $"<color=#FF0000FF>{client.Character.Data.PlayerName}:  {ModTranslation.GetString("errorWrongVersion")} v{PlayerVersions[client.Id].Version.ToString()} <size=30%>({version.Guid.ToString()})</size>\n</color>";
+                                message += $"<color=#FF0000FF>{client.Character.Data.PlayerName}:  {ModTranslation.GetString("errorWrongVersion")} v{PlayerVersions[client.Id].Version} <size=30%>({version.Guid.ToString()})</size>\n</color>";
                                 versionMismatch = true;
                             }
                         }
@@ -119,6 +115,7 @@ namespace TheOtherThem.Patches
 
                 void SetStartButtonEnabled(bool enabled)
                 {
+                    __instance.MinPlayers = enabled ? 0 : int.MaxValue;
                     __instance.StartButton.SetButtonEnableState(enabled);
                     __instance.StartButton.buttonText.text = TranslationController.Instance.GetString(enabled ? StringNames.StartLabel : StringNames.WaitingForPlayers);
                 }
