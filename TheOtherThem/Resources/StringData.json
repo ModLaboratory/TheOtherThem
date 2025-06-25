@@ -1,8 +1,8 @@
 {
   "torSettings": {
-    "0": "The Other Roles Settings",
-    "11": "The Other Rolesの設定",
-    "13": "超多职业模组设置"
+    "0": "TheOtherThem Settings",
+    "11": "TheOtherThemの設定",
+    "13": "TheOtherThem模组设置"
   },
   "ModSettings": {
     "0": "Mod Settings",
@@ -2819,29 +2819,29 @@
     "13": "断开连接"
   },
   "errorNotInstalled": {
-    "0": " has a different or no version of The Other Roles",
-    "11": "TheOtherRolesが正常に導入されていない",
-    "13": "没有超多职业模组或模组版本不同"
+    "0": " has a different or no version of TheOtherThem",
+    "11": "TheOtherThemが正常に導入されていない",
+    "13": "没有TheOtherThem模组或模组版本不同"
   },
   "errorOlderVersion": {
-    "0": " has an older version of The Other Roles",
-    "11": "TheOtherRolesのバージョンが古い",
-    "13": "超多职业模组版本较旧"
+    "0": " has an older version of TheOtherThem",
+    "11": "TheOtherThemのバージョンが古い",
+    "13": "TheOtherThem模组版本较旧"
   },
   "errorNewerVersion": {
-    "0": " has a newer version of The Other Roles",
-    "11": "TheOtherRolesのバージョンが新しい",
-    "13": "超多职业模组版本较新"
+    "0": " has a newer version of TheOtherThem",
+    "11": "TheOtherThemのバージョンが新しい",
+    "13": "TheOtherThem模组版本较新"
   },
   "errorWrongVersion": {
     "0": " has a modified version of TOR",
-    "11": "TheOtherRolesのバージョンが違う",
-    "13": "超多职业模组为修改过的版本"
+    "11": "TheOtherThemのバージョンが違う",
+    "13": "TheOtherThem模组为修改过的版本"
   },
   "errorHostNoVersion": {
-    "0": "The host has no or a different version of The Other Roles\nYou will be kicked in {0}s",
+    "0": "The host has no or a different version of TheOtherThem\nYou will be kicked in {0}s",
     "11": "ホストがTORを導入していないまたはバージョンが違う\nあと{0}秒でキックされます",
-    "13": "房主没有超多职业模组或模组版本不同\n您将在{0}秒后被踢出"
+    "13": "房主没有TheOtherThem模组或模组版本不同\n您将在{0}秒后被踢出"
   },
   "gmMeetingButton": {
     "0": "The GM can't call meetings.",
@@ -2949,14 +2949,14 @@
     "13": "GM版本 v{0}"
   },
   "updateButton": {
-    "0": "Update\nThe Other Roles GM",
-    "11": "TOR GMを\nアップデート",
-    "13": "更新\n超多职业模组GM版"
+    "0": "Update\nTheOtherThem",
+    "11": "TOTを\nアップデート",
+    "13": "更新\nTheOtherThem模组"
   },
   "updatePleaseWait": {
-    "0": "Updating The Other Roles GM\nPlease wait...",
+    "0": "Updating TheOtherThem\nPlease wait...",
     "11": "アップデート中\n少々お待ちください…",
-    "13": "正在更新超多职业模组GM版\n请稍候..."
+    "13": "正在更新TheOtherThem模组\n请稍候..."
   },
   "updateManually": {
     "0": "Unable to auto-update.\nPlease update manually.",
@@ -2969,9 +2969,9 @@
     "13": "已经开始更新。"
   },
   "updateRestart": {
-    "0": "The Other Roles GM\nupdated successfully.\nPlease restart the game.",
-    "11": "The Other Roles GMの\nアップデートが完了しました\nゲームを再起動してください",
-    "13": "超多职业模组GM版已经更新完毕。\n请重启游戏。"
+    "0": "TheOtherThem\nupdated successfully.\nPlease restart the game.",
+    "11": "TheOtherThemの\nアップデートが完了しました\nゲームを再起動してください",
+    "13": "TheOtherThem模组已经更新完毕。\n请重启游戏。"
   },
   "updateFailed": {
     "0": "Update failed.\nTry again later,\nor update manually.",
@@ -2979,14 +2979,14 @@
     "13": "更新失败。\n请稍后再试，或进行手动更新。"
   },
   "announcementUpdate": {
-    "0": "<size=150%>A new <color=#FC0303>TheOtherRoles GM Edition</color> update to v{ver} is available:</size>\n\n{1}",
-    "11": "<size=125%><color=#FC0303>TheOtherRoles GMエディション</color> v{0}の更新があります:</size>\n\n{1}",
-    "13": "<size=150%><color=#FC0303>超多职业模组GM版</color>已经可以更新至v{ver}:</size>\n\n{1}"
+    "0": "<size=150%>A new <color=#FF8C00>TheOtherThem</color> update to v{ver} is available:</size>\n\n{1}",
+    "11": "<size=125%><color=#FF8C00>TheOtherThem</color> v{0}の更新があります:</size>\n\n{1}",
+    "13": "<size=150%><color=#FF8C00>TheOtherThem模组</color>已经可以更新至v{ver}:</size>\n\n{1}"
   },
   "announcementChangelog": {
-    "0": "<size=150%><color=#FC0303>TheOtherRoles GM Edition</color> Version {0}:</size>\n\n{1}",
-    "11": "<size=125%><color=#FC0303>TheOtherRoles GMエディション</color> v{0}:</size>\n\n{1}",
-    "13": "<size=150%><color=#FC0303>超多职业模组GM版</color>v{0}:</size>\n\n{1}"
+    "0": "<size=150%><color=#FF8C00>TheOtherThem</color> Version {0}:</size>\n\n{1}",
+    "11": "<size=125%><color=#FF8C00>TheOtherThem</color> v{0}:</size>\n\n{1}",
+    "13": "<size=150%><color=#FF8C00>TheOtherThem模组</color>v{0}:</size>\n\n{1}"
   },
   "jesterFullDesc": {
     "0": "The Jester does not have any tasks.\nThey win the game as a solo if they get voted out during a meeting.",
@@ -3752,7 +3752,7 @@
   "developerHats": {
     "0": "Developer Hats",
     "11": "TOR開発チーム作",
-    "13": "超多职业模组帽"
+    "13": "TheOtherThem模组帽"
   },
   "communityHats": {
     "0": "Community Hats",
