@@ -28,7 +28,7 @@ The Pacifist can reset the kill cooldown of bad roles, but the ability has use l
 | Name | Description |
 |----------|:-------------:|
 | Pacifist Spawn Chance | -
-| Reset Ability Cooldown | -
+| Ability Cooldown | -
 | Ability Use Limit | -
 
 ### Neutral
