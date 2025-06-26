@@ -1,7 +1,7 @@
 ---
-name: Feature request
-about: Suggest an idea for the mod
-title: "[Suggestion]"
+name: Feature request / 功能请求
+about: Suggest an idea for the mod / 为模组提供你的想法
+title: "[Suggestion] "
 labels: ''
 assignees: ''
 
