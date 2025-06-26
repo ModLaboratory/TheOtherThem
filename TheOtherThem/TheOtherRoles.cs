@@ -447,9 +447,9 @@ namespace TheOtherThem
             {
                 currentTarget = tracked = null;
                 usedTracker = false;
-                if (arrow?.arrow != null) UnityEngine.Object.Destroy(arrow.arrow);
+                if (arrow?._arrow != null) UnityEngine.Object.Destroy(arrow._arrow);
                 arrow = new Arrow(Color.blue);
-                if (arrow.arrow != null) arrow.arrow.SetActive(false);
+                if (arrow._arrow != null) arrow.arrow.SetActive(false);
             }
 
             public static void ClearAndReload()
@@ -462,8 +462,8 @@ namespace TheOtherThem
                 if (localArrows != null)
                 {
                     foreach (Arrow arrow in localArrows)
-                        if (arrow?.arrow != null)
-                            UnityEngine.Object.Destroy(arrow.arrow);
+                        if (arrow?._arrow != null)
+                            UnityEngine.Object.Destroy(arrow._arrow);
                 }
                 DeadBodyPositions = new List<Vector3>();
                 corpsesTrackingTimer = 0f;
@@ -534,8 +534,8 @@ namespace TheOtherThem
                 if (localArrows != null)
                 {
                     foreach (Arrow arrow in localArrows)
-                        if (arrow?.arrow != null)
-                            UnityEngine.Object.Destroy(arrow.arrow);
+                        if (arrow?._arrow != null)
+                            UnityEngine.Object.Destroy(arrow._arrow);
                 }
                 localArrows = new List<Arrow>();
                 taskCountForReveal = Mathf.RoundToInt(CustomOptionHolder.snitchLeftTasksForReveal.GetFloat());
@@ -1060,7 +1060,7 @@ namespace TheOtherThem
                 bounty = null;
                 arrowUpdateTimer = 0f;
                 bountyUpdateTimer = 0f;
-                if (arrow != null && arrow.arrow != null) UnityEngine.Object.Destroy(arrow.arrow);
+                if (arrow != null && arrow._arrow != null) UnityEngine.Object.Destroy(arrow._arrow);
                 arrow = null;
                 if (cooldownText != null && cooldownText.gameObject != null) UnityEngine.Object.Destroy(cooldownText.gameObject);
                 cooldownText = null;
@@ -1131,8 +1131,8 @@ namespace TheOtherThem
             if (localArrows != null)
             {
                 foreach (Arrow arrow in localArrows)
-                    if (arrow?.arrow != null)
-                        UnityEngine.Object.Destroy(arrow.arrow);
+                    if (arrow?._arrow != null)
+                        UnityEngine.Object.Destroy(arrow._arrow);
             }
             localArrows = new List<Arrow>();
         }

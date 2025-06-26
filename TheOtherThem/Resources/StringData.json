@@ -3908,7 +3908,7 @@
   },
   "PhoenixFullDesc": {
     "0": "The Phoenix needs to kill players. When the amount of killed players reaches the number set by host, the Phoenix wins. The Phoneix can possess a corpse to revive, and can only kill for 1 time after each revival.",
-    "13": "凤凰需要杀死设定人数玩家（数量会根据游戏总人数在设置值的基础上自动调整）获胜，在死亡后可以通过附身尸体而复活，每次复活后只能击杀一次"
+    "13": "凤凰需要杀死设定人数玩家（数量会根据游戏总人数在设置值的基础上自动调整）获胜，在死亡后可以通过附身尸体而复活，每次复活后只能击杀一次。"
   },
   "PhoenixWinningKillCount": {
     "0": "Winning Killed Player Count",

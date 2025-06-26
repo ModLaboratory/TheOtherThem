@@ -1,54 +1,56 @@
-using System;
-using System.Collections.Generic;
-using System.Collections;
 using UnityEngine;
 
-namespace TheOtherThem.Objects {
-    public class Arrow {
-        public float perc = 0.925f;
-        public SpriteRenderer image;
-        public GameObject arrow;
+namespace TheOtherThem.Objects
+{
+    public class Arrow
+    {
+        public readonly float Perc = 0.925f;
+        private SpriteRenderer _image;
+        private GameObject _arrow;
         private Vector3 oldTarget;
 
         private static Sprite sprite;
-        public static Sprite GetSprite() {
+        public static Sprite GetSprite()
+        {
             if (sprite) return sprite;
             sprite = Helpers.LoadSpriteFromResources("TheOtherThem.Resources.Arrow.png", 200f);
             return sprite;
         }
 
 
-        public Arrow(Color color) {
-            arrow = new GameObject("Arrow");
-            arrow.layer = 5;
-            image = arrow.AddComponent<SpriteRenderer>();
-            image.sprite = GetSprite();
-            image.color = color;
+        public Arrow(Color color)
+        {
+            _arrow = new("Arrow");
+            _arrow.layer = 5;
+            _image = _arrow.AddComponent<SpriteRenderer>();
+            _image.sprite = GetSprite();
+            _image.color = color;
         }
 
-        public void Update() {
-            Vector3 target = oldTarget;
+        public void Update()
+        {
+            Vector3? target = oldTarget;
             if (target == null) target = Vector3.zero;
-            Update(target);
+            Update(target.Value);
         }
 
         public void Update(Vector3 target, Color? color = null)
         {
-            if (arrow == null) return;
+            if (_arrow == null) return;
             oldTarget = target;
 
-            if (color.HasValue) image.color = color.Value;
+            if (color.HasValue) _image.color = color.Value;
 
             Camera main = Camera.main;
             Vector2 vector = target - main.transform.position;
-            float num = vector.magnitude / (main.orthographicSize * perc);
-            image.enabled = ((double)num > 0.3);
+            float num = vector.magnitude / (main.orthographicSize * Perc);
+            _image.enabled = ((double)num > 0.3);
             Vector2 vector2 = main.WorldToViewportPoint(target);
             if (Between(vector2.x, 0f, 1f) && Between(vector2.y, 0f, 1f))
             {
-                arrow.transform.position = target - (Vector3)vector.normalized * 0.6f;
+                _arrow.transform.position = target - (Vector3)vector.normalized * 0.6f;
                 float num2 = Mathf.Clamp(num, 0f, 1f);
-                arrow.transform.localScale = new Vector3(num2, num2, num2);
+                _arrow.transform.localScale = new Vector3(num2, num2, num2);
             }
             else
             {
@@ -56,14 +58,17 @@ namespace TheOtherThem.Objects {
                 float orthographicSize = main.orthographicSize;
                 float num3 = main.orthographicSize * main.aspect;
                 Vector3 vector4 = new Vector3(Mathf.LerpUnclamped(0f, num3 * 0.88f, vector3.x), Mathf.LerpUnclamped(0f, orthographicSize * 0.79f, vector3.y), 0f);
-                arrow.transform.position = main.transform.position + vector4;
-                arrow.transform.localScale = Vector3.one;
+                _arrow.transform.position = main.transform.position + vector4;
+                _arrow.transform.localScale = Vector3.one;
             }
 
-            LookAt2d(arrow.transform, target);
+            LookAt2d(_arrow.transform, target);
         }
 
-        private void LookAt2d(Transform transform, Vector3 target) {
+        public void Destroy() => _arrow?.gameObject?.Destroy();
+
+        private void LookAt2d(Transform transform, Vector3 target)
+        {
             Vector3 vector = target - transform.position;
             vector.Normalize();
             float num = Mathf.Atan2(vector.y, vector.x);
@@ -72,7 +77,8 @@ namespace TheOtherThem.Objects {
             transform.rotation = Quaternion.Euler(0f, 0f, num * 57.29578f);
         }
 
-        private bool Between(float value, float min, float max) {
+        private bool Between(float value, float min, float max)
+        {
             return value > min && value < max;
         }
     }

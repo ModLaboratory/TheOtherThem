@@ -13,6 +13,7 @@ This mod is not affiliated with Among Us or Innersloth LLC, and the content cont
 | Crewmates | Neutral | Impostors | Modifier | 
 |----------|-------------|-----------------|----------------|
 | [Pacifist](#pacifist) | [Idealist](#idealist) | [Innersloth](#innersloth) | Coming soon... |
+| Coming soon... | [Phoenix](#phoenix) | Coming soon... | Coming soon... |
 
 ### Crewmates
 
@@ -44,13 +45,28 @@ The Idealist can select a target to guess the target will be killed within certa
 |----------|:-------------:|
 | Idealist Spawn Chance | -
 | Guessing Ability Cooldown | -
-| Winning Guessed & Dead Target Count | The amount of players that Idealist should guess correctly to win
-| Suicide Countdown | The time that Idealist's guessing target should be killed within, or Idealist will suicide when time's up
+| Winning Guessed & Dead Target Count | The amount of players that the Idealist should guess correctly to win
+| Suicide Countdown | The time that the Idealist's guessing target should be killed within, or the Idealist will suicide when time's up
+
+#### Phoenix
+The Phoenix needs to kill players. When the amount of killed players reaches the number set by host, the Phoenix wins. The Phoneix can possess a corpse to revive, and can only kill for 1 time after each revival.
+
+- Ability icon by [JieGeLovesDengDuaLang](https://github.com/JieGeLovesDengDuaLang)
+
+- Role idea by The spy
+
+##### Game Options
+| Name | Description |
+|----------|:-------------:|
+| Phoenix Spawn Chance | -
+| Winning Killed Player Count | The amount of players that the Phoenix should guess correctly to win
+| Possession to Revive Maximum Times | The maximum times that the Phoenix can revive by possessing after death
+| Has Arrow to Corpses for Possession | Whether the Phoenix has arrows towards corpses for possessing to revive
 
 ### Impostors
 
 #### Innersloth
-The Innersloth can use the ability to sabotage, but the sabotage can make everyone lagging.
+The Innersloth can use the ability to sabotage, but the sabotage can make everyone lag while walking.
 
 - Ability icon by [Adeerwholoveseverything](https://github.com/Adeerwholoveseverything)
 

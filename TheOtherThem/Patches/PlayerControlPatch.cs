@@ -395,7 +395,7 @@ namespace TheOtherThem.Patches
         static void trackerUpdate()
         {
             // Handle player tracking
-            if (Tracker.arrow?.arrow != null)
+            if (Tracker.arrow?._arrow != null)
             {
                 if (Tracker.tracker == null || PlayerControl.LocalPlayer != Tracker.tracker)
                 {
@@ -440,7 +440,7 @@ namespace TheOtherThem.Patches
 
                 if (arrowsCountChanged)
                 {
-                    foreach (Arrow arrow in Tracker.localArrows) UnityEngine.Object.Destroy(arrow.arrow);
+                    foreach (Arrow arrow in Tracker.localArrows) UnityEngine.Object.Destroy(arrow._arrow);
                     Tracker.localArrows = new List<Arrow>();
                 }
                 foreach (Vector3 position in Tracker.DeadBodyPositions)
@@ -456,7 +456,7 @@ namespace TheOtherThem.Patches
             }
             else if (Tracker.localArrows.Count > 0)
             {
-                foreach (Arrow arrow in Tracker.localArrows) UnityEngine.Object.Destroy(arrow.arrow);
+                foreach (Arrow arrow in Tracker.localArrows) UnityEngine.Object.Destroy(arrow._arrow);
                 Tracker.localArrows = new List<Arrow>();
             }
         }
@@ -692,7 +692,7 @@ namespace TheOtherThem.Patches
 
             if (BountyHunter.bountyHunter.Data.IsDead)
             {
-                if (BountyHunter.arrow != null || BountyHunter.arrow.arrow != null) UnityEngine.Object.Destroy(BountyHunter.arrow.arrow);
+                if (BountyHunter.arrow != null || BountyHunter.arrow._arrow != null) UnityEngine.Object.Destroy(BountyHunter.arrow._arrow);
                 BountyHunter.arrow = null;
                 if (BountyHunter.cooldownText != null && BountyHunter.cooldownText.gameObject != null) UnityEngine.Object.Destroy(BountyHunter.cooldownText.gameObject);
                 BountyHunter.cooldownText = null;
@@ -815,7 +815,7 @@ namespace TheOtherThem.Patches
             if (Vulture.vulture == null || PlayerControl.LocalPlayer != Vulture.vulture || Vulture.localArrows == null || !Vulture.showArrows) return;
             if (Vulture.vulture.Data.IsDead)
             {
-                foreach (Arrow arrow in Vulture.localArrows) UnityEngine.Object.Destroy(arrow.arrow);
+                foreach (Arrow arrow in Vulture.localArrows) UnityEngine.Object.Destroy(arrow._arrow);
                 Vulture.localArrows = new List<Arrow>();
                 return;
             }
@@ -826,7 +826,7 @@ namespace TheOtherThem.Patches
 
             if (arrowUpdate)
             {
-                foreach (Arrow arrow in Vulture.localArrows) UnityEngine.Object.Destroy(arrow.arrow);
+                foreach (Arrow arrow in Vulture.localArrows) UnityEngine.Object.Destroy(arrow._arrow);
                 Vulture.localArrows = new List<Arrow>();
             }
 

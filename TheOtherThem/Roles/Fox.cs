@@ -114,10 +114,10 @@ namespace TheOtherThem
             Players = new List<Fox>();
             foreach (Arrow arrow in arrows)
             {
-                if (arrow?.arrow != null)
+                if (arrow?._arrow != null)
                 {
                     arrow.arrow.SetActive(false);
-                    UnityEngine.Object.Destroy(arrow.arrow);
+                    UnityEngine.Object.Destroy(arrow._arrow);
                 }
             }
             arrows = new List<Arrow>();
@@ -329,10 +329,10 @@ namespace TheOtherThem
                 // 前回のArrowをすべて破棄する
                 foreach (Arrow arrow in arrows)
                 {
-                    if (arrow?.arrow != null)
+                    if (arrow?._arrow != null)
                     {
                         arrow.arrow.SetActive(false);
-                        UnityEngine.Object.Destroy(arrow.arrow);
+                        UnityEngine.Object.Destroy(arrow._arrow);
                     }
                 }
 

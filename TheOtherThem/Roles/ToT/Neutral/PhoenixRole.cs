@@ -27,6 +27,7 @@ namespace TheOtherThem.ToTRole.Neutral
         private static bool _canRevive = true;
         private static bool _killedAfterThisRevival = false;
         private static DeadBody _currentTarget = null;
+        private static Dictionary<DeadBody, Arrow> _arrows = new();
 
         PhoenixRole() : base("Phoenix", Palette.Orange,
            (nameKey, roleColor) => PhoenixRoleSpawnRate = new(2300, nameKey, roleColor, TeamTypeToT.Neutral, 1),
@@ -45,10 +46,10 @@ namespace TheOtherThem.ToTRole.Neutral
         {
             int playerCount = PlayerControl.AllPlayerControls.Count;
             int maxPlayerToKill = (int)(playerCount * (1f / 3f));
-            int checkedPlayerToKill = Mathf.Clamp(maxPlayerToKill, 1, maxPlayerToKill); // 0 check
+            int checkedMaxPlayerToKill = Mathf.Clamp(maxPlayerToKill, 1, maxPlayerToKill); // 0 check
 
-            if (_realWinningKillCount > checkedPlayerToKill) // e.g. 5 to kill - 10 alive: too difficult
-                _realWinningKillCount = checkedPlayerToKill; // Also every client SHOULD HAVE THE SAME _realWinningKillCount value without RPC sync
+            if (_realWinningKillCount > checkedMaxPlayerToKill) // e.g. 5 to kill - 10 alive: too difficult
+                _realWinningKillCount = checkedMaxPlayerToKill; // Also every client SHOULD HAVE THE SAME _realWinningKillCount value without RPC sync
         }
 
         public static DeadBody GetClosestBody(List<DeadBody> untargettable = null)
@@ -77,11 +78,24 @@ namespace TheOtherThem.ToTRole.Neutral
 
         [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.FixedUpdate))]
         [HarmonyPostfix]
-        public static void OnGameUpdate()
+        public static void OnGameUpdate(PlayerControl __instance)
         {
             // Killing count adjustment
             if (Instance.Players.Any() && !Instance.Players.First().IsDead)
                 Instance.AdjustWinningKillingCount();
+
+            if (Instance.IsLocalPlayerRole() && __instance.AmOwner && __instance.IsDead() && _canRevive)
+            {
+                var bodies = Object.FindObjectsOfType<DeadBody>().Where(db => !db.Reported); // Ensure hasnt been possessed
+                foreach (var body in bodies)
+                {
+                    var exists = _arrows.TryGetValue(body, out var arrow);
+                    if (exists)
+                        arrow.Update();
+                    else
+                        arrow = _arrows[body] = new(Instance.RoleColor);
+                }
+            }
         }
 
         [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.Die))]
@@ -125,10 +139,14 @@ namespace TheOtherThem.ToTRole.Neutral
         public void Possess(byte target)
         {
             var body = Object.FindObjectsOfType<DeadBody>().First(b => b.ParentId == target);
-            body.Reported = true;
+            body.Reported = true; // Set reported as possessed
             body.gameObject.SetActive(false);
+
             PlayerControl.LocalPlayer.Revive();
             PlayerControl.LocalPlayer.Shapeshift(Helpers.PlayerById(body.ParentId), false);
+
+            _arrows.Values.Do(a => a.Destroy());
+            _arrows.Clear();
         }
 
 
@@ -196,6 +214,7 @@ namespace TheOtherThem.ToTRole.Neutral
             _canRevive = true;
             _killedAfterThisRevival = false;
             _currentTarget = null;
+            _arrows.Clear();
         }
     }
 }
