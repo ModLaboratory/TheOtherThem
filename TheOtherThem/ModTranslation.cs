@@ -93,6 +93,8 @@ namespace TheOtherThem
             return key;
         }
 
+        public static string GetString(StringNames key, string def = null, params Il2CppSystem.Object[] parts) => TranslationController.Instance.GetString(key.ToString(), def, parts);
+
         public static Sprite GetImage(string key, float pixelsPerUnit)
         {
             key = GetString(key);

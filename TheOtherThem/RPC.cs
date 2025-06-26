@@ -16,7 +16,7 @@ using static TheOtherThem.TheOtherRolesGM;
 namespace TheOtherThem
 {
 
-    enum CustomRpc
+    public enum CustomRpc
     {
         // Main Controls
 
@@ -95,7 +95,9 @@ namespace TheOtherThem
 
         // ToT RPCs
         InnerslothSabotage,
-        ResetAllKillCooldown
+        ResetAllKillCooldown,
+        RoleDataSync,
+        PhoenixPossess,
     }
 
     public static class RpcProcedure
@@ -153,10 +155,11 @@ namespace TheOtherThem
 
         public static void SetRole(byte roleId, byte playerId, byte flag)
         {
-            PlayerControl.AllPlayerControls.ToArray().DoIf(
-                x => x.PlayerId == playerId,
-                x => x.SetRole((RoleType)roleId)
-            );
+            var modRole = (RoleType)roleId;
+            var nativeRole = (byte)RoleType.Impostor <= roleId && (byte)RoleType.ImpostorMax > roleId ? RoleTypes.Impostor : RoleTypes.Crewmate;
+            var player = GameData.Instance.GetPlayerById(playerId).Object;
+            player.SetRole(modRole);
+            player.StartCoroutine(player.CoSetRole(nativeRole, false));
         }
 
         public static void AddModifier(byte modId, byte playerId)
@@ -1272,6 +1275,12 @@ namespace TheOtherThem
                 }
 
                 CustomRole.AllRoles.ForEach(r => r.OnRpcReceived(callId, reader));
+
+                if ((CustomRpc)callId == CustomRpc.RoleDataSync) // For readability, i dont put it in switch-case block
+                {
+                    var roleType = (RoleType)reader.ReadPackedInt32();
+                    CustomRole.AllRoles.First(r => r.MyRoleType == roleType).OnRoleDataBeingSynchronized(reader);
+                }
             }
         }
     }

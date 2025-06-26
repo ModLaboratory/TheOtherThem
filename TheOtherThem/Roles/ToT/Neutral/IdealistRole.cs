@@ -70,7 +70,7 @@ namespace TheOtherThem.ToTRole.Neutral
                 });
             },
             CanLocalPlayerUse,
-            () => Target == null,
+            () => !Target,
             () => Target = null,
             ModTranslation.GetImage("SelectTargetButton", 230),
             null,

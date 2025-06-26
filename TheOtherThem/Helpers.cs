@@ -1,8 +1,8 @@
 using BepInEx;
 using BepInEx.Logging;
-using Hazel;
 using Il2CppInterop.Runtime;
 using Il2CppInterop.Runtime.InteropTypes.Arrays;
+using InnerNet;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -19,12 +19,13 @@ using static TheOtherThem.TheOtherRolesGM;
 namespace TheOtherThem
 {
 
-    public enum MurderAttemptResult {
+    public enum MurderAttemptResult
+    {
         PerformKill,
         SuppressKill,
         BlankKill
     }
-	
+
     public static class Helpers
     {
         public static bool ShowButtons
@@ -123,41 +124,54 @@ namespace TheOtherThem
             RpcProcedure.uncheckedSetTasks(player.PlayerId, taskTypeIds.ToArray());
         }
 
-        public static Sprite LoadSpriteFromResources(string path, float pixelsPerUnit) {
-            try {
+        public static Sprite LoadSpriteFromResources(string path, float pixelsPerUnit)
+        {
+            try
+            {
                 Texture2D texture = LoadTextureFromResources(path);
                 return Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f), pixelsPerUnit);
-            } catch {
+            }
+            catch
+            {
                 Main.Logger.LogError("Error loading sprite from path: " + path);
             }
             Main.Logger.LogWarning("Couldn't get sprite: " + path);
             return null;
         }
 
-        public static Texture2D LoadTextureFromResources(string path) {
-            try {
+        public static Texture2D LoadTextureFromResources(string path)
+        {
+            try
+            {
                 Texture2D texture = new Texture2D(2, 2, TextureFormat.ARGB32, true);
                 Assembly assembly = Assembly.GetExecutingAssembly();
                 Stream stream = assembly.GetManifestResourceStream(path);
                 var byteTexture = new byte[stream.Length];
-                var read = stream.Read(byteTexture, 0, (int) stream.Length);
+                var read = stream.Read(byteTexture, 0, (int)stream.Length);
                 LoadImage(texture, byteTexture, false);
                 return texture;
-            } catch {
+            }
+            catch
+            {
                 Main.Logger.LogError("Error loading texture from resources: " + path);
             }
             return null;
         }
 
-        public static Texture2D LoadTextureFromDisk(string path) {
-            try {          
-                if (File.Exists(path))     {
+        public static Texture2D LoadTextureFromDisk(string path)
+        {
+            try
+            {
+                if (File.Exists(path))
+                {
                     Texture2D texture = new Texture2D(2, 2, TextureFormat.ARGB32, true);
                     byte[] byteTexture = File.ReadAllBytes(path);
                     LoadImage(texture, byteTexture, false);
                     return texture;
                 }
-            } catch {
+            }
+            catch
+            {
                 Main.Logger.LogError("Error loading texture from disk: " + path);
             }
             return null;
@@ -165,10 +179,11 @@ namespace TheOtherThem
 
         internal delegate bool d_LoadImage(IntPtr tex, IntPtr data, bool markNonReadable);
         internal static d_LoadImage iCall_LoadImage;
-        private static bool LoadImage(Texture2D tex, byte[] data, bool markNonReadable) {
+        private static bool LoadImage(Texture2D tex, byte[] data, bool markNonReadable)
+        {
             if (iCall_LoadImage == null)
                 iCall_LoadImage = IL2CPP.ResolveICall<d_LoadImage>("UnityEngine.ImageConversion::LoadImage");
-            var il2cppArray = (Il2CppStructArray<byte>) data;
+            var il2cppArray = (Il2CppStructArray<byte>)data;
             return iCall_LoadImage.Invoke(tex.Pointer, il2cppArray.Pointer, markNonReadable);
         }
 
@@ -179,7 +194,7 @@ namespace TheOtherThem
                     return player;
             return null;
         }
-        
+
         public static Dictionary<byte, PlayerControl> AllPlayersById()
         {
             Dictionary<byte, PlayerControl> res = new Dictionary<byte, PlayerControl>();
@@ -188,7 +203,8 @@ namespace TheOtherThem
             return res;
         }
 
-        public static void HandleVampireBiteOnBodyReport() {
+        public static void HandleVampireBiteOnBodyReport()
+        {
             // Murder the bitten player and reset bitten (regardless whether the kill was successful or not)
             checkMuderAttemptAndKill(Vampire.vampire, Vampire.bitten, true, false);
             MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.VampireSetBitten, Hazel.SendOption.Reliable, -1);
@@ -198,45 +214,59 @@ namespace TheOtherThem
             RpcProcedure.vampireSetBitten(byte.MaxValue, byte.MaxValue);
         }
 
-        public static void RefreshRoleDescription(PlayerControl player) {
+        public static void RefreshRoleDescription(PlayerControl player)
+        {
             if (player == null) return;
 
-            List<RoleInfo> infos = RoleInfo.GetRoleInfoForPlayer(player); 
+            List<RoleInfo> allInfo = RoleInfo.GetRoleInfoForPlayer(player);
 
             var toRemove = new List<PlayerTask>();
-            foreach (PlayerTask t in player.myTasks) {
+            foreach (PlayerTask t in player.myTasks)
+            {
                 var textTask = t.gameObject.GetComponent<ImportantTextTask>();
-                if (textTask != null) {
-                    var info = infos.FirstOrDefault(x => textTask.Text.StartsWith(x.Name));
+                if (textTask != null)
+                {
+                    var info = allInfo.FirstOrDefault(x => textTask.Text.StartsWith(x.Name));
                     if (info != null)
-                        infos.Remove(info); // TextTask for this RoleInfo does not have to be added, as it already exists
+                        allInfo.Remove(info); // TextTask for this RoleInfo does not have to be added, as it already exists
                     else
                         toRemove.Add(t); // TextTask does not have a corresponding RoleInfo and will hence be deleted
                 }
-            }   
-
-            foreach (PlayerTask t in toRemove) {
-                t.OnRemove();
-                player.myTasks.Remove(t);
-                UnityEngine.Object.Destroy(t.gameObject);
             }
 
-            // Add TextTask for remaining RoleInfos
-            foreach (RoleInfo roleInfo in infos) {
+            foreach (PlayerTask t in toRemove)
+            {
+                t.OnRemove();
+                player.myTasks.Remove(t);
+                Object.Destroy(t.gameObject);
+            }
+
+            // Add TextTask for remaining RoleInfo
+            foreach (RoleInfo roleInfo in allInfo)
+            {
                 var task = new GameObject("RoleTask").AddComponent<ImportantTextTask>();
                 task.transform.SetParent(player.transform, false);
 
-                if (roleInfo.MyRoleType == RoleType.Jackal) {
+                if (roleInfo.MyRoleType == RoleType.Jackal)
+                {
                     if (Jackal.canCreateSidekick)
                     {
                         task.Text = ColorString(roleInfo.RoleColor, $"{roleInfo.Name}: " + ModTranslation.GetString("jackalWithSidekick"));
-                    } 
+                    }
                     else
                     {
                         task.Text = ColorString(roleInfo.RoleColor, $"{roleInfo.Name}: " + ModTranslation.GetString("jackalShortDesc"));
                     }
-                } else {
-                    task.Text = ColorString(roleInfo.RoleColor, $"{roleInfo.Name}: {roleInfo.ShortDescription}");  
+                }
+                else
+                {
+                    var desc = roleInfo.ShortDescription;
+                    var totRole = CustomRole.AllRoles.FirstOrDefault(cr => cr.MyRoleInfo.MyRoleType == roleInfo.MyRoleType);
+
+                    if (totRole != null)
+                        desc = totRole.GetRoleTaskHintText();
+
+                    task.Text = ColorString(roleInfo.RoleColor, $"{roleInfo.Name}: {desc}");
                 }
 
                 task.Text += "\n";
@@ -252,11 +282,13 @@ namespace TheOtherThem
             }
         }
 
-        public static bool IsLighterColor(int colorId) {
+        public static bool IsLighterColor(int colorId)
+        {
             return CustomColors.lighterColors.Contains(colorId);
         }
 
-        public static bool IsCustomServer() {
+        public static bool IsCustomServer()
+        {
             if (DestroyableSingleton<ServerManager>.Instance == null) return false;
             StringNames n = DestroyableSingleton<ServerManager>.Instance.CurrentRegion.TranslateName;
             return n != StringNames.ServerNA && n != StringNames.ServerEU && n != StringNames.ServerAS;
@@ -303,9 +335,10 @@ namespace TheOtherThem
             return player != null && player.Data.Role.IsImpostor;
         }
 
-        public static bool HasFakeTasks(this PlayerControl player) {
-            return (player.IsNeutral() && !player.NeutralHasTasks()) || 
-                   (player.HasModifier(ModifierType.Madmate) && !Madmate.HasTasks) || 
+        public static bool HasFakeTasks(this PlayerControl player)
+        {
+            return (player.IsNeutral() && !player.NeutralHasTasks()) ||
+                   (player.HasModifier(ModifierType.Madmate) && !Madmate.HasTasks) ||
                    (player.IsInLove() && Lovers.SeparateTeam && !Lovers.TasksCount);
         }
 
@@ -329,44 +362,52 @@ namespace TheOtherThem
             return Lovers.GetPartner(player);
         }
 
-        public static bool CanBeErased(this PlayerControl player) {
+        public static bool CanBeErased(this PlayerControl player)
+        {
             return (player != Jackal.jackal && player != Sidekick.sidekick && !Jackal.formerJackals.Contains(player));
         }
 
-        public static void ClearAllTasks(this PlayerControl player) {
+        public static void ClearAllTasks(this PlayerControl player)
+        {
             if (player == null) return;
-            for (int i = 0; i < player.myTasks.Count; i++) {
+            for (int i = 0; i < player.myTasks.Count; i++)
+            {
                 PlayerTask playerTask = player.myTasks[i];
                 playerTask.OnRemove();
                 Object.Destroy(playerTask.gameObject);
             }
             player.myTasks.Clear();
-            
+
             if (player.Data != null && player.Data.Tasks != null)
                 player.Data.Tasks.Clear();
         }
 
-        public static void SetSemiTransparent(this PoolablePlayer player, bool value) {
+        public static void SetSemiTransparent(this PoolablePlayer player, bool value)
+        {
             float alpha = value ? 0.25f : 1f;
             foreach (SpriteRenderer r in player.gameObject.GetComponentsInChildren<SpriteRenderer>())
                 r.color = new Color(r.color.r, r.color.g, r.color.b, alpha);
             player.cosmetics.nameText.color = new Color(player.cosmetics.nameText.color.r, player.cosmetics.nameText.color.g, player.cosmetics.nameText.color.b, alpha);
         }
 
-        public static string GetString(this TranslationController t, StringNames key, params Il2CppSystem.Object[] parts) {
+        public static string GetString(this TranslationController t, StringNames key, params Il2CppSystem.Object[] parts)
+        {
             return t.GetString(key, parts);
         }
 
-        public static string ColorString(Color c, string s) {
+        public static string ColorString(Color c, string s)
+        {
             return string.Format("<color=#{0:X2}{1:X2}{2:X2}{3:X2}>{4}</color>", ToByte(c.r), ToByte(c.g), ToByte(c.b), ToByte(c.a), s);
         }
- 
-        private static byte ToByte(float f) {
+
+        private static byte ToByte(float f)
+        {
             f = Mathf.Clamp01(f);
             return (byte)(f * 255);
         }
 
-        public static KeyValuePair<byte, int> MaxPair(this Dictionary<byte, int> self, out bool tie) {
+        public static KeyValuePair<byte, int> MaxPair(this Dictionary<byte, int> self, out bool tie)
+        {
             tie = true;
             KeyValuePair<byte, int> result = new KeyValuePair<byte, int>(byte.MaxValue, int.MinValue);
             foreach (KeyValuePair<byte, int> keyValuePair in self)
@@ -413,11 +454,13 @@ namespace TheOtherThem
             return true;
         }
 
-        public static void SetDefaultLook(this PlayerControl target) {
+        public static void SetDefaultLook(this PlayerControl target)
+        {
             target.SetLook(target.Data.PlayerName, target.Data.DefaultOutfit.ColorId, target.Data.DefaultOutfit.HatId, target.Data.DefaultOutfit.VisorId, target.Data.DefaultOutfit.SkinId, target.Data.DefaultOutfit.PetId);
         }
 
-        public static void SetLook(this PlayerControl target, String playerName, int colorId, string hatId, string visorId, string skinId, string petId) {
+        public static void SetLook(this PlayerControl target, String playerName, int colorId, string hatId, string visorId, string skinId, string petId)
+        {
             target.RawSetColor(colorId);
             target.RawSetVisor(visorId, colorId);
             target.RawSetHat(hatId, colorId);
@@ -450,7 +493,8 @@ namespace TheOtherThem
             target.RawSetPet(petId, colorId);
         }
 
-        public static bool RoleCanUseVents(this PlayerControl player) {
+        public static bool RoleCanUseVents(this PlayerControl player)
+        {
             bool roleCouldUse = false;
             if (player.IsRole(RoleType.Engineer))
                 roleCouldUse = true;
@@ -495,14 +539,16 @@ namespace TheOtherThem
             return roleCouldUse;
         }
 
-        public static MurderAttemptResult CheckMuderAttempt(PlayerControl killer, PlayerControl target, bool blockRewind = false) {
+        public static MurderAttemptResult CheckMuderAttempt(PlayerControl killer, PlayerControl target, bool blockRewind = false)
+        {
             // Modified vanilla checks
             if (AmongUsClient.Instance.IsGameOver) return MurderAttemptResult.SuppressKill;
             if (killer == null || killer.Data == null || killer.Data.IsDead || killer.Data.Disconnected) return MurderAttemptResult.SuppressKill; // Allow non Impostor kills compared to vanilla code
             if (target == null || target.Data == null || target.Data.IsDead || target.Data.Disconnected) return MurderAttemptResult.SuppressKill; // Allow killing players in vents compared to vanilla code
 
             // Handle blank shot
-            if (Pursuer.blankedList.Any(x => x.PlayerId == killer.PlayerId)) {
+            if (Pursuer.blankedList.Any(x => x.PlayerId == killer.PlayerId))
+            {
                 MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.SetBlanked, Hazel.SendOption.Reliable, -1);
                 writer.Write(killer.PlayerId);
                 writer.Write((byte)0);
@@ -513,7 +559,8 @@ namespace TheOtherThem
             }
 
             // Block impostor shielded kill
-            if (Medic.shielded != null && Medic.shielded == target) {
+            if (Medic.shielded != null && Medic.shielded == target)
+            {
                 MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(killer.NetId, (byte)CustomRpc.ShieldedMurderAttempt, Hazel.SendOption.Reliable, -1);
                 AmongUsClient.Instance.FinishRpcImmediately(writer);
                 RpcProcedure.shieldedMurderAttempt();
@@ -521,13 +568,16 @@ namespace TheOtherThem
             }
 
             // Block impostor not fully grown mini kill
-            else if (Mini.mini != null && target.IsRole(RoleType.Mini) && !Mini.isGrownUp()) {
+            else if (Mini.mini != null && target.IsRole(RoleType.Mini) && !Mini.isGrownUp())
+            {
                 return MurderAttemptResult.SuppressKill;
             }
 
             // Block Time Master with time shield kill
-            else if (TimeMaster.shieldActive && TimeMaster.timeMaster != null && TimeMaster.timeMaster == target) {
-                if (!blockRewind) { // Only rewind the attempt was not called because a meeting startet 
+            else if (TimeMaster.shieldActive && TimeMaster.timeMaster != null && TimeMaster.timeMaster == target)
+            {
+                if (!blockRewind)
+                { // Only rewind the attempt was not called because a meeting startet 
                     MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(killer.NetId, (byte)CustomRpc.TimeMasterRewindTime, Hazel.SendOption.Reliable, -1);
                     AmongUsClient.Instance.FinishRpcImmediately(writer);
                     RpcProcedure.TimeMasterRewindTime();
@@ -537,12 +587,14 @@ namespace TheOtherThem
             return MurderAttemptResult.PerformKill;
         }
 
-        public static MurderAttemptResult checkMuderAttemptAndKill(PlayerControl killer, PlayerControl target, bool isMeetingStart = false, bool showAnimation = true)  {
+        public static MurderAttemptResult checkMuderAttemptAndKill(PlayerControl killer, PlayerControl target, bool isMeetingStart = false, bool showAnimation = true)
+        {
             // The local player checks for the validity of the kill and performs it afterwards (different to vanilla, where the host performs all the checks)
             // The kill attempt will be shared using a custom RPC, hence combining modded and unmodded versions is impossible
 
             MurderAttemptResult murder = CheckMuderAttempt(killer, target, isMeetingStart);
-            if (murder == MurderAttemptResult.PerformKill) {
+            if (murder == MurderAttemptResult.PerformKill)
+            {
                 MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.UncheckedMurderPlayer, Hazel.SendOption.Reliable, -1);
                 writer.Write(killer.PlayerId);
                 writer.Write(target.PlayerId);
@@ -550,10 +602,11 @@ namespace TheOtherThem
                 AmongUsClient.Instance.FinishRpcImmediately(writer);
                 RpcProcedure.UncheckedMurderPlayer(killer.PlayerId, target.PlayerId, showAnimation ? Byte.MaxValue : (byte)0);
             }
-            return murder;            
+            return murder;
         }
-    
-        public static void ShareGameVersion() {
+
+        public static void ShareGameVersion()
+        {
             MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.VersionHandshake, Hazel.SendOption.Reliable, -1);
             writer.WritePacked(Main.Version.Major);
             writer.WritePacked(Main.Version.Minor);
@@ -565,20 +618,23 @@ namespace TheOtherThem
             RpcProcedure.VersionHandshake(Main.Version.Major, Main.Version.Minor, Main.Version.Build, Main.Version.Revision, Assembly.GetExecutingAssembly().ManifestModule.ModuleVersionId, AmongUsClient.Instance.ClientId);
         }
 
-        public static List<PlayerControl> GetKillerTeamMembers(PlayerControl player) {
+        public static List<PlayerControl> GetKillerTeamMembers(PlayerControl player)
+        {
             List<PlayerControl> team = new();
-            foreach(PlayerControl p in PlayerControl.AllPlayerControls) {
+            foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+            {
                 if (player.Data.Role.IsImpostor && p.Data.Role.IsImpostor && player.PlayerId != p.PlayerId && team.All(x => x.PlayerId != p.PlayerId)) team.Add(p);
-                else if (player.IsRole(RoleType.Jackal) && p.IsRole(RoleType.Sidekick)) team.Add(p); 
+                else if (player.IsRole(RoleType.Jackal) && p.IsRole(RoleType.Sidekick)) team.Add(p);
                 else if (player.IsRole(RoleType.Sidekick) && p.IsRole(RoleType.Jackal)) team.Add(p);
             }
-            
+
             return team;
         }
 
         public static void Shuffle<T>(this IList<T> self, int startAt = 0)
         {
-            for (int i = startAt; i < self.Count - 1; i++) {
+            for (int i = startAt; i < self.Count - 1; i++)
+            {
                 T value = self[i];
                 int index = UnityEngine.Random.Range(i, self.Count);
                 self[i] = self[index];
@@ -588,7 +644,8 @@ namespace TheOtherThem
 
         public static void Shuffle<T>(this System.Random r, IList<T> self)
         {
-            for (int i = 0; i < self.Count; i++) {
+            for (int i = 0; i < self.Count; i++)
+            {
                 T value = self[i];
                 int index = r.Next(self.Count);
                 self[i] = self[index];
@@ -619,7 +676,7 @@ namespace TheOtherThem
 
         public static void LogSuccess(this ManualLogSource logger, string message)
         {
-            string formatted = $"[Success:{logger.SourceName, 10}] {message}";
+            string formatted = $"[Success:{logger.SourceName,10}] {message}";
             (BepInEx.Logging.Logger.Listeners.FirstOrDefault(l => l is DiskLogListener) as DiskLogListener).LogWriter.WriteLine(formatted);
             ConsoleManager.SetConsoleColor(ConsoleColor.Green);
             ConsoleManager.StandardOutStream.WriteLine(formatted);
@@ -627,7 +684,7 @@ namespace TheOtherThem
 
         public static void DoIfNotNull<T>(this T obj, Action<T> action)
         {
-            if (obj != null) 
+            if (obj != null)
                 action(obj);
         }
 
@@ -641,11 +698,103 @@ namespace TheOtherThem
         }
     }
 
-    public class ListenableQueue<T> : Queue<T>
+    public class RpcWriter
     {
-        public void Add(T element)
-        {
+        private MessageWriter _writer;
 
+        public RpcWriter(byte callId, uint netId, int target = -1, SendOption sendOption = SendOption.Reliable)
+        {
+            _writer = AmongUsClient.Instance.StartRpcImmediately(netId, callId, sendOption, target);
         }
+
+        public RpcWriter(CustomRpc callId, uint netId, int target = -1, SendOption sendOption = SendOption.Reliable) : this((byte)callId, netId, target, sendOption) { }
+        public RpcWriter(RpcCalls callId, uint netId, int target = -1, SendOption sendOption = SendOption.Reliable) : this((byte)callId, netId, target, sendOption) { }
+
+        public RpcWriter(byte callId, PlayerControl sender, int target = -1, SendOption sendOption = SendOption.Reliable) : this(callId, sender.NetId, target, sendOption) { }
+        public RpcWriter(CustomRpc callId, PlayerControl sender, int target = -1, SendOption sendOption = SendOption.Reliable) : this((byte)callId, sender.NetId, target, sendOption) { }
+        public RpcWriter(RpcCalls callId, PlayerControl sender, int target = -1, SendOption sendOption = SendOption.Reliable) : this((byte)callId, sender.NetId, target, sendOption) { }
+
+        public RpcWriter(byte callId, int target = -1, SendOption sendOption = SendOption.Reliable) : this(callId, PlayerControl.LocalPlayer.NetId, target, sendOption) { }
+        public RpcWriter(CustomRpc callId, int target = -1, SendOption sendOption = SendOption.Reliable) : this((byte)callId, PlayerControl.LocalPlayer.NetId, target, sendOption) { }
+        public RpcWriter(RpcCalls callId, int target = -1, SendOption sendOption = SendOption.Reliable) : this((byte)callId, PlayerControl.LocalPlayer.NetId, target, sendOption) { }
+
+        public RpcWriter Write(bool value)
+        {
+            _writer.Write(value);
+            return this;
+        }
+
+        public RpcWriter Write(byte[] bytes)
+        {
+            _writer.Write(bytes);
+            return this;
+        }
+
+        public RpcWriter Write(string value)
+        {
+            _writer.Write(value);
+            return this;
+        }
+
+        public RpcWriter Write(byte value)
+        {
+            _writer.Write(value);
+            return this;
+        }
+
+        public RpcWriter Write(sbyte value)
+        {
+            _writer.Write(value);
+            return this;
+        }
+
+        public RpcWriter Write(float value)
+        {
+            _writer.Write(value);
+            return this;
+        }
+
+        public RpcWriter Write(int value)
+        {
+            _writer.Write(value);
+            return this;
+        }
+
+        public RpcWriter WritePacked(int value)
+        {
+            _writer.WritePacked(value);
+            return this;
+        }
+
+        public RpcWriter WritePacked(uint value)
+        {
+            _writer.WritePacked(value);
+            return this;
+        }
+
+        public RpcWriter WriteBytesAndSize(byte[] bytes)
+        {
+            _writer.WriteBytesAndSize(bytes);
+            return this;
+        }
+
+        public RpcWriter WriteNetObject(InnerNetObject obj)
+        {
+            _writer.WriteNetObject(obj);
+            return this;
+        }
+
+        public RpcWriter WriteVector2(Vector2 vec)
+        {
+            NetHelpers.WriteVector2(vec, _writer);
+            return this;
+        }
+
+        public void Finish()
+        {
+            AmongUsClient.Instance.FinishRpcImmediately(_writer);
+        }
+
+        public static implicit operator MessageWriter(RpcWriter writer) => writer._writer;
     }
 }

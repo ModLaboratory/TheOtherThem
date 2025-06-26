@@ -51,6 +51,8 @@ namespace TheOtherThem
         SerialKiller,
         Innersloth,
 
+        ImpostorMax = 149,
+
 
         Mini = 150,
         Lovers,
@@ -653,7 +655,18 @@ namespace TheOtherThem
                     break;
             }
 
-            CustomRole.AllRoles.FirstOrDefault(r => r.MyRoleType == role)?.Players.Add(player.Data);
+            var totRole = CustomRole.AllRoles.FirstOrDefault(r => r.MyRoleType == role);
+            if (totRole == null) 
+                return;
+            totRole.Players.Add(player.Data);
+
+            if (player == PlayerControl.LocalPlayer)
+                totRole.OnLocalPlayerBecomingThisRole();
+
+            if (totRole.IsKillableNonImpostor)
+            {
+                HudManager.Instance.KillButton.Show();
+            }
         }
 
         public static void EraseRole(this PlayerControl player, RoleType role)

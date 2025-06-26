@@ -3778,6 +3778,14 @@
     "0": "{0} was The {1}.",
     "13": "{0} 是 {1}。"
   },
+  "CreditsToTFull": {
+    "0": "<size=120%>Original TORGM (v3.5.4) GitHub Contributors: \n\t{0}\n\nTORGM (v3.5.4) Compatibility: JieGeLovesDengDuaLang\nThe Other Them Developers: JieGeLovesDengDuaLang</size>",
+    "13": "<size=120%>TORGM v3.5.4 贡献者： \n\t{0}\n\nTORGM (v3.5.4) 新版游戏适配： JieGeLovesDengDuaLang\nThe Other Them 开发者： JieGeLovesDengDuaLang</size>"
+  },
+  "ManagedExceptinOccuredMsg": {
+    "0": "A mod exception occured. It may be caused by any mod you installed.\nThough this may not influence your game experience, \nplease check the log file at BepInEx\\LogOutput.log \nand send it to the certain developers.",
+    "13": "出现了一个可能由任何一个你安装的模组引发的异常。\n即使这有可能并不影响你的游戏体验，\n但也请检查位于 BepInEx\\LogOutput.log 下的日志文件并将其发送给指定模组开发者。"
+  },
   "CreditsLabel": {
     "0": "CREDITS",
     "13": "开发人员"
@@ -3886,12 +3894,39 @@
   "ResetCooldownButton": {
     "0": "ResetCooldownButton.png"
   },
-  "CreditsToTFull": {
-    "0": "<size=120%>Original TORGM (v3.5.4) GitHub Contributors: \n\t{0}\n\nTORGM (v3.5.4) Compatibility: JieGeLovesDengDuaLang\nThe Other Them Developers: JieGeLovesDengDuaLang</size>",
-    "13": "<size=120%>TORGM v3.5.4 贡献者： \n\t{0}\n\nTORGM (v3.5.4) 新版游戏适配： JieGeLovesDengDuaLang\nThe Other Them 开发者： JieGeLovesDengDuaLang</size>"
+  "Phoenix": {
+    "0": "Phoenix",
+    "13": "凤凰"
   },
-  "ManagedExceptinOccuredMsg": {
-    "0": "A (mod) exception occured. It may be caused by any mod you installed.\nThough this may not influence your game experience, \nplease check the log file at BepInEx\\LogOutput.log \nand send it to the certain developers.",
-    "13": "出现了一个可能由任何一个你安装的模组引发的异常。\n即使这有可能并不影响你的游戏体验，\n但也请检查位于 BepInEx\\LogOutput.log 下的日志文件并将其发送给指定模组开发者。"
+  "PhoenixIntroDesc": {
+    "0": "The power of life!",
+    "13": "生命的力量！"
+  },
+  "PhoenixShortDesc": {
+    "0": "Kill {0}/{1} player(s) to win",
+    "13": "杀死 {0}/{1} 人胜利"
+  },
+  "PhoenixFullDesc": {
+    "0": "The Phoenix needs to kill players. When the amount of killed players reaches the number set by host, the Phoenix wins. The Phoneix can possess a corpse to revive, and can only kill for 1 time after each revival.",
+    "13": "凤凰需要杀死设定人数玩家（数量会根据游戏总人数在设置值的基础上自动调整）获胜，在死亡后可以通过附身尸体而复活，每次复活后只能击杀一次"
+  },
+  "PhoenixWinningKillCount": {
+    "0": "Winning Killed Player Count",
+    "13": "胜利击杀次数"
+  },
+  "PhoenixPossessionRevivalMaxTime": {
+    "0": "Possession to Revive Maximum Times",
+    "13": "最大附身复活次数"
+  },
+  "PhoenixHasArrowToDeadBodyForPossession": {
+    "0": "Has Arrow to Corpses for Possession",
+    "13": "指向可附身尸体的箭头"
+  },
+  "PhoenixAbilityLabel": {
+    "0": "Possess",
+    "13": "附身"
+  },
+  "PossessButton": {
+    "0": "PossessButton.png"
   }
 }

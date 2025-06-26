@@ -12,12 +12,12 @@ namespace TheOtherThem
     public class RoleInfo 
     {
         public Color RoleColor { get; private set; }
-        public virtual string Name { get { return ModTranslation.GetString(NameKey); } }
-        public virtual string NameColored { get { return Helpers.ColorString(RoleColor, Name); } }
-        public virtual string IntroDescription { get { return ModTranslation.GetString(NameKey + "IntroDesc"); } }
-        public virtual string ShortDescription { get { return ModTranslation.GetString(NameKey + "ShortDesc"); } }
-        public virtual string FullDescription { get { return ModTranslation.GetString(NameKey + "FullDesc"); } }
-        public virtual string Blurb { get { return ModTranslation.GetString(NameKey + "Blurb"); } }
+        public virtual string Name => ModTranslation.GetString(NameKey);
+        public virtual string NameColored => Helpers.ColorString(RoleColor, Name);
+        public virtual string IntroDescription => ModTranslation.GetString(NameKey + "IntroDesc");
+        public virtual string ShortDescription => ModTranslation.GetString(NameKey + "ShortDesc");
+        public virtual string FullDescription => ModTranslation.GetString(NameKey + "FullDesc");
+        public virtual string Blurb => ModTranslation.GetString(NameKey + "Blurb");
         //public virtual string roleOptions
         //{
         //    get
@@ -26,8 +26,8 @@ namespace TheOtherThem
         //    }
         //}
 
-        public bool Enabled { get { return Helpers.RolesEnabled && (BaseOption == null || BaseOption.Enabled); } }
-        public RoleType MyRoleType;
+        public bool Enabled => Helpers.RolesEnabled && (BaseOption == null || BaseOption.Enabled);
+        public RoleType MyRoleType { get; }
 
         public string NameKey { get; private set; }
         public CustomOption BaseOption { get; private set; }
