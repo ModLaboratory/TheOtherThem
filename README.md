@@ -68,7 +68,7 @@ The Phoenix needs to kill players. When the amount of killed players reaches the
 #### Innersloth
 The Innersloth can use the ability to sabotage, but the sabotage can make everyone lag while walking.
 
-- Ability icon by [Adeerwholoveseverything](https://github.com/Adeerwholoveseverything)
+- Ability icon by [ADeerWhoLovesEveryone](https://github.com/ADeerWhoLovesEveryone)
 
 - Role idea by [JieGeLovesDengDuaLang](https://github.com/JieGeLovesDengDuaLang)
 
