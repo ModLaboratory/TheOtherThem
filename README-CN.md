@@ -69,7 +69,7 @@
 #### 树懒
 树懒可以使用技能按钮直接破坏通讯，但与此同时所有玩家的行走都会变得卡顿。
 
-- 技能图标制作： [Adeerwholoveseverything](https://github.com/Adeerwholoveseverything)
+- 技能图标制作： [ADeerWhoLovesEveryone](https://github.com/ADeerWhoLovesEveryone)
 
 - 职业创意： [JieGeLovesDengDuaLang](https://github.com/JieGeLovesDengDuaLang)
 
