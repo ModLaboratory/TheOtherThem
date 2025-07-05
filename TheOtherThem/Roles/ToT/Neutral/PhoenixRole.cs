@@ -22,7 +22,6 @@ namespace TheOtherThem.ToTRole.Neutral
 
         private static int _realWinningKillCount = int.MaxValue;
         private static int _currentKilledCount = 0;
-        private static int _revivalTimes = 0;
         private static int _deadTimes = 0;
         private static bool _canRevive = true;
         private static bool _killedAfterThisRevival = false;
@@ -209,7 +208,6 @@ namespace TheOtherThem.ToTRole.Neutral
         {
             _realWinningKillCount = (int)WinningKillingPlayerCount.GetFloat();
             _currentKilledCount = 0;
-            _revivalTimes = 0;
             _deadTimes = 0;
             _canRevive = true;
             _killedAfterThisRevival = false;

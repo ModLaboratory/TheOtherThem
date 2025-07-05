@@ -5,7 +5,7 @@ namespace TheOtherThem
     public static class ModBasicInfo
     {
         public const string Id = "com.modlaboratory.theotherthem";
-        public const string VersionString = "3.5.6"; // Also change the version in the .csproj file!!!!!!
+        public const string VersionString = "3.5.7"; // Also change the version in the .csproj file!!!!!!
         public const string SupportedGameVersion = "2025.6.10";
     }
 }
