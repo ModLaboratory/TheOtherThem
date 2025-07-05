@@ -268,10 +268,10 @@ namespace TheOtherThem
                     // 前回のArrowをすべて破棄する
                     foreach (Arrow arrow in arrows)
                     {
-                        if (arrow?._arrow != null)
+                        if (arrow?.ArrowObject != null)
                         {
-                            arrow.arrow.SetActive(false);
-                            UnityEngine.Object.Destroy(arrow._arrow);
+                            arrow.ArrowObject.SetActive(false);
+                            UnityEngine.Object.Destroy(arrow.ArrowObject);
                         }
                     }
 
@@ -284,7 +284,7 @@ namespace TheOtherThem
                         if (!p.divinedFlag) continue;
 
                         Arrow arrow = new Arrow(FortuneTeller.color);
-                        arrow.arrow.SetActive(true);
+                        arrow.ArrowObject.SetActive(true);
                         arrow.Update(p.Player.transform.position);
                         arrows.Add(arrow);
                     }

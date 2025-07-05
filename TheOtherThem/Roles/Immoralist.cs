@@ -48,10 +48,10 @@ namespace TheOtherThem
         {
             foreach(Arrow arrow in arrows)
             {
-                if (arrow?._arrow != null)
+                if (arrow?.ArrowObject != null)
                 {
-                    arrow.arrow.SetActive(false);
-                    UnityEngine.Object.Destroy(arrow._arrow);
+                    arrow.ArrowObject.SetActive(false);
+                    UnityEngine.Object.Destroy(arrow.ArrowObject);
                 }
             }
             arrows = new List<Arrow>();
@@ -112,10 +112,10 @@ namespace TheOtherThem
                 // 前回のArrowをすべて破棄する
                 foreach (Arrow arrow in arrows)
                 {
-                    if (arrow?._arrow != null)
+                    if (arrow?.ArrowObject != null)
                     {
-                        arrow.arrow.SetActive(false);
-                        UnityEngine.Object.Destroy(arrow._arrow);
+                        arrow.ArrowObject.SetActive(false);
+                        UnityEngine.Object.Destroy(arrow.ArrowObject);
                     }
                 }
 
@@ -130,7 +130,7 @@ namespace TheOtherThem
                     if (p.IsRole(RoleType.Fox))
                     {
                         arrow = new Arrow(Fox.color);
-                        arrow.arrow.SetActive(true);
+                        arrow.ArrowObject.SetActive(true);
                         arrow.Update(p.transform.position);
                         arrows.Add(arrow);
                     }

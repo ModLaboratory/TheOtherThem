@@ -395,11 +395,11 @@ namespace TheOtherThem.Patches
         static void trackerUpdate()
         {
             // Handle player tracking
-            if (Tracker.arrow?._arrow != null)
+            if (Tracker.arrow?.ArrowObject != null)
             {
                 if (Tracker.tracker == null || PlayerControl.LocalPlayer != Tracker.tracker)
                 {
-                    Tracker.arrow.arrow.SetActive(false);
+                    Tracker.arrow.ArrowObject.SetActive(false);
                     return;
                 }
 
@@ -422,7 +422,7 @@ namespace TheOtherThem.Patches
                         }
 
                         Tracker.arrow.Update(position);
-                        Tracker.arrow.arrow.SetActive(trackedOnMap);
+                        Tracker.arrow.ArrowObject.SetActive(trackedOnMap);
                         Tracker.timeUntilUpdate = Tracker.updateIntervall;
                     }
                     else
@@ -440,7 +440,7 @@ namespace TheOtherThem.Patches
 
                 if (arrowsCountChanged)
                 {
-                    foreach (Arrow arrow in Tracker.localArrows) UnityEngine.Object.Destroy(arrow._arrow);
+                    foreach (Arrow arrow in Tracker.localArrows) UnityEngine.Object.Destroy(arrow.ArrowObject);
                     Tracker.localArrows = new List<Arrow>();
                 }
                 foreach (Vector3 position in Tracker.DeadBodyPositions)
@@ -448,7 +448,7 @@ namespace TheOtherThem.Patches
                     if (arrowsCountChanged)
                     {
                         Tracker.localArrows.Add(new Arrow(Tracker.color));
-                        Tracker.localArrows[index].arrow.SetActive(true);
+                        Tracker.localArrows[index].ArrowObject.SetActive(true);
                     }
                     if (Tracker.localArrows[index] != null) Tracker.localArrows[index].Update(position);
                     index++;
@@ -456,7 +456,7 @@ namespace TheOtherThem.Patches
             }
             else if (Tracker.localArrows.Count > 0)
             {
-                foreach (Arrow arrow in Tracker.localArrows) UnityEngine.Object.Destroy(arrow._arrow);
+                foreach (Arrow arrow in Tracker.localArrows) UnityEngine.Object.Destroy(arrow.ArrowObject);
                 Tracker.localArrows = new List<Arrow>();
             }
         }
@@ -634,7 +634,7 @@ namespace TheOtherThem.Patches
         {
             if (Snitch.localArrows == null) return;
 
-            foreach (Arrow arrow in Snitch.localArrows) arrow.arrow.SetActive(false);
+            foreach (Arrow arrow in Snitch.localArrows) arrow.ArrowObject.SetActive(false);
 
             if (Snitch.snitch == null || Snitch.snitch.Data.IsDead) return;
 
@@ -646,8 +646,8 @@ namespace TheOtherThem.Patches
                 if (Snitch.localArrows.Count == 0) Snitch.localArrows.Add(new Arrow(Color.blue));
                 if (Snitch.localArrows.Count != 0 && Snitch.localArrows[0] != null)
                 {
-                    Snitch.localArrows[0].arrow.SetActive(true);
-                    Snitch.localArrows[0].image.color = Color.blue;
+                    Snitch.localArrows[0].ArrowObject.SetActive(true);
+                    Snitch.localArrows[0].Image.color = Color.blue;
                     Snitch.localArrows[0].Update(Snitch.snitch.transform.position);
                 }
             }
@@ -676,8 +676,8 @@ namespace TheOtherThem.Patches
                         }
                         if (arrowIndex < Snitch.localArrows.Count && Snitch.localArrows[arrowIndex] != null)
                         {
-                            Snitch.localArrows[arrowIndex].image.color = c;
-                            Snitch.localArrows[arrowIndex].arrow.SetActive(true);
+                            Snitch.localArrows[arrowIndex].Image.color = c;
+                            Snitch.localArrows[arrowIndex].ArrowObject.SetActive(true);
                             Snitch.localArrows[arrowIndex].Update(p.transform.position, c);
                         }
                         arrowIndex++;
@@ -692,7 +692,7 @@ namespace TheOtherThem.Patches
 
             if (BountyHunter.bountyHunter.Data.IsDead)
             {
-                if (BountyHunter.arrow != null || BountyHunter.arrow._arrow != null) UnityEngine.Object.Destroy(BountyHunter.arrow._arrow);
+                if (BountyHunter.arrow != null || BountyHunter.arrow.ArrowObject != null) UnityEngine.Object.Destroy(BountyHunter.arrow.ArrowObject);
                 BountyHunter.arrow = null;
                 if (BountyHunter.cooldownText != null && BountyHunter.cooldownText.gameObject != null) UnityEngine.Object.Destroy(BountyHunter.cooldownText.gameObject);
                 BountyHunter.cooldownText = null;
@@ -815,7 +815,7 @@ namespace TheOtherThem.Patches
             if (Vulture.vulture == null || PlayerControl.LocalPlayer != Vulture.vulture || Vulture.localArrows == null || !Vulture.showArrows) return;
             if (Vulture.vulture.Data.IsDead)
             {
-                foreach (Arrow arrow in Vulture.localArrows) UnityEngine.Object.Destroy(arrow._arrow);
+                foreach (Arrow arrow in Vulture.localArrows) UnityEngine.Object.Destroy(arrow.ArrowObject);
                 Vulture.localArrows = new List<Arrow>();
                 return;
             }
@@ -826,7 +826,7 @@ namespace TheOtherThem.Patches
 
             if (arrowUpdate)
             {
-                foreach (Arrow arrow in Vulture.localArrows) UnityEngine.Object.Destroy(arrow._arrow);
+                foreach (Arrow arrow in Vulture.localArrows) UnityEngine.Object.Destroy(arrow.ArrowObject);
                 Vulture.localArrows = new List<Arrow>();
             }
 
@@ -835,7 +835,7 @@ namespace TheOtherThem.Patches
                 if (arrowUpdate)
                 {
                     Vulture.localArrows.Add(new Arrow(Color.blue));
-                    Vulture.localArrows[index].arrow.SetActive(true);
+                    Vulture.localArrows[index].ArrowObject.SetActive(true);
                 }
                 if (Vulture.localArrows[index] != null) Vulture.localArrows[index].Update(db.transform.position);
                 index++;

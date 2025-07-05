@@ -114,10 +114,10 @@ namespace TheOtherThem
             Players = new List<Fox>();
             foreach (Arrow arrow in arrows)
             {
-                if (arrow?._arrow != null)
+                if (arrow?.ArrowObject != null)
                 {
-                    arrow.arrow.SetActive(false);
-                    UnityEngine.Object.Destroy(arrow._arrow);
+                    arrow.ArrowObject.SetActive(false);
+                    UnityEngine.Object.Destroy(arrow.ArrowObject);
                 }
             }
             arrows = new List<Arrow>();
@@ -329,10 +329,10 @@ namespace TheOtherThem
                 // 前回のArrowをすべて破棄する
                 foreach (Arrow arrow in arrows)
                 {
-                    if (arrow?._arrow != null)
+                    if (arrow?.ArrowObject != null)
                     {
-                        arrow.arrow.SetActive(false);
-                        UnityEngine.Object.Destroy(arrow._arrow);
+                        arrow.ArrowObject.SetActive(false);
+                        UnityEngine.Object.Destroy(arrow.ArrowObject);
                     }
                 }
 
@@ -363,7 +363,7 @@ namespace TheOtherThem
                         {
                             arrow = new Arrow(Palette.Black);
                         }
-                        arrow.arrow.SetActive(true);
+                        arrow.ArrowObject.SetActive(true);
                         arrow.Update(p.transform.position);
                         arrows.Add(arrow);
                     }
