@@ -52,7 +52,7 @@
 #### 凤凰
 凤凰需要杀死设定人数玩家（数量会根据游戏总人数在设置值的基础上自动调整）获胜，在死亡后可以通过附身尸体而复活，每次复活后只能击杀一次。
 
-- 技能图标制作： [[JieGeLovesDengDuaLang](https://github.com/JieGeLovesDengDuaLang)
+- 技能图标制作： [JieGeLovesDengDuaLang](https://github.com/JieGeLovesDengDuaLang)
 
 - 职业创意： The spy
 
