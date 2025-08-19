@@ -1,7 +1,5 @@
-﻿using HarmonyLib;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using TheOtherThem.Objects;
 using TMPro;
 using UnityEngine;
 
@@ -23,12 +21,12 @@ namespace TheOtherThem.Patches
                 var position = __instance.GetComponent<AspectPosition>();
                 position.Alignment = AspectPosition.EdgeAlignments.Top;
                 __instance.text.text = BaseCredentials + $"\nPING: <b>{AmongUsClient.Instance.Ping}</b> ms";
-                
+
                 if (AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started)
                     position.DistanceFromEdge = new Vector3(2.25f, 0.11f, 0);
                 else
                     position.DistanceFromEdge = new Vector3(0f, 0.1f, 0);
-                
+
                 position.AdjustPosition();
             }
         }
@@ -52,7 +50,7 @@ namespace TheOtherThem.Patches
 
                 var creditsPopup = Object.Instantiate(popupPrefab, popupPrefab.transform.parent);
                 creditsPopup.name = PopupName;
-                
+
                 CreateButton(__instance, __instance.quitButton, GameObject.Find("RightPanel").transform, new(-1, -1, 0), "BILIBILI",
                     () =>
                     {

@@ -1,14 +1,11 @@
-using HarmonyLib;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
-using TheOtherThem.Objects;
 using TheOtherThem.Patches;
-using static TheOtherThem.TheOtherRoles;
+using UnityEngine;
 using static TheOtherThem.GameHistory;
-using Hazel;
+using static TheOtherThem.TheOtherRoles;
 
-namespace TheOtherThem
+namespace TheOtherThem.Roles
 {
     [HarmonyPatch]
     public class NekoKabocha : RoleBase<NekoKabocha>
@@ -27,7 +24,8 @@ namespace TheOtherThem
             RoleType = RoleId = RoleType.NekoKabocha;
         }
 
-        public override void OnMeetingStart() {
+        public override void OnMeetingStart()
+        {
             meetingKiller = null;
         }
 
@@ -38,15 +36,15 @@ namespace TheOtherThem
 
         public override void FixedUpdate() { }
         public override void OnKill(PlayerControl target) { }
-        
+
         public override void OnDeath(PlayerControl killer = null)
         {
             killer = killer ?? meetingKiller;
             if (killer != null && killer != Player && killer.IsAlive() && !killer.IsGM())
             {
-                if ((revengeCrew && killer.IsCrewmate()) ||
-                    (revengeNeutral && killer.IsNeutral()) ||
-                    (revengeImpostor && killer.IsImpostor()))
+                if (revengeCrew && killer.IsCrewmate() ||
+                    revengeNeutral && killer.IsNeutral() ||
+                    revengeImpostor && killer.IsImpostor())
                 {
                     if (meetingKiller == null)
                     {
@@ -68,7 +66,7 @@ namespace TheOtherThem
                 int targetID = rnd.Next(0, candidates.Count);
                 var target = candidates[targetID];
 
-                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.NekoKabochaExile, Hazel.SendOption.Reliable, -1);
+                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.NekoKabochaExile, SendOption.Reliable, -1);
                 writer.Write(target.PlayerId);
                 AmongUsClient.Instance.FinishRpcImmediately(writer);
                 RpcProcedure.nekoKabochaExile(target.PlayerId);

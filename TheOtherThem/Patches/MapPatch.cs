@@ -1,8 +1,5 @@
-using HarmonyLib;
-using static TheOtherThem.TheOtherRoles;
-using TheOtherThem.Objects;
-using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace TheOtherThem.Patches
 
@@ -53,7 +50,8 @@ namespace TheOtherThem.Patches
                 {
                     players.Add(p);
                 }
-            } else
+            }
+            else
             {
                 players.Add(pc);
             }
@@ -66,7 +64,7 @@ namespace TheOtherThem.Patches
                 mapIcons[id] = UnityEngine.Object.Instantiate(__instance.HerePoint, __instance.HerePoint.transform.parent);
                 p.SetPlayerMaterialColors(mapIcons[id]);
 
-                
+
                 corpseIcons[id] = UnityEngine.Object.Instantiate(__instance.HerePoint, __instance.HerePoint.transform.parent);
                 corpseIcons[id].sprite = getCorpseSprite();
                 corpseIcons[id].transform.localScale = Vector3.one * 0.20f;

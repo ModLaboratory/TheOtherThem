@@ -1,26 +1,30 @@
-using HarmonyLib;
-using static TheOtherThem.TheOtherRoles;
-using static TheOtherThem.TheOtherRolesGM;
-using UnityEngine;
+using AmongUs.GameOptions;
 using System.Collections.Generic;
 using System.Linq;
-using AmongUs.GameOptions;
+using TheOtherThem.Roles;
+using TheOtherThem.Roles.Modifiers;
+using UnityEngine;
+using static TheOtherThem.Roles.TheOtherRolesGM;
+using static TheOtherThem.TheOtherRoles;
 
-namespace TheOtherThem.Patches {
+namespace TheOtherThem.Patches
+{
 
     [HarmonyPatch(typeof(ShipStatus))]
-    public class ShipStatusPatch {
+    public class ShipStatusPatch
+    {
 
         [HarmonyPostfix]
         [HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.CalculateLightRadius))]
-        public static bool Prefix(ref float __result, ShipStatus __instance, [HarmonyArgument(0)] NetworkedPlayerInfo player) {
+        public static bool Prefix(ref float __result, ShipStatus __instance, [HarmonyArgument(0)] NetworkedPlayerInfo player)
+        {
             ISystemType systemType = __instance.Systems.ContainsKey(SystemTypes.Electrical) ? __instance.Systems[SystemTypes.Electrical] : null;
             if (systemType == null) return true;
             SwitchSystem switchSystem = systemType.TryCast<SwitchSystem>();
             if (switchSystem == null) return true;
 
             float num = (float)switchSystem.Value / 255f;
-            
+
             if (player == null || player.IsDead || player.PlayerId == GM.gm?.PlayerId) // IsDead
                 __result = __instance.MaxLightRadius;
             else if (player.Role.IsImpostor
@@ -34,7 +38,8 @@ namespace TheOtherThem.Patches {
                 __result = __instance.MaxLightRadius * GameOptionsManager.Instance.CurrentGameOptions.Cast<NormalGameOptionsV09>().ImpostorLightMod;
             else if (PlayerControl.LocalPlayer.IsRole(RoleType.Lighter) && Lighter.isLightActive(PlayerControl.LocalPlayer)) // if player is Lighter and Lighter has his ability active
                 __result = Mathf.Lerp(__instance.MaxLightRadius * Lighter.lighterModeLightsOffVision, __instance.MaxLightRadius * Lighter.lighterModeLightsOnVision, num);
-            else if (Trickster.trickster != null && Trickster.lightsOutTimer > 0f) {
+            else if (Trickster.trickster != null && Trickster.lightsOutTimer > 0f)
+            {
                 float lerpValue = 1f;
                 if (Trickster.lightsOutDuration - Trickster.lightsOutTimer < 0.5f) lerpValue = Mathf.Clamp01((Trickster.lightsOutDuration - Trickster.lightsOutTimer) * 2);
                 else if (Trickster.lightsOutTimer < 0.5) lerpValue = Mathf.Clamp01(Trickster.lightsOutTimer * 2);
@@ -78,7 +83,7 @@ namespace TheOtherThem.Patches {
             var normalTaskCount = __instance.ShortTasks.Count;
             var longTaskCount = __instance.LongTasks.Count;
             var option = GameOptionsManager.Instance.CurrentGameOptions.Cast<NormalGameOptionsV09>();
-            
+
             originalNumCommonTasksOption = option.NumCommonTasks;
             originalNumShortTasksOption = option.NumShortTasks;
             originalNumLongTasksOption = option.NumLongTasks;
@@ -100,7 +105,7 @@ namespace TheOtherThem.Patches {
             option.NumShortTasks = originalNumShortTasksOption;
             option.NumLongTasks = originalNumLongTasksOption;
         }
-            
+
     }
 
 }

@@ -10,11 +10,13 @@ using System.Linq;
 using System.Reflection;
 using TheOtherThem.Modules;
 using TheOtherThem.Patches;
-using TheOtherThem.ToTRole;
+using TheOtherThem.Roles;
+using TheOtherThem.Roles.Modifiers;
+using TheOtherThem.Roles.ToT;
 using UnityEngine;
 using static TheOtherThem.GameHistory;
+using static TheOtherThem.Roles.TheOtherRolesGM;
 using static TheOtherThem.TheOtherRoles;
-using static TheOtherThem.TheOtherRolesGM;
 
 namespace TheOtherThem
 {
@@ -468,7 +470,8 @@ namespace TheOtherThem
 
 
             SkinViewData nextSkin = null;
-            try { nextSkin = ShipStatus.Instance.CosmeticsCache.GetSkin(skinId); } catch { return; };
+            try { nextSkin = ShipStatus.Instance.CosmeticsCache.GetSkin(skinId); } catch { return; }
+            ;
 
             PlayerPhysics playerPhysics = target.MyPhysics;
             AnimationClip clip = null;

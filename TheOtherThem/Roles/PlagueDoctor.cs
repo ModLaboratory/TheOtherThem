@@ -1,14 +1,11 @@
-using HarmonyLib;
-using Hazel;
 using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 using TheOtherThem.Objects;
 using UnityEngine;
-using static TheOtherThem.TheOtherRoles;
 using static TheOtherThem.Patches.PlayerControlFixedUpdatePatch;
 
-namespace TheOtherThem
+namespace TheOtherThem.Roles
 {
     [HarmonyPatch]
     public class PlagueDoctor : RoleBase<PlagueDoctor>
@@ -36,10 +33,14 @@ namespace TheOtherThem
         public static float immunityTime { get { return CustomOptionHolder.plagueDoctorImmunityTime.GetFloat(); } }
 
         public static bool infectKiller { get { return CustomOptionHolder.plagueDoctorInfectKiller.GetBool(); } }
-        public static bool resetAfterMeeting { get {
+        public static bool resetAfterMeeting
+        {
+            get
+            {
                 //return CustomOptionHolder.plagueDoctorResetMeeting.getBool();
                 return false;
-            } }
+            }
+        }
         public static bool canWinDead { get { return CustomOptionHolder.plagueDoctorWinDead.GetBool(); } }
 
         public PlagueDoctor()
@@ -83,7 +84,7 @@ namespace TheOtherThem
             if (killer != null && infectKiller)
             {
                 byte targetId = killer.PlayerId;
-                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.PlagueDoctorSetInfected, Hazel.SendOption.Reliable, -1);
+                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.PlagueDoctorSetInfected, SendOption.Reliable, -1);
                 writer.Write(targetId);
                 AmongUsClient.Instance.FinishRpcImmediately(writer);
                 RpcProcedure.plagueDoctorInfected(targetId);
@@ -97,7 +98,7 @@ namespace TheOtherThem
                 if (numInfections > 0 && Player.IsAlive())
                 {
                     currentTarget = setTarget(untargetablePlayers: infected.Values.ToList());
-                    setPlayerOutline(currentTarget, PlagueDoctor.color);
+                    setPlayerOutline(currentTarget, color);
                 }
 
                 if (!meetingFlag && (canWinDead || Player.IsAlive()))
@@ -125,7 +126,7 @@ namespace TheOtherThem
                                 progress[target.PlayerId] += Time.fixedDeltaTime;
 
                                 // 他のクライアントに進行状況を通知する
-                                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.PlagueDoctorUpdateProgress, Hazel.SendOption.Reliable, -1);
+                                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.PlagueDoctorUpdateProgress, SendOption.Reliable, -1);
                                 writer.Write(target.PlayerId);
                                 writer.Write(progress[target.PlayerId]);
                                 AmongUsClient.Instance.FinishRpcImmediately(writer);
@@ -146,7 +147,7 @@ namespace TheOtherThem
                     foreach (PlayerControl p in newInfected)
                     {
                         byte targetId = p.PlayerId;
-                        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.PlagueDoctorSetInfected, Hazel.SendOption.Reliable, -1);
+                        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.PlagueDoctorSetInfected, SendOption.Reliable, -1);
                         writer.Write(targetId);
                         AmongUsClient.Instance.FinishRpcImmediately(writer);
                         RpcProcedure.plagueDoctorInfected(targetId);
@@ -167,7 +168,7 @@ namespace TheOtherThem
 
                     if (winFlag)
                     {
-                        MessageWriter winWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.PlagueDoctorWin, Hazel.SendOption.Reliable, -1);
+                        MessageWriter winWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.PlagueDoctorWin, SendOption.Reliable, -1);
                         AmongUsClient.Instance.FinishRpcImmediately(winWriter);
                         RpcProcedure.plagueDoctorWin();
                     }
@@ -187,12 +188,12 @@ namespace TheOtherThem
                 return;
             }
 
-            if ((Player != null && PlayerControl.LocalPlayer == Player) || PlayerControl.LocalPlayer.IsDead())
+            if (Player != null && PlayerControl.LocalPlayer == Player || PlayerControl.LocalPlayer.IsDead())
             {
                 if (statusText == null)
                 {
                     var position = Camera.main.ViewportToWorldPoint(new Vector3(0f, 1f, Camera.main.nearClipPlane));
-                    var obj = UnityEngine.Object.Instantiate(HudManager.Instance.AbilityButton.buttonLabelText);
+                    var obj = Object.Instantiate(HudManager.Instance.AbilityButton.buttonLabelText);
                     statusText = obj.GetComponent<TMPro.TMP_Text>();
                     statusText.transform.position = new Vector3(-0.5f, position.y - 0.1f, -14f);
                     statusText.transform.localScale = new Vector3(1f, 1f, 1f);
@@ -237,7 +238,7 @@ namespace TheOtherThem
                 {/*ボタンが押されたとき*/
                     byte targetId = Local.currentTarget.PlayerId;
 
-                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.PlagueDoctorSetInfected, Hazel.SendOption.Reliable, -1);
+                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.PlagueDoctorSetInfected, SendOption.Reliable, -1);
                     writer.Write(targetId);
                     AmongUsClient.Instance.FinishRpcImmediately(writer);
                     RpcProcedure.plagueDoctorInfected(targetId);
@@ -247,11 +248,12 @@ namespace TheOtherThem
                     Local.currentTarget = null;
                 },
                 () => {/*ボタンが有効になる条件*/ return PlayerControl.LocalPlayer.IsRole(RoleType.PlagueDoctor) && Local.numInfections > 0 && !PlayerControl.LocalPlayer.IsDead(); },
-                () => {/*ボタンが使える条件*/
+                () =>
+                {/*ボタンが使える条件*/
                     if (numInfectionsText != null)
                     {
                         if (Local.numInfections > 0)
-                            numInfectionsText.text = String.Format(ModTranslation.GetString("plagueDoctorInfectionsLeft"), Local.numInfections);
+                            numInfectionsText.text = string.Format(ModTranslation.GetString("plagueDoctorInfectionsLeft"), Local.numInfections);
                         else
                             numInfectionsText.text = "";
                     }
@@ -267,7 +269,7 @@ namespace TheOtherThem
             );
             plagueDoctorButton.buttonText = ModTranslation.GetString("plagueDoctorInfectButton");
 
-            numInfectionsText = GameObject.Instantiate(plagueDoctorButton.actionButton.cooldownTimerText, plagueDoctorButton.actionButton.cooldownTimerText.transform.parent);
+            numInfectionsText = Object.Instantiate(plagueDoctorButton.actionButton.cooldownTimerText, plagueDoctorButton.actionButton.cooldownTimerText.transform.parent);
             numInfectionsText.text = "";
             numInfectionsText.enableWordWrapping = false;
             numInfectionsText.transform.localScale = Vector3.one * 0.5f;

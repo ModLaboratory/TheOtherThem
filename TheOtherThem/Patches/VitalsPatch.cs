@@ -1,4 +1,3 @@
-using Hazel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -134,7 +133,7 @@ namespace TheOtherThem.Patches
         // So if this overload is used the game can't be compiled
         // What's more, the implementation of it directly calls Minigame.Close()
         // In short, there's no need to patch this overload
-        [HarmonyPatch(typeof(Minigame), nameof(Minigame.Close), new Type[] { })] 
+        [HarmonyPatch(typeof(Minigame), nameof(Minigame.Close), new Type[] { })]
         class VitalsMinigameClosePatch
         {
             static void Prefix(Minigame __instance)

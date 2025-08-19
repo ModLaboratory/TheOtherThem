@@ -1,21 +1,12 @@
-﻿using System.Net;
-using System.Linq;
-using BepInEx;
-using BepInEx.Configuration;
-using BepInEx.IL2CPP;
-using HarmonyLib;
-using Hazel;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Collections;
-using System.IO;
+using TheOtherThem.Patches;
+using TheOtherThem.Roles.Modifiers;
 using UnityEngine;
-using TheOtherThem.Objects;
 using static TheOtherThem.GameHistory;
 using static TheOtherThem.TheOtherRoles;
-using TheOtherThem.Patches;
 
-namespace TheOtherThem
+namespace TheOtherThem.Roles
 {
     [HarmonyPatch]
     public static class TheOtherRolesGM
@@ -183,7 +174,7 @@ namespace TheOtherThem
                 camouflageTimer = duration;
 
                 if (randomColors)
-                    camoData.ColorId = (byte)TheOtherRoles.rnd.Next(0, Palette.PlayerColors.Length);
+                    camoData.ColorId = (byte)rnd.Next(0, Palette.PlayerColors.Length);
                 else
                     camoData.ColorId = 6;
 
@@ -280,8 +271,8 @@ namespace TheOtherThem
             public static bool canOnlySwapOthers = false;
             public static int numSwaps = 2;
 
-            public static byte playerId1 = Byte.MaxValue;
-            public static byte playerId2 = Byte.MaxValue;
+            public static byte playerId1 = byte.MaxValue;
+            public static byte playerId2 = byte.MaxValue;
 
             public static Sprite getCheckSprite()
             {
@@ -293,8 +284,8 @@ namespace TheOtherThem
             public static void clearAndReload()
             {
                 swapper = null;
-                playerId1 = Byte.MaxValue;
-                playerId2 = Byte.MaxValue;
+                playerId1 = byte.MaxValue;
+                playerId2 = byte.MaxValue;
                 canCallEmergency = CustomOptionHolder.swapperCanCallEmergency.GetBool();
                 canOnlySwapOthers = CustomOptionHolder.swapperCanOnlySwapOthers.GetBool();
                 numSwaps = Mathf.RoundToInt(CustomOptionHolder.swapperNumSwaps.GetFloat());

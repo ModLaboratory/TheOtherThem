@@ -2,11 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using TheOtherThem.ToTRole;
+using TheOtherThem.Roles.Modifiers;
+using TheOtherThem.Roles.ToT;
+using static TheOtherThem.Roles.TheOtherRolesGM;
 using static TheOtherThem.TheOtherRoles;
-using static TheOtherThem.TheOtherRolesGM;
 
-namespace TheOtherThem
+namespace TheOtherThem.Roles
 {
     public enum RoleType
     {
@@ -135,7 +136,7 @@ namespace TheOtherThem
 
         public void Init(PlayerControl player)
         {
-            this.Player = player;
+            Player = player;
             Players.Add((T)this);
             AllRoles.Add(this);
         }
@@ -656,7 +657,7 @@ namespace TheOtherThem
             }
 
             var totRole = CustomRole.AllRoles.FirstOrDefault(r => r.MyRoleType == role);
-            if (totRole == null) 
+            if (totRole == null)
                 return;
             totRole.Players.Add(player.Data);
 
@@ -671,7 +672,7 @@ namespace TheOtherThem
 
         public static void EraseRole(this PlayerControl player, RoleType role)
         {
-            if (IsRole(player, role))
+            if (player.IsRole(role))
             {
                 foreach (var t in RoleData.AllRoleTypes)
                 {

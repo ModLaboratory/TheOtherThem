@@ -1,10 +1,10 @@
 using System.Collections.Generic;
-using System.Collections;
-using System;
 using UnityEngine;
 
-namespace TheOtherThem{
-    static class MapOptions {
+namespace TheOtherThem
+{
+    static class MapOptions
+    {
         // Set values
         public static int MaxNumberOfMeetings { get; set; } = 10;
         public static bool BlockSkippingInEmergencyMeetings { get; set; } = false;
@@ -40,7 +40,8 @@ namespace TheOtherThem{
         public static List<Vent> VentsToSeal { get; set; } = new();
         public static Dictionary<byte, PoolablePlayer> PlayerIcons { get; set; } = new();
 
-        public static void ClearAndReloadMapOptions() {
+        public static void ClearAndReloadMapOptions()
+        {
             MeetingsCount = 0;
             CamerasToAdd = new List<SurvCamera>();
             VentsToSeal = new List<Vent>();

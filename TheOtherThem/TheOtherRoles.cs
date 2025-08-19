@@ -3,7 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using TheOtherThem.Objects;
-using TheOtherThem.ToTRole;
+using TheOtherThem.Roles;
+using TheOtherThem.Roles.ToT;
 using UnityEngine;
 
 namespace TheOtherThem

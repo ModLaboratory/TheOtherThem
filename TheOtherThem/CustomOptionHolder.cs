@@ -1,9 +1,12 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using TheOtherThem.Modules;
+using TheOtherThem.Roles;
+using TheOtherThem.Roles.Modifiers;
 using UnityEngine;
+using static TheOtherThem.Roles.TheOtherRolesGM;
 using static TheOtherThem.TheOtherRoles;
-using static TheOtherThem.TheOtherRolesGM;
 
 namespace TheOtherThem
 {

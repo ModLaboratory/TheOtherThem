@@ -1,8 +1,8 @@
-using Hazel;
+using TheOtherThem.Modules;
 using TheOtherThem.Objects;
 using UnityEngine;
 
-namespace TheOtherThem.ToTRole.Crewmate
+namespace TheOtherThem.Roles.ToT.Crewmate
 {
     [RoleAutoInitialize]
     [HarmonyPatch]
@@ -40,7 +40,7 @@ namespace TheOtherThem.ToTRole.Crewmate
 
                 RemainingUses--;
                 _ = new CustomMessage("PacifistAbilityRemainingUsesMessage", 3f, RemainingUses.ToString(), false);
-                
+
                 ResetAllKillCooldownButton.ResetTimer();
             },
             CanLocalPlayerUse,

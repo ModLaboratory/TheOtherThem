@@ -1,17 +1,16 @@
-using System.Linq;
-using HarmonyLib;
-using Hazel;
+using AmongUs.GameOptions;
 using System;
 using System.Collections.Generic;
-using UnityEngine;
+using System.Linq;
 using TheOtherThem.Objects;
 using TheOtherThem.Patches;
-using AmongUs.GameOptions;
+using UnityEngine;
 
-namespace TheOtherThem
+namespace TheOtherThem.Roles
 {
     [HarmonyPatch]
-    public class Ninja : RoleBase<Ninja> {
+    public class Ninja : RoleBase<Ninja>
+    {
 
         private static CustomButton ninjaButton;
 
@@ -41,7 +40,7 @@ namespace TheOtherThem
         {
             stealthed = false;
             ninjaButton.isEffectActive = false;
-            ninjaButton.Timer = ninjaButton.MaxTimer = Ninja.stealthCooldown;
+            ninjaButton.Timer = ninjaButton.MaxTimer = stealthCooldown;
         }
 
         public override void OnMeetingEnd()
@@ -65,7 +64,7 @@ namespace TheOtherThem
             stealthed = false;
             setOpacity(Player, 1.0f);
             ninjaButton.isEffectActive = false;
-            ninjaButton.Timer = ninjaButton.MaxTimer = Ninja.stealthCooldown;
+            ninjaButton.Timer = ninjaButton.MaxTimer = stealthCooldown;
         }
 
         public override void FixedUpdate() { }
@@ -137,21 +136,23 @@ namespace TheOtherThem
         {
             // Ninja stealth
             ninjaButton = new CustomButton(
-                () => {
+                () =>
+                {
                     if (ninjaButton.isEffectActive)
                     {
                         ninjaButton.Timer = 0;
                         return;
                     }
 
-                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.NinjaStealth, Hazel.SendOption.Reliable, -1);
+                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.NinjaStealth, SendOption.Reliable, -1);
                     writer.Write(PlayerControl.LocalPlayer.PlayerId);
                     writer.Write(true);
                     AmongUsClient.Instance.FinishRpcImmediately(writer);
                     RpcProcedure.ninjaStealth(PlayerControl.LocalPlayer.PlayerId, true);
                 },
                 () => { return PlayerControl.LocalPlayer.IsRole(RoleType.Ninja) && !PlayerControl.LocalPlayer.Data.IsDead; },
-                () => {
+                () =>
+                {
                     if (ninjaButton.isEffectActive)
                     {
                         ninjaButton.buttonText = ModTranslation.GetString("NinjaUnstealthText");
@@ -162,26 +163,28 @@ namespace TheOtherThem
                     }
                     return PlayerControl.LocalPlayer.CanMove;
                 },
-                () => {
-                    ninjaButton.Timer = ninjaButton.MaxTimer = Ninja.stealthCooldown;
+                () =>
+                {
+                    ninjaButton.Timer = ninjaButton.MaxTimer = stealthCooldown;
                 },
-                Ninja.getButtonSprite(),
+                getButtonSprite(),
                 new Vector3(-1.8f, -0.06f, 0),
                 hm,
                 hm.KillButton,
                 KeyCode.F,
                 true,
-                Ninja.stealthDuration,
-                () => {
-                    ninjaButton.Timer = ninjaButton.MaxTimer = Ninja.stealthCooldown;
+                stealthDuration,
+                () =>
+                {
+                    ninjaButton.Timer = ninjaButton.MaxTimer = stealthCooldown;
 
-                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.NinjaStealth, Hazel.SendOption.Reliable, -1);
+                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.NinjaStealth, SendOption.Reliable, -1);
                     writer.Write(PlayerControl.LocalPlayer.PlayerId);
                     writer.Write(false);
                     AmongUsClient.Instance.FinishRpcImmediately(writer);
                     RpcProcedure.ninjaStealth(PlayerControl.LocalPlayer.PlayerId, false);
 
-                    PlayerControl.LocalPlayer.SetKillTimerUnchecked(Math.Max(PlayerControl.LocalPlayer.killTimer, Ninja.killPenalty));
+                    PlayerControl.LocalPlayer.SetKillTimerUnchecked(Math.Max(PlayerControl.LocalPlayer.killTimer, killPenalty));
                 }
             );
             ninjaButton.buttonText = ModTranslation.GetString("NinjaText");
@@ -190,7 +193,7 @@ namespace TheOtherThem
 
         public static void SetButtonCooldowns()
         {
-            ninjaButton.MaxTimer = Ninja.stealthCooldown;
+            ninjaButton.MaxTimer = stealthCooldown;
         }
 
         public static void Clear()
@@ -227,10 +230,10 @@ namespace TheOtherThem
                     var ninja = __instance.myPlayer;
                     if (ninja == null || ninja.IsDead()) return;
 
-                    bool canSee = 
+                    bool canSee =
                         PlayerControl.LocalPlayer.IsImpostor() ||
                         PlayerControl.LocalPlayer.IsDead() ||
-                        (Lighter.canSeeNinja && PlayerControl.LocalPlayer.IsRole(RoleType.Lighter) && Lighter.isLightActive(PlayerControl.LocalPlayer));
+                        Lighter.canSeeNinja && PlayerControl.LocalPlayer.IsRole(RoleType.Lighter) && Lighter.isLightActive(PlayerControl.LocalPlayer);
 
                     var opacity = canSee ? 0.1f : 0.0f;
 

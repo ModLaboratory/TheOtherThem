@@ -1,21 +1,25 @@
-using HarmonyLib;
 using System;
-using static TheOtherThem.TheOtherRoles;
-using static TheOtherThem.TheOtherRolesGM;
-using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
+using TheOtherThem.Roles;
+using TheOtherThem.Roles.Modifiers;
+using UnityEngine;
+using static TheOtherThem.Roles.TheOtherRolesGM;
+using static TheOtherThem.TheOtherRoles;
 
-namespace TheOtherThem.Patches {
+namespace TheOtherThem.Patches
+{
     [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.OnDestroy))]
     class IntroCutsceneOnDestroyPatch
     {
-        public static void Prefix(IntroCutscene __instance) {
+        public static void Prefix(IntroCutscene __instance)
+        {
             // Generate and initialize player icons
             if (PlayerControl.LocalPlayer != null && HudManager.Instance != null)
             {
                 Vector3 bottomLeft = new Vector3(-HudManager.Instance.UseButton.transform.localPosition.x, HudManager.Instance.UseButton.transform.localPosition.y, HudManager.Instance.UseButton.transform.localPosition.z);
-                foreach (PlayerControl p in PlayerControl.AllPlayerControls) {
+                foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                {
                     NetworkedPlayerInfo data = p.Data;
                     PoolablePlayer player = UnityEngine.Object.Instantiate<PoolablePlayer>(__instance.PlayerPrefab, HudManager.Instance.transform);
                     player.UpdateFromPlayerOutfit(p.Data.DefaultOutfit, PlayerMaterial.MaskType.None, p.Data.IsDead, true);
@@ -45,9 +49,11 @@ namespace TheOtherThem.Patches {
             }
 
             // Force Bounty Hunter to load a new Bounty when the Intro is over
-            if (BountyHunter.bounty != null && PlayerControl.LocalPlayer == BountyHunter.bountyHunter) {
+            if (BountyHunter.bounty != null && PlayerControl.LocalPlayer == BountyHunter.bountyHunter)
+            {
                 BountyHunter.bountyUpdateTimer = 0f;
-                if (HudManager.Instance != null) {
+                if (HudManager.Instance != null)
+                {
                     Vector3 bottomLeft = new Vector3(-HudManager.Instance.UseButton.transform.localPosition.x, HudManager.Instance.UseButton.transform.localPosition.y, HudManager.Instance.UseButton.transform.localPosition.z) + new Vector3(-0.25f, 1f, 0);
                     BountyHunter.cooldownText = UnityEngine.Object.Instantiate<TMPro.TextMeshPro>(HudManager.Instance.KillButton.cooldownTimerText, HudManager.Instance.transform);
                     BountyHunter.cooldownText.alignment = TMPro.TextAlignmentOptions.Center;
@@ -85,10 +91,13 @@ namespace TheOtherThem.Patches {
     }
 
     [HarmonyPatch]
-    class IntroPatch {
-        public static void setupIntroTeamIcons(IntroCutscene __instance, ref  Il2CppSystem.Collections.Generic.List<PlayerControl> yourTeam) {
+    class IntroPatch
+    {
+        public static void setupIntroTeamIcons(IntroCutscene __instance, ref Il2CppSystem.Collections.Generic.List<PlayerControl> yourTeam)
+        {
             // Intro solo teams
-            if (PlayerControl.LocalPlayer.IsNeutral() || PlayerControl.LocalPlayer == GM.gm) {
+            if (PlayerControl.LocalPlayer.IsNeutral() || PlayerControl.LocalPlayer == GM.gm)
+            {
                 var soloTeam = new Il2CppSystem.Collections.Generic.List<PlayerControl>();
                 soloTeam.Add(PlayerControl.LocalPlayer);
                 yourTeam = soloTeam;
@@ -107,11 +116,13 @@ namespace TheOtherThem.Patches {
             }
 
             // Add the Spy to the Impostor team (for the Impostors)
-            if (Spy.spy != null && PlayerControl.LocalPlayer.Data.Role.IsImpostor) {
+            if (Spy.spy != null && PlayerControl.LocalPlayer.Data.Role.IsImpostor)
+            {
                 List<PlayerControl> players = PlayerControl.AllPlayerControls.ToArray().ToList().OrderBy(x => Guid.NewGuid()).ToList();
                 var fakeImpostorTeam = new Il2CppSystem.Collections.Generic.List<PlayerControl>(); // The local player always has to be the first one in the list (to be displayed in the center)
                 fakeImpostorTeam.Add(PlayerControl.LocalPlayer);
-                foreach (PlayerControl p in players) {
+                foreach (PlayerControl p in players)
+                {
                     if (PlayerControl.LocalPlayer != p && (p == Spy.spy || p.Data.Role.IsImpostor))
                         fakeImpostorTeam.Add(p);
                 }
@@ -119,7 +130,8 @@ namespace TheOtherThem.Patches {
             }
         }
 
-        public static void setupIntroTeam(IntroCutscene __instance, ref  Il2CppSystem.Collections.Generic.List<PlayerControl> yourTeam) {
+        public static void setupIntroTeam(IntroCutscene __instance, ref Il2CppSystem.Collections.Generic.List<PlayerControl> yourTeam)
+        {
             List<RoleInfo> infos = RoleInfo.GetRoleInfoForPlayer(PlayerControl.LocalPlayer);
             RoleInfo roleInfo = infos.Where(info => info.MyRoleType != RoleType.Lovers).FirstOrDefault();
             if (roleInfo == null) return;
@@ -134,8 +146,10 @@ namespace TheOtherThem.Patches {
         }
 
         [HarmonyPatch(typeof(IntroCutscene._ShowRole_d__41), nameof(IntroCutscene._ShowRole_d__41.MoveNext))]
-        class SetUpRoleTextPatch {
-            public static void Postfix(IntroCutscene._ShowRole_d__41 __instance) {
+        class SetUpRoleTextPatch
+        {
+            public static void Postfix(IntroCutscene._ShowRole_d__41 __instance)
+            {
                 if (!CustomOptionHolder.activateRoles.GetBool()) return; // Don't override the intro of the vanilla roles
 
                 List<RoleInfo> infos = RoleInfo.GetRoleInfoForPlayer(PlayerControl.LocalPlayer, new RoleType[] { RoleType.Lovers });
@@ -143,7 +157,8 @@ namespace TheOtherThem.Patches {
 
                 var intro = __instance.__4__this;
 
-                if (roleInfo != null && roleInfo != RoleInfo.crewmate && roleInfo != RoleInfo.impostor && !(roleInfo == RoleInfo.fortuneTeller && FortuneTeller.numTasks > 0)) {
+                if (roleInfo != null && roleInfo != RoleInfo.crewmate && roleInfo != RoleInfo.impostor && !(roleInfo == RoleInfo.fortuneTeller && FortuneTeller.numTasks > 0))
+                {
                     intro.YouAreText.color = roleInfo.RoleColor;
                     intro.RoleText.text = roleInfo.Name;
                     intro.RoleText.color = roleInfo.RoleColor;
@@ -167,31 +182,38 @@ namespace TheOtherThem.Patches {
                     intro.RoleBlurbText.color = Madmate.color;
                 }
 
-                if (infos.Any(info => info.MyRoleType == RoleType.Lovers)) {
+                if (infos.Any(info => info.MyRoleType == RoleType.Lovers))
+                {
                     PlayerControl otherLover = PlayerControl.LocalPlayer.GetPartner();
-                	intro.RoleBlurbText.text += "\n" + Helpers.ColorString(Lovers.Color, String.Format(ModTranslation.GetString("loversFlavor"), otherLover?.Data?.PlayerName ?? ""));
-                } 
+                    intro.RoleBlurbText.text += "\n" + Helpers.ColorString(Lovers.Color, String.Format(ModTranslation.GetString("loversFlavor"), otherLover?.Data?.PlayerName ?? ""));
+                }
             }
         }
 
         [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.BeginCrewmate))]
-        class BeginCrewmatePatch {
-            public static void Prefix(IntroCutscene __instance, ref  Il2CppSystem.Collections.Generic.List<PlayerControl> teamToDisplay) {
+        class BeginCrewmatePatch
+        {
+            public static void Prefix(IntroCutscene __instance, ref Il2CppSystem.Collections.Generic.List<PlayerControl> teamToDisplay)
+            {
                 setupIntroTeamIcons(__instance, ref teamToDisplay);
             }
 
-            public static void Postfix(IntroCutscene __instance, ref  Il2CppSystem.Collections.Generic.List<PlayerControl> teamToDisplay) {
+            public static void Postfix(IntroCutscene __instance, ref Il2CppSystem.Collections.Generic.List<PlayerControl> teamToDisplay)
+            {
                 setupIntroTeam(__instance, ref teamToDisplay);
             }
         }
 
         [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.BeginImpostor))]
-        class BeginImpostorPatch {
-            public static void Prefix(IntroCutscene __instance, ref  Il2CppSystem.Collections.Generic.List<PlayerControl> yourTeam) {
+        class BeginImpostorPatch
+        {
+            public static void Prefix(IntroCutscene __instance, ref Il2CppSystem.Collections.Generic.List<PlayerControl> yourTeam)
+            {
                 setupIntroTeamIcons(__instance, ref yourTeam);
             }
 
-            public static void Postfix(IntroCutscene __instance, ref  Il2CppSystem.Collections.Generic.List<PlayerControl> yourTeam) {
+            public static void Postfix(IntroCutscene __instance, ref Il2CppSystem.Collections.Generic.List<PlayerControl> yourTeam)
+            {
                 setupIntroTeam(__instance, ref yourTeam);
             }
         }

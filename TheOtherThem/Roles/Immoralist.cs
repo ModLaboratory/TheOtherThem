@@ -1,11 +1,9 @@
-using HarmonyLib;
-using Hazel;
 using System;
 using System.Collections.Generic;
 using TheOtherThem.Objects;
 using UnityEngine;
 
-namespace TheOtherThem
+namespace TheOtherThem.Roles
 {
     [HarmonyPatch]
     public class Immoralist : RoleBase<Immoralist>
@@ -46,12 +44,12 @@ namespace TheOtherThem
 
         public static void Clear()
         {
-            foreach(Arrow arrow in arrows)
+            foreach (Arrow arrow in arrows)
             {
                 if (arrow?.ArrowObject != null)
                 {
                     arrow.ArrowObject.SetActive(false);
-                    UnityEngine.Object.Destroy(arrow.ArrowObject);
+                    Object.Destroy(arrow.ArrowObject);
                 }
             }
             arrows = new List<Arrow>();
@@ -61,7 +59,7 @@ namespace TheOtherThem
         public static void suicide()
         {
             byte targetId = PlayerControl.LocalPlayer.PlayerId;
-            MessageWriter killWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.SerialKillerSuicide, Hazel.SendOption.Reliable, -1); killWriter.Write(targetId);
+            MessageWriter killWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.SerialKillerSuicide, SendOption.Reliable, -1); killWriter.Write(targetId);
             AmongUsClient.Instance.FinishRpcImmediately(killWriter);
             RpcProcedure.serialKillerSuicide(targetId);
         }
@@ -115,7 +113,7 @@ namespace TheOtherThem
                     if (arrow?.ArrowObject != null)
                     {
                         arrow.ArrowObject.SetActive(false);
-                        UnityEngine.Object.Destroy(arrow.ArrowObject);
+                        Object.Destroy(arrow.ArrowObject);
                     }
                 }
 

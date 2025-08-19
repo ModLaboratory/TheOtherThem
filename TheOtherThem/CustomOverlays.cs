@@ -1,15 +1,11 @@
-using HarmonyLib;
 using System;
-using System.Linq;
-using System.Collections.Generic;
 using UnityEngine;
-using System.Collections;
-using static TheOtherThem.TheOtherRoles;
-using static TheOtherThem.TheOtherRolesGM;
 
-namespace TheOtherThem {
+namespace TheOtherThem
+{
     [Harmony]
-    public class CustomOverlays {
+    public class CustomOverlays
+    {
 
         public static Sprite HelpButton { get; set; }
         public static bool OverlayShown { get; set; } = false;
@@ -78,7 +74,8 @@ namespace TheOtherThem {
                 _infoOverlayRules.enabled = false;
             }
 
-            if (_infoOverlayRoles == null) { 
+            if (_infoOverlayRoles == null)
+            {
                 _infoOverlayRoles = UnityEngine.Object.Instantiate(_infoOverlayRules, hudManager.transform);
                 _infoOverlayRoles.maxVisibleLines = 28;
                 _infoOverlayRoles.fontSize = _infoOverlayRoles.fontSizeMin = _infoOverlayRoles.fontSizeMax = 1.15f;
@@ -154,7 +151,8 @@ namespace TheOtherThem {
 
             string rolesText = "";
             foreach (RoleInfo r in RoleInfo.GetRoleInfoForPlayer(PlayerControl.LocalPlayer))
-            {string roleDesc = r.FullDescription;
+            {
+                string roleDesc = r.FullDescription;
                 rolesText += $"<size=150%>{r.NameColored}</size>" +
                     (roleDesc != "" ? $"\n{r.FullDescription}" : "") + "\n\n";
             }

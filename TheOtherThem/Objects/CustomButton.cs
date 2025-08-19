@@ -64,7 +64,7 @@ namespace TheOtherThem.Objects
         }
 
         public CustomButton(Action OnClick, Func<bool> HasButton, Func<bool> CouldUse, Action OnMeetingEnds, Sprite Sprite, Vector3? PositionOffset, HudManager hudManager, ActionButton? textTemplate, KeyCode? hotkey, bool mirror = false, string buttonText = null)
-        : this(OnClick, HasButton, CouldUse, OnMeetingEnds, Sprite, PositionOffset, hudManager, textTemplate, hotkey, false, 0f, () => {}, mirror, buttonText) { }
+        : this(OnClick, HasButton, CouldUse, OnMeetingEnds, Sprite, PositionOffset, hudManager, textTemplate, hotkey, false, 0f, () => { }, mirror, buttonText) { }
 
         private void OnClickEvent()
         {
@@ -73,7 +73,8 @@ namespace TheOtherThem.Objects
                 actionButton.graphic.color = new Color(1f, 1f, 1f, 0.3f);
                 this.OnClick();
 
-                if (this.HasEffect && !this.isEffectActive) {
+                if (this.HasEffect && !this.isEffectActive)
+                {
                     this.Timer = this.EffectDuration;
                     actionButton.cooldownTimerText.color = new Color(0F, 0.8F, 0F);
                     this.isEffectActive = true;
@@ -86,7 +87,7 @@ namespace TheOtherThem.Objects
         public static void HudUpdate()
         {
             Buttons.RemoveAll(item => item.actionButton == null);
-        
+
             for (int i = 0; i < Buttons.Count; i++)
             {
                 try
@@ -100,7 +101,7 @@ namespace TheOtherThem.Objects
             }
         }
 
-        public static void MeetingEndedUpdate() 
+        public static void MeetingEndedUpdate()
         {
             Buttons.RemoveAll(item => item.actionButton == null);
 
@@ -118,7 +119,7 @@ namespace TheOtherThem.Objects
             }
         }
 
-        public static void ResetAllCooldowns() 
+        public static void ResetAllCooldowns()
         {
             foreach (var button in Buttons)
             {
@@ -134,7 +135,7 @@ namespace TheOtherThem.Objects
             }
         }
 
-        public void SetActive(bool isActive) 
+        public void SetActive(bool isActive)
         {
             actionButton.gameObject.SetActive(isActive);
             actionButton.graphic.enabled = isActive;
@@ -150,7 +151,7 @@ namespace TheOtherThem.Objects
             SetActive(hudManager.UseButton.isActiveAndEnabled || hudManager.PetButton.isActiveAndEnabled);
 
             actionButton.graphic.sprite = Sprite;
-            
+
             if (showButtonText && buttonText != null)
             {
                 actionButton.OverrideText(buttonText);
@@ -166,32 +167,32 @@ namespace TheOtherThem.Objects
                 actionButton.transform.localScale = LocalScale;
             }
 
-            if (CouldUse()) 
+            if (CouldUse())
             {
                 actionButton.graphic.color = actionButton.buttonLabelText.color = Palette.EnabledColor;
                 actionButton.graphic.material.SetFloat("_Desat", 0f);
-            } 
-            else 
+            }
+            else
             {
                 actionButton.graphic.color = actionButton.buttonLabelText.color = Palette.DisabledClear;
                 actionButton.graphic.material.SetFloat("_Desat", 1f);
             }
 
-            if (Timer >= 0) 
+            if (Timer >= 0)
             {
                 if (HasEffect && isEffectActive)
                     Timer -= Time.deltaTime;
                 else if (!PlayerControl.LocalPlayer.inVent && PlayerControl.LocalPlayer.moveable)
                     Timer -= Time.deltaTime;
             }
-            
-            if (Timer <= 0 && HasEffect && isEffectActive) 
+
+            if (Timer <= 0 && HasEffect && isEffectActive)
             {
                 isEffectActive = false;
                 actionButton.cooldownTimerText.color = Palette.EnabledColor;
                 OnEffectEnds();
             }
-        
+
             actionButton.SetCoolDown(Timer, (HasEffect && isEffectActive) ? EffectDuration : MaxTimer);
 
             // Trigger OnClickEvent if the hotkey is being pressed down

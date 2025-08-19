@@ -1,15 +1,17 @@
-using HarmonyLib;
-using System.Linq;
 using System;
 using System.Collections.Generic;
-using static TheOtherThem.TheOtherRoles;
-using static TheOtherThem.TheOtherRolesGM;
+using System.Linq;
+using TheOtherThem.Modules;
+using TheOtherThem.Roles;
+using TheOtherThem.Roles.Modifiers;
+using TheOtherThem.Roles.ToT;
 using UnityEngine;
-using TheOtherThem.ToTRole;
+using static TheOtherThem.Roles.TheOtherRolesGM;
+using static TheOtherThem.TheOtherRoles;
 
 namespace TheOtherThem
 {
-    public class RoleInfo 
+    public class RoleInfo
     {
         public Color RoleColor { get; private set; }
         public virtual string Name => ModTranslation.GetString(NameKey);
@@ -86,7 +88,7 @@ namespace TheOtherThem
         public static RoleInfo niceGuesser = new RoleInfo("niceGuesser", Guesser.color, CustomOptionHolder.guesserSpawnRate, RoleType.NiceGuesser);
         public static RoleInfo evilGuesser = new RoleInfo("evilGuesser", Palette.ImpostorRed, CustomOptionHolder.guesserSpawnRate, RoleType.EvilGuesser);
         public static RoleInfo bait = new RoleInfo("bait", Bait.color, CustomOptionHolder.baitSpawnRate, RoleType.Bait);
-        public static RoleInfo impostor = new RoleInfo("impostor", Palette.ImpostorRed,null, RoleType.Impostor);
+        public static RoleInfo impostor = new RoleInfo("impostor", Palette.ImpostorRed, null, RoleType.Impostor);
         public static RoleInfo lawyer = new RoleInfo("lawyer", Lawyer.color, CustomOptionHolder.lawyerSpawnRate, RoleType.Lawyer);
         public static RoleInfo pursuer = new RoleInfo("pursuer", Pursuer.color, CustomOptionHolder.lawyerSpawnRate, RoleType.Pursuer);
         public static RoleInfo crewmate = new RoleInfo("crewmate", Color.white, null, RoleType.Crewmate);
@@ -155,7 +157,7 @@ namespace TheOtherThem
         //        bait,
         //        gm,
         //        opportunist,
-	       //     medium,
+        //     medium,
         //        plagueDoctor,
         //        nekoKabocha,
         //        niceWatcher,
@@ -166,7 +168,8 @@ namespace TheOtherThem
         //    };
 
 
-        public static List<RoleInfo> GetRoleInfoForPlayer(PlayerControl p, RoleType[] excludeRoles = null, bool includeHidden = false) {
+        public static List<RoleInfo> GetRoleInfoForPlayer(PlayerControl p, RoleType[] excludeRoles = null, bool includeHidden = false)
+        {
             List<RoleInfo> playerRoleInfo = new();
             if (p == null) return playerRoleInfo;
 
@@ -231,7 +234,7 @@ namespace TheOtherThem
                 }
                 else
                 {
-                    var info = FortuneTeller.isCompletedNumTasks(p) ? fortuneTeller: crewmate;
+                    var info = FortuneTeller.isCompletedNumTasks(p) ? fortuneTeller : crewmate;
                     playerRoleInfo.Add(info);
                 }
             }
@@ -252,7 +255,8 @@ namespace TheOtherThem
             return playerRoleInfo;
         }
 
-        public static String GetRolesString(PlayerControl p, bool useColors, RoleType[] excludeRoles = null, bool includeHidden = false) {
+        public static String GetRolesString(PlayerControl p, bool useColors, RoleType[] excludeRoles = null, bool includeHidden = false)
+        {
             if (p?.Data?.Disconnected != false) return "";
 
             var roleInfo = GetRoleInfoForPlayer(p, excludeRoles, includeHidden);

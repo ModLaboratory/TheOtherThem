@@ -1,7 +1,4 @@
-﻿using HarmonyLib;
-using TheOtherThem;
-
-namespace TheOtherThem.Modules.CustomHats.Patches;
+﻿namespace TheOtherThem.Modules.CustomHats.Patches;
 
 [HarmonyPatch(typeof(CosmeticsCache))]
 internal static class CosmeticsCachePatches

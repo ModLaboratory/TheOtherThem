@@ -1,11 +1,9 @@
-using HarmonyLib;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
 using TheOtherThem.Objects;
-using TheOtherThem.Patches;
+using UnityEngine;
 
-namespace TheOtherThem
+namespace TheOtherThem.Roles
 {
     [HarmonyPatch]
     public class Lighter : RoleBase<Lighter>
@@ -64,14 +62,15 @@ namespace TheOtherThem
                     lighterButton.isEffectActive = false;
                     lighterButton.actionButton.graphic.color = Palette.EnabledColor;
                 },
-                Lighter.getButtonSprite(),
+                getButtonSprite(),
                 new Vector3(-1.8f, -0.06f, 0),
                 hm,
                 hm.UseButton,
                 KeyCode.F,
                 true,
                 duration,
-                () => {
+                () =>
+                {
                     Local.lightActive = false;
                     lighterButton.Timer = lighterButton.MaxTimer;
                 }

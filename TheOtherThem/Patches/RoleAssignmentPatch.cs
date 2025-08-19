@@ -1,9 +1,11 @@
 ﻿using AmongUs.GameOptions;
-using Hazel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using TheOtherThem.ToTRole;
+using TheOtherThem.Modules;
+using TheOtherThem.Roles;
+using TheOtherThem.Roles.Modifiers;
+using TheOtherThem.Roles.ToT;
 using UnityEngine;
 using static TheOtherThem.TheOtherRoles;
 
@@ -70,7 +72,7 @@ namespace TheOtherThem.Patches
 
                             if (newImp == host || newImp.Data.Role.IsImpostor)
                                 continue;
-                            
+
                             break;
                         }
 
@@ -644,7 +646,7 @@ namespace TheOtherThem.Patches
             if (RoleInfo.lovers.Enabled &&
                 Helpers.PlayerById(playerId)?.IsInLove() == true &&
                 _blockedLovers.Contains(roleId))
-                    return byte.MaxValue;
+                return byte.MaxValue;
 
             if (removePlayer) playerList.RemoveAt(index);
 

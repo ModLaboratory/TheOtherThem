@@ -1,4 +1,3 @@
-using Steamworks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -82,8 +81,8 @@ namespace TheOtherThem.Modules
             return this;
         }
 
-        public void SetUnused() 
-        { 
+        public void SetUnused()
+        {
             AllTimers.Remove(this);
             Main.Logger.LogInfo($"Timer {Name} marked as unused, waiting for being collected by GC...");
         }

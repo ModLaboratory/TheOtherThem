@@ -20,7 +20,7 @@ public static class CoroutineUtils
     }
 
     public static void StopAllCoroutines() => Instance.StopAllCoroutines();
-    
+
     public class CustomCoroutine : MonoBehaviour
     {
         void Start()

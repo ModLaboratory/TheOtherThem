@@ -1,5 +1,4 @@
 ﻿using TheOtherThem.Modules.CustomHats.Extensions;
-using HarmonyLib;
 
 namespace TheOtherThem.Modules.CustomHats.Patches;
 

@@ -5,7 +5,7 @@ using UnityEngine;
 using static TheOtherThem.GameHistory;
 using static TheOtherThem.TheOtherRoles;
 
-namespace TheOtherThem
+namespace TheOtherThem.Roles
 {
     public class Couple
     {
@@ -21,7 +21,7 @@ namespace TheOtherThem
         }
 
         public string Icon => Helpers.ColorString(Color, " ♥");
-        
+
         public bool Existing => Lover1 != null && Lover2 != null && !Lover1.Data.Disconnected && !Lover2.Data.Disconnected;
 
         public bool Alive => Lover1 != null && Lover2 != null && Lover1.IsAlive() && Lover2.IsAlive();
@@ -157,7 +157,7 @@ namespace TheOtherThem
         public static bool Existing(PlayerControl player) => GetCouple(player)?.Existing == true;
         public static bool ExistingAndAlive(PlayerControl player) => GetCouple(player)?.ExistingAndAlive == true;
         public static bool ExistingWithKiller(PlayerControl player) => GetCouple(player)?.ExistingWithKiller == true;
-        
+
         public static void HandleDisconnect(PlayerControl player, DisconnectReasons reason) => EraseCouple(player);
 
         public static void Clear() => Couples.Clear();

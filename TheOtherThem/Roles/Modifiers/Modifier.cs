@@ -1,23 +1,9 @@
-using System.Net;
-using System.Linq;
-using BepInEx;
-using BepInEx.Configuration;
-using BepInEx.IL2CPP;
-using HarmonyLib;
-using Hazel;
 using System;
 using System.Collections.Generic;
-using System.Collections;
-using System.IO;
-using UnityEngine;
-using TheOtherThem.Objects;
-using static TheOtherThem.GameHistory;
-using static TheOtherThem.TheOtherRoles;
-using static TheOtherThem.TheOtherRolesGM;
-using TheOtherThem.Patches;
+using System.Linq;
 using System.Reflection;
 
-namespace TheOtherThem
+namespace TheOtherThem.Roles.Modifiers
 {
     public enum ModifierType
     {
@@ -64,7 +50,7 @@ namespace TheOtherThem
 
         public void Init(PlayerControl player)
         {
-            this.Player = player;
+            Player = player;
             players.Add((T)this);
             AllModifiers.Add(this);
         }
@@ -169,7 +155,7 @@ namespace TheOtherThem
 
         public static void eraseModifier(this PlayerControl player, ModifierType mod)
         {
-            if (HasModifier(player, mod))
+            if (player.HasModifier(mod))
             {
                 foreach (var t in ModifierData.allModTypes)
                 {

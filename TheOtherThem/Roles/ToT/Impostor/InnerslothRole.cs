@@ -1,4 +1,3 @@
-using Hazel;
 using System;
 using System.Collections;
 using System.Linq;
@@ -7,7 +6,7 @@ using TheOtherThem.Objects;
 using UnityEngine;
 using UnityRandom = UnityEngine.Random;
 
-namespace TheOtherThem.ToTRole.Impostor
+namespace TheOtherThem.Roles.ToT.Impostor
 {
     [RoleAutoInitialize]
     [HarmonyPatch]
@@ -22,7 +21,7 @@ namespace TheOtherThem.ToTRole.Impostor
         public static CustomButton LagButton { get; set; }
 
         InnerslothRole() : base("Innersloth", Palette.ImpostorRed,
-            (nameKey, roleColor) => InnerslothSpawnRate = new(2000, nameKey, roleColor, TeamTypeToT.Impostor, 1), 
+            (nameKey, roleColor) => InnerslothSpawnRate = new(2000, nameKey, roleColor, TeamTypeToT.Impostor, 1),
             RoleType.Innersloth, TeamTypeToT.Impostor)
         {
             Instance = this;
@@ -39,7 +38,7 @@ namespace TheOtherThem.ToTRole.Impostor
         {
             LagButton = new CustomButton(() =>
             {
-                var writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.InnerslothSabotage, Hazel.SendOption.Reliable);
+                var writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.InnerslothSabotage, SendOption.Reliable);
                 AmongUsClient.Instance.FinishRpcImmediately(writer);
                 CustomSabotageComms();
             },
@@ -61,7 +60,7 @@ namespace TheOtherThem.ToTRole.Impostor
 
         public override void OnRpcReceived(byte callId, MessageReader reader)
         {
-            if (callId == ((byte)CustomRpc.InnerslothSabotage))
+            if (callId == (byte)CustomRpc.InnerslothSabotage)
                 CustomSabotageComms();
         }
 

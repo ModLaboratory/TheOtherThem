@@ -1,17 +1,15 @@
-﻿using HarmonyLib;
-using Hazel;
+﻿using AmongUs.GameOptions;
+using Assets.CoreScripts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static TheOtherThem.TheOtherRoles;
-using static TheOtherThem.TheOtherRolesGM;
-using static TheOtherThem.GameHistory;
 using TheOtherThem.Objects;
+using TheOtherThem.Roles;
+using TheOtherThem.Roles.Modifiers;
 using UnityEngine;
-using AmongUs.GameOptions;
-using Assets.CoreScripts;
+using static TheOtherThem.GameHistory;
+using static TheOtherThem.Roles.TheOtherRolesGM;
+using static TheOtherThem.TheOtherRoles;
 
 namespace TheOtherThem.Patches
 {
@@ -293,9 +291,9 @@ namespace TheOtherThem.Patches
         static void sidekickCheckPromotion()
         {
             // If LocalPlayer is Sidekick, the Jackal is disconnected and Sidekick promotion is enabled, then trigger promotion
-            if (Sidekick.promotesToJackal && 
+            if (Sidekick.promotesToJackal &&
                 PlayerControl.LocalPlayer.IsRole(RoleType.Sidekick) &&
-                PlayerControl.LocalPlayer.IsAlive() && 
+                PlayerControl.LocalPlayer.IsAlive() &&
                 (Jackal.jackal == null || Jackal.jackal.Data.Disconnected))
             {
                 MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.SidekickPromotes, Hazel.SendOption.Reliable, -1);
@@ -508,7 +506,7 @@ namespace TheOtherThem.Patches
 
                 var canSeeInfo =
                     canSeeEverything ||
-                    p == PlayerControl.LocalPlayer || p.IsGM() || 
+                    p == PlayerControl.LocalPlayer || p.IsGM() ||
                     (Lawyer.lawyerKnowsRole && PlayerControl.LocalPlayer == Lawyer.lawyer && p == Lawyer.target);
 
                 if (canSeeInfo)
@@ -537,9 +535,10 @@ namespace TheOtherThem.Patches
                     }
 
                     // Set player name higher to align in middle
-                    if (meetingInfo != null && playerVoteArea != null) {
+                    if (meetingInfo != null && playerVoteArea != null)
+                    {
                         var playerName = playerVoteArea.NameText;
-                        playerName.transform.localPosition = new Vector3(0.3384f, (0.0311f + 0.0683f), -0.1f);    
+                        playerName.transform.localPosition = new Vector3(0.3384f, (0.0311f + 0.0683f), -0.1f);
                     }
 
                     var (tasksCompleted, tasksTotal) = TaskHandler.GetTaskInfo(p.Data);
@@ -609,10 +608,12 @@ namespace TheOtherThem.Patches
             SecurityGuard.ventTarget = target;
         }
 
-        public static void securityGuardUpdate() {
+        public static void securityGuardUpdate()
+        {
             if (SecurityGuard.securityGuard == null || PlayerControl.LocalPlayer != SecurityGuard.securityGuard || SecurityGuard.securityGuard.Data.IsDead) return;
             var (playerCompleted, _) = TaskHandler.GetTaskInfo(SecurityGuard.securityGuard.Data);
-            if (playerCompleted == SecurityGuard.rechargedTasks) {
+            if (playerCompleted == SecurityGuard.rechargedTasks)
+            {
                 SecurityGuard.rechargedTasks += SecurityGuard.rechargeTasksNumber;
                 if (SecurityGuard.maxCharges > SecurityGuard.charges) SecurityGuard.charges++;
             }
@@ -662,10 +663,12 @@ namespace TheOtherThem.Patches
 
                     // Update the arrows' color every time bc things go weird when you add a sidekick or someone dies
                     Color c = Palette.ImpostorRed;
-                    if(arrowForTeamJackal){
+                    if (arrowForTeamJackal)
+                    {
                         c = Jackal.color;
                     }
-                    else if(arrowForFox){
+                    else if (arrowForFox)
+                    {
                         c = Fox.color;
                     }
                     if (!p.Data.IsDead && (arrowForImp || arrowForTeamJackal || arrowForFox))
@@ -926,10 +929,12 @@ namespace TheOtherThem.Patches
             }
         }
 
-        public static void hackerUpdate() {
+        public static void hackerUpdate()
+        {
             if (Hacker.hacker == null || PlayerControl.LocalPlayer != Hacker.hacker || Hacker.hacker.Data.IsDead) return;
             var (playerCompleted, _) = TaskHandler.GetTaskInfo(Hacker.hacker.Data);
-            if (playerCompleted == Hacker.rechargedTasks) {
+            if (playerCompleted == Hacker.rechargedTasks)
+            {
                 Hacker.rechargedTasks += Hacker.rechargeTasksNumber;
                 if (Hacker.toolsNumber > Hacker.chargesVitals) Hacker.chargesVitals++;
                 if (Hacker.toolsNumber > Hacker.chargesAdminTable) Hacker.chargesAdminTable++;
@@ -1282,17 +1287,21 @@ namespace TheOtherThem.Patches
 
             // Update arsonist status
             Arsonist.updateStatus();
-			
+
             // Show flash on bait kill to the killer if enabled
-            if (Bait.bait != null && target == Bait.bait && Bait.showKillFlash && __instance != Bait.bait && __instance == PlayerControl.LocalPlayer) {
+            if (Bait.bait != null && target == Bait.bait && Bait.showKillFlash && __instance != Bait.bait && __instance == PlayerControl.LocalPlayer)
+            {
                 HudManager.Instance.FullScreen.enabled = true;
-                HudManager.Instance.StartCoroutine(Effects.Lerp(1f, new Action<float>((p) => {
+                HudManager.Instance.StartCoroutine(Effects.Lerp(1f, new Action<float>((p) =>
+                {
                     var renderer = HudManager.Instance.FullScreen;
-                    if (p < 0.5) {
+                    if (p < 0.5)
+                    {
                         if (renderer != null)
                             renderer.color = new Color(204f / 255f, 102f / 255f, 0f / 255f, Mathf.Clamp01(p * 2 * 0.75f));
                     }
-                    else {
+                    else
+                    {
                         if (renderer != null)
                             renderer.color = new Color(204f / 255f, 102f / 255f, 0f / 255f, Mathf.Clamp01((1 - p) * 2 * 0.75f));
                     }
@@ -1332,10 +1341,12 @@ namespace TheOtherThem.Patches
     }
 
     [HarmonyPatch(typeof(KillAnimation), nameof(KillAnimation.CoPerformKill))]
-    class KillAnimationCoPerformKillPatch {
+    class KillAnimationCoPerformKillPatch
+    {
         public static bool hideNextAnimation = false;
 
-        public static void Prefix(KillAnimation __instance, [HarmonyArgument(0)]ref PlayerControl source, [HarmonyArgument(1)]ref PlayerControl target) {
+        public static void Prefix(KillAnimation __instance, [HarmonyArgument(0)] ref PlayerControl source, [HarmonyArgument(1)] ref PlayerControl target)
+        {
             if (hideNextAnimation)
                 source = target;
             hideNextAnimation = false;
@@ -1343,17 +1354,21 @@ namespace TheOtherThem.Patches
     }
 
     [HarmonyPatch(typeof(KillAnimation), nameof(KillAnimation.SetMovement))]
-    class KillAnimationSetMovementPatch {
+    class KillAnimationSetMovementPatch
+    {
         private static int? colorId = null;
-        public static void Prefix(PlayerControl source, bool canMove) {
+        public static void Prefix(PlayerControl source, bool canMove)
+        {
             Color color = source.cosmetics.currentBodySprite.BodySprite.material.GetColor("_BodyColor");
-            if (color != null && Morphling.morphling != null && source.Data.PlayerId == Morphling.morphling.PlayerId) {
+            if (color != null && Morphling.morphling != null && source.Data.PlayerId == Morphling.morphling.PlayerId)
+            {
                 var index = Palette.PlayerColors.IndexOf(color);
                 if (index != -1) colorId = index;
             }
         }
 
-        public static void Postfix(PlayerControl source, bool canMove) {
+        public static void Postfix(PlayerControl source, bool canMove)
+        {
             if (colorId.HasValue) source.RawSetColor(colorId.Value);
             colorId = null;
         }

@@ -1,8 +1,5 @@
 ﻿using AmongUs.Data.Legacy;
-using HarmonyLib;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
@@ -19,7 +16,8 @@ namespace TheOtherThem
 
         private const string BlankText = "[BLANK]";
 
-        public ModTranslation() { 
+        public ModTranslation()
+        {
 
         }
 

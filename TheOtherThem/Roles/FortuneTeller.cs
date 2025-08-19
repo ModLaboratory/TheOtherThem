@@ -1,12 +1,10 @@
-using HarmonyLib;
-using Hazel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using TheOtherThem.Objects;
 using UnityEngine;
 
-namespace TheOtherThem
+namespace TheOtherThem.Roles
 {
     [HarmonyPatch]
     public class FortuneTeller : RoleBase<FortuneTeller>
@@ -91,7 +89,7 @@ namespace TheOtherThem
             {
                 status = playerStatus[index];
             }
-            return (progress.ContainsKey(index) && progress[index] >= duration) || !status;
+            return progress.ContainsKey(index) && progress[index] >= duration || !status;
         }
 
         public static List<CustomButton> fortuneTellerButtons;
@@ -116,7 +114,8 @@ namespace TheOtherThem
                         Local.divine(p);
                     }
                 };
-            };
+            }
+            ;
 
             Func<bool> fortuneTellerHasButton(byte index)
             {
@@ -271,7 +270,7 @@ namespace TheOtherThem
                         if (arrow?.ArrowObject != null)
                         {
                             arrow.ArrowObject.SetActive(false);
-                            UnityEngine.Object.Destroy(arrow.ArrowObject);
+                            Object.Destroy(arrow.ArrowObject);
                         }
                     }
 
@@ -283,7 +282,7 @@ namespace TheOtherThem
                         if (p.Player.IsDead()) continue;
                         if (!p.divinedFlag) continue;
 
-                        Arrow arrow = new Arrow(FortuneTeller.color);
+                        Arrow arrow = new Arrow(color);
                         arrow.ArrowObject.SetActive(true);
                         arrow.Update(p.Player.transform.position);
                         arrows.Add(arrow);
@@ -312,7 +311,8 @@ namespace TheOtherThem
             string msgInfo = "";
             Color color = Color.white;
 
-            if (divineResult == DivineResults.BlackWhite) {
+            if (divineResult == DivineResults.BlackWhite)
+            {
                 if (p.IsCrewmate())
                 {
                     msgBase = "divineMessageIsCrew";
@@ -325,7 +325,8 @@ namespace TheOtherThem
                 }
             }
 
-            else if (divineResult == DivineResults.Team) {
+            else if (divineResult == DivineResults.Team)
+            {
                 msgBase = "divineMessageTeam";
                 if (p.IsCrewmate())
                 {
@@ -344,9 +345,10 @@ namespace TheOtherThem
                 }
             }
 
-            else if (divineResult == DivineResults.Role) { 
+            else if (divineResult == DivineResults.Role)
+            {
                 msgBase = "divineMessageRole";
-                msgInfo = String.Join(" ", RoleInfo.GetRoleInfoForPlayer(p).Select(x => Helpers.ColorString(x.RoleColor, x.Name)).ToArray());
+                msgInfo = string.Join(" ", RoleInfo.GetRoleInfoForPlayer(p).Select(x => Helpers.ColorString(x.RoleColor, x.Name)).ToArray());
             }
 
             string msg = string.Format(ModTranslation.GetString(msgBase), p.name, msgInfo);
@@ -359,7 +361,7 @@ namespace TheOtherThem
             numUsed += 1;
 
             // 占いを実行したことで発火される処理を他クライアントに通知
-            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.FortuneTellerUsedDivine, Hazel.SendOption.Reliable, -1);
+            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.FortuneTellerUsedDivine, SendOption.Reliable, -1);
             writer.Write(PlayerControl.LocalPlayer.PlayerId);
             writer.Write(p.PlayerId);
             AmongUsClient.Instance.FinishRpcImmediately(writer);
@@ -372,10 +374,10 @@ namespace TheOtherThem
             RoomTracker roomTracker = HudManager.Instance?.roomTracker;
             if (roomTracker != null)
             {
-                GameObject gameObject = UnityEngine.Object.Instantiate(roomTracker.gameObject);
+                GameObject gameObject = Object.Instantiate(roomTracker.gameObject);
 
                 gameObject.transform.SetParent(HudManager.Instance.transform);
-                UnityEngine.Object.DestroyImmediate(gameObject.GetComponent<RoomTracker>());
+                Object.DestroyImmediate(gameObject.GetComponent<RoomTracker>());
 
                 // Use local position to place it in the player's view instead of the world location
                 gameObject.transform.localPosition = new Vector3(0, -1.8f, gameObject.transform.localPosition.z);
@@ -389,7 +391,7 @@ namespace TheOtherThem
                 {
                     if (p == 1f && text != null && text.gameObject != null)
                     {
-                        UnityEngine.Object.Destroy(text.gameObject);
+                        Object.Destroy(text.gameObject);
                     }
                 })));
             }

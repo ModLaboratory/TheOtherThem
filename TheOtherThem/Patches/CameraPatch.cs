@@ -1,13 +1,9 @@
-using HarmonyLib;
-using Hazel;
 using System;
 using System.Linq;
-using System.Collections.Generic;
 using UnityEngine;
-using static TheOtherThem.TheOtherRoles;
-using System.Reflection;
 
-namespace TheOtherThem.Patches {
+namespace TheOtherThem.Patches
+{
 
     [Harmony]
     public class CameraPatch

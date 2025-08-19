@@ -1,11 +1,10 @@
-using HarmonyLib;
-using Hazel;
 using System;
+using TheOtherThem.Roles;
+using TheOtherThem.Roles.Modifiers;
 using UnityEngine;
 using static TheOtherThem.MapOptions;
-using static TheOtherThem.GameHistory;
+using static TheOtherThem.Roles.TheOtherRolesGM;
 using static TheOtherThem.TheOtherRoles;
-using static TheOtherThem.TheOtherRolesGM;
 
 
 namespace TheOtherThem.Patches
@@ -48,7 +47,7 @@ namespace TheOtherThem.Patches
 
             if (pc.IsRole(RoleType.Fox) && (isLights || isComms || isReactor || isO2))
             {
-                if (isLights|| isComms)
+                if (isLights || isComms)
                 {
                     return true;
                 }
@@ -266,7 +265,8 @@ namespace TheOtherThem.Patches
                     // Use an unchecked kill command, to allow shorter kill cooldowns etc. without getting kicked
                     MurderAttemptResult res = Helpers.checkMuderAttemptAndKill(PlayerControl.LocalPlayer, __instance.currentTarget, showAnimation: showAnimation);
                     // Handle blank kill
-                    if (res == MurderAttemptResult.BlankKill) {
+                    if (res == MurderAttemptResult.BlankKill)
+                    {
                         PlayerControl.LocalPlayer.killTimer = GameManager.Instance.LogicOptions.GetKillCooldown();
                         if (PlayerControl.LocalPlayer == Cleaner.cleaner)
                             Cleaner.cleaner.killTimer = HudManagerStartPatch.cleanerCleanButton.Timer = HudManagerStartPatch.cleanerCleanButton.MaxTimer;
@@ -369,12 +369,12 @@ namespace TheOtherThem.Patches
                 {
                     roleCanCallEmergency = false;
                     statusText = ModTranslation.GetString("jesterMeetingButton");
-	            }
+                }
 
-	            // Potentially deactivate emergency button for Lawyer
-	            if (Lawyer.lawyer != null && Lawyer.lawyer == PlayerControl.LocalPlayer && Lawyer.winsAfterMeetings)
+                // Potentially deactivate emergency button for Lawyer
+                if (Lawyer.lawyer != null && Lawyer.lawyer == PlayerControl.LocalPlayer && Lawyer.winsAfterMeetings)
                 {
-	                roleCanCallEmergency = false;
+                    roleCanCallEmergency = false;
                     statusText = String.Format(ModTranslation.GetString("lawyerMeetingButton"), Lawyer.neededMeetings - Lawyer.meetings);
                 }
 

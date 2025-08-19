@@ -1,6 +1,8 @@
 using AmongUs.GameOptions;
 using System;
-using static TheOtherThem.TheOtherRolesGM;
+using TheOtherThem.Roles;
+using TheOtherThem.Roles.Modifiers;
+using static TheOtherThem.Roles.TheOtherRolesGM;
 
 namespace TheOtherThem
 {

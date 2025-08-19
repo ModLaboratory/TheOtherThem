@@ -22,7 +22,7 @@ namespace TheOtherThem.Objects
             {
                 var random = new System.Random();
 
-                do 
+                do
                     id = random.Next();
                 while (_messages.Keys.Select(pair => pair.Item1).Contains(id));
 
@@ -46,13 +46,13 @@ namespace TheOtherThem.Objects
         public static bool RemoveErrorString(int id)
         {
             var pair = _messages.Keys.FirstOrDefault(pair => pair.Item1 == id);
-            if (pair == default) 
+            if (pair == default)
                 return false;
             return _messages.Remove(pair);
         }
 
         public static bool HasError(int id) => _messages.Keys.Select(pair => pair.Item1).Any(i => i == id);
-        
+
         public static void ClearErrorString() => _messages.Clear();
 
         public class ErrorNotificationManager : MonoBehaviour
@@ -75,7 +75,7 @@ namespace TheOtherThem.Objects
 
                 Main.Logger.LogInfo(nameof(ErrorNotificationManager) + " initialized");
             }
-            
+
             public void Update()
             {
                 if (!ErrorTextMesh) return;

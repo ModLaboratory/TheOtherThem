@@ -1,17 +1,19 @@
 using AmongUs.GameOptions;
-using Hazel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using TheOtherThem.Modules;
 using TheOtherThem.Objects;
 using TheOtherThem.Patches;
-using TheOtherThem.ToTRole;
+using TheOtherThem.Roles;
+using TheOtherThem.Roles.Modifiers;
+using TheOtherThem.Roles.ToT;
 using UnityEngine;
 using static TheOtherThem.GameHistory;
 using static TheOtherThem.HudManagerStartPatch;
 using static TheOtherThem.MapOptions;
+using static TheOtherThem.Roles.TheOtherRolesGM;
 using static TheOtherThem.TheOtherRoles;
-using static TheOtherThem.TheOtherRolesGM;
 
 namespace TheOtherThem
 {

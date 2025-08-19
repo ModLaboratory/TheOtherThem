@@ -1,17 +1,13 @@
-
-using System.Linq;
-using HarmonyLib;
-using Hazel;
-using System;
 using System.Collections.Generic;
-using UnityEngine;
 using TheOtherThem.Objects;
 using TheOtherThem.Patches;
+using UnityEngine;
 
-namespace TheOtherThem
+namespace TheOtherThem.Roles
 {
     [HarmonyPatch]
-    public class SerialKiller : RoleBase<SerialKiller> {
+    public class SerialKiller : RoleBase<SerialKiller>
+    {
 
         private static CustomButton serialKillerButton;
 
@@ -72,7 +68,7 @@ namespace TheOtherThem
                 () => { return PlayerControl.LocalPlayer.IsRole(RoleType.SerialKiller) && PlayerControl.LocalPlayer.IsAlive() && Local.isCountDown; },
                 () => { return true; },
                 () => { },
-                SerialKiller.getButtonSprite(),
+                getButtonSprite(),
                 new Vector3(-1.8f, -0.06f, 0),
                 hm,
                 hm.AbilityButton,
@@ -85,16 +81,17 @@ namespace TheOtherThem
             serialKillerButton.isEffectActive = true;
         }
 
-        public void suicide() {
+        public void suicide()
+        {
             byte targetId = PlayerControl.LocalPlayer.PlayerId;
-            MessageWriter killWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.SerialKillerSuicide, Hazel.SendOption.Reliable, -1); killWriter.Write(targetId);
+            MessageWriter killWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.SerialKillerSuicide, SendOption.Reliable, -1); killWriter.Write(targetId);
             AmongUsClient.Instance.FinishRpcImmediately(killWriter);
             RpcProcedure.serialKillerSuicide(targetId);
         }
 
         public static void SetButtonCooldowns()
         {
-            serialKillerButton.MaxTimer = SerialKiller.suicideTimer;
+            serialKillerButton.MaxTimer = suicideTimer;
         }
 
         public static void Clear()

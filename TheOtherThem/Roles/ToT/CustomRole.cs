@@ -1,17 +1,13 @@
 global using PlayerStatistics = TheOtherThem.Patches.OnGameEndPatch.EndGameNavigationPatch.PlayerStatistics;
-using CheckEndCriteriaPatch = TheOtherThem.Patches.OnGameEndPatch.EndGameNavigationPatch.CheckEndCriteriaPatch;
-using Hazel;
 using System.Collections.Generic;
+using System.Linq;
+using TheOtherThem.Modules;
 using TheOtherThem.Objects;
 using TheOtherThem.Patches;
 using UnityEngine;
-using System;
-using System.Linq;
-using AmongUs.GameOptions;
-using static Il2CppSystem.Globalization.CultureInfo;
-using static UnityEngine.GraphicsBuffer;
+using CheckEndCriteriaPatch = TheOtherThem.Patches.OnGameEndPatch.EndGameNavigationPatch.CheckEndCriteriaPatch;
 
-namespace TheOtherThem.ToTRole;
+namespace TheOtherThem.Roles.ToT;
 public abstract class CustomRole
 {
     public delegate CustomRoleOption BaseRoleOptionGetter(string name, Color color);
@@ -59,7 +55,7 @@ public abstract class CustomRole
                 general.Insert(winnableInsertionIndex, CanWin);
             }
         }
-        
+
         Main.Logger.LogInfo($"{translationName} ({nameof(winnable)} = {winnable}, {nameof(needsStatisticalWinningInfo)} = {needsStatisticalWinningInfo}, {nameof(winnableInsertionIndex)} = {winnableInsertionIndex}) registered");
     }
 
@@ -170,7 +166,7 @@ static class PlayerKillButtonPatch
             }
         }
 
-        outputList.Sort((a, b) => 
+        outputList.Sort((a, b) =>
         {
             float magnitude2 = (a.GetTruePosition() - myPos).magnitude;
             float magnitude3 = (b.GetTruePosition() - myPos).magnitude;

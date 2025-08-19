@@ -1,16 +1,14 @@
-using HarmonyLib;
-using Hazel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using TheOtherThem.Objects;
+using TheOtherThem.Patches;
 using UnityEngine;
+using static TheOtherThem.GameHistory;
 using static TheOtherThem.Patches.PlayerControlFixedUpdatePatch;
 using static TheOtherThem.TheOtherRoles;
-using static TheOtherThem.GameHistory;
-using TheOtherThem.Patches;
 
-namespace TheOtherThem
+namespace TheOtherThem.Roles
 {
     [HarmonyPatch]
     public class Fox : RoleBase<Fox>
@@ -69,7 +67,7 @@ namespace TheOtherThem
         {
             exiledFox.Add(Player.PlayerId);
             Player.ClearAllTasks();
-            if (!Fox.isFoxAlive())
+            if (!isFoxAlive())
             {
                 foreach (var immoralist in Immoralist.AllPlayers)
                 {
@@ -91,7 +89,8 @@ namespace TheOtherThem
 
         public override void FixedUpdate()
         {
-            if (Player == PlayerControl.LocalPlayer) {
+            if (Player == PlayerControl.LocalPlayer)
+            {
                 arrowUpdate();
                 if (Player.IsAlive())
                 {
@@ -104,7 +103,7 @@ namespace TheOtherThem
                         }
                     }
                     currentTarget = setTarget(untargetablePlayers: untargetablePlayers);
-                    setPlayerOutline(currentTarget, Fox.color);
+                    setPlayerOutline(currentTarget, color);
                 }
             }
         }
@@ -117,7 +116,7 @@ namespace TheOtherThem
                 if (arrow?.ArrowObject != null)
                 {
                     arrow.ArrowObject.SetActive(false);
-                    UnityEngine.Object.Destroy(arrow.ArrowObject);
+                    Object.Destroy(arrow.ArrowObject);
                 }
             }
             arrows = new List<Arrow>();
@@ -192,7 +191,7 @@ namespace TheOtherThem
                         return;
                     }
 
-                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.FoxStealth, Hazel.SendOption.Reliable, -1);
+                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.FoxStealth, SendOption.Reliable, -1);
                     writer.Write(PlayerControl.LocalPlayer.PlayerId);
                     writer.Write(true);
                     AmongUsClient.Instance.FinishRpcImmediately(writer);
@@ -213,19 +212,19 @@ namespace TheOtherThem
                 },
                 () =>
                 {
-                    foxButton.Timer = foxButton.MaxTimer = Fox.stealthCooldown;
+                    foxButton.Timer = foxButton.MaxTimer = stealthCooldown;
                 },
-                Fox.getHideButtonSprite(),
+                getHideButtonSprite(),
                 new Vector3(-1.8f, -0.06f, 0),
                 hm,
                 hm.AbilityButton,
                 KeyCode.F,
                 true,
-                Fox.stealthDuration,
+                stealthDuration,
                 () =>
                 {
-                    foxButton.Timer = foxButton.MaxTimer = Fox.stealthCooldown;
-                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.FoxStealth, Hazel.SendOption.Reliable, -1);
+                    foxButton.Timer = foxButton.MaxTimer = stealthCooldown;
+                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.FoxStealth, SendOption.Reliable, -1);
                     writer.Write(PlayerControl.LocalPlayer.PlayerId);
                     writer.Write(false);
                     AmongUsClient.Instance.FinishRpcImmediately(writer);
@@ -248,7 +247,7 @@ namespace TheOtherThem
                     {
                         if (task.TaskType == TaskTypes.FixLights)
                         {
-                            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.EngineerFixLights, Hazel.SendOption.Reliable, -1);
+                            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.EngineerFixLights, SendOption.Reliable, -1);
                             AmongUsClient.Instance.FinishRpcImmediately(writer);
                             RpcProcedure.EngineerFixLights();
                         }
@@ -288,7 +287,7 @@ namespace TheOtherThem
                     return sabotageActive && numRepair > 0 && PlayerControl.LocalPlayer.CanMove;
                 },
                 () => { },
-                Fox.getRepairButtonSprite(),
+                getRepairButtonSprite(),
                 new Vector3(-0.9f, 1f, 0),
                 hm,
                 hm.AbilityButton,
@@ -299,13 +298,13 @@ namespace TheOtherThem
             foxImmoralistButton = new CustomButton(
                 () =>
                 {
-                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.FoxCreatesImmoralist, Hazel.SendOption.Reliable, -1);
+                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.FoxCreatesImmoralist, SendOption.Reliable, -1);
                     writer.Write(currentTarget.PlayerId);
                     AmongUsClient.Instance.FinishRpcImmediately(writer);
                     RpcProcedure.foxCreatesImmoralist(currentTarget.PlayerId);
                 },
                 () => { return !Immoralist.Exists && canCreateImmoralist && PlayerControl.LocalPlayer.IsRole(RoleType.Fox) && PlayerControl.LocalPlayer.IsAlive(); },
-                () => { return canCreateImmoralist && Fox.currentTarget != null && PlayerControl.LocalPlayer.CanMove; },
+                () => { return canCreateImmoralist && currentTarget != null && PlayerControl.LocalPlayer.CanMove; },
                 () => { foxImmoralistButton.Timer = 20; },
                 getImmoralistButtonSprite(),
                 new Vector3(-1.8f, 1f, 0),
@@ -332,7 +331,7 @@ namespace TheOtherThem
                     if (arrow?.ArrowObject != null)
                     {
                         arrow.ArrowObject.SetActive(false);
-                        UnityEngine.Object.Destroy(arrow.ArrowObject);
+                        Object.Destroy(arrow.ArrowObject);
                     }
                 }
 
@@ -381,7 +380,7 @@ namespace TheOtherThem
         public static bool isFoxAlive()
         {
             bool isAlive = false;
-            foreach (var fox in Fox.AllPlayers)
+            foreach (var fox in AllPlayers)
             {
                 if (fox.IsAlive() && !exiledFox.Contains(fox.PlayerId))
                 {
@@ -456,7 +455,7 @@ namespace TheOtherThem
                         PlayerControl.LocalPlayer.IsRole(RoleType.Fox) ||
                         PlayerControl.LocalPlayer.IsRole(RoleType.Immoralist) ||
                         PlayerControl.LocalPlayer.IsDead() ||
-                        (PlayerControl.LocalPlayer.IsRole(RoleType.Lighter) && Lighter.isLightActive(PlayerControl.LocalPlayer));
+                        PlayerControl.LocalPlayer.IsRole(RoleType.Lighter) && Lighter.isLightActive(PlayerControl.LocalPlayer);
 
                     var opacity = canSee ? 0.1f : 0.0f;
 

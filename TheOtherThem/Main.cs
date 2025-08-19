@@ -1,8 +1,7 @@
 ﻿global using HarmonyLib;
-global using Object = UnityEngine.Object;
-global using Il2CppCollections = Il2CppSystem.Collections;
-global using Il2CppGenericCollections = Il2CppSystem.Collections.Generic;
 global using Hazel;
+global using Il2CppGenericCollections = Il2CppSystem.Collections.Generic;
+global using Object = UnityEngine.Object;
 using AmongUs.Data.Legacy;
 using AmongUs.Data.Player;
 using AmongUs.GameOptions;
@@ -15,8 +14,8 @@ using System.Linq;
 using System.Text;
 using TheOtherThem.Modules;
 using TheOtherThem.Objects;
+using TheOtherThem.Roles;
 using UnityEngine;
-using TheOtherThem.ToTRole;
 
 namespace TheOtherThem
 {

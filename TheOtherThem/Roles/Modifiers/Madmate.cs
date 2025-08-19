@@ -1,13 +1,8 @@
-using HarmonyLib;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using TheOtherThem.Objects;
-using TheOtherThem.Patches;
-using static TheOtherThem.TheOtherRoles;
-using static TheOtherThem.GameHistory;
 
-namespace TheOtherThem
+namespace TheOtherThem.Roles.Modifiers
 {
     [HarmonyPatch]
     public class Madmate : ModifierBase<Madmate>

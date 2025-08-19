@@ -1,12 +1,10 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using TheOtherThem.Modules;
 using TheOtherThem.Objects;
-using TheOtherThem.Patches;
 using UnityEngine;
 
-namespace TheOtherThem.ToTRole.Neutral
+namespace TheOtherThem.Roles.ToT.Neutral
 {
     [RoleAutoInitialize]
     [HarmonyPatch]
@@ -40,7 +38,7 @@ namespace TheOtherThem.ToTRole.Neutral
             PossessionToReviveMaxTime = CustomOption.CreateInsertable(2302, "PhoenixPossessionRevivalMaxTime", 2, 1, 3, 1, TeamTypeToT.Neutral, PhoenixRoleSpawnRate);
             HasArrowToDeadBodyForPossession = CustomOption.CreateInsertable(2303, "PhoenixHasArrowToDeadBodyForPossession", true, TeamTypeToT.Neutral, PhoenixRoleSpawnRate);
         }
-        
+
         public void AdjustWinningKillingCount() // make game a bit easier
         {
             int playerCount = PlayerControl.AllPlayerControls.Count;
@@ -123,7 +121,7 @@ namespace TheOtherThem.ToTRole.Neutral
         {
             if (!__instance.IsRole(RoleType.Phoenix)) return; // Isnt Phoenix
 
-            if (_deadTimes != 0) 
+            if (_deadTimes != 0)
                 _killedAfterThisRevival = true;
 
             _currentKilledCount++; // Every client SHOULD HAVE the SAME _currentKilledCount value without RPC sync since MurderPlayer executes for every client
@@ -150,7 +148,7 @@ namespace TheOtherThem.ToTRole.Neutral
 
 
         public override string GetRoleTaskHintText() => string.Format(base.GetRoleTaskHintText(), _currentKilledCount, _realWinningKillCount);
-        
+
         public override bool ShouldShowKillButton() => !_killedAfterThisRevival;
 
         public override void OnRpcReceived(byte callId, MessageReader reader)
@@ -169,7 +167,7 @@ namespace TheOtherThem.ToTRole.Neutral
                     var mat = _currentTarget.bodyRenderers.First().material;
                     if (_currentTarget)
                         mat.SetFloat("_Outline", 0);
-                    
+
                     _currentTarget = GetClosestBody();
                     if (_currentTarget)
                     {
@@ -198,7 +196,7 @@ namespace TheOtherThem.ToTRole.Neutral
             if (!Players.Any()) return false;
             if (Players.FirstOrDefault().IsDead) return false;
 
-            if (_currentKilledCount >= _realWinningKillCount) 
+            if (_currentKilledCount >= _realWinningKillCount)
                 return true;
 
             return false;

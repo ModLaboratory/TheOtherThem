@@ -1,17 +1,10 @@
-using HarmonyLib;
-using Hazel;
 using System;
-using UnityEngine;
-using static TheOtherThem.TheOtherRoles;
-using static TheOtherThem.TheOtherRolesGM;
-using TheOtherThem.Modules;
-using TheOtherThem.Objects;
 using System.Collections.Generic;
-using System.Linq;
-using TheOtherThem.Patches;
-using System.Reflection;
+using TheOtherThem.Objects;
+using UnityEngine;
+using static TheOtherThem.Roles.TheOtherRolesGM;
 
-namespace TheOtherThem
+namespace TheOtherThem.Roles
 {
     [HarmonyPatch]
     public static class ButtonsGM
@@ -77,7 +70,8 @@ namespace TheOtherThem
                         GM.gm.transform.position = target.transform.position;
                     }
                 };
-            };
+            }
+            ;
 
             Action gmKillButtonOnClick(byte index)
             {
@@ -91,29 +85,30 @@ namespace TheOtherThem
 
                     if (!target.Data.IsDead)
                     {
-                        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.GMKill, Hazel.SendOption.Reliable, -1);
+                        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.GMKill, SendOption.Reliable, -1);
                         writer.Write(index);
                         AmongUsClient.Instance.FinishRpcImmediately(writer);
                         RpcProcedure.GMKill(index);
                     }
                     else
                     {
-                        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.GMRevive, Hazel.SendOption.Reliable, -1);
+                        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.GMRevive, SendOption.Reliable, -1);
                         writer.Write(index);
                         AmongUsClient.Instance.FinishRpcImmediately(writer);
                         RpcProcedure.GMRevive(index);
                     }
                 };
-            };
+            }
+            ;
 
             Func<bool> gmHasButton(byte index)
             {
                 return () =>
                 {
-                    if ((GM.gm == null || PlayerControl.LocalPlayer != GM.gm) ||
-                        (!MapOptions.PlayerIcons.ContainsKey(index)) ||
-                        (!GM.canWarp) ||
-                        (Helpers.PlayerById(index).Data.Disconnected))
+                    if (GM.gm == null || PlayerControl.LocalPlayer != GM.gm ||
+                        !MapOptions.PlayerIcons.ContainsKey(index) ||
+                        !GM.canWarp ||
+                        Helpers.PlayerById(index).Data.Disconnected)
                     {
                         return false;
                     }
@@ -126,10 +121,10 @@ namespace TheOtherThem
             {
                 return () =>
                 {
-                    if ((GM.gm == null || PlayerControl.LocalPlayer != GM.gm) ||
-                        (!MapOptions.PlayerIcons.ContainsKey(index)) ||
-                        (!GM.canKill) ||
-                        (Helpers.PlayerById(index).Data.Disconnected))
+                    if (GM.gm == null || PlayerControl.LocalPlayer != GM.gm ||
+                        !MapOptions.PlayerIcons.ContainsKey(index) ||
+                        !GM.canKill ||
+                        Helpers.PlayerById(index).Data.Disconnected)
                     {
                         return false;
                     }
@@ -258,7 +253,8 @@ namespace TheOtherThem
             }
 
             gmZoomOut = new CustomButton(
-                () => {
+                () =>
+                {
 
                     if (Camera.main.orthographicSize < 18.0f)
                     {
@@ -292,7 +288,8 @@ namespace TheOtherThem
             gmZoomOut.LocalScale = Vector3.one * 0.275f;
 
             gmZoomIn = new CustomButton(
-                () => {
+                () =>
+                {
 
                     if (Camera.main.orthographicSize > 3.0f)
                     {

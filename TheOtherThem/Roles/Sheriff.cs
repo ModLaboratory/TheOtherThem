@@ -1,13 +1,11 @@
-using HarmonyLib;
-using Hazel;
-using System;
 using System.Collections.Generic;
 using TheOtherThem.Objects;
+using TheOtherThem.Roles.Modifiers;
 using UnityEngine;
-using static TheOtherThem.TheOtherRoles;
 using static TheOtherThem.Patches.PlayerControlFixedUpdatePatch;
+using static TheOtherThem.TheOtherRoles;
 
-namespace TheOtherThem
+namespace TheOtherThem.Roles
 {
     [HarmonyPatch]
     public class Sheriff : RoleBase<Sheriff>
@@ -36,11 +34,12 @@ namespace TheOtherThem
         public override void OnMeetingStart() { }
         public override void OnMeetingEnd() { }
 
-        public override void FixedUpdate() {
+        public override void FixedUpdate()
+        {
             if (Player == PlayerControl.LocalPlayer && numShots > 0)
             {
                 currentTarget = setTarget();
-                setPlayerOutline(currentTarget, Sheriff.color);
+                setPlayerOutline(currentTarget, color);
             }
         }
 
@@ -48,7 +47,8 @@ namespace TheOtherThem
         public override void OnDeath(PlayerControl killer = null) { }
         public override void HandleDisconnect(PlayerControl player, DisconnectReasons reason) { }
 
-        public static void MakeButtons(HudManager hm) {
+        public static void MakeButtons(HudManager hm)
+        {
 
             // Sheriff Kill
             sheriffKillButton = new CustomButton(
@@ -66,11 +66,11 @@ namespace TheOtherThem
                     {
                         bool misfire = false;
                         byte targetId = Local.currentTarget.PlayerId; ;
-                        if ((Local.currentTarget.Data.Role.IsImpostor && (Local.currentTarget != Mini.mini || Mini.isGrownUp())) ||
-                            (Sheriff.spyCanDieToSheriff && Spy.spy == Local.currentTarget) ||
-                            (Sheriff.madmateCanDieToSheriff && Local.currentTarget.HasModifier(ModifierType.Madmate)) ||
-                            (Sheriff.canKillNeutrals && Local.currentTarget.IsNeutral()) ||
-                            (Jackal.jackal == Local.currentTarget || Sidekick.sidekick == Local.currentTarget))
+                        if (Local.currentTarget.Data.Role.IsImpostor && (Local.currentTarget != Mini.mini || Mini.isGrownUp()) ||
+                            spyCanDieToSheriff && Spy.spy == Local.currentTarget ||
+                            madmateCanDieToSheriff && Local.currentTarget.HasModifier(ModifierType.Madmate) ||
+                            canKillNeutrals && Local.currentTarget.IsNeutral() ||
+                            Jackal.jackal == Local.currentTarget || Sidekick.sidekick == Local.currentTarget)
                         {
                             //targetId = Sheriff.currentTarget.PlayerId;
                             misfire = false;
@@ -86,7 +86,7 @@ namespace TheOtherThem
                         {
                             misfire = true;
                         }
-                        MessageWriter killWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.SheriffKill, Hazel.SendOption.Reliable, -1);
+                        MessageWriter killWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.SheriffKill, SendOption.Reliable, -1);
                         killWriter.Write(PlayerControl.LocalPlayer.Data.PlayerId);
                         killWriter.Write(targetId);
                         killWriter.Write(misfire);
@@ -103,7 +103,7 @@ namespace TheOtherThem
                     if (sheriffNumShotsText != null)
                     {
                         if (Local.numShots > 0)
-                            sheriffNumShotsText.text = String.Format(ModTranslation.GetString("sheriffShots"), Local.numShots);
+                            sheriffNumShotsText.text = string.Format(ModTranslation.GetString("sheriffShots"), Local.numShots);
                         else
                             sheriffNumShotsText.text = "";
                     }
@@ -117,7 +117,7 @@ namespace TheOtherThem
                 KeyCode.Q
             );
 
-            sheriffNumShotsText = GameObject.Instantiate(sheriffKillButton.actionButton.cooldownTimerText, sheriffKillButton.actionButton.cooldownTimerText.transform.parent);
+            sheriffNumShotsText = Object.Instantiate(sheriffKillButton.actionButton.cooldownTimerText, sheriffKillButton.actionButton.cooldownTimerText.transform.parent);
             sheriffNumShotsText.text = "";
             sheriffNumShotsText.enableWordWrapping = false;
             sheriffNumShotsText.transform.localScale = Vector3.one * 0.5f;
@@ -126,7 +126,7 @@ namespace TheOtherThem
 
         public static void SetButtonCooldowns()
         {
-            sheriffKillButton.MaxTimer = Sheriff.cooldown;
+            sheriffKillButton.MaxTimer = cooldown;
         }
 
         public static void Clear()

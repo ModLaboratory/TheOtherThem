@@ -1,7 +1,7 @@
-using System.Collections.Generic;
 using System;
-using UnityEngine;
+using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 // Code base from MalumMenu
 namespace TheOtherThem.Objects
@@ -64,7 +64,7 @@ namespace TheOtherThem.Objects
                     if (playerData.Object != null)
                         panel.NameText.text = playerData.PlayerName;
                     panel.transform.FindChild("Nameplate").FindChild("Highlight").FindChild("ShapeshifterIcon").gameObject.SetActive(false);
-                    
+
                     __instance.potentialVictims.Add(panel);
                     elements.Add(panel.Button);
                 }

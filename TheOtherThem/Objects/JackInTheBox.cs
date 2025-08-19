@@ -17,13 +17,13 @@ namespace TheOtherThem.Objects
 
         public static Sprite GetBoxAnimationSprite(int index)
         {
-            if (BoxAnimationSprites == null || BoxAnimationSprites.Length == 0) 
+            if (BoxAnimationSprites == null || BoxAnimationSprites.Length == 0)
                 return null;
 
             index = Mathf.Clamp(index, 0, BoxAnimationSprites.Length - 1);
             if (BoxAnimationSprites[index] == null)
                 BoxAnimationSprites[index] = Helpers.LoadSpriteFromResources($"TheOtherThem.Resources.TricksterAnimation.trickster_box_00{index + 1:00}.png", 175f);
-            
+
             return BoxAnimationSprites[index];
         }
 
@@ -111,7 +111,7 @@ namespace TheOtherThem.Objects
         }
 
         public static bool HasJackInTheBoxLimitReached() => AllJackInTheBoxes.Count >= JackInTheBoxLimit;
-        
+
         private static void ConnectVents()
         {
             for (var i = 0; i < AllJackInTheBoxes.Count - 1; i++)

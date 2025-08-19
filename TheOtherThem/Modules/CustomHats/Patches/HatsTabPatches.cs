@@ -64,7 +64,7 @@
 //            var value = packages[key];
 //            yOffset = CreateHatPackage(value, key, yOffset, __instance);
 //        }
-        
+
 //        __instance.scroller.ContentYBounds.max = -(yOffset + 4.1f);
 //        return false;
 //    }
@@ -121,7 +121,7 @@
 //                if (foreground != null) {
 //                    foreground.localPosition = Vector3.down * 0.243f;
 //                }
-                
+
 //                if (textTemplate != null) {
 //                    var description = Object.Instantiate(textTemplate, colorChip.transform);
 //                    description.transform.localPosition = new Vector3(0f, -0.65f, -1f);
@@ -130,7 +130,7 @@
 //                    hatsTab.StartCoroutine(Effects.Lerp(0.1f, new Action<float>(p => { description.SetText($"{hat.name}\nby {ext.Author}"); })));
 //                }
 //            }
-            
+
 //            colorChip.transform.localPosition = new Vector3(xPos, yPos, -1f);
 //            colorChip.Inner.SetHat(hat, hatsTab.HasLocalPlayer() ? PlayerControl.LocalPlayer.Data.DefaultOutfit.ColorId : DataManager.Player.Customization.Color);
 //            colorChip.Inner.transform.localPosition = hat.ChipOffset;

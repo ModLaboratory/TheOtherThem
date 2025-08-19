@@ -1,15 +1,12 @@
-using HarmonyLib;
-using Hazel;
 using System;
-using UnityEngine;
-using static TheOtherThem.TheOtherRoles;
-using static TheOtherThem.TheOtherRolesGM;
-using TheOtherThem.Modules;
-using TheOtherThem.Objects;
 using System.Collections.Generic;
 using System.Linq;
-using TheOtherThem.ToTRole;
-using Iced.Intel;
+using TheOtherThem.Objects;
+using TheOtherThem.Roles;
+using TheOtherThem.Roles.ToT;
+using UnityEngine;
+using static TheOtherThem.Roles.TheOtherRolesGM;
+using static TheOtherThem.TheOtherRoles;
 
 namespace TheOtherThem
 {
@@ -431,7 +428,7 @@ namespace TheOtherThem
                {
                    if (hackerAdminTableChargesText != null)
                        hackerAdminTableChargesText.text = hackerVitalsChargesText.text = String.Format(ModTranslation.GetString("hackerChargesText"), Hacker.chargesAdminTable, Hacker.toolsNumber);
-                   return Hacker.chargesAdminTable > 0 && MapOptions.canUseAdmin;; 
+                   return Hacker.chargesAdminTable > 0 && MapOptions.canUseAdmin; ;
                },
                () =>
                {
@@ -523,7 +520,7 @@ namespace TheOtherThem
                () =>
                {
                    hackerVitalsButton.Timer = hackerVitalsButton.MaxTimer;
-                   if(!hackerAdminTableButton.isEffectActive) PlayerControl.LocalPlayer.moveable = true;
+                   if (!hackerAdminTableButton.isEffectActive) PlayerControl.LocalPlayer.moveable = true;
                    if (Minigame.Instance)
                    {
                        if (GameManager.Instance.LogicOptions.MapId == 1) Hacker.doorLog.ForceClose();
@@ -1007,9 +1004,12 @@ namespace TheOtherThem
             securityGuardButtonScrewsText.transform.localPosition += new Vector3(-0.05f, 0.7f, 0);
 
             securityGuardCamButton = new CustomButton(
-                () => {
-                    if (GameManager.Instance.LogicOptions.MapId != 1) {
-                        if (SecurityGuard.minigame == null) {
+                () =>
+                {
+                    if (GameManager.Instance.LogicOptions.MapId != 1)
+                    {
+                        if (SecurityGuard.minigame == null)
+                        {
                             byte mapId = GameManager.Instance.LogicOptions.MapId;
                             var e = UnityEngine.Object.FindObjectsOfType<SystemConsole>().FirstOrDefault(x => x.gameObject.name.Contains("Surv_Panel"));
                             if (mapId == 0 || mapId == 3) e = UnityEngine.Object.FindObjectsOfType<SystemConsole>().FirstOrDefault(x => x.gameObject.name.Contains("SurvConsole"));
@@ -1020,8 +1020,11 @@ namespace TheOtherThem
                         SecurityGuard.minigame.transform.SetParent(Camera.main.transform, false);
                         SecurityGuard.minigame.transform.localPosition = new Vector3(0.0f, 0.0f, -50f);
                         SecurityGuard.minigame.Begin(null);
-                    } else {
-                        if (SecurityGuard.minigame == null) {
+                    }
+                    else
+                    {
+                        if (SecurityGuard.minigame == null)
+                        {
                             var e = UnityEngine.Object.FindObjectsOfType<SystemConsole>().FirstOrDefault(x => x.gameObject.name.Contains("SurvLogConsole"));
                             if (e == null || Camera.main == null) return;
                             SecurityGuard.minigame = UnityEngine.Object.Instantiate(e.MinigamePrefab, Camera.main.transform, false);
@@ -1036,7 +1039,8 @@ namespace TheOtherThem
                     PlayerControl.LocalPlayer.NetTransform.Halt(); // Stop current movement 
                 },
                 () => { return SecurityGuard.securityGuard != null && SecurityGuard.securityGuard == PlayerControl.LocalPlayer && !PlayerControl.LocalPlayer.Data.IsDead && SecurityGuard.remainingScrews < Mathf.Min(SecurityGuard.ventPrice, SecurityGuard.camPrice); },
-                () => {
+                () =>
+                {
                     if (securityGuardChargesText != null)
                         securityGuardChargesText.text = securityGuardChargesText.text = String.Format(ModTranslation.GetString("hackerChargesText"), SecurityGuard.charges, SecurityGuard.maxCharges);
                     securityGuardCamButton.actionButton.graphic.sprite = GameManager.Instance.LogicOptions.MapId == 1 ? SecurityGuard.getLogSprite() : SecurityGuard.getCamSprite();
@@ -1045,7 +1049,8 @@ namespace TheOtherThem
                         TranslationController.Instance.GetString(StringNames.SecurityCamsSystem));
                     return PlayerControl.LocalPlayer.CanMove && SecurityGuard.charges > 0;
                 },
-                () => {
+                () =>
+                {
                     securityGuardCamButton.Timer = securityGuardCamButton.MaxTimer;
                     securityGuardCamButton.isEffectActive = false;
                     securityGuardCamButton.actionButton.cooldownTimerText.color = Palette.EnabledColor;
@@ -1057,9 +1062,11 @@ namespace TheOtherThem
                 KeyCode.Q,
                 true,
                 0f,
-                () => {
+                () =>
+                {
                     securityGuardCamButton.Timer = securityGuardCamButton.MaxTimer;
-                    if (Minigame.Instance) {
+                    if (Minigame.Instance)
+                    {
                         SecurityGuard.minigame.ForceClose();
                     }
                     PlayerControl.LocalPlayer.moveable = true;

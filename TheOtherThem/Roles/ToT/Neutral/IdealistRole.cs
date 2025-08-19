@@ -1,12 +1,11 @@
-using System;
 using System.Linq;
 using TheOtherThem.Modules;
 using TheOtherThem.Objects;
 using TheOtherThem.Patches;
 using UnityEngine;
 
-namespace TheOtherThem.ToTRole.Neutral
-{ 
+namespace TheOtherThem.Roles.ToT.Neutral
+{
     [RoleAutoInitialize]
     [HarmonyPatch]
     public class IdealistRole : CustomRole
@@ -21,12 +20,12 @@ namespace TheOtherThem.ToTRole.Neutral
         private static int TotalGuessed { get; set; } = 0;
         private static NetworkedPlayerInfo Target { get; set; }
 
-        IdealistRole() : base("Idealist", Palette.Orange, 
-           (nameKey, roleColor) => IdealistSpawnRate = new(2100, nameKey, roleColor, TeamTypeToT.Neutral, 1), 
+        IdealistRole() : base("Idealist", Palette.Orange,
+           (nameKey, roleColor) => IdealistSpawnRate = new(2100, nameKey, roleColor, TeamTypeToT.Neutral, 1),
            RoleType.Idealist, TeamTypeToT.Neutral, true)
         {
             Instance = this;
-            
+
             IdealistAbilityCooldown = CustomOption.CreateInsertable(2101, "IdealistAbilityCooldown", 30, 10, 60, 5, TeamTypeToT.Neutral, IdealistSpawnRate);
             WinningGuessedCount = CustomOption.CreateInsertable(2102, "IdealistWinningGuessedCount", 3, 3, 5, 1, TeamTypeToT.Neutral, IdealistSpawnRate);
             SuicideCountdown = CustomOption.CreateInsertable(2103, "IdealistSuicideCountdown", 30, 10, 60, 5, TeamTypeToT.Neutral, IdealistSpawnRate);

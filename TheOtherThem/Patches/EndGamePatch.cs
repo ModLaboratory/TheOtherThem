@@ -1,16 +1,14 @@
-  
-using HarmonyLib;
-using static TheOtherThem.TheOtherRoles;
-using static TheOtherThem.TheOtherRolesGM;
-using static TheOtherThem.GameHistory;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using System.Linq;
-using Hazel;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using TheOtherThem.Roles;
+using TheOtherThem.Roles.Modifiers;
 using TMPro;
+using UnityEngine;
+using static TheOtherThem.GameHistory;
+using static TheOtherThem.Roles.TheOtherRolesGM;
+using static TheOtherThem.TheOtherRoles;
 
 namespace TheOtherThem.Patches
 {
@@ -69,7 +67,7 @@ namespace TheOtherThem.Patches
     [HarmonyPatch(typeof(GameManager), nameof(GameManager.RpcEndGame))]
     static class EndGamePatch
     {
-        static bool Prefix() => !Main.DebugMode.Value; 
+        static bool Prefix() => !Main.DebugMode.Value;
     }
 
     static class AdditionalTempData
@@ -125,7 +123,8 @@ namespace TheOtherThem.Patches
             // 狐の勝利条件を満たしたか確認する
             bool isFoxAlive = Fox.isFoxAlive();
             bool isFoxCompletedTasks = Fox.isFoxCompletedTasks(); // 生存中の狐が1匹でもタスクを全て終えていること
-            if (isFoxAlive && isFoxCompletedTasks) {
+            if (isFoxAlive && isFoxCompletedTasks)
+            {
                 // タスク勝利の場合はオプションの設定次第
                 if (gameOverReason == GameOverReason.CrewmatesByTask && !Fox.crewWinsByTasks)
                 {
@@ -230,7 +229,7 @@ namespace TheOtherThem.Patches
             bool foxWin = Fox.Exists && gameOverReason == (GameOverReason)CustomGameOverReason.FoxWin;
             bool everyoneDead = AdditionalTempData.PlayerRoles.All(x => x.Status != FinalStatus.Alive);
 
-            
+
             // Mini lose
             if (miniLose)
             {
@@ -732,7 +731,7 @@ namespace TheOtherThem.Patches
                     var statistics = new PlayerStatistics(ship);
 
                     foreach (var func in GeneralEndCheckingHandler)
-                        if (func(ship)) 
+                        if (func(ship))
                             return false;
 
                     foreach (var func in StatisticalEndCheckingHandler)
@@ -886,7 +885,7 @@ namespace TheOtherThem.Patches
                 private static bool CheckAndEndGameForJackalWin(ShipStatus __instance, PlayerStatistics statistics)
                 {
                     if (statistics.TeamJackalAlive >= statistics.TotalAlive - statistics.TeamJackalAlive - statistics.FoxAlive &&
-                        statistics.TeamImpostorsAlive == 0 && 
+                        statistics.TeamImpostorsAlive == 0 &&
                         (statistics.TeamJackalLovers == 0 || statistics.TeamJackalLovers >= statistics.CouplesAlive * 2)
                        )
                     {

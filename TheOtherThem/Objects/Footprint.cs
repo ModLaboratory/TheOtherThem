@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
-using System.Collections;
 using UnityEngine;
-using static TheOtherThem.TheOtherRoles;
-using static TheOtherThem.TheOtherRolesGM;
+using static TheOtherThem.Roles.TheOtherRolesGM;
 
-namespace TheOtherThem.Objects {
-    class Footprint {
+namespace TheOtherThem.Objects
+{
+    class Footprint
+    {
         private static List<Footprint> footprints = new List<Footprint>();
         private static Sprite sprite;
         private Color color;
@@ -15,19 +15,21 @@ namespace TheOtherThem.Objects {
         private PlayerControl owner;
         private bool anonymousFootprints;
 
-        public static Sprite getFootprintSprite() {
+        public static Sprite getFootprintSprite()
+        {
             if (sprite) return sprite;
             sprite = Helpers.LoadSpriteFromResources("TheOtherThem.Resources.Footprint.png", 600f);
             return sprite;
         }
 
-        public Footprint(float footprintDuration, bool anonymousFootprints, PlayerControl player) {
+        public Footprint(float footprintDuration, bool anonymousFootprints, PlayerControl player)
+        {
             this.owner = player;
             this.anonymousFootprints = anonymousFootprints;
             if (anonymousFootprints)
                 this.color = Palette.PlayerColors[6];
             else
-                this.color = Palette.PlayerColors[(int) player.Data.DefaultOutfit.ColorId];
+                this.color = Palette.PlayerColors[(int)player.Data.DefaultOutfit.ColorId];
 
             footprint = new GameObject("Footprint");
             Vector3 position = new Vector3(player.transform.position.x, player.transform.position.y, player.transform.position.z + 1f);
@@ -45,21 +47,24 @@ namespace TheOtherThem.Objects {
             footprint.SetActive(true);
             footprints.Add(this);
 
-            HudManager.Instance.StartCoroutine(Effects.Lerp(footprintDuration, new Action<float>((p) => {
-            Color c = color;
-            if (!anonymousFootprints && owner != null) {
-                if (owner == Morphling.morphling && Morphling.morphTimer > 0 && Morphling.morphTarget?.Data != null)
-                    c = Palette.ShadowColors[Morphling.morphTarget.Data.DefaultOutfit.ColorId];
-                else if (Camouflager.camouflageTimer > 0)
-                    c = Palette.PlayerColors[6];
-            }
+            HudManager.Instance.StartCoroutine(Effects.Lerp(footprintDuration, new Action<float>((p) =>
+            {
+                Color c = color;
+                if (!anonymousFootprints && owner != null)
+                {
+                    if (owner == Morphling.morphling && Morphling.morphTimer > 0 && Morphling.morphTarget?.Data != null)
+                        c = Palette.ShadowColors[Morphling.morphTarget.Data.DefaultOutfit.ColorId];
+                    else if (Camouflager.camouflageTimer > 0)
+                        c = Palette.PlayerColors[6];
+                }
 
-            if (spriteRenderer) spriteRenderer.color = new Color(c.r, c.g, c.b, Mathf.Clamp01(1 - p));
+                if (spriteRenderer) spriteRenderer.color = new Color(c.r, c.g, c.b, Mathf.Clamp01(1 - p));
 
-            if (p == 1f && footprint != null) {
-                UnityEngine.Object.Destroy(footprint);
-                footprints.Remove(this);
-            }
+                if (p == 1f && footprint != null)
+                {
+                    UnityEngine.Object.Destroy(footprint);
+                    footprints.Remove(this);
+                }
             })));
         }
     }

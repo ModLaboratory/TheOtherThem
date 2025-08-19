@@ -1,30 +1,27 @@
-using HarmonyLib;
-using Hazel;
+using AmongUs.GameOptions;
+using Il2CppInterop.Runtime.InteropTypes.Arrays;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using static TheOtherThem.TheOtherRoles;
-using static TheOtherThem.TheOtherRolesGM;
-using static TheOtherThem.GameHistory;
 using TheOtherThem.Objects;
-using static TheOtherThem.MapOptions;
-using System.Collections;
-using System;
-using System.Text;
+using TheOtherThem.Roles;
 using UnityEngine;
-using System.Reflection;
-using Il2CppInterop.Runtime.InteropTypes.Arrays;
-using AmongUs.GameOptions;
-using Newtonsoft.Json.Utilities;
+using static TheOtherThem.Roles.TheOtherRolesGM;
+using static TheOtherThem.TheOtherRoles;
 
-namespace TheOtherThem.Patches {
+namespace TheOtherThem.Patches
+{
     [HarmonyPatch(typeof(ExileController), nameof(ExileController.Begin))]
-    class ExileControllerBeginPatch {
-        public static void Prefix(ExileController __instance, [HarmonyArgument(0)]ref ExileController.InitProperties init) {
+    class ExileControllerBeginPatch
+    {
+        public static void Prefix(ExileController __instance, [HarmonyArgument(0)] ref ExileController.InitProperties init)
+        {
             var exiled = init.networkedPlayer;
             var tie = init.voteTie;
 
             // Medic shield
-            if (Medic.medic != null && AmongUsClient.Instance.AmHost && Medic.futureShielded != null && !Medic.medic.Data.IsDead) { // We need to send the RPC from the host here, to make sure that the order of shifting and setting the shield is correct(for that reason the futureShifted and futureShielded are being synced)
+            if (Medic.medic != null && AmongUsClient.Instance.AmHost && Medic.futureShielded != null && !Medic.medic.Data.IsDead)
+            { // We need to send the RPC from the host here, to make sure that the order of shifting and setting the shield is correct(for that reason the futureShifted and futureShielded are being synced)
                 MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.MedicSetShielded, Hazel.SendOption.Reliable, -1);
                 writer.Write(Medic.futureShielded.PlayerId);
                 AmongUsClient.Instance.FinishRpcImmediately(writer);
@@ -32,7 +29,8 @@ namespace TheOtherThem.Patches {
             }
 
             // Shifter shift
-            if (Shifter.shifter != null && AmongUsClient.Instance.AmHost && Shifter.futureShift != null) { // We need to send the RPC from the host here, to make sure that the order of shifting and erasing is correct (for that reason the futureShifted and futureErased are being synced)
+            if (Shifter.shifter != null && AmongUsClient.Instance.AmHost && Shifter.futureShift != null)
+            { // We need to send the RPC from the host here, to make sure that the order of shifting and erasing is correct (for that reason the futureShifted and futureErased are being synced)
                 MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.ShifterShift, Hazel.SendOption.Reliable, -1);
                 writer.Write(Shifter.futureShift.PlayerId);
                 AmongUsClient.Instance.FinishRpcImmediately(writer);
@@ -41,9 +39,12 @@ namespace TheOtherThem.Patches {
             Shifter.futureShift = null;
 
             // Eraser erase
-            if (Eraser.eraser != null && AmongUsClient.Instance.AmHost && Eraser.futureErased != null) {  // We need to send the RPC from the host here, to make sure that the order of shifting and erasing is correct (for that reason the futureShifted and futureErased are being synced)
-                foreach (PlayerControl target in Eraser.futureErased) {
-                    if (target != null && target.CanBeErased()) {
+            if (Eraser.eraser != null && AmongUsClient.Instance.AmHost && Eraser.futureErased != null)
+            {  // We need to send the RPC from the host here, to make sure that the order of shifting and erasing is correct (for that reason the futureShifted and futureErased are being synced)
+                foreach (PlayerControl target in Eraser.futureErased)
+                {
+                    if (target != null && target.CanBeErased())
+                    {
                         MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.ErasePlayerRoles, Hazel.SendOption.Reliable, -1);
                         writer.Write(target.PlayerId);
                         AmongUsClient.Instance.FinishRpcImmediately(writer);
@@ -54,17 +55,20 @@ namespace TheOtherThem.Patches {
             Eraser.futureErased = new List<PlayerControl>();
 
             // Trickster boxes
-            if (Trickster.trickster != null && JackInTheBox.HasJackInTheBoxLimitReached()) {
+            if (Trickster.trickster != null && JackInTheBox.HasJackInTheBoxLimitReached())
+            {
                 JackInTheBox.ConvertToVents();
             }
 
             // Witch execute casted spells
-            if (Witch.witch != null && Witch.futureSpelled != null && AmongUsClient.Instance.AmHost) {
+            if (Witch.witch != null && Witch.futureSpelled != null && AmongUsClient.Instance.AmHost)
+            {
                 bool exiledIsWitch = exiled != null && exiled.PlayerId == Witch.witch.PlayerId;
                 bool witchDiesWithExiledLover = exiled != null && Lovers.BothDie && exiled.Object.IsInLove() && exiled.Object.GetPartner() == Witch.witch;
 
                 if ((witchDiesWithExiledLover || exiledIsWitch) && Witch.witchVoteSavesTargets) Witch.futureSpelled = new List<PlayerControl>();
-                foreach (PlayerControl target in Witch.futureSpelled) {
+                foreach (PlayerControl target in Witch.futureSpelled)
+                {
                     if (target != null && !target.Data.IsDead && Helpers.CheckMuderAttempt(Witch.witch, target, true) == MurderAttemptResult.PerformKill)
                     {
                         MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.WitchSpellCast, Hazel.SendOption.Reliable, -1);
@@ -78,7 +82,8 @@ namespace TheOtherThem.Patches {
 
             // SecurityGuard vents and cameras
             var allCameras = ShipStatus.Instance.AllCameras.ToList();
-            MapOptions.CamerasToAdd.ForEach(camera => {
+            MapOptions.CamerasToAdd.ForEach(camera =>
+            {
                 camera.gameObject.SetActive(true);
                 camera.gameObject.GetComponent<SpriteRenderer>().color = Color.white;
                 allCameras.Add(camera);
@@ -86,8 +91,9 @@ namespace TheOtherThem.Patches {
             ShipStatus.Instance.AllCameras = allCameras.ToArray();
             MapOptions.CamerasToAdd = new List<SurvCamera>();
 
-            foreach (Vent vent in MapOptions.VentsToSeal) {
-                PowerTools.SpriteAnim animator = vent.GetComponent<PowerTools.SpriteAnim>(); 
+            foreach (Vent vent in MapOptions.VentsToSeal)
+            {
+                PowerTools.SpriteAnim animator = vent.GetComponent<PowerTools.SpriteAnim>();
                 animator?.Stop();
                 vent.EnterVentAnim = vent.ExitVentAnim = null;
                 vent.myRend.sprite = animator == null ? SecurityGuard.getStaticVentSealedSprite() : SecurityGuard.getAnimatedVentSealedSprite();
@@ -103,30 +109,38 @@ namespace TheOtherThem.Patches {
     }
 
     [HarmonyPatch]
-    class ExileControllerWrapUpPatch {
+    class ExileControllerWrapUpPatch
+    {
 
         [HarmonyPatch(typeof(ExileController), nameof(ExileController.WrapUp))]
-        class BaseExileControllerPatch {
-            public static void Postfix(ExileController __instance) {
+        class BaseExileControllerPatch
+        {
+            public static void Postfix(ExileController __instance)
+            {
                 WrapUpPostfix(__instance.initData.networkedPlayer);
             }
         }
 
         [HarmonyPatch(typeof(AirshipExileController), nameof(AirshipExileController.WrapUpAndSpawn))]
-        class AirshipExileControllerPatch {
-            public static void Postfix(AirshipExileController __instance) {
+        class AirshipExileControllerPatch
+        {
+            public static void Postfix(AirshipExileController __instance)
+            {
                 WrapUpPostfix(__instance.initData.networkedPlayer);
             }
         }
 
-        static void WrapUpPostfix(NetworkedPlayerInfo exiled) {
+        static void WrapUpPostfix(NetworkedPlayerInfo exiled)
+        {
             // Mini exile lose condition
-            if (exiled != null && Mini.mini != null && Mini.mini.PlayerId == exiled.PlayerId && !Mini.isGrownUp() && !Mini.mini.Data.Role.IsImpostor) {
+            if (exiled != null && Mini.mini != null && Mini.mini.PlayerId == exiled.PlayerId && !Mini.isGrownUp() && !Mini.mini.Data.Role.IsImpostor)
+            {
                 Mini.triggerMiniLose = true;
             }
 
             // Jester win condition
-            else if (exiled != null && Jester.jester != null && Jester.jester.PlayerId == exiled.PlayerId) {
+            else if (exiled != null && Jester.jester != null && Jester.jester.PlayerId == exiled.PlayerId)
+            {
                 Jester.triggerJesterWin = true;
             }
         }
@@ -163,7 +177,8 @@ namespace TheOtherThem.Patches {
 
                     if (Seer.limitSoulDuration)
                     {
-                        HudManager.Instance.StartCoroutine(Effects.Lerp(Seer.SoulDuration, new Action<float>((p) => {
+                        HudManager.Instance.StartCoroutine(Effects.Lerp(Seer.SoulDuration, new Action<float>((p) =>
+                        {
                             if (rend != null)
                             {
                                 var tmp = rend.color;
@@ -218,22 +233,30 @@ namespace TheOtherThem.Patches {
     }
 
     [HarmonyPatch(typeof(TranslationController), nameof(TranslationController.GetString), new Type[] { typeof(StringNames), typeof(Il2CppReferenceArray<Il2CppSystem.Object>) })]
-    class ExileControllerMessagePatch {
-        static void Postfix(ref string __result, [HarmonyArgument(0)] StringNames id) {
-            try {
-                if (ExileController.Instance != null && ExileController.Instance.initData.networkedPlayer != null) {
+    class ExileControllerMessagePatch
+    {
+        static void Postfix(ref string __result, [HarmonyArgument(0)] StringNames id)
+        {
+            try
+            {
+                if (ExileController.Instance != null && ExileController.Instance.initData.networkedPlayer != null)
+                {
                     PlayerControl player = ExileController.Instance.initData.networkedPlayer.Object;
                     if (player == null) return;
                     // Exile role text
-                    if (id == StringNames.ExileTextPN || id == StringNames.ExileTextSN || id == StringNames.ExileTextPP || id == StringNames.ExileTextSP) {
+                    if (id == StringNames.ExileTextPN || id == StringNames.ExileTextSN || id == StringNames.ExileTextPP || id == StringNames.ExileTextSP)
+                    {
                         __result = string.Format(ModTranslation.GetString("EjectionText"), player.Data.PlayerName, string.Join(" ", RoleInfo.GetRoleInfoForPlayer(player).Select(x => x.Name).ToArray()));
                     }
                     // Hide number of remaining impostors on Jester win
-                    if (id == StringNames.ImpostorsRemainP || id == StringNames.ImpostorsRemainS) {
+                    if (id == StringNames.ImpostorsRemainP || id == StringNames.ImpostorsRemainS)
+                    {
                         if (Jester.jester != null && player.PlayerId == Jester.jester.PlayerId) __result = "";
                     }
                 }
-            } catch {
+            }
+            catch
+            {
                 // pass - Hopefully prevent leaving while exiling to softlock game
             }
         }

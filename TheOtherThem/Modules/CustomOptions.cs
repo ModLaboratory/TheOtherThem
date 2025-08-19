@@ -2,16 +2,16 @@ using AmongUs.GameOptions;
 using BepInEx;
 using BepInEx.Configuration;
 using BepInEx.Unity.IL2CPP;
-using Hazel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using TheOtherThem.ToTRole;
+using TheOtherThem.Roles;
+using TheOtherThem.Roles.ToT;
 using TMPro;
 using UnityEngine;
-using static TheOtherThem.CustomOption;
+using static TheOtherThem.Modules.CustomOption;
 
-namespace TheOtherThem
+namespace TheOtherThem.Modules
 {
     public enum CustomOptionType
     {
@@ -188,7 +188,7 @@ namespace TheOtherThem
         public static void ShareOptionSelections()
         {
             if (PlayerControl.AllPlayerControls.Count <= 1 || AmongUsClient.Instance?.AmHost == false && PlayerControl.LocalPlayer == null) return;
-            
+
             MessageWriter messageWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRpc.ShareOptions, SendOption.Reliable);
             messageWriter.WritePacked((uint)Options.Count);
             foreach (CustomOption option in Options)
@@ -336,7 +336,7 @@ namespace TheOtherThem
         public RoleType roleType;
 
         public int impChance { get { return roleImpChance.GetSelection(); } }
-        
+
         public bool assignEqually { get { return roleAssignEqually.GetSelection() == 0; } }
 
         public CustomDualRoleOption(int id, string name, Color color, RoleType roleType, int max = 15, bool roleEnabled = true) : base(id, name, color, max, roleEnabled)
@@ -395,7 +395,7 @@ namespace TheOtherThem
 
             this.roleTypes = roleTypes;
             var strings = roleTypes.Select(
-                x => 
+                x =>
                     x == RoleType.NoRole ? "optionOff" :
                     RoleInfo.AllRoleInfos.First(y => y.MyRoleType == x).NameColored
                 ).ToArray();
@@ -409,13 +409,13 @@ namespace TheOtherThem
     {
         public CustomOptionBlank(CustomOption parent)
         {
-            this.Parent = parent;
-            this.Id = -1;
-            this.Name = "";
-            this.IsHeader = false;
-            this.IsHidden = true;
-            this.Children = new List<CustomOption>();
-            this.Selections = new string[] { "" };
+            Parent = parent;
+            Id = -1;
+            Name = "";
+            IsHeader = false;
+            IsHidden = true;
+            Children = new List<CustomOption>();
+            Selections = new string[] { "" };
             //options.Add(this);
         }
 
@@ -544,7 +544,8 @@ namespace TheOtherThem
                 __instance.StartCoroutine(Effects.Lerp(2f, new Action<float>(p => { torSettingsButton.transform.FindChild("FontPlacer").GetComponentInChildren<TextMeshPro>().text = buttonText; })));
                 var torSettingsPassiveButton = torSettingsButton.GetComponent<PassiveButton>();
                 torSettingsPassiveButton.OnClick.RemoveAllListeners();
-                torSettingsPassiveButton.OnClick.AddListener((System.Action)(() => {
+                torSettingsPassiveButton.OnClick.AddListener((Action)(() =>
+                {
                     __instance.ChangeTab((StringNames)targetMenu);
                 }));
                 torSettingsPassiveButton.OnMouseOut.RemoveAllListeners();
@@ -629,7 +630,7 @@ namespace TheOtherThem
                     if (i != 0) num -= 0.59f;
                     if (i % 2 != 0) singles++;
                     headers++; // for header
-                    CategoryHeaderMasked categoryHeaderMasked = Object.Instantiate<CategoryHeaderMasked>(__instance.categoryHeaderOrigin);
+                    CategoryHeaderMasked categoryHeaderMasked = Object.Instantiate(__instance.categoryHeaderOrigin);
                     categoryHeaderMasked.SetHeader(StringNames.ImpostorsCategory, 61);
                     categoryHeaderMasked.Title.text = ModTranslation.GetString(option.Name);
                     if ((int)optionType == 99)
@@ -645,7 +646,7 @@ namespace TheOtherThem
                     i = 0;
                 }
 
-                ViewSettingsInfoPanel viewSettingsInfoPanel = Object.Instantiate<ViewSettingsInfoPanel>(__instance.infoPanelOrigin);
+                ViewSettingsInfoPanel viewSettingsInfoPanel = Object.Instantiate(__instance.infoPanelOrigin);
                 viewSettingsInfoPanel.transform.SetParent(__instance.settingsContainer);
                 viewSettingsInfoPanel.transform.localScale = Vector3.one;
                 float num2;
@@ -677,7 +678,7 @@ namespace TheOtherThem
             }
 
             float actual_spacing = (headers * 0.85f + lines * 0.59f) / (headers + lines);
-            __instance.scrollBar.CalculateAndSetYBounds((float)(__instance.settingsInfo.Count + singles * 2 + headers), 2f, 6f, actual_spacing);
+            __instance.scrollBar.CalculateAndSetYBounds(__instance.settingsInfo.Count + singles * 2 + headers, 2f, 6f, actual_spacing);
         }
 
         public static void createSettingTabs(LobbyViewSettingsPane __instance)
@@ -762,7 +763,7 @@ namespace TheOtherThem
                     categoryHeaderMasked.transform.localPosition = new Vector3(-0.903f, num, -2f);
                     num -= 0.63f;
                 }
-                OptionBehaviour optionBehaviour = Object.Instantiate<StringOption>(menu.stringOptionOrigin, Vector3.zero, Quaternion.identity, menu.settingsContainer);
+                OptionBehaviour optionBehaviour = Object.Instantiate(menu.stringOptionOrigin, Vector3.zero, Quaternion.identity, menu.settingsContainer);
                 optionBehaviour.transform.localPosition = new Vector3(0.952f, num, -2f);
                 optionBehaviour.SetClickMask(menu.ButtonClickMask);
 
@@ -775,7 +776,7 @@ namespace TheOtherThem
                 foreach (TextMeshPro textMeshPro in optionBehaviour.GetComponentsInChildren<TextMeshPro>(true))
                 {
                     textMeshPro.fontMaterial.SetFloat("_StencilComp", 3f);
-                    textMeshPro.fontMaterial.SetFloat("_Stencil", (float)20);
+                    textMeshPro.fontMaterial.SetFloat("_Stencil", 20);
                 }
 
                 var stringOption = optionBehaviour as StringOption;
@@ -845,7 +846,8 @@ namespace TheOtherThem
                 __instance.StartCoroutine(Effects.Lerp(2f, new Action<float>(p => { torSettingsButton.transform.FindChild("FontPlacer").GetComponentInChildren<TextMeshPro>().text = buttonText; })));
                 var torSettingsPassiveButton = torSettingsButton.GetComponent<PassiveButton>();
                 torSettingsPassiveButton.OnClick.RemoveAllListeners();
-                torSettingsPassiveButton.OnClick.AddListener((Action)(() => {
+                torSettingsPassiveButton.OnClick.AddListener((Action)(() =>
+                {
                     __instance.ChangeTab(targetMenu, false);
                 }));
                 torSettingsPassiveButton.OnMouseOut.RemoveAllListeners();

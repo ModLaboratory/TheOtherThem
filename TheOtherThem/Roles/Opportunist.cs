@@ -1,8 +1,7 @@
-using HarmonyLib;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace TheOtherThem
+namespace TheOtherThem.Roles
 {
     [HarmonyPatch]
     public class Opportunist : RoleBase<Opportunist>

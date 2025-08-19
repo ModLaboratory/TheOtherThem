@@ -1,6 +1,5 @@
 using AmongUs.Data;
 using AmongUs.GameOptions;
-using Hazel;
 using InnerNet;
 using System;
 
