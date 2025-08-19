@@ -3928,5 +3928,32 @@
   },
   "PossessButton": {
     "0": "PossessButton.png"
+  },
+  "Sorcerer": {
+    "0": "Sorcerer",
+    "13": "咒术师"
+  },
+  "SorcererIntroDesc": {
+    "0": "Curse dead bodies",
+    "13": "诅咒尸体"
+  },
+  "SorcererShortDesc": {
+    "0": "Curse dead bodies to kill the reporter",
+    "13": "诅咒尸体，带走报告者"
+  },
+  "SorcererFullDesc": {
+    "0": "The Sorcerer can curse a dead body each round. Anyone who reports it will suicide.",
+    "13": "咒术师每轮可以诅咒一具尸体。报告这具尸体的玩家会自杀。"
+  },
+  "SorcererCurseCooldownOption": {
+    "0": "Curse Cooldown",
+    "13": "诅咒冷却"
+  },
+  "SorcererCurseLabel": {
+    "0": "Curse",
+    "13": "诅咒"
+  },
+  "SorcererCurseButton": {
+    "0": "SorcererCurseButton.png"
   }
 }

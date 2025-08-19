@@ -11,7 +11,7 @@ namespace TheOtherThem.Objects
         private GameObject background;
 
         private static Sprite garlicSprite;
-        public static Sprite getGarlicSprite()
+        public static Sprite GetGarlicSprite()
         {
             if (garlicSprite) return garlicSprite;
             garlicSprite = Helpers.LoadSpriteFromResources("TheOtherThem.Resources.Garlic.png", 300f);
@@ -19,7 +19,7 @@ namespace TheOtherThem.Objects
         }
 
         private static Sprite backgroundSprite;
-        public static Sprite getBackgroundSprite()
+        public static Sprite GetBackgroundSprite()
         {
             if (backgroundSprite) return backgroundSprite;
             backgroundSprite = Helpers.LoadSpriteFromResources("TheOtherThem.Resources.GarlicBackground.png", 60f);
@@ -37,16 +37,16 @@ namespace TheOtherThem.Objects
             background.transform.localPosition = new Vector3(0, 0, -0.01f); // before player
 
             var garlicRenderer = garlic.AddComponent<SpriteRenderer>();
-            garlicRenderer.sprite = getGarlicSprite();
+            garlicRenderer.sprite = GetGarlicSprite();
             var backgroundRenderer = background.AddComponent<SpriteRenderer>();
-            backgroundRenderer.sprite = getBackgroundSprite();
+            backgroundRenderer.sprite = GetBackgroundSprite();
 
 
             garlic.SetActive(true);
             garlics.Add(this);
         }
 
-        public static void clearGarlics()
+        public static void ClearGarlics()
         {
             garlics = new List<Garlic>();
         }

@@ -404,7 +404,7 @@ namespace TheOtherThem.Modules
         }
     }
 
-    [Obsolete("The new version of the game option doesn't need this anymore.")]
+    [Obsolete("The latest version of the game option doesn't need this anymore.")]
     public class CustomOptionBlank : CustomOption
     {
         public CustomOptionBlank(CustomOption parent)

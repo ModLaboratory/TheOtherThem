@@ -100,6 +100,7 @@ namespace TheOtherThem
         ResetAllKillCooldown,
         RoleDataSync,
         PhoenixPossess,
+        CurseDeadBody,
     }
 
     public static class RpcProcedure
@@ -108,7 +109,7 @@ namespace TheOtherThem
 
         public static void ResetVariables()
         {
-            Garlic.clearGarlics();
+            Garlic.ClearGarlics();
             JackInTheBox.ClearJackInTheBoxes();
             ClearAndReloadMapOptions();
             TheOtherRoles.ClearAndReloadRoles();
@@ -1276,12 +1277,12 @@ namespace TheOtherThem
                         break;
                 }
 
-                CustomRole.AllRoles.ForEach(r => r.OnRpcReceived(callId, reader));
+                CustomRole.AllRoles.ForEach(r => r.OnRpcReceive(callId, reader));
 
                 if ((CustomRpc)callId == CustomRpc.RoleDataSync) // For readability, i dont put it in switch-case block
                 {
                     var roleType = (RoleType)reader.ReadPackedInt32();
-                    CustomRole.AllRoles.First(r => r.MyRoleType == roleType).OnRoleDataBeingSynchronized(reader);
+                    CustomRole.AllRoles.First(r => r.MyRoleType == roleType).OnSyncRoleData(reader);
                 }
             }
         }

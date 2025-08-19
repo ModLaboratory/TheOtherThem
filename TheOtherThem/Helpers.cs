@@ -699,6 +699,43 @@ namespace TheOtherThem
             Array.Reverse(reversed);
             return reversed;
         }
+
+        public static DeadBody GetClosestBody(List<DeadBody> untargettable = null)
+        {
+            DeadBody result = null;
+
+            var num = PlayerControl.LocalPlayer.MaxReportDistance;
+            if (!ShipStatus.Instance) return null;
+            var position = PlayerControl.LocalPlayer.GetTruePosition();
+
+            foreach (var body in Object.FindObjectsOfType<DeadBody>()
+                         .Where(b => untargettable?.Contains(b) ?? true))
+            {
+                var vector = body.TruePosition - position;
+                var magnitude = vector.magnitude;
+                if (magnitude <= num && !PhysicsHelpers.AnyNonTriggersBetween(position, vector.normalized,
+                        magnitude, Constants.ShipAndObjectsMask))
+                {
+                    result = body;
+                    num = magnitude;
+                }
+            }
+
+            return result;
+        }
+
+        public static void SetOutline(this DeadBody body, Color color)
+        {
+            var mat = body.bodyRenderers.First().material;
+            mat.SetFloat("_Outline", 1);
+            mat.SetColor("_OutlineColor", color);
+        }
+
+        public static void ClearOutline(this DeadBody body)
+        {
+            var mat = body.bodyRenderers.First().material;
+            mat.SetFloat("_Outline", 0);
+        }
     }
 
     public class RpcWriter

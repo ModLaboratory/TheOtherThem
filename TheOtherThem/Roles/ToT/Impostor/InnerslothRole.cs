@@ -58,7 +58,7 @@ namespace TheOtherThem.Roles.ToT.Impostor
             };
         }
 
-        public override void OnRpcReceived(byte callId, MessageReader reader)
+        public override void OnRpcReceive(byte callId, MessageReader reader)
         {
             if (callId == (byte)CustomRpc.InnerslothSabotage)
                 CustomSabotageComms();

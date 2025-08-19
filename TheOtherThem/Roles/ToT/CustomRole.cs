@@ -33,7 +33,9 @@ public abstract class CustomRole
     /// <param name="winnableInsertionIndex">The index of the order checking end. <seealso cref="-1"/> for adding directly.</param>
     public CustomRole(string translationName, Color roleColor, BaseRoleOptionGetter baseOptionGetter, RoleType roleType, TeamTypeToT teamType, bool winnable = false, bool needsStatisticalWinningInfo = false, int winnableInsertionIndex = -1)
     {
-        MyRoleInfo = new(translationName, RoleColor = roleColor, baseOptionGetter(translationName, roleColor), roleType);
+        var baseOption = baseOptionGetter(translationName, roleColor);
+        _basicOptionId = baseOption.Id;
+        MyRoleInfo = new(translationName, RoleColor = roleColor, baseOption, roleType);
         MyRoleType = roleType;
         MyTeamType = teamType;
         AllRoles.Add(this);
@@ -56,17 +58,18 @@ public abstract class CustomRole
             }
         }
 
-        Main.Logger.LogInfo($"{translationName} ({nameof(winnable)} = {winnable}, {nameof(needsStatisticalWinningInfo)} = {needsStatisticalWinningInfo}, {nameof(winnableInsertionIndex)} = {winnableInsertionIndex}) registered");
+        Main.Logger.LogInfo($"{translationName} (with {nameof(winnable)} = {winnable}, {nameof(needsStatisticalWinningInfo)} = {needsStatisticalWinningInfo}, {nameof(winnableInsertionIndex)} = {winnableInsertionIndex}) registered");
     }
 
     public bool CanLocalPlayerUse() => PlayerControl.LocalPlayer.IsRole(MyRoleType) && PlayerControl.LocalPlayer.IsAlive();
     public void RpcCustomEndGame(CustomGameOverReason reason) => GameManager.Instance.RpcEndGame((GameOverReason)reason, false);
 
     public virtual (CustomButton, float)[] CreateButtons() => new[] { ((CustomButton)null, float.PositiveInfinity) };
-    public virtual void OnRpcReceived(byte callId, MessageReader reader) { }
-    public virtual void OnRoleDataBeingSynchronized(MessageReader reader) { }
-    public virtual void OnRoleDataSynchronizing(MessageWriter writer) { }
-    public virtual void OnLocalPlayerBecomingThisRole() { }
+    public virtual void OnRpcReceive(byte callId, MessageReader reader) { }
+    public virtual void OnSyncRoleData(MessageReader reader) { }
+    public virtual void OnSendRoleData(MessageWriter writer) { }
+    public virtual void OnLocalPlayerBecomesThisRole() { }
+    public virtual void OnUpdate() { }
     public virtual bool ShouldShowKillButton() => true;
     public virtual bool CanWin(ShipStatus ship) => false;
     public virtual bool CanWin(ShipStatus ship, PlayerStatistics statistics) => false;
@@ -79,13 +82,33 @@ public abstract class CustomRole
     {
         var writer = new RpcWriter(CustomRpc.RoleDataSync);
         writer.WritePacked((int)MyRoleType);
-        OnRoleDataSynchronizing(writer);
+        OnSendRoleData(writer);
         writer.Finish();
+    }
+
+    private int _basicOptionId;
+
+    public int GetNextAvailableOptionId()
+    {
+        return ++_basicOptionId;
     }
 
     public static List<CustomRole> AllRoles => _allRoles ??= new();
     private static List<CustomRole> _allRoles;
 
+    public static int GetAvailableOptionId()
+    {
+        var max = CustomOption.Options.Select(o => o.Id).Max();
+        var remainder = max % 100;
+        if (remainder == 0)
+        {
+            return max + 100;
+        }
+        else
+        {
+            return max + (100 - remainder);
+        }
+    }
     public static void ReloadAll()
     {
         AllRoles.ForEach(cr => cr.ClearData());
@@ -187,6 +210,15 @@ static class PlayerKillButtonPatch
     private static bool IsValidTarget(NetworkedPlayerInfo target)
     {
         return !(target == null) && !target.Disconnected && !target.IsDead && target.PlayerId != PlayerControl.LocalPlayer.PlayerId && !(target.Role == null) && !(target.Object == null) && !target.Object.inVent && !target.Object.inMovingPlat && target.Object.Visible && target.Role.CanBeKilled;
+    }
+}
+
+[HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
+internal static class HudUpdatePatch
+{
+    static void Postfix()
+    {
+        CustomRole.AllRoles.DoIf(r => r.Players.Any(), r => r.OnUpdate());
     }
 }
 

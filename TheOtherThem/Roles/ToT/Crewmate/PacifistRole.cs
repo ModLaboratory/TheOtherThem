@@ -59,7 +59,7 @@ namespace TheOtherThem.Roles.ToT.Crewmate
             };
         }
 
-        public override void OnRpcReceived(byte callId, MessageReader reader)
+        public override void OnRpcReceive(byte callId, MessageReader reader)
         {
             if (callId == (byte)CustomRpc.ResetAllKillCooldown)
             {

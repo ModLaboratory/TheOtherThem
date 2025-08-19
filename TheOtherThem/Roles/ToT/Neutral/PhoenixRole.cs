@@ -49,30 +49,6 @@ namespace TheOtherThem.Roles.ToT.Neutral
                 _realWinningKillCount = checkedMaxPlayerToKill; // Also every client SHOULD HAVE THE SAME _realWinningKillCount value without RPC sync
         }
 
-        public static DeadBody GetClosestBody(List<DeadBody> untargettable = null)
-        {
-            DeadBody result = null;
-
-            var num = PlayerControl.LocalPlayer.MaxReportDistance;
-            if (!ShipStatus.Instance) return null;
-            var position = PlayerControl.LocalPlayer.GetTruePosition();
-
-            foreach (var body in Object.FindObjectsOfType<DeadBody>()
-                         .Where(b => untargettable?.Contains(b) ?? true))
-            {
-                var vector = body.TruePosition - position;
-                var magnitude = vector.magnitude;
-                if (magnitude <= num && !PhysicsHelpers.AnyNonTriggersBetween(position, vector.normalized,
-                        magnitude, Constants.ShipAndObjectsMask))
-                {
-                    result = body;
-                    num = magnitude;
-                }
-            }
-
-            return result;
-        }
-
         [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.FixedUpdate))]
         [HarmonyPostfix]
         public static void OnGameUpdate(PlayerControl __instance)
@@ -151,7 +127,7 @@ namespace TheOtherThem.Roles.ToT.Neutral
 
         public override bool ShouldShowKillButton() => !_killedAfterThisRevival;
 
-        public override void OnRpcReceived(byte callId, MessageReader reader)
+        public override void OnRpcReceive(byte callId, MessageReader reader)
         {
             if ((CustomRpc)callId == CustomRpc.PhoenixPossess)
                 Possess((byte)reader.ReadPackedInt32());
@@ -164,16 +140,14 @@ namespace TheOtherThem.Roles.ToT.Neutral
                 () => CanLocalPlayerUse() && PlayerControl.LocalPlayer.IsDead() && _canRevive,
                 () =>
                 {
-                    var mat = _currentTarget.bodyRenderers.First().material;
                     if (_currentTarget)
-                        mat.SetFloat("_Outline", 0);
+                        _currentTarget.ClearOutline();
 
-                    _currentTarget = GetClosestBody();
+                    _currentTarget = Helpers.GetClosestBody();
+
                     if (_currentTarget)
-                    {
-                        mat.SetFloat("_Outline", 1);
-                        mat.SetColor("_OutlineColor", RoleColor);
-                    }
+                        _currentTarget.SetOutline(RoleColor);
+                    
                     return _currentTarget;
                 },
                 () => { },

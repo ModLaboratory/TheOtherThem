@@ -51,6 +51,7 @@ namespace TheOtherThem.Roles
         Madmate,
         SerialKiller,
         Innersloth,
+        Sorcerer,
 
         ImpostorMax = 149,
 
@@ -662,7 +663,7 @@ namespace TheOtherThem.Roles
             totRole.Players.Add(player.Data);
 
             if (player == PlayerControl.LocalPlayer)
-                totRole.OnLocalPlayerBecomingThisRole();
+                totRole.OnLocalPlayerBecomesThisRole();
 
             if (totRole.IsKillableNonImpostor)
             {

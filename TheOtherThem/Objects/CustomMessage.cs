@@ -7,7 +7,7 @@ namespace TheOtherThem.Objects
 
     public class CustomMessage
     {
-        private TMPro.TMP_Text _text;
+        private readonly TMPro.TMP_Text _text;
         public static List<CustomMessage> CustomMessages { get; } = new List<CustomMessage>();
 
         public CustomMessage(string message, float duration, string format = "", bool doFlash = true)

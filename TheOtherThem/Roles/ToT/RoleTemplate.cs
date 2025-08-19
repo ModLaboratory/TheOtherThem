@@ -7,7 +7,7 @@ using TheOtherThem.Objects;
 using TheOtherThem.Patches;
 using UnityEngine;
 
-namespace TheOtherThem.ToTRole.MyTeam
+namespace TheOtherThem.Roles.ToT.MY_TEAM
 {
     [RoleAutoInitialize]
     [HarmonyPatch]
@@ -18,7 +18,7 @@ namespace TheOtherThem.ToTRole.MyTeam
         public static CustomRoleOption MyRoleSpawnRate { get; set; }
         public static CustomOption MyRoleExampleOption { get; set; }
 
-        MyRole() : base("MyRole", new(),
+        MyRole() : base("My", new(),
            (nameKey, roleColor) => MyRoleSpawnRate = new(ROLE_ID, nameKey, roleColor, TeamTypeToT.MY_TEAM, max__, enabled__),
            RoleType.MY_TYPE, TeamTypeToT.MY_TEAM, winnable__, needsStatisticalWinningInfo__, winnableInsertionIndex__)
         {

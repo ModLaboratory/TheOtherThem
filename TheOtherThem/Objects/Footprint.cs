@@ -15,7 +15,7 @@ namespace TheOtherThem.Objects
         private PlayerControl owner;
         private bool anonymousFootprints;
 
-        public static Sprite getFootprintSprite()
+        public static Sprite GetFootprintSprite()
         {
             if (sprite) return sprite;
             sprite = Helpers.LoadSpriteFromResources("TheOtherThem.Resources.Footprint.png", 600f);
@@ -41,7 +41,7 @@ namespace TheOtherThem.Objects
 
 
             spriteRenderer = footprint.AddComponent<SpriteRenderer>();
-            spriteRenderer.sprite = getFootprintSprite();
+            spriteRenderer.sprite = GetFootprintSprite();
             spriteRenderer.color = color;
 
             footprint.SetActive(true);
